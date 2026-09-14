@@ -6,7 +6,8 @@
       "eyebrow": "01",
       "title": "A name",
       "body": "Louma is Milla's sister. The bakery carries her name, and a promise.",
-      "image": "chapter-dough.jpg"
+      "image": "croissant-cut.jpg",
+      "alt": "Croissants on a wire rack, one torn open to show its layers"
     },
     {
       "id": "c2",
@@ -14,7 +15,8 @@
       "eyebrow": "02",
       "title": "An idea",
       "body": "Build a real bakery with honest bread, and staff it in a way most places say can't be done.",
-      "image": "chapter-team.jpg"
+      "image": "out-of-oven.jpg",
+      "alt": "Pain au chocolat and almond croissants cooling on a wire rack"
     },
     {
       "id": "c3",
@@ -22,7 +24,8 @@
       "eyebrow": "03",
       "title": "A team",
       "body": "Bakers and trainers, many with intellectual or developmental differences, learning the craft together.",
-      "image": "chapter-corner.jpg"
+      "image": "bakery-rack.jpg",
+      "alt": "A speed rack loaded with seeded pastries, pain au chocolat, and sliced cake"
     },
     {
       "id": "c4",
@@ -30,7 +33,8 @@
       "eyebrow": "04",
       "title": "A corner on Wilshire",
       "body": "A small room with a big oven, and a door with a face on it. Opening July 2026.",
-      "image": ""
+      "image": "storefront.jpg",
+      "alt": "The bakery's glass front door between concrete columns, with red chairs outside"
     }
   ]
 }

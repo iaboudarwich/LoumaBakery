@@ -8,6 +8,10 @@
  */
 import settings from '../data/settings.json';
 
+// TODO(owner): settings.json still holds placeholders. Real phone number
+// (currently "+1 (310) 000-0000"), real Uber Eats URL, and real PayPal donate
+// URL are all needed before handoff.
+
 export const siteConfig = {
   /** Production URL. Currently the Netlify subdomain; swap when the real domain lands. */
   url: 'https://loumabakeryy.netlify.app',

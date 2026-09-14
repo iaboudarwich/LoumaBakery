@@ -65,10 +65,25 @@ collections:
                 summary: "{{fields.name}} — {{fields.price}}"
                 fields:
                   - { name: name, label: "Name", widget: string, required: true, hint: "e.g. Butter Croissant" }
-                  - { name: price, label: "Price", widget: string, required: true, pattern: ['^\$?\d+(\.\d{2})?$', "Type a price like $4.50 or 4.50"], hint: "e.g. $4.50" }
+                  - { name: price, label: "Price", widget: string, required: false, pattern: ['^\$?\d+(\.\d{2})?$', "Type a price like $4.50 or 4.50"], hint: "e.g. $4.50" }
                   - { name: description, label: "Description", widget: text, required: false, hint: "One short line about the item." }
                   - { name: tags, label: "Dietary tags", widget: select, multiple: true, required: false, options: ["vegan", "vegetarian", "gf", "nut-free"], hint: "Pick any that apply." }
-                  - { name: image, label: "Photo", widget: image, required: false, choose_url: false, hint: "Landscape, at least 1200px wide, under 3MB." }
+                  - { name: image, label: "Photo", widget: image, required: false, choose_url: false, hint: "At least 1200px wide, under 3MB." }
+                  - { name: alt, label: "Photo description", widget: string, required: false, hint: "What the photo shows, for screen readers. e.g. Croissants cooling on a sheet tray" }
+          - name: addOns
+            label: "Add-ons"
+            widget: object
+            fields:
+              - { name: title, label: "Heading", widget: string }
+              - { name: afterCategory, label: "Show after category", widget: string, hint: "The Internal ID of the category this list follows, e.g. fridge" }
+              - name: items
+                label: "Add-ons"
+                label_singular: "Add-on"
+                widget: list
+                summary: "{{fields.name}} {{fields.price}}"
+                fields:
+                  - { name: name, label: "Name", widget: string }
+                  - { name: price, label: "Price", widget: string, hint: "e.g. +$1.00" }
 
   # ========================================================= IMAGES =========
   - name: images
@@ -82,11 +97,15 @@ collections:
         file: "src/data/images.json"
         fields:
           - { name: hero, label: "Home — hero photo", widget: image, choose_url: false, hint: "The big photo at the top of the home page. Landscape, at least 1600px wide, under 3MB." }
-          - { name: founder, label: "Story — founder portrait", widget: image, choose_url: false, hint: "Portrait photo on the Our Story page. At least 1200px tall, under 3MB." }
+          - { name: founder, label: "Story — founder portrait", widget: image, required: false, choose_url: false, hint: "Portrait photo on the Our Story page. At least 1200px tall, under 3MB." }
           - { name: story1, label: "Story — photo 1", widget: image, choose_url: false, hint: "First story photo (also the big “01” block on the home page)." }
+          - { name: story1Alt, label: "Photo 1 description", widget: string, required: false, hint: "What photo 1 shows, for screen readers." }
           - { name: story2, label: "Story — photo 2", widget: image, choose_url: false }
+          - { name: story2Alt, label: "Photo 2 description", widget: string, required: false, hint: "What the photo shows, for screen readers." }
           - { name: story3, label: "Story — photo 3", widget: image, choose_url: false }
+          - { name: story3Alt, label: "Photo 3 description", widget: string, required: false, hint: "What the photo shows, for screen readers." }
           - { name: ig1, label: "Home — accent photo", widget: image, choose_url: false, hint: "The small inset photo in the home story block." }
+          - { name: ig1Alt, label: "Accent photo description", widget: string, required: false, hint: "What the photo shows, for screen readers." }
 
   # ================================================== SITE SETTINGS =========
   - name: settings
@@ -319,7 +338,8 @@ collections:
               - { name: eyebrow, label: "Number label", widget: string, required: false, hint: "e.g. 01" }
               - { name: title, label: "Title", widget: string }
               - { name: body, label: "Text", widget: text }
-              - { name: image, label: "Photo", widget: image, required: false, choose_url: false, hint: "Optional photo for this chapter." }
+              - { name: image, label: "Photo", widget: image, required: false, choose_url: false, hint: "Optional photo for this chapter. Portrait works best." }
+              - { name: alt, label: "Photo description", widget: string, required: false, hint: "What the photo shows, for screen readers." }
 
   # =================================================== TESTIMONIALS =========
   - name: testimonials

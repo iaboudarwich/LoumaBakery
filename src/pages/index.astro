@@ -15,6 +15,9 @@ import portraitImg from '../assets/placeholders/portrait.jpg';
 import squareImg from '../assets/placeholders/square.jpg';
 
 const heroPhoto = pick(images.hero) ?? heroFallback;
+// Hero AVIF must stay <=150KB at every phone size (CLAUDE.md). A 430px @3x
+// phone picks the 1600w variant, so quality is tuned against that file.
+const HERO_QUALITY = 45;
 
 // --- All content pulled from collections / config. No hardcoded copy. ---
 const home = (await getEntry('copy', 'home'))!.data;
@@ -51,7 +54,7 @@ const heroCta = orderReady
   {layoutSystem === 'slab' ? (
   <>
   <section class="hero-media slab-hero">
-    <Img src={heroPhoto} alt="" class="hero-bg" anim={f.kenBurns ? 'ken-burns' : undefined} priority sizes="100vw" />
+    <Img src={heroPhoto} alt="" class="hero-bg" anim={f.kenBurns ? 'ken-burns' : undefined} priority quality={HERO_QUALITY} sizes="100vw" />
     {/* Video-ready: set siteConfig.links.heroVideo to autoplay over the photo
         poster. PLACEHOLDER: empty until real footage lands (src/config/site.ts). */}
     {siteConfig.links.heroVideo && (
@@ -80,10 +83,11 @@ const heroCta = orderReady
       <div class="slab-body">{home.body.map((p) => <p>{p}</p>)}</div>
       <div class="slab-sketch" aria-hidden="true"><Sketch name="baguette" width={150} height={54} color="var(--clay)" draw={f.scrollDraw} /></div>
     </div>
+    {/* TODO(photo-ids): ig1 is seeded-knot.jpg; item name unconfirmed (see src/lib/images.ts). */}
     <div class="container collage" aria-hidden="false">
-      <Img src={pick(images.story1) ?? featureImg} alt="Laminating dough" class="collage-a" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 42vw, 460px" />
-      <Img src={pick(images.story2) ?? portraitImg} alt="The team at work" class="collage-b" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 34vw, 380px" />
-      <Img src={pick(images.ig1) ?? squareImg} alt="Fresh croissants" class="collage-c" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 30vw, 320px" />
+      <Img src={pick(images.story1) ?? featureImg} alt={images.story1Alt} class="collage-a" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 42vw, 460px" />
+      <Img src={pick(images.story2) ?? portraitImg} alt={images.story2Alt} class="collage-b" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 34vw, 380px" />
+      <Img src={pick(images.ig1) ?? squareImg} alt={images.ig1Alt} class="collage-c" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 30vw, 320px" />
     </div>
   </section>
 
@@ -109,8 +113,12 @@ const heroCta = orderReady
         {featured.map((item) => (
           <li>
             <span class="sm-name">{item.name}</span>
-            <span class="sm-dots" aria-hidden="true"></span>
-            <span class="sm-price mono">{item.price}</span>
+            {item.price && (
+              <>
+                <span class="sm-dots" aria-hidden="true"></span>
+                <span class="sm-price mono">{item.price}</span>
+              </>
+            )}
           </li>
         ))}
       </ul>
@@ -148,7 +156,7 @@ const heroCta = orderReady
   {/* ============================================ 1 · HERO ========= */}
   {heroStyle === 'media' ? (
     <section class="hero-media">
-      <Img src={heroPhoto} alt="" class="hero-bg" anim={f.kenBurns ? 'ken-burns' : undefined} priority sizes="100vw" />
+      <Img src={heroPhoto} alt="" class="hero-bg" anim={f.kenBurns ? 'ken-burns' : undefined} priority quality={HERO_QUALITY} sizes="100vw" />
       {/* Video-ready: set siteConfig.links.heroVideo to a bakery-interior MP4/WebM
           and it autoplays muted/looped over the photo poster. PLACEHOLDER: empty
           until real footage lands (see src/config/site.ts). */}
@@ -177,7 +185,7 @@ const heroCta = orderReady
     </section>
   ) : heroStyle === 'photo' ? (
     <section class="hero">
-      <Img src={heroPhoto} alt="" class="hero-bg" anim={f.kenBurns ? 'ken-burns' : undefined} priority sizes="100vw" />
+      <Img src={heroPhoto} alt="" class="hero-bg" anim={f.kenBurns ? 'ken-burns' : undefined} priority quality={HERO_QUALITY} sizes="100vw" />
       {siteConfig.links.heroVideo && (
         <video class="hero-video" data-hero-video={siteConfig.links.heroVideo} autoplay muted loop playsinline aria-hidden="true">
           <source src={siteConfig.links.heroVideo} />
@@ -222,7 +230,7 @@ const heroCta = orderReady
           </div>
         </div>
         <div class="hero-ed-media">
-          <Img src={heroPhoto} alt="" class="hero-ed-photo" anim={f.kenBurns ? 'ken-burns' : undefined} priority sizes="(max-width: 860px) 100vw, 46vw" />
+          <Img src={heroPhoto} alt="" class="hero-ed-photo" anim={f.kenBurns ? 'ken-burns' : undefined} priority quality={HERO_QUALITY} sizes="(max-width: 860px) 100vw, 46vw" />
         </div>
       </div>
     </section>
@@ -318,7 +326,7 @@ const heroCta = orderReady
             <div class="product-meta">
               <div class="product-row">
                 <h4 class="product-name">{item.name}</h4>
-                <span class="product-price mono">{item.price}</span>
+                {item.price && <span class="product-price mono">{item.price}</span>}
               </div>
               {item.description && <p class="product-desc">{item.description}</p>}
             </div>

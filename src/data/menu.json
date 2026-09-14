@@ -1,114 +1,457 @@
 {
   "categories": [
     {
-      "id": "breads",
-      "title": "Breads",
+      "id": "viennoiserie",
+      "title": "Viennoiserie",
       "order": 1,
       "items": [
         {
-          "name": "Country Sourdough",
-          "price": "$9",
-          "description": "Two-day ferment, baked dark. The crust crackles as it cools.",
-          "tags": [
-            "vegan"
-          ],
-          "image": "country-sourdough.jpg"
-        },
-        {
-          "name": "Sesame Semolina",
-          "price": "$8",
-          "description": "Durum loaf rolled in toasted sesame, sweet and nutty.",
-          "tags": [
-            "vegan"
-          ],
-          "image": "sesame-semolina.jpg"
-        },
-        {
-          "name": "Milk Bread Loaf",
-          "price": "$7",
-          "description": "Tender white loaf, faintly sweet. Made for thick toast.",
+          "name": "Plain Croissant",
+          "description": "",
           "tags": [],
-          "image": "milk-bread.jpg"
-        }
-      ]
-    },
-    {
-      "id": "pastries",
-      "title": "Pastries",
-      "order": 2,
-      "items": [
-        {
-          "name": "Butter Croissant",
-          "price": "$4.50",
-          "description": "Laminated over three days, baked dark, shatters when you bite it.",
-          "tags": [],
-          "image": "butter-croissant.jpg"
+          "image": "plain-croissant.jpg",
+          "alt": "Rows of croissants lined up on a cooling rack"
         },
         {
           "name": "Pain au Chocolat",
-          "price": "$5",
-          "description": "Two batons of dark chocolate folded into flaky layers.",
+          "description": "Dark chocolate batons folded into three-day laminated layers.",
           "tags": [],
-          "image": "pain-au-chocolat.jpg"
+          "image": "pain-au-chocolat.jpg",
+          "alt": "Pain au chocolat on a wire rack in afternoon sun"
         },
         {
-          "name": "Morning Bun",
-          "price": "$5",
-          "description": "Croissant dough rolled in cinnamon sugar, with candied orange.",
+          "name": "Ham & Cheese Croissant",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Zaatar Croissant",
+          "description": "",
           "tags": [],
-          "image": "morning-bun.jpg"
+          "image": "zaatar-croissant.jpg",
+          "alt": "Seed-topped pastries above rows of croissants on wire racks"
+        },
+        {
+          "name": "Nutty Croissant",
+          "description": "",
+          "tags": [],
+          "image": "almond-croissant.jpg",
+          "alt": "Croissants topped with sliced almonds and powdered sugar on a lined tray"
+        },
+        {
+          "name": "Pistachio Croissant",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Yeasted Cinnamon Bun",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Cardamom Bun",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Orange Blossom Brioche",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Chocolate Babka",
+          "description": "",
+          "tags": []
         }
       ]
     },
     {
-      "id": "sweets",
-      "title": "Sweets",
+      "id": "bread",
+      "title": "Bread",
+      "order": 2,
+      "items": [
+        {
+          "name": "Sourdough Bread",
+          "description": "",
+          "tags": [],
+          "image": "bread-wall.jpg",
+          "alt": "Sourdough loaves on oak shelves against patterned tile"
+        },
+        {
+          "name": "Baguette",
+          "description": "",
+          "tags": [],
+          "image": "baguette.jpg",
+          "alt": "Baguettes standing upright on an oak bread shelf"
+        },
+        {
+          "name": "Focaccia",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Kaak Bread",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Danish Rye Bread",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Tin Loaf (Sandwich Bread)",
+          "description": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "pastry",
+      "title": "Pastry",
       "order": 3,
       "items": [
         {
-          "name": "Olive Oil Cake",
-          "price": "$6",
-          "description": "Rich with olive oil, brightened with lemon and a little salt.",
-          "tags": [
-            "vegetarian"
-          ],
-          "image": "olive-oil-cake.jpg"
+          "name": "Chocolate Chip Cookie",
+          "description": "",
+          "tags": []
         },
         {
-          "name": "Seasonal Galette",
-          "price": "$6",
-          "description": "Whatever the market gave us this week.",
-          "tags": [
-            "vegetarian"
-          ],
-          "image": "seasonal-galette.jpg"
+          "name": "Madeleine Vanilla",
+          "description": "",
+          "tags": [],
+          "image": "madeleines.jpg",
+          "alt": "A sheet tray of glazed madeleines, some dipped in dark chocolate"
+        },
+        {
+          "name": "Madeleine Chocolate",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Madeleine Raspberry",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Lemon Cake",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Matcha Cake with Raspberry",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Banana Bread with Chocolate",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Financier Framboise",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Small Raspberry Tart",
+          "description": "",
+          "tags": [],
+          "image": "raspberry-tart.jpg",
+          "alt": "A baker setting fresh raspberries into tart shells"
+        },
+        {
+          "name": "Big Raspberry Tart",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Basque Cheesecake",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Tiramisu (to-go)",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Sable Cacao",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Sable Vanille Citron",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Sable Coco",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Sable Matcha",
+          "description": "",
+          "tags": []
         }
       ]
     },
     {
-      "id": "drinks",
-      "title": "Drinks",
+      "id": "savory",
+      "title": "Savory",
       "order": 4,
       "items": [
         {
-          "name": "Drip Coffee",
-          "price": "$3.50",
-          "description": "From a local roaster, brewed all morning.",
-          "tags": [
-            "vegan"
-          ],
-          "image": "drip-coffee.jpg"
+          "name": "Quiche Lorraine",
+          "description": "",
+          "tags": []
         },
         {
-          "name": "Cardamom Latte",
+          "name": "Quiche Spinach & Feta",
+          "description": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "coffee",
+      "title": "Coffee",
+      "order": 5,
+      "items": [
+        {
+          "name": "Drip Coffee",
+          "price": "$5.00",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Iced Coffee",
+          "price": "$5.00",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Espresso",
+          "price": "$4.00",
+          "description": "Marine Layer dark roast, pulled single or double.",
+          "tags": []
+        },
+        {
+          "name": "Americano",
+          "price": "$5.00",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Macchiato",
+          "price": "$5.00",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Cortado",
           "price": "$5.50",
-          "description": "Espresso and steamed milk over fresh-ground cardamom.",
-          "tags": [
-            "vegetarian"
-          ],
-          "image": "cardamom-latte.jpg"
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Cappuccino",
+          "price": "$6.00",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Flat White",
+          "price": "$6.50",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Latte",
+          "price": "$6.50",
+          "description": "",
+          "tags": [],
+          "image": "latte.jpg",
+          "alt": "A barista in a Louma apron pouring steamed milk into a paper cup"
+        },
+        {
+          "name": "Vanilla Latte",
+          "price": "$7.00",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Mocha",
+          "price": "$7.00",
+          "description": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "matcha",
+      "title": "Matcha",
+      "order": 6,
+      "items": [
+        {
+          "name": "Matcha Latte",
+          "price": "$6.50",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Matcha with Water",
+          "price": "$7.00",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Matcha Coconut Water",
+          "price": "$8.00",
+          "description": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "tea",
+      "title": "Tea",
+      "order": 7,
+      "items": [
+        {
+          "name": "Chamomile",
+          "price": "$5.00",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Mint Tea",
+          "price": "$5.00",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Green Tea",
+          "price": "$5.00",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Herbal Tea",
+          "price": "$5.00",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Chai Latte",
+          "price": "$7.00",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Black Tea",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Hojicha Latte",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Hot Chocolate",
+          "price": "$6.00",
+          "description": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "fridge",
+      "title": "Fridge & Bottled",
+      "order": 8,
+      "items": [
+        {
+          "name": "Arnold Palmer",
+          "price": "$6.00",
+          "description": "House-brewed tea cut with fresh-squeezed lemon.",
+          "tags": []
+        },
+        {
+          "name": "Orange Blossom Lemonade",
+          "price": "$6.50",
+          "description": "Orange blossom water, fresh lemon, Loonen sparkling.",
+          "tags": []
+        },
+        {
+          "name": "Loonen Sparkling Water",
+          "price": "$6.00",
+          "description": "",
+          "tags": []
+        },
+        {
+          "name": "Loonen Still Water",
+          "price": "$6.00",
+          "description": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "special",
+      "title": "Monthly Special",
+      "order": 9,
+      "items": [
+        {
+          "name": "PEACH-y something",
+          "price": "$8.00",
+          "description": "",
+          "tags": []
         }
       ]
     }
-  ]
+  ],
+  "addOns": {
+    "title": "Add-ons",
+    "afterCategory": "fridge",
+    "items": [
+      {
+        "name": "Decaf",
+        "price": "+$1.00"
+      },
+      {
+        "name": "Extra shot",
+        "price": "+$1.00"
+      },
+      {
+        "name": "Cold foam",
+        "price": "+$1.25"
+      },
+      {
+        "name": "Vanilla syrup",
+        "price": "+$0.50"
+      },
+      {
+        "name": "Date syrup",
+        "price": "+$0.50"
+      },
+      {
+        "name": "Honey",
+        "price": "+$0.50"
+      },
+      {
+        "name": "Oat milk",
+        "price": "+$1.00"
+      },
+      {
+        "name": "Almond milk",
+        "price": "+$1.00"
+      },
+      {
+        "name": "Pistachio milk",
+        "price": "+$1.50"
+      }
+    ]
+  }
 }

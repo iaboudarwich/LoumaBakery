@@ -1,27 +1,40 @@
 # Image credits
 
-**All images here are PLACEHOLDER stock**, pending Louma's own photography.
-Each is free for commercial use under the Unsplash or Pexels license (no
-attribution legally required; credited here as good practice). To swap, replace
-the file keeping the same name — the build picks it up automatically.
+All photos here are from Louma Bakery's own commissioned shoots, photographed
+by Kayla on 2026-08-30 and 2026-09-04. Processed from the originals (kept
+outside the repo): converted to sRGB, long edge 2400px (plain-croissant 1600px),
+metadata stripped. The build makes the web sizes from these.
 
-| File | Slot | Photographer | Source | License |
-|------|------|--------------|--------|---------|
-| hero.jpg | Hero — bakery interior | Yeh Xintong | https://unsplash.com/photos/go3DT3PpIw4 | Unsplash |
-| country-sourdough.jpg | Menu — Country Sourdough | Geraud Pfeiffer | https://www.pexels.com/photo/6605201/ | Pexels |
-| sesame-semolina.jpg | Menu — Sesame Semolina | Baran Robin | https://www.pexels.com/photo/28219380/ | Pexels |
-| milk-bread.jpg | Menu — Milk Bread Loaf | Nilufar Nattaq | https://unsplash.com/photos/eT5iUZMhOwc | Unsplash |
-| butter-croissant.jpg | Menu — Butter Croissant | Rhamely | https://unsplash.com/photos/vU59Ut9vpQA | Unsplash |
-| pain-au-chocolat.jpg | Menu — Pain au Chocolat | Mink Mingle | https://unsplash.com/photos/qZ5lPCPvdXE | Unsplash |
-| morning-bun.jpg | Menu — Morning Bun | Honey Fangs | https://unsplash.com/photos/-JU0sqGjeC0 | Unsplash |
-| olive-oil-cake.jpg | Menu — Olive Oil Cake | Cameron Basson | https://www.pexels.com/photo/34941734/ | Pexels |
-| seasonal-galette.jpg | Menu — Seasonal Galette | Anita Austvika | https://unsplash.com/photos/AUDDO6WKoV4 | Unsplash |
-| drip-coffee.jpg | Menu — Drip Coffee | Unsplash contributor | https://unsplash.com/photos/ma90umjzwT4 | Unsplash |
-| cardamom-latte.jpg | Menu — Cardamom Latte | Karl Joshua Bernal | https://unsplash.com/photos/7GpNIIfyfYM | Unsplash |
-| chapter-dough.jpg | Story — laminating dough | Theme Photos | https://unsplash.com/photos/Hx7xdwhj2AY | Unsplash |
-| chapter-team.jpg | Story — bakers at work | Yasin Onuş | https://www.pexels.com/photo/36445326/ | Pexels |
-| chapter-corner.jpg | Story — café corner | Zahir Namane | https://unsplash.com/photos/0qF1JTmDLBY | Unsplash |
-| founder.jpg | Story — founder portrait | Mike Jones | https://www.pexels.com/photo/9051695/ | Pexels |
-| ig-1.jpg | Home — accent photo | Conor Brown | https://unsplash.com/photos/sqkXyyj4WdE | Unsplash |
-
-Unsplash License: https://unsplash.com/license · Pexels License: https://www.pexels.com/license/
+| File | Slot | Photographer | Shoot | Original |
+|------|------|--------------|-------|----------|
+| hero.jpg | Home hero; source of public/og-default.jpg | Kayla | 2026-08-30 | 20260830_LoumaBakery_0578 |
+| plain-croissant.jpg | Menu: Plain Croissant (second copy of the hero frame) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0578 |
+| kitchen-team.jpg | Home collage (story2) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0139 |
+| lamination.jpg | Home collage (story1) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0198 |
+| pain-au-chocolat.jpg | Menu: Pain au Chocolat | Kayla | 2026-08-30 | 20260830_LoumaBakery_0093 |
+| zaatar-croissant.jpg | Menu: Zaatar Croissant (identity unconfirmed) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0070 |
+| baguette.jpg | Menu: Baguette | Kayla | 2026-08-30 | 20260830_LoumaBakery_0258 |
+| latte.jpg | Menu: Latte | Kayla | 2026-08-30 | 20260830_LoumaBakery_0190 |
+| seeded-knot.jpg | Home collage (ig1; item unconfirmed) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0281 |
+| staff-at-case.jpg | images.json story3 (classic layout only) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0375 |
+| seeded-knot-tissue.jpg | Unused (item unconfirmed) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0278 |
+| seeded-knot-detail.jpg | Unused (item unconfirmed) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0083 |
+| viennoiserie-spread.jpg | Unused | Kayla | 2026-08-30 | 20260830_LoumaBakery_0079 |
+| madeleine-production.jpg | Unused | Kayla | 2026-08-30 | 20260830_LoumaBakery_0300 |
+| louma-cap.jpg | Unused | Kayla | 2026-08-30 | 20260830_LoumaBakery_0340 |
+| raspberry-tart.jpg | Menu: Small Raspberry Tart | Kayla | 2026-09-04 | 20260904_LoumaBakery_0034 |
+| bread-wall.jpg | Menu: Sourdough Bread | Kayla | 2026-09-04 | 20260904_LoumaBakery_0041 |
+| madeleines.jpg | Menu: Madeleine Vanilla | Kayla | 2026-09-04 | 20260904_LoumaBakery_0049 |
+| almond-croissant.jpg | Menu: Nutty Croissant | Kayla | 2026-09-04 | 20260904_LoumaBakery_0146 |
+| croissant-cut.jpg | Story chapter 01 | Kayla | 2026-09-04 | 20260904_LoumaBakery_0307 |
+| out-of-oven.jpg | Story chapter 02 | Kayla | 2026-09-04 | 20260904_LoumaBakery_0255 |
+| bakery-rack.jpg | Story chapter 03 | Kayla | 2026-09-04 | 20260904_LoumaBakery_0068 |
+| storefront.jpg | Story chapter 04 | Kayla | 2026-09-04 | 20260904_LoumaBakery_0084 |
+| door-hours.jpg | Unused | Kayla | 2026-09-04 | 20260904_LoumaBakery_0092 |
+| interior-long.jpg | Unused | Kayla | 2026-09-04 | 20260904_LoumaBakery_0437 |
+| interior-dining.jpg | Unused | Kayla | 2026-09-04 | 20260904_LoumaBakery_0023 |
+| counter.jpg | Unused | Kayla | 2026-09-04 | 20260904_LoumaBakery_0126 |
+| back-of-house.jpg | Unused | Kayla | 2026-09-04 | 20260904_LoumaBakery_0169 |
+| dough-dividing.jpg | Unused | Kayla | 2026-09-04 | 20260904_LoumaBakery_0198 |
+| counter-florals.jpg | Unused | Kayla | 2026-09-04 | 20260904_LoumaBakery_0150 |
+| coffee-bar.jpg | Unused (Display P3 export, full resolution) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0438 |

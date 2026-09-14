@@ -5,6 +5,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { features as f, layoutSystem } from '../config/features';
 import Sketch from '../components/Sketch.astro';
 import { resolveImage } from '../lib/images';
+import menuData from '../data/menu.json';
 
 const c = (await getEntry('copy', 'menu'))!.data;
 const menu = (await getCollection('menu')).sort((a, b) => a.data.order - b.data.order);
@@ -26,6 +27,8 @@ for (const cat of menu) {
   }
 }
 const firstPanel = Object.values(panels)[0];
+// Data-driven add-ons list, rendered right after the category named in the data.
+const addOns = menuData.addOns;
 ---
 
 <BaseLayout title="Menu" description={c.lede}>
@@ -47,10 +50,16 @@ const firstPanel = Object.values(panels)[0];
         </li>
       ))}
     </ul>
+    {/* Flat edge caps: shown by JS only while more pills sit off that edge
+        (hidden attr = fail-safe, the rail still scrolls without JS). Pointer
+        affordance only; keyboard users reach every pill by Tab. */}
+    <button type="button" class="pillnav-more pillnav-more--start" data-rail="-1" tabindex="-1" aria-hidden="true" hidden>&larr;</button>
+    <button type="button" class="pillnav-more pillnav-more--end" data-rail="1" tabindex="-1" aria-hidden="true" hidden>&rarr;</button>
   </nav>
 
   <div class="container menu-body">
     {menu.map((cat) => (
+      <>
       <section class="menu-cat" id={`menu-${cat.id}`} aria-labelledby={`h-${cat.id}`} data-anim={f.reveal ? 'reveal' : undefined}>
         <h2 class="menu-cat-title smallcaps" id={`h-${cat.id}`}>{cat.data.title}</h2>
         <ul class="menu-rows" role="list">
@@ -66,15 +75,23 @@ const firstPanel = Object.values(panels)[0];
                   >
                     <span class="row-head">
                       <span class="row-name">{item.name}</span>
-                      <span class="row-dots" aria-hidden="true"></span>
-                      <span class="row-price mono">{item.price}</span>
+                      {item.price && (
+                        <>
+                          <span class="row-dots" aria-hidden="true"></span>
+                          <span class="row-price mono">{item.price}</span>
+                        </>
+                      )}
                     </span>
                   </button>
                 ) : (
                   <div class="row-head">
                     <h3 class="row-name">{item.name}</h3>
-                    <span class="row-dots" aria-hidden="true"></span>
-                    <span class="row-price mono">{item.price}</span>
+                    {item.price && (
+                      <>
+                        <span class="row-dots" aria-hidden="true"></span>
+                        <span class="row-price mono">{item.price}</span>
+                      </>
+                    )}
                   </div>
                 )}
                 {item.description && <p class="row-desc">{item.description}</p>}
@@ -89,7 +106,7 @@ const firstPanel = Object.values(panels)[0];
                       <img
                         class="row-expand-img"
                         src={panels[item.name]}
-                        alt={item.name}
+                        alt={item.alt ?? item.name}
                         width={panelDims[item.name].w}
                         height={panelDims[item.name].h}
                         loading="lazy"
@@ -103,14 +120,25 @@ const firstPanel = Object.values(panels)[0];
           ))}
         </ul>
       </section>
+      {addOns && cat.id === addOns.afterCategory && addOns.items.length > 0 && (
+        <aside class="menu-addons" aria-labelledby="h-addons">
+          <p class="eyebrow" id="h-addons">{addOns.title}</p>
+          <ul class="addons-list" role="list">
+            {addOns.items.map((a) => (
+              <li class="addon mono">{a.name} <span class="addon-price">{a.price}</span></li>
+            ))}
+          </ul>
+        </aside>
+      )}
+      </>
     ))}
 
     {layoutSystem === 'slab' && firstPanel && (
       <aside class="menu-panel" aria-hidden="true" data-first={firstPanel}>
         {/* src is seeded by JS on hover devices only: a display:none img with a
             src still downloads on mobile. */}
-        <img class="menu-panel-img is-a" alt="" width="720" height="540" decoding="async" />
-        <img class="menu-panel-img is-b" alt="" width="720" height="540" decoding="async" />
+        <img class="menu-panel-img is-a" alt="" width="720" height="900" decoding="async" />
+        <img class="menu-panel-img is-b" alt="" width="720" height="900" decoding="async" />
       </aside>
     )}
 
@@ -160,9 +188,47 @@ const firstPanel = Object.values(panels)[0];
   }
   .pill { min-width: 44px; }
   /* Native momentum + snap on the pill rail. */
-  .pillnav-track { scroll-snap-type: x proximity; }
+  /* scroll-padding = the container gutter, so start-snap rests the first pill
+     at the gutter instead of pulling it under the left edge. */
+  .pillnav-track {
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: max(var(--gutter), env(safe-area-inset-left)) max(var(--gutter), env(safe-area-inset-right));
+  }
   .pill { scroll-snap-align: start; flex: 0 0 auto; }
   .pill[aria-current='true'] { background: var(--burgundy); color: var(--butter); }
+  /* Scroll affordance: solid cream cap + hairline over the cut-off pill. */
+  .pillnav-more {
+    position: absolute;
+    inset-block: 0;
+    width: 48px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    background: var(--surface-0);
+    color: var(--burgundy);
+    font-family: var(--font-mono);
+    font-size: 18px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .pillnav-more[hidden] { display: none; }
+  .pillnav-more--end { inset-inline-end: 0; border-inline-start: 1px solid var(--hairline-strong); }
+  .pillnav-more--start { inset-inline-start: 0; border-inline-end: 1px solid var(--hairline-strong); }
+
+  /* Add-ons: small mono chips under their drink categories. */
+  .menu-addons { padding-top: var(--space-5); }
+  :global(html.sys-slab) .menu-addons { max-width: 720px; }
+  .addons-list { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
+  .addon {
+    padding: 0.35rem 0.8rem;
+    border: 1px solid var(--hairline-strong);
+    border-radius: var(--radius-pill);
+    font-size: 13px;
+    color: var(--body);
+  }
+  .addon-price { color: var(--burgundy); }
 
   .menu-body { padding-block: var(--space-7) var(--space-9); }
   .menu-cat { padding-top: var(--space-6); scroll-margin-top: calc(var(--nav-h) + 64px); }
@@ -249,8 +315,9 @@ const firstPanel = Object.values(panels)[0];
       position: fixed;
       top: calc(var(--nav-h) + 96px);
       inset-inline-end: clamp(1rem, 4vw, 4rem);
-      width: min(30vw, 420px);
-      aspect-ratio: 4 / 3;
+      /* 4:5: the shoot's menu photos are portrait; a 4:3 box cropped subjects. */
+      width: min(26vw, 360px);
+      aspect-ratio: 4 / 5;
       border-radius: 16px;
       border: 1px solid var(--hairline-strong);
       overflow: hidden;
@@ -351,13 +418,46 @@ const firstPanel = Object.values(panels)[0];
   const byId = new Map(pills.map((p) => [p.dataset.spy!, p]));
   const sections = pills.map((p) => document.getElementById(p.dataset.spy!)).filter(Boolean) as HTMLElement[];
 
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const scrollBehavior = (): ScrollBehavior => (reduceMotion.matches ? 'auto' : 'smooth');
+
+  // Edge caps: reveal whichever side still has pills off-screen.
+  const rail = document.querySelector<HTMLElement>('.pillnav-track');
+  const caps = Array.from(document.querySelectorAll<HTMLButtonElement>('.pillnav-more'));
+  if (rail && caps.length && rail.querySelector('.pill')) {
+    let queued = false;
+    const pillEls = rail.querySelectorAll<HTMLElement>('.pill');
+    const first = pillEls[0];
+    const last = pillEls[pillEls.length - 1];
+    // Compare pill edges, not scrollLeft: snap + container padding mean the
+    // rail can rest at a non-zero offset with every leading pill visible.
+    const update = () => {
+      queued = false;
+      const box = rail.getBoundingClientRect();
+      caps.forEach((cap) => {
+        const edge = cap.dataset.rail === '1' ? last : first;
+        const r = edge.getBoundingClientRect();
+        cap.hidden = cap.dataset.rail === '1' ? r.right <= box.right + 1 : r.left >= box.left - 1;
+      });
+    };
+    const queue = () => {
+      if (!queued) { queued = true; requestAnimationFrame(update); }
+    };
+    rail.addEventListener('scroll', queue, { passive: true });
+    if ('ResizeObserver' in window) new ResizeObserver(queue).observe(rail);
+    caps.forEach((cap) => cap.addEventListener('click', () => {
+      rail.scrollBy({ left: Number(cap.dataset.rail) * rail.clientWidth * 0.7, behavior: scrollBehavior() });
+    }));
+    update();
+  }
+
   if ('IntersectionObserver' in window && sections.length) {
     const setActive = (id: string) => {
       pills.forEach((p) => p.removeAttribute('aria-current'));
       const active = byId.get(id);
       active?.setAttribute('aria-current', 'true');
       // Keep the active pill visible in the rail.
-      active?.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+      active?.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: scrollBehavior() });
     };
     const io = new IntersectionObserver(
       (entries) => {

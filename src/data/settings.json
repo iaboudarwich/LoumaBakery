@@ -8,8 +8,8 @@
     "zip": "90403"
   },
   "hours": [
-    { "days": "Tuesday – Friday", "open": "7:00 AM", "close": "2:30 PM" },
-    { "days": "Saturday – Sunday", "open": "7:00 AM", "close": "2:30 PM" },
+    { "days": "Tuesday – Friday", "open": "7:30 AM", "close": "2:30 PM" },
+    { "days": "Saturday – Sunday", "open": "7:30 AM", "close": "2:30 PM" },
     { "days": "Monday", "open": "Closed", "close": "" }
   ],
   "links": {

@@ -1,5 +1,7 @@
 # Louma Bakery — Project Memory
 
+> TODO: this file contradicts CLAUDE.md on the CMS (Sveltia here, Decap there) and on deploy wording ("deploy preview link" vs "deploy verified"). CLAUDE.md wins; reconcile this file.
+
 You are building/maintaining the Louma Bakery website. Read this every session.
 
 ## What this is

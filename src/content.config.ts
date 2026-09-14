@@ -18,10 +18,11 @@ const menu = defineCollection({
     items: z.array(
       z.object({
         name: z.string(),
-        price: z.string(), // string so "$4.50" / "MP" render verbatim
+        price: z.string().optional(), // string so "$4.50" / "MP" render verbatim; absent = not yet priced
         description: z.string().default(''),
         tags: z.array(z.string()).default([]),
-        image: z.string().optional(), // PLACEHOLDER path until real photos
+        image: z.string().optional(), // filename in src/assets/img
+        alt: z.string().optional(), // describes the photo; falls back to the item name
       }),
     ),
   }),
@@ -97,7 +98,8 @@ const storyChapters = defineCollection({
     eyebrow: z.string().optional(),
     title: z.string(),
     body: z.string(),
-    image: z.string().optional(), // PLACEHOLDER path
+    image: z.string().optional(), // filename in src/assets/img
+    alt: z.string().optional(), // describes the photo; falls back to the title
   }),
 });
 

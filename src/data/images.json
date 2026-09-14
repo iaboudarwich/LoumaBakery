@@ -1,8 +1,12 @@
 {
   "hero": "hero.jpg",
-  "founder": "founder.jpg",
-  "story1": "chapter-dough.jpg",
-  "story2": "chapter-team.jpg",
-  "story3": "chapter-corner.jpg",
-  "ig1": "ig-1.jpg"
+  "founder": "",
+  "story1": "lamination.jpg",
+  "story1Alt": "A baker in a Louma cap folding a block of laminated dough",
+  "story2": "kitchen-team.jpg",
+  "story2Alt": "Four bakers working at steel tables in the open kitchen",
+  "story3": "staff-at-case.jpg",
+  "story3Alt": "A teammate in a Louma apron filling the pastry case with croissants",
+  "ig1": "seeded-knot.jpg",
+  "ig1Alt": "A twisted seeded knot pastry on pink Louma tissue paper"
 }

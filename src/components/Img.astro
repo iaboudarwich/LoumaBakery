@@ -21,8 +21,10 @@ interface Props {
   anim?: string;
   /** Place the 3D-tilt pointer hook on the <picture>. */
   tilt?: boolean;
+  /** Encoder quality (1-100). Omit for the service default. */
+  quality?: number;
 }
-const { src, alt, sizes = '100vw', widths, priority = false, class: className, anim, tilt } = Astro.props;
+const { src, alt, sizes = '100vw', widths, priority = false, class: className, anim, tilt, quality } = Astro.props;
 
 const candidate = widths ?? [400, 800, 1200, 1600];
 const useWidths = Array.from(new Set(candidate.filter((w) => w <= src.width).concat(src.width))).sort(
@@ -38,6 +40,7 @@ if (tilt) pictureAttributes['data-fx-tilt-img'] = '';
   formats={['avif', 'webp']}
   alt={alt}
   widths={useWidths}
+  quality={quality}
   sizes={sizes}
   loading={priority ? 'eager' : 'lazy'}
   decoding={priority ? 'auto' : 'async'}

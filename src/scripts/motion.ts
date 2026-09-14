@@ -109,7 +109,11 @@ const builders: Record<string, () => void> = {
     });
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
-        if (!e.isIntersecting) return;
+        // ~30% in view: 30% of the element, OR 30% of the viewport for
+        // sections taller than the screen (a long menu category can't show
+        // 30% of itself on a phone until the user has already scrolled past).
+        const rootH = e.rootBounds?.height ?? window.innerHeight;
+        if (!e.isIntersecting || (e.intersectionRatio < 0.3 && e.intersectionRect.height < rootH * 0.3)) return;
         io.unobserve(e.target); // one-shot
         const el = e.target;
         const inPlace = el.getAttribute('data-reveal') === 'fade';
@@ -122,7 +126,7 @@ const builders: Record<string, () => void> = {
           );
         });
       });
-    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.3 });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: [0, 0.1, 0.2, 0.3] });
     els.forEach((el) => io.observe(el));
     add('reveal', () => {
       io.disconnect();

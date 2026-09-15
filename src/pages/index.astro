@@ -74,7 +74,6 @@ const heroCta = orderReady
       <div class="slab-body">{home.body.map((p) => <p>{p}</p>)}</div>
       <div class="slab-sketch" aria-hidden="true"><Sketch name="baguette" width={150} height={54} color="var(--clay)" draw={f.scrollDraw} /></div>
     </div>
-    {/* TODO(photo-ids): ig1 is seeded-knot.jpg; item name unconfirmed (see src/lib/images.ts). */}
     <div class="container collage" aria-hidden="false">
       {story1Photo && <Img src={story1Photo} alt={images.story1Alt} class="collage-a" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 680px) 78vw, (max-width: 860px) 42vw, 460px" />}
       {story2Photo && <Img src={story2Photo} alt={images.story2Alt} class="collage-b" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 680px) 68vw, (max-width: 860px) 34vw, 380px" />}

@@ -16,13 +16,15 @@ directly in this folder. To use one, move it up a level and reference it.
 | kitchen-team.jpg | Home collage (story2) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0139 |
 | lamination.jpg | Home collage (story1) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0198 |
 | pain-au-chocolat.jpg | Menu: Pain au Chocolat | Kayla | 2026-08-30 | 20260830_LoumaBakery_0093 |
-| zaatar-croissant.jpg | Menu: Zaatar Croissant (identity unconfirmed) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0070 |
+| ham-cheese-croissant.jpg | Menu: Ham & Cheese Croissant (confirmed by the case label in 20260904_LoumaBakery_0126). Square crop of the seeded tray only, 1200x1200 | Kayla | 2026-08-30 | 20260830_LoumaBakery_0070 (crop x150 y0, 3150x3150) |
+| kaak-bread.jpg | Menu: Kaak Bread. Single top-middle loaf on the bread shelf, 210x210 (menu thumbnail only) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0126 (crop x2722 y1905, 210x210) |
 | baguette.jpg | Menu: Baguette | Kayla | 2026-08-30 | 20260830_LoumaBakery_0258 |
 | latte.jpg | Menu: Latte | Kayla | 2026-08-30 | 20260830_LoumaBakery_0190 |
-| seeded-knot.jpg | Home collage (ig1; item unconfirmed) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0281 |
+| zaatar-croissant.jpg | Menu: Za'atar Croissant; home collage (ig1). Confirmed by the case label in 20260904_LoumaBakery_0126 | Kayla | 2026-08-30 | 20260830_LoumaBakery_0281 |
 | unplaced/staff-at-case.jpg | Unplaced, not bundled (was the classic layout's story3) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0375 |
 | unplaced/seeded-knot-tissue.jpg | Unplaced, not bundled (item unconfirmed) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0278 |
 | unplaced/seeded-knot-detail.jpg | Unplaced, not bundled (item unconfirmed) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0083 |
+| unplaced/coffee-unidentified.jpg | Unplaced, not bundled. Foreground cup with rosetta; drink type unconfirmed (latte, flat white or cappuccino), ask Milla | Kayla | 2026-08-30 | 20260830_LoumaBakery_0190 (crop x2250 y6740, 1500x1000) |
 | unplaced/viennoiserie-spread.jpg | Unplaced, not bundled | Kayla | 2026-08-30 | 20260830_LoumaBakery_0079 |
 | unplaced/madeleine-production.jpg | Unplaced, not bundled | Kayla | 2026-08-30 | 20260830_LoumaBakery_0300 |
 | unplaced/louma-cap.jpg | Unplaced, not bundled | Kayla | 2026-08-30 | 20260830_LoumaBakery_0340 |

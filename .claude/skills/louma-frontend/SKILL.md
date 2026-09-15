@@ -26,13 +26,13 @@ description: Frontend design discipline for the Louma site — flatness, shape l
 - All effects: flag-gated in features.ts + listed on /review; reduced-motion shows composed final states immediately; heavy motion off on mobile.
 
 ## Quality floor (every component)
-Responsive to ~360px. Visible :focus-visible outlines. Keyboard operable (incl. the menu photo panel via focusin). Meaningful images have alt; decorative alt="". AA contrast. width/height on images (no CLS). IO/rAF-driven handlers, 60fps. Hero image eager + fetchpriority=high; everything below the fold lazy with correct sizes. Zero console errors, astro check clean, no em dashes in rendered output.
+Responsive to ~360px. Visible :focus-visible outlines. Keyboard operable. Meaningful images have alt; decorative alt="". AA contrast. width/height on images (no CLS). IO/rAF-driven handlers, 60fps. Hero image eager + fetchpriority=high; everything below the fold lazy with correct sizes. Zero console errors, astro check clean, no em dashes in rendered output.
 
 ## MOBILE / iOS RULES (locked)
 - Viewport units: min-height 100vh fallback + 100svh pair. svh, never dvh. Hero-minus-header = calc(100svh - var(--nav-h)).
 - Never width:100vw; html,body { overflow-x: clip } stays.
 - Safe areas: viewport-fit=cover; pad CONTENT with env(safe-area-inset-*) via max(gutter, inset); band backgrounds reach true edges; nav + body offset grow by the top inset.
-- Hover behaviors ONLY behind @media (hover:hover) and (pointer:fine); touch gets tap alternatives (menu rows = button[aria-expanded] tap-to-expand; floating panel display:none + unbound on touch).
+- Hover behaviors ONLY behind @media (hover:hover) and (pointer:fine); touch gets tap alternatives wherever hover carries meaning (menu photos are permanent row thumbnails: no hover or tap state).
 - Inputs >=16px computed (iOS zoom); inputmode/autocomplete set; never suppress user zoom; html.kb-open hides fixed bars while a field is focused.
 - Tap targets >=44px; -webkit-tap-highlight-color transparent + touch-action manipulation on controls.
 - NO live SVG filters anywhere: sketches render the *-baked.svg geometry (scripts/bake-sketches.mjs flattens the roughen); max 2 simultaneous draws, will-change on animating strokes.

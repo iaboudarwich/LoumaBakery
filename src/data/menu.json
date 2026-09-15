@@ -22,14 +22,16 @@
         {
           "name": "Ham & Cheese Croissant",
           "description": "",
-          "tags": []
+          "tags": [],
+          "image": "ham-cheese-croissant.jpg",
+          "alt": "Seed-topped ham and cheese croissants on a wire rack"
         },
         {
           "name": "Zaatar Croissant",
           "description": "",
           "tags": [],
           "image": "zaatar-croissant.jpg",
-          "alt": "Seed-topped pastries above rows of croissants on wire racks"
+          "alt": "A coiled, seeded za'atar croissant on pink Louma paper"
         },
         {
           "name": "Nutty Croissant",
@@ -92,7 +94,9 @@
         {
           "name": "Kaak Bread",
           "description": "",
-          "tags": []
+          "tags": [],
+          "image": "kaak-bread.jpg",
+          "alt": "A sesame-crusted kaak loaf hanging on a wooden peg"
         },
         {
           "name": "Danish Rye Bread",

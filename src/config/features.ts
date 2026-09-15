@@ -21,8 +21,6 @@ export const features = {
   sketchyLinks: true,
   /** One warm tone treatment on all photography. */
   imageTone: true,
-  /** Menu rows lean the dish name in on hover. */
-  menuHover: true,
   /** Hero CTA becomes the newsletter while ordering is inert. */
   heroNewsletterCta: true,
   /** Drag-to-scroll on the ingredient row. */

@@ -11,25 +11,23 @@ import menuData from '../data/menu.json';
 const c = (await getEntry('copy', 'menu'))!.data;
 const menu = (await getCollection('menu')).sort((a, b) => a.data.order - b.data.order);
 
-// Optimized image URLs per item: the panel/expand image (720w) plus a 1080w
-// candidate for the touch expand.
-const panels: Record<string, string> = {};
-const panelDims: Record<string, { w: number; h: number }> = {};
-// A 1080w candidate so 3x phones don't upscale the 720w expand image.
-const expandSets: Record<string, string> = {};
+// Permanent square thumbnails, cropped at build time. 320w covers the largest
+// everyday slot (96px) at 3x; 160w serves 1x and 2x screens.
+const THUMB = { widths: [160, 320], width: 320, height: 320, fit: 'cover' as const };
+// Mirrors the .row-thumb clamp below: ~64px on phones, 96px from 660px, 128px past 1920px.
+const THUMB_SIZES = '(min-width: 1921px) 128px, (min-width: 660px) 96px, 64px';
+const thumbs: Record<string, { avif: string; webp: string; src: string }> = {};
 for (const cat of menu) {
   for (const item of cat.data.items) {
     const meta = resolveImage(item.image);
-    if (meta) {
-      const pimg = await getImage({ src: meta, width: 720, format: 'webp' });
-      panels[item.name] = pimg.src;
-      panelDims[item.name] = { w: Number(pimg.attributes.width), h: Number(pimg.attributes.height) };
-      const big = await getImage({ src: meta, width: 1080, format: 'webp' });
-      expandSets[item.name] = `${pimg.src} 720w, ${big.src} ${big.attributes.width}w`;
-    }
+    if (!meta) continue;
+    const [avif, webp] = await Promise.all([
+      getImage({ src: meta, ...THUMB, format: 'avif' }),
+      getImage({ src: meta, ...THUMB, format: 'webp' }),
+    ]);
+    thumbs[item.name] = { avif: avif.srcSet.attribute, webp: webp.srcSet.attribute, src: webp.src };
   }
 }
-const firstPanel = Object.values(panels)[0];
 // Data-driven add-ons list, rendered right after the category named in the data.
 const addOns = menuData.addOns;
 ---
@@ -67,63 +65,41 @@ const addOns = menuData.addOns;
         <h2 class="menu-cat-title smallcaps" id={`h-${cat.id}`}>{cat.data.title}</h2>
         <ul class="menu-rows" role="list">
           {cat.data.items.map((item) => (
-            <li class="menu-row" data-menu-hover={f.menuHover ? '' : undefined} data-img={panels[item.name] || undefined}>
-              <div class="row-main">
-                {panels[item.name] ? (
-                  <button
-                    type="button"
-                    class="row-toggle"
-                    aria-expanded="false"
-                    aria-controls={`x-${cat.id}-${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
-                  >
-                    <span class="row-head">
-                      <span class="row-name">{noOrphan(item.name)}</span>
-                      {item.price && (
-                        <>
-                          <span class="row-dots" aria-hidden="true"></span>
-                          <span class="row-price mono">{item.price}</span>
-                        </>
-                      )}
-                    </span>
-                  </button>
-                ) : (
-                  <div class="row-plain">
-                  <div class="row-head">
-                    <h3 class="row-name">{noOrphan(item.name)}</h3>
-                    {item.price && (
-                      <>
-                        <span class="row-dots" aria-hidden="true"></span>
-                        <span class="row-price mono">{item.price}</span>
-                      </>
-                    )}
-                  </div>
-                  </div>
-                )}
+            <li class="menu-row">
+              <div class="row-text">
+                <div class="row-head">
+                  <h3 class="row-name">{noOrphan(item.name)}</h3>
+                  {item.price && (
+                    <>
+                      <span class="row-dots" aria-hidden="true"></span>
+                      <span class="row-price mono">{item.price}</span>
+                    </>
+                  )}
+                </div>
                 {item.description && <p class="row-desc">{item.description}</p>}
                 {item.tags.length > 0 && (
                   <ul class="product-tags" role="list">
                     {item.tags.map((t) => <li class="tag mono">{t}</li>)}
                   </ul>
                 )}
-                {panels[item.name] && (
-                  <div class="row-expand" id={`x-${cat.id}-${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}>
-                    <div class="row-expand-inner">
-                      {/* Loaded on tap, not with the page (most visitors never open a
-                          row): the URLs wait in data-*; width/height reserve the box. */}
-                      <img
-                        class="row-expand-img"
-                        data-src={panels[item.name]}
-                        data-srcset={expandSets[item.name]}
-                        sizes="(max-width: 400px) calc(100vw - 2.5rem), 360px"
-                        alt={item.alt ?? item.name}
-                        width={panelDims[item.name].w}
-                        height={panelDims[item.name].h}
-                        decoding="async"
-                      />
-                    </div>
-                  </div>
-                )}
               </div>
+              {thumbs[item.name] && (
+                <picture class="row-thumb">
+                  <source type="image/avif" srcset={thumbs[item.name].avif} sizes={THUMB_SIZES} />
+                  <img
+                    class="img-cover"
+                    src={thumbs[item.name].src}
+                    srcset={thumbs[item.name].webp}
+                    sizes={THUMB_SIZES}
+                    alt={item.alt ?? item.name}
+                    width="320"
+                    height="320"
+                    loading="lazy"
+                    decoding="async"
+                    fetchpriority="low"
+                  />
+                </picture>
+              )}
             </li>
           ))}
         </ul>
@@ -140,15 +116,6 @@ const addOns = menuData.addOns;
       )}
       </>
     ))}
-
-    {firstPanel && (
-      <aside class="menu-panel" aria-hidden="true" data-first={firstPanel}>
-        {/* src is seeded by JS on hover devices only: a display:none img with a
-            src still downloads on mobile. */}
-        <img class="menu-panel-img is-a" alt="" width="720" height="900" decoding="async" />
-        <img class="menu-panel-img is-b" alt="" width="720" height="900" decoding="async" />
-      </aside>
-    )}
 
     {c.allergenNote && (
       <aside class="allergen" aria-label="Allergens">
@@ -231,7 +198,6 @@ const addOns = menuData.addOns;
 
   /* Add-ons: small mono chips under their drink categories. */
   .menu-addons { padding-top: var(--space-5); }
-  :global(html.sys-slab) .menu-addons { max-width: 720px; }
   .addons-list { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
   .addon {
     padding: 0.35rem 0.8rem;
@@ -247,26 +213,38 @@ const addOns = menuData.addOns;
   .menu-cat-title { font-size: clamp(24px, 3vw, 34px); color: var(--clay); margin-bottom: var(--space-5); }
 
   .menu-rows { display: flex; flex-direction: column; }
+  /* Row: name, dotted leader, price, then the photo thumbnail when the item has one. */
   .menu-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
     padding-block: var(--space-4);
     border-bottom: 1px solid var(--hairline);
   }
-  .row-head { display: flex; align-items: baseline; gap: var(--space-3); }
-  /* line-height: inherit so the plain-row <h3> matches the photo-row <span>
-     (the global heading rule would otherwise make plain rows shorter). */
+  .row-text { flex: 1; min-width: 0; }
+  /* Every row keeps the same 44px minimum box, with or without a photo. */
+  .row-head { display: flex; align-items: baseline; gap: var(--space-3); min-height: 44px; padding-block: 2px; }
+  /* line-height: inherit so the <h3> keeps body leading instead of the tighter
+     global heading rule. */
   .row-name { text-wrap: balance; line-height: inherit; font-family: var(--font-display); font-weight: 500; font-size: clamp(22px, calc(22px + (100vw - 1920px) * 0.004687), 25px); color: var(--ink); display: inline-block; }
-  /* Tactile row hover (menuHover flag): the dish name leans in, price warms. */
-  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-    .menu-row[data-menu-hover] .row-name,
-    .menu-row[data-menu-hover] .row-price { transition: transform var(--dur) var(--ease-out), color var(--dur) var(--ease-out); }
-    .menu-row[data-menu-hover]:hover .row-name { transform: translateX(8px); color: var(--burgundy); }
-    .menu-row[data-menu-hover]:hover .row-price { color: var(--red); }
-  }
   .row-dots { flex: 1; border-bottom: 1px dotted color-mix(in srgb, var(--ink) 28%, transparent); transform: translateY(-4px); }
   .row-price { color: var(--burgundy); font-size: clamp(16px, calc(16px + (100vw - 1920px) * 0.003125), 18px); }
   .row-desc { margin-top: var(--space-2); color: var(--muted); max-width: 60ch; }
   /* .tag chip style is global (one badge language site-wide). */
   .product-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
+  /* Thumbnail: ~64px at 390, 96px from ~660px, never under 48px or over 128px;
+     past 1920px it grows with the large-screen policy. The negative block margin
+     lets it use most of the row padding, keeping photo rows close to name-only
+     rows in height. Rows without a photo render nothing here. */
+  .row-thumb {
+    --thumb: clamp(48px, min(12vw + 17px, max(96px, 96px + (100vw - 1920px) * 0.05)), 128px);
+    flex: 0 0 auto;
+    width: var(--thumb);
+    height: var(--thumb);
+    margin-block: calc(var(--space-3) * -1);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
 
   .allergen {
     margin-top: var(--space-8);
@@ -277,100 +255,11 @@ const addOns = menuData.addOns;
   }
   .allergen p:last-child { margin-top: var(--space-2); color: var(--body); }
 
-  /* --- Row toggle button (photo rows): plain, full-width, 44px target --- */
-  .row-toggle {
-    display: block;
-    width: 100%;
-    min-height: 44px;
-    padding: 2px 0;
-    background: none;
-    border: 0;
-    text-align: start;
-    font: inherit;
-    color: inherit;
-  }
-  .row-toggle .row-head { width: 100%; }
-  /* Imageless rows get the same box as the toggle button (44px min, 2px pad)
-     so photo and plain rows share one vertical rhythm. */
-  .row-plain {
-    min-height: 44px;
-    padding: 2px 0;
-  }
-  /* Tap-to-expand area (touch): grid-rows 0fr->1fr, settles downward. */
-  .row-expand {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 320ms var(--ease-out);
-  }
-  .row-expand-inner { overflow: hidden; min-height: 0; }
-  /* Until a tap assigns src, never show a broken-image icon or alt text. */
-  .row-expand-img:not([src]) { visibility: hidden; }
-  .row-expand-img {
-    width: min(100%, 360px);
-    height: auto;
-    border-radius: 16px;
-    border: 1px solid var(--hairline-strong);
-    margin-top: var(--space-3);
-  }
-  .menu-row.is-open .row-expand { grid-template-rows: 1fr; }
-  @media (prefers-reduced-motion: reduce) {
-    .row-expand { transition: none; }
-  }
-  /* Desktop (hover devices): the floating panel is the photo surface; the
-     inline expand stays shut and the toggle acts as the focus target only. */
-  @media (hover: hover) and (pointer: fine) {
-    .row-expand { display: none; }
-  }
-  /* Touch devices never get the floating panel (no listeners bound either). */
-  @media (hover: none), (pointer: coarse) {
-    .menu-panel { display: none !important; }
-  }
-
-  /* --- Slab: typographic list + floating photo panel --- */
-  :global(html.sys-slab) .menu-cat { max-width: 720px; }
+  /* --- Slab: typographic list --- */
+  /* 720px measure up to 1920px, then it grows with the container. */
+  :global(html.sys-slab) .menu-cat,
+  :global(html.sys-slab) .menu-addons { max-width: clamp(720px, calc(720px + (100vw - 1920px) * 0.375), 960px); }
   :global(html.sys-slab) .row-name { font-size: clamp(26px, 2.8vw, 34px); font-weight: 400; }
-  .menu-panel { display: none; }
-  @media (min-width: 1024px) {
-    :global(html.sys-slab) .menu-panel {
-      display: block;
-      position: fixed;
-      top: calc(var(--nav-h) + 96px);
-      inset-inline-end: clamp(1rem, 4vw, 4rem);
-      /* 4:5: the shoot's menu photos are portrait; a 4:3 box cropped subjects. */
-      width: min(26vw, 360px);
-      aspect-ratio: 4 / 5;
-      border-radius: 16px;
-      border: 1px solid var(--hairline-strong);
-      overflow: hidden;
-      background: var(--butter);
-      opacity: 0;
-      transition: opacity 240ms var(--ease-out);
-      pointer-events: none;
-      z-index: 40;
-    }
-    :global(html.sys-slab) .menu-panel.is-on { opacity: 1; }
-    .menu-panel-img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 240ms var(--ease-out);
-    }
-    .menu-panel-img.is-front { opacity: 1; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .menu-panel, .menu-panel-img { transition: none; }
-  }
-
-  /* Pointer desktops: the list leaves room for the fixed photo panel, and the
-     panel's right edge follows the container so list, nav and pills align. */
-  @media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
-    :global(html.sys-slab) .menu-cat,
-    :global(html.sys-slab) .menu-addons { max-width: min(720px, 100% - min(26vw, 360px) - 40px); }
-    :global(html.sys-slab) .menu-panel { inset-inline-end: max(clamp(1rem, 4vw, 4rem), calc((100vw - var(--container)) / 2 + var(--gutter))); }
-  }
 
   /* Hand-drawn baguette tucked into the header corner. */
   .menu-head { position: relative; overflow: hidden; }
@@ -388,81 +277,6 @@ const addOns = menuData.addOns;
     .menu-head :global(.head-sketch) { position: static; margin-top: var(--space-5); width: 110px; }
   }
 </style>
-
-<script>
-  // Floating photo panel: HOVER DEVICES ONLY (mouse + keyboard focus). On
-  // touch the panel is display:none and no listeners are bound at all.
-  const hoverFine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  const panel = document.querySelector<HTMLElement>('.menu-panel');
-  if (panel && hoverFine) {
-    const imgs = Array.from(panel.querySelectorAll<HTMLImageElement>('.menu-panel-img'));
-    imgs.forEach((im) => { im.src = panel.dataset.first || ''; });
-    let front = 0;
-    let current = '';
-    imgs[0]?.classList.add('is-front');
-    const show = (src: string | undefined) => {
-      if (!src) { panel.classList.remove('is-on'); return; }
-      panel.classList.add('is-on');
-      if (src === current) return;
-      current = src;
-      const back = 1 - front;
-      imgs[back].src = src;
-      imgs[back].classList.add('is-front');
-      imgs[front].classList.remove('is-front');
-      front = back;
-    };
-    // Delegated on the whole list: pointer or focus on a photo row shows its
-    // photo; anything else (an imageless row, a category heading, the add-ons)
-    // hides the panel, so it never shows one item's photo beside another item.
-    const list = document.querySelector<HTMLElement>('.menu-body');
-    const photoFor = (e: Event) => (e.target as Element | null)?.closest<HTMLElement>('.menu-row')?.dataset.img;
-    list?.addEventListener('mouseover', (e) => show(photoFor(e)));
-    list?.addEventListener('focusin', (e) => show(photoFor(e)));
-    list?.addEventListener('mouseleave', () => panel.classList.remove('is-on'));
-  }
-
-  // Tap-to-expand (touch devices): one open at a time; button carries
-  // aria-expanded; the area settles open downward via grid-rows.
-  if (!hoverFine) {
-    let open: HTMLElement | null = null;
-    // Expand photos load on first intent instead of with the page. The press
-    // (pointerdown) starts the request a beat before the click lands.
-    const hydrate = (row: HTMLElement) => {
-      const img = row.querySelector<HTMLImageElement>('.row-expand-img');
-      if (img && !img.getAttribute('src') && img.dataset.src) {
-        if (img.dataset.srcset) img.srcset = img.dataset.srcset;
-        img.src = img.dataset.src;
-      }
-      return img;
-    };
-    document.querySelectorAll<HTMLButtonElement>('.row-toggle').forEach((btn) => {
-      const pressRow = btn.closest<HTMLElement>('.menu-row');
-      if (pressRow) btn.addEventListener('pointerdown', () => hydrate(pressRow), { passive: true });
-      btn.addEventListener('click', async () => {
-        const row = btn.closest<HTMLElement>('.menu-row');
-        if (!row || row.dataset.opening) return;
-        const wasOpen = row.classList.contains('is-open');
-        if (!wasOpen) {
-          const img = hydrate(row);
-          if (img && !img.complete) {
-            // Give a just-requested photo a brief moment to decode so the row
-            // opens with it in place; never hold the tap longer than 150ms.
-            row.dataset.opening = 'true';
-            await Promise.race([img.decode().catch(() => {}), new Promise((res) => setTimeout(res, 150))]);
-            delete row.dataset.opening;
-          }
-        }
-        if (open && open !== row) {
-          open.classList.remove('is-open');
-          open.querySelector('.row-toggle')?.setAttribute('aria-expanded', 'false');
-        }
-        row.classList.toggle('is-open', !wasOpen);
-        btn.setAttribute('aria-expanded', String(!wasOpen));
-        open = wasOpen ? null : row;
-      });
-    });
-  }
-</script>
 
 <script>
   // Scroll-spy: highlight the pill for the section in view. Progressive —

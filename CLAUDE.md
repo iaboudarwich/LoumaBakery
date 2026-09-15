@@ -50,7 +50,7 @@ A neighborhood bakery on Wilshire (Santa Monica), open and trading (as of Septem
 - Home hero on portrait phones (<=430px) is min-height 78svh ON PURPOSE: the sliver of the next section below it is the scroll affordance. Do not "fix" it to 100svh.
 - Never width:100vw; html,body { overflow-x: clip } stays.
 - Safe areas: viewport-fit=cover; pad CONTENT with env(safe-area-inset-*) via max(gutter, inset); band backgrounds reach true edges; nav + body offset grow by the top inset.
-- Hover behaviors ONLY behind @media (hover:hover) and (pointer:fine); touch gets tap alternatives (menu rows = button[aria-expanded] tap-to-expand; floating panel display:none + unbound on touch).
+- Hover behaviors ONLY behind @media (hover:hover) and (pointer:fine); touch gets tap alternatives wherever hover carries meaning (menu photos are permanent row thumbnails: no hover or tap state).
 - Inputs >=16px computed (iOS zoom); inputmode/autocomplete set; never suppress user zoom; html.kb-open hides fixed bars while a field is focused.
 - Tap targets >=44px; -webkit-tap-highlight-color transparent + touch-action manipulation on controls.
 - NO live SVG filters anywhere: sketches render the *-baked.svg geometry (scripts/bake-sketches.mjs flattens the roughen); max 2 simultaneous draws, will-change on animating strokes.

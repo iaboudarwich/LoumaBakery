@@ -1,9 +1,8 @@
 import type { ImageMetadata } from 'astro';
 
-// TODO(photo-ids): unconfirmed item identities from the Kayla shoots.
-//  - seeded-knot.jpg / seeded-knot-tissue.jpg / seeded-knot-detail.jpg: item
-//    name unconfirmed, possibly a round Zaatar Croissant or the Cardamom Bun.
-//  - zaatar-croissant.jpg: may actually be the Ham & Cheese Croissant.
+// TODO(photo-ids): unplaced/seeded-knot-tissue.jpg and unplaced/seeded-knot-detail.jpg
+//   look like the coiled Za'atar Croissant (zaatar-croissant.jpg, confirmed by
+//   the case label in 20260904_LoumaBakery_0126) but are not confirmed themselves.
 // TODO(founder-portrait): no portrait of Milla yet; see src/pages/story.astro.
 
 /**

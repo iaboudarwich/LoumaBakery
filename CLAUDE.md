@@ -10,15 +10,18 @@ A neighborhood bakery on Wilshire (Santa Monica), open and trading (as of Septem
 - All content lives in content collections / config (src/data/*.json), never hardcoded in markup. CMS-editable via Decap (self-hosted bundle in public/admin; /admin-demo is the zero-cred test-repo demo, config generated on prebuild).
 - Nav and footer are single shared components used by every page.
 - Every visual effect is flag-gated in src/config/features.ts, wired into /review, and respects prefers-reduced-motion + mobile.
-- Production URL from one SITE_URL config value. Netlify hosting + Forms. Menu will sync from a Google Sheet (scripts/sync-menu.mjs, inactive until SHEET_CSV_URL is set).
+- Production URL from one SITE_URL config value. Netlify hosting. Menu will sync from a Google Sheet (scripts/sync-menu.mjs, inactive until SHEET_CSV_URL is set).
+- Forms are Netlify Forms: data-netlify + data-netlify-honeypot + hidden form-name, posted via fetch by src/scripts/forms.ts (newsletter, careers, catering). Submissions only arrive once the dashboard Form detection toggle is on and the site is redeployed.
 
 ## THE DESIGN SYSTEM ("editorial slab", layoutSystem flag, default 'slab')
 - FLAT: no box-shadows, no gradients, no backdrop blur, anywhere. Depth = surface change + 1px hairlines (--hairline tokens). Text on photos sits on flat solid ink/burgundy panels.
 - BANDS: every section is one committed slab: cream (--surface-0), burgundy, ink, or full-bleed photo. The band change is the divider. Surface tints (surface-1/2/3) never back a section, small component fills only.
 - TYPE SPLIT: one Cormorant .statement per band (clamp(2.75rem,8vw,7rem), weight 300-400, leading ~0.95-1.0). Everything else DM Sans 14-16px. DM Mono is the DATA VOICE: hours, prices, address, phone, labels, form inputs. Deviation note: hero/editorial headlines may use up to 500 only where 300/400 is illegible.
 - SHAPES: exactly three radii: 9999px (buttons/tags/chips/inputs), 16px (cards/photo tiles), 0 (full-bleed). No other radius values.
+- TYPE FLOOR: 13px minimum for all rendered text (form labels and catering tier notes sit at 13px). The one exception is the stamp (LABELS), which stays 12px.
+- LARGE SCREENS: sizes are fixed up to a 1920px viewport, then grow: type uses clamp(base, calc(base + (100vw - 1920px) * k), max) and --container is clamp(1200px, 62.5vw, 1680px). No viewport scaling below 1920.
 - BUTTONS: ghost pill default (1.5px burgundy border, transparent). MAX ONE filled CTA per page (.btn-primary/.btn-coral render filled burgundy). "Ordering soon" = dashed ghost, intentional.
-- LABELS: one stamp treatment: DM Mono uppercase ~12px, 0.1em tracking, burgundy (coral on dark). No dash/rule prefixes. Filler eyebrows deleted.
+- LABELS: one stamp treatment: DM Mono uppercase 12px, 0.1em tracking, burgundy (coral on dark). No dash/rule prefixes. Filler eyebrows deleted.
 - NAV: persistent flat bar, always legible: solid ink strip over the hero, solid cream + hairline elsewhere.
 - ASYMMETRY: 55/45 or 60/40 splits, one collage moment (2-3 tiles, 1-3deg rotation), no orphan grid rows.
 
@@ -44,6 +47,7 @@ A neighborhood bakery on Wilshire (Santa Monica), open and trading (as of Septem
 
 ## MOBILE / iOS RULES (locked)
 - Viewport units: min-height 100vh fallback + 100svh pair. svh, never dvh. Hero-minus-header = calc(100svh - var(--nav-h)).
+- Home hero on portrait phones (<=430px) is min-height 78svh ON PURPOSE: the sliver of the next section below it is the scroll affordance. Do not "fix" it to 100svh.
 - Never width:100vw; html,body { overflow-x: clip } stays.
 - Safe areas: viewport-fit=cover; pad CONTENT with env(safe-area-inset-*) via max(gutter, inset); band backgrounds reach true edges; nav + body offset grow by the top inset.
 - Hover behaviors ONLY behind @media (hover:hover) and (pointer:fine); touch gets tap alternatives (menu rows = button[aria-expanded] tap-to-expand; floating panel display:none + unbound on touch).
@@ -61,4 +65,4 @@ A neighborhood bakery on Wilshire (Santa Monica), open and trading (as of Septem
 Responsive to mobile · visible keyboard focus · reduced motion respected · no console errors · astro check clean · zero em dashes in dist · committed with a clear message · deploy verified.
 
 ## What remains before handoff (do not attempt without the owner)
-DecapBridge site-id + login test; publish the Google Sheet tab + set SHEET_CSV_URL; Netlify Forms detection toggle; real photos/Uber Eats/PayPal/domain; account transfer.
+DecapBridge site-id + login test; publish the Google Sheet tab + set SHEET_CSV_URL; Netlify Forms detection toggle; real photos/Uber Eats/phone/domain; account transfer.

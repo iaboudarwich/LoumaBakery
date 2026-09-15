@@ -1,5 +1,6 @@
 ---
 import { getEntry } from 'astro:content';
+import { noOrphan } from '../lib/typography';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { siteConfig } from '../config/site';
 import { features as f } from '../config/features';
@@ -13,7 +14,7 @@ const stats = c.stats ?? [];
   <header class="page-head">
     <div class="container">
       <p class="eyebrow">{c.eyebrow}</p>
-      <h1>{c.title}</h1>
+      <h1>{noOrphan(c.title ?? '')}</h1>
       {c.lede && <p class="lede">{c.lede}</p>}
     </div>
   </header>
@@ -88,12 +89,12 @@ const stats = c.stats ?? [];
     border-radius: var(--radius-lg);
     transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
   }
-  .value-title { margin-bottom: var(--space-2); font-size: 24px; }
+  .value-title { margin-bottom: var(--space-2); font-size: clamp(24px, calc(24px + (100vw - 1920px) * 0.004687), 27px); }
 
   .stats { padding-block: var(--space-8); background: var(--surface-2); }
   .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-6); text-align: center; max-width: 760px; margin-inline: auto; }
   .stat-value { display: block; font-size: clamp(40px, 6vw, 72px); color: var(--burgundy); line-height: 1; }
-  .stat-label { display: block; margin-top: var(--space-3); color: var(--body); font-size: 15px; }
+  .stat-label { display: block; margin-top: var(--space-3); color: var(--body); font-size: clamp(15px, calc(15px + (100vw - 1920px) * 0.003125), 17px); }
 
   .donate { background: var(--ink); color: var(--surface-0); padding-block: var(--space-8); }
   .donate-inner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-6); flex-wrap: wrap; }

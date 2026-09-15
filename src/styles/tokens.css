@@ -42,8 +42,8 @@
   --t-h3: clamp(24px, 2.6vw, 34px);
   --t-h4: clamp(20px, 2vw, 26px);
   --t-body: clamp(16px, 1.15vw, 18px);
-  --t-small: 14px;
-  --t-eyebrow: 10px;        /* DM Mono, 0.24em, uppercase */
+  --t-small: clamp(14px, calc(14px + (100vw - 1920px) * 0.003125), 16px);
+  --t-eyebrow: clamp(13px, calc(13px + (100vw - 1920px) * 0.00234), 14.5px);        /* DM Mono, 0.24em, uppercase (13px floor) */
 
   /* --- Line heights --- */
   --lh-tight: 1.05;
@@ -68,7 +68,7 @@
 
   /* --- Layout --- */
   --measure: 68ch;          /* readable line length */
-  --container: 1200px;
+  --container: clamp(1200px, 62.5vw, 1680px); /* 1200px up to 1920px, then grows so large screens don't look empty */
   --gutter: clamp(1.25rem, 5vw, 4rem);
 
   /* --- Radii --- */

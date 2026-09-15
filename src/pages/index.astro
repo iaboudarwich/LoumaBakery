@@ -50,7 +50,7 @@ const heroCta = orderReady
     : { as: 'button' as const, href: '', external: false, label: 'Ordering soon' };
 ---
 
-<BaseLayout transparentNav={heroStyle === 'photo' || heroStyle === 'media'} schema="bakery" footerNewsletter={false}>
+<BaseLayout transparentNav={heroStyle === 'photo' || heroStyle === 'media'} schema="bakery" footerNewsletter={false} preloadHeroFont>
   {/* ================= SLAB HOME: photo band > cream > burgundy > cream ===== */}
   {layoutSystem === 'slab' ? (
   <>
@@ -86,8 +86,8 @@ const heroCta = orderReady
     </div>
     {/* TODO(photo-ids): ig1 is seeded-knot.jpg; item name unconfirmed (see src/lib/images.ts). */}
     <div class="container collage" aria-hidden="false">
-      {story1Photo && <Img src={story1Photo} alt={images.story1Alt} class="collage-a" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 42vw, 460px" />}
-      {story2Photo && <Img src={story2Photo} alt={images.story2Alt} class="collage-b" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 34vw, 380px" />}
+      {story1Photo && <Img src={story1Photo} alt={images.story1Alt} class="collage-a" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 680px) 78vw, (max-width: 860px) 42vw, 460px" />}
+      {story2Photo && <Img src={story2Photo} alt={images.story2Alt} class="collage-b" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 680px) 68vw, (max-width: 860px) 34vw, 380px" />}
       {ig1Photo && <Img src={ig1Photo} alt={images.ig1Alt} class="collage-c" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 30vw, 320px" />}
     </div>
   </section>
@@ -452,8 +452,39 @@ const heroCta = orderReady
     text-shadow: 0 1px 16px color-mix(in srgb, var(--ink) 45%, transparent);
   }
   .hero-media-cta { margin-top: var(--space-6); }
+  /* While the phone CTA bar is shown (<=768px), the hero ends above it so the
+     bar never covers the hero's own CTA. Phones <=430px keep their shorter
+     78svh hero (below); short landscape hides the bar and restores 100svh. */
+  @media (max-width: 768px) {
+    :global(body.has-cta-bar) .hero-media {
+      min-height: calc(100vh - 64px - env(safe-area-inset-bottom, 0px)); /* fallback */
+      min-height: calc(100svh - 64px - env(safe-area-inset-bottom, 0px));
+    }
+  }
+  /* Desktop: the headline uses the content width. The global 14ch statement
+     cap left "morning" alone on a third line from 1366px up. */
+  @media (min-width: 861px) {
+    :global(html.sys-slab) .hero-media .statement--hero { max-width: none; }
+    /* html.sys-slab prefix: must outrank the global slab content cap (720px). */
+    :global(html.sys-slab) .hero-media-content { max-width: clamp(320px, 60vw, 820px); }
+  }
+  /* Short landscape screens (phones on their side): size the hero by the
+     available height so eyebrow, headline, lede and CTA all fit between the
+     nav and the bottom edge. Portrait and desktop are untouched. */
+  @media (orientation: landscape) and (max-height: 500px) {
+    .hero-media-inner {
+      padding-top: calc(var(--nav-h) + clamp(0.5rem, 3svh, 1.5rem));
+      padding-bottom: max(clamp(0.75rem, 4svh, 1.5rem), calc(env(safe-area-inset-bottom) + 0.75rem));
+    }
+    :global(html.sys-slab) .hero-media-content { max-width: min(680px, 78vw); }
+    :global(html.sys-slab) .hero-media .statement--hero { font-size: clamp(2.2rem, 13svh, 3.6rem); max-width: none; }
+    .hero-media-lede { margin-top: clamp(0.5rem, 2.5svh, 1rem); }
+    .hero-media-cta { margin-top: clamp(0.625rem, 3svh, 1.5rem); }
+    :global(body.has-cta-bar) .hero-media { min-height: 100vh; min-height: 100svh; } /* bar hidden here */
+  }
   @media (max-width: 430px) {
-    .hero-media { min-height: 78svh; }
+    .hero-media,
+    :global(body.has-cta-bar) .hero-media { min-height: 78svh; }
   }
 
   /* ============================ 1 · HERO (editorial, type-led) ===== */
@@ -623,7 +654,7 @@ const heroCta = orderReady
   /* ================================ ALT-BLOCKS ===== */
   .block h2 { margin-bottom: var(--space-3); }
 
-  .block--fullbleed { position: relative; min-height: min(70vh, 560px); display: flex; align-items: flex-end; overflow: hidden; }
+  .block--fullbleed { position: relative; min-height: min(70vh, 560px); min-height: min(70svh, 560px); display: flex; align-items: flex-end; overflow: hidden; }
   .block-overlay { position: absolute; inset: 0; z-index: 1; background: linear-gradient(0deg, color-mix(in srgb, var(--ink) 76%, transparent), transparent 72%); }
   .block-fb-text { position: relative; z-index: 2; padding-block: var(--space-8); max-width: 620px; }
   .block-fb-text h2, .block-fb-text p { color: var(--surface-0); }
@@ -649,22 +680,22 @@ const heroCta = orderReady
   }
   .product-meta { padding: var(--space-4); display: flex; flex-direction: column; flex: 1; }
   .product-row { display: flex; justify-content: space-between; gap: var(--space-3); align-items: baseline; }
-  .product-name { font-size: 20px; }
+  .product-name { font-size: clamp(20px, calc(20px + (100vw - 1920px) * 0.003906), 22.5px); }
   .product-price { color: var(--burgundy); }
-  .product-desc { margin-top: var(--space-2); font-size: 14px; color: var(--muted); }
+  .product-desc { margin-top: var(--space-2); font-size: clamp(14px, calc(14px + (100vw - 1920px) * 0.003125), 16px); color: var(--muted); }
 
   /* ================================ TESTIMONIAL ===== */
   .testimonial { text-align: center; }
   .testimonial-inner { max-width: 800px; }
   .testimonial-quote { font-family: var(--font-display); font-style: italic; font-weight: 300; font-size: clamp(26px, 3.4vw, 44px); line-height: 1.25; color: var(--ink); }
-  .testimonial-by { margin-top: var(--space-5); color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; }
+  .testimonial-by { margin-top: var(--space-5); color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px); }
   .testimonial-role { color: var(--clay); }
 
   /* ================================ FIND US ===== */
   .findus-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(var(--space-5), 5vw, var(--space-7)); align-items: stretch; }
   .findus-info h2 { margin: var(--space-2) 0 var(--space-5); }
   .findus-address { font-style: normal; line-height: 1.8; }
-  .findus-hours { margin: var(--space-4) 0; font-size: 14px; max-width: 360px; }
+  .findus-hours { margin: var(--space-4) 0; font-size: clamp(14px, calc(14px + (100vw - 1920px) * 0.003125), 16px); max-width: 360px; }
   .findus-hours li { display: flex; justify-content: space-between; gap: var(--space-3); padding: 2px 0; }
   .findus-hours-time { color: var(--muted); }
   .findus-contact a { color: var(--burgundy); }

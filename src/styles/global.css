@@ -182,7 +182,7 @@ p + p {
 
 /* --- Tag / badge chip: ONE style site-wide (menu tags, any future badges) --- */
 .tag {
-  font-size: 10px;
+  font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 0.25rem 0.6rem;
@@ -314,7 +314,7 @@ a {
   border: 1px solid transparent;
   border-radius: var(--radius-pill);
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: clamp(14px, calc(14px + (100vw - 1920px) * 0.003125), 16px);
   letter-spacing: 0.02em;
   text-decoration: none;
   cursor: pointer;
@@ -386,7 +386,7 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
   padding-block: var(--space-8) var(--space-7);
   background: var(--surface-1);
 }
-.page-head .container { max-width: 880px; }
+.page-head .container { max-width: calc(var(--container) * 11 / 15); } /* 880px at the 1200px container */
 .page-head h1 { margin-top: var(--space-3); }
 .page-head .lede {
   margin-top: var(--space-4);
@@ -401,7 +401,7 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
    per section, not per field). */
 .field > label {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-weight: 500;
@@ -417,7 +417,7 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
   border-radius: var(--radius-md);
   background: var(--surface-0);
   color: var(--ink);
-  font-size: 16px;
+  font-size: clamp(16px, calc(16px + (100vw - 1920px) * 0.003125), 18px);
 }
 .field input::placeholder,
 .field textarea::placeholder { color: var(--muted); }
@@ -449,7 +449,7 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
   font-size: clamp(18px, 1.8vw, 22px);
   color: var(--burgundy);
 }
-.form-msg--error { color: var(--red); font-size: 15px; }
+.form-msg--error { color: var(--red); font-size: clamp(15px, calc(15px + (100vw - 1920px) * 0.003125), 17px); }
 .on-dark .form-msg--success,
 .site-foot .form-msg--success { color: var(--butter); }
 .on-dark .form-msg--error,
@@ -486,7 +486,7 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
   border-inline-start: 3px solid var(--coral);
   box-shadow: var(--shadow-lg);
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px);
   max-width: 320px;
 }
 .toast--good { background: var(--burgundy); color: var(--butter); border-inline-start-color: var(--butter); }
@@ -506,7 +506,8 @@ html.sys-slab {
   --radius-sm: 16px;
   --radius-md: 16px;
   --radius-lg: 16px;
-  --t-body: 15px;
+  /* 15px up to 1920px, then scales to 17px by 2560px. */
+  --t-body: clamp(15px, calc(15px + (100vw - 1920px) * 0.003125), 17px);
 }
 
 /* 1.1 Flat everything: depth is surface change + hairlines, nothing else. */
@@ -547,13 +548,13 @@ html.sys-slab .band--ink .statement {
 html.sys-slab h1:not(.statement),
 html.sys-slab h2:not(.statement),
 html.sys-slab h3 { font-weight: 400; }
-html.sys-slab p { max-width: 640px; }
+html.sys-slab p { max-width: min(640px, 70ch); }
 
 /* 1.8 Label stamp: mono, tracked, no dash. Converts every eyebrow site-wide. */
 html.sys-slab .eyebrow,
 html.sys-slab .foot-h,
 html.sys-slab .info-h {
-  font-size: 12px;
+  font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px);
   letter-spacing: 0.1em;
   color: var(--burgundy);
 }
@@ -593,7 +594,7 @@ html.sys-slab .btn {
   color: var(--burgundy);
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 15px;
+  font-size: clamp(15px, calc(15px + (100vw - 1920px) * 0.003125), 17px);
   min-height: 0;
   padding: 14px 28px;
   border-radius: var(--radius-pill);
@@ -680,7 +681,7 @@ html.sys-slab .slab-menulist li {
 }
 html.sys-slab .sm-name { font-family: var(--font-display); font-size: clamp(22px, 2.4vw, 30px); color: var(--ink); }
 html.sys-slab .sm-dots { flex: 1; border-bottom: 1px dotted var(--hairline-strong); transform: translateY(-4px); }
-html.sys-slab .sm-price { color: var(--burgundy); font-size: 15px; }
+html.sys-slab .sm-price { color: var(--burgundy); font-size: clamp(15px, calc(15px + (100vw - 1920px) * 0.003125), 17px); }
 
 /* ===================================================== MOBILE / iOS =====
    <=768px: body never below 16px; <=430px: calmer rhythm (bands ~65% of
@@ -753,7 +754,8 @@ html.sys-slab .sm-price { color: var(--burgundy); font-size: 15px; }
     z-index: 900;
     background: var(--burgundy);
     border-top: 1px solid var(--hairline);
-    padding: 10px max(var(--gutter), env(safe-area-inset-left)) calc(10px + env(safe-area-inset-bottom, 0px));
+    padding-block: 10px calc(10px + env(safe-area-inset-bottom, 0px));
+    padding-inline: max(var(--gutter), env(safe-area-inset-left)) max(var(--gutter), env(safe-area-inset-right));
   }
   .mobile-cta-bar.is-parked { display: none; }
   .mobile-cta-link {
@@ -762,11 +764,17 @@ html.sys-slab .sm-price { color: var(--burgundy); font-size: 15px; }
     background: transparent;
     min-height: 44px;
     padding: 10px 24px;
-    font-size: 15px;
+    font-size: clamp(15px, calc(15px + (100vw - 1920px) * 0.003125), 17px);
     width: min(100%, 420px);
   }
   /* The bar must never cover the last content (class set only when the
      flag renders the bar). */
   body.has-cta-bar { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
   html.kb-open body.has-cta-bar { padding-bottom: 0; }
+}
+/* Short landscape screens: the bar would take a quarter of the height and cover
+   the hero CTA it duplicates. The footer form is still there. */
+@media (orientation: landscape) and (max-height: 500px) {
+  .mobile-cta-bar { display: none; }
+  body.has-cta-bar { padding-bottom: 0; }
 }

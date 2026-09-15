@@ -25,7 +25,7 @@ const formClass = variant === 'footer' ? 'foot-news-form' : 'news-form';
   data-error={siteConfig.forms.error}
 >
   <input type="hidden" name="form-name" value="newsletter" />
-  <p class="visually-hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
+  <p class="visually-hidden" aria-hidden="true"><label>Don’t fill this out: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
   <label class="visually-hidden" for={id}>Email address</label>
   <div class={rowClass}>
     <input id={id} type="email" name="email" required placeholder="you@email.com" autocomplete="email" inputmode="email" />
@@ -38,7 +38,7 @@ const formClass = variant === 'footer' ? 'foot-news-form' : 'news-form';
      component — Astro's scoped styles don't reach a child's elements. Both
      variants sit on dark panels, so the dark fill works for both. */
   .news-form { max-width: 460px; }
-  .foot-news-form { flex: 1; min-width: 280px; max-width: 460px; }
+  .foot-news-form { flex: 1; min-width: min(280px, 100%); max-width: 460px; }
 
   .news-row,
   .foot-news-row {
@@ -50,6 +50,7 @@ const formClass = variant === 'footer' ? 'foot-news-form' : 'news-form';
     flex: 1;
     min-height: 48px;
     padding: 0 0.9rem;
+    font-size: clamp(16px, calc(16px + (100vw - 1920px) * 0.003125), 18px); /* iOS zooms on focus below 16px */
     border: 1px solid color-mix(in srgb, var(--surface-0) 30%, transparent);
     border-radius: var(--radius-md);
     background: #382c22; /* opaque dark fill — light value text reads */

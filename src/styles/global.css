@@ -527,7 +527,8 @@ html.sys-slab p { max-width: min(640px, 70ch); }
 html.sys-slab .eyebrow,
 html.sys-slab .foot-h,
 html.sys-slab .info-h {
-  font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px);
+  /* The brand stamp is 12px by spec (CLAUDE.md); the 13px floor covers body copy, not this. */
+  font-size: clamp(12px, calc(12px + (100vw - 1920px) * 0.002344), 13.5px);
   letter-spacing: 0.1em;
   color: var(--burgundy);
 }

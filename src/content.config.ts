@@ -51,8 +51,6 @@ const copy = defineCollection({
       // Inner-page structured copy (optional; each page reads what it needs).
       allergenNote: z.string().optional(),
       mapEmbed: z.string().optional(),
-      donateTitle: z.string().optional(),
-      donateBody: z.string().optional(),
       founder: z
         .object({ name: z.string(), role: z.string(), body: z.array(z.string()).default([]) })
         .optional(),

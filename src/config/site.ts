@@ -3,14 +3,14 @@
  * and external links. Never hardcode any of this in markup — read from here.
  *
  * The editor-facing fields (phone, email, address, hours, and the
- * Order/Donate/Instagram links) live in src/data/settings.json so the CMS
+ * Order/Instagram links) live in src/data/settings.json so the CMS
  * ("Site settings") can edit them. Technical/derived values stay here.
  */
 import settings from '../data/settings.json';
 
 // TODO(owner): settings.json still holds placeholders. Real phone number
-// (currently "+1 (310) 000-0000"), real Uber Eats URL, and real PayPal donate
-// URL are all needed before handoff.
+// (currently "+1 (310) 000-0000") and a real Uber Eats URL are needed before
+// handoff.
 
 export const siteConfig = {
   /** Production URL. Currently the Netlify subdomain; swap when the real domain lands. */
@@ -27,7 +27,6 @@ export const siteConfig = {
   hours: settings.hours,
   links: {
     uberEats: settings.links.uberEats,
-    paypalDonate: settings.links.paypalDonate,
     instagram: settings.links.instagram,
     /** Order/contact form endpoint. Netlify Forms by default; swap to a Formspree URL if used. */
     formspreeOrNetlify: '', // PLACEHOLDER — swap before launch (empty = use Netlify Forms)

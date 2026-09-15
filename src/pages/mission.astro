@@ -2,7 +2,6 @@
 import { getEntry } from 'astro:content';
 import { noOrphan } from '../lib/typography';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { siteConfig } from '../config/site';
 import { features as f } from '../config/features';
 
 const c = (await getEntry('copy', 'mission'))!.data;
@@ -60,19 +59,6 @@ const stats = c.stats ?? [];
     </section>
   )}
 
-  {/* Donate */}
-  <section class="donate on-dark cv-auto" data-anim={f.reveal ? 'reveal' : undefined}>
-    <div class="container donate-inner">
-      <div>
-        <p class="eyebrow">Give</p>
-        <h2 class="donate-title">{c.donateTitle ?? c.cta?.label}</h2>
-        {c.donateBody && <p class="donate-body">{c.donateBody}</p>}
-      </div>
-      <a class="btn btn-coral" href={siteConfig.links.paypalDonate} target="_blank" rel="noopener">
-        {c.cta?.label ?? 'Donate'}
-      </a>
-    </div>
-  </section>
 </BaseLayout>
 
 <style>
@@ -95,11 +81,6 @@ const stats = c.stats ?? [];
   .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-6); text-align: center; max-width: 760px; margin-inline: auto; }
   .stat-value { display: block; font-size: clamp(40px, 6vw, 72px); color: var(--burgundy); line-height: 1; }
   .stat-label { display: block; margin-top: var(--space-3); color: var(--body); font-size: clamp(15px, calc(15px + (100vw - 1920px) * 0.003125), 17px); }
-
-  .donate { background: var(--ink); color: var(--surface-0); padding-block: var(--space-8); }
-  .donate-inner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-6); flex-wrap: wrap; }
-  .donate-title { color: var(--surface-0); margin-top: var(--space-2); }
-  .donate-body { margin-top: var(--space-3); color: color-mix(in srgb, var(--surface-0) 78%, transparent); max-width: 46ch; }
 
   @media (max-width: 820px) {
     .values-grid { grid-template-columns: 1fr; }

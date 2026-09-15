@@ -110,7 +110,7 @@ collections:
   # ================================================== SITE SETTINGS =========
   - name: settings
     label: "Site settings"
-    description: "Hours, address, contact details, and your Order / Donate / Instagram links."
+    description: "Hours, address, contact details, and your Order / Instagram links."
     delete: false
     editor: { preview: false }
     files:
@@ -142,7 +142,6 @@ collections:
             widget: object
             fields:
               - { name: uberEats, label: "Uber Eats order link", widget: string, hint: "Paste your Uber Eats store link here." }
-              - { name: paypalDonate, label: "PayPal donate link", widget: string, hint: "Paste your PayPal donation link here." }
               - { name: instagram, label: "Instagram link", widget: string, hint: "Paste your Instagram profile link here." }
 
   # ====================================================== PAGE TEXT =========
@@ -234,14 +233,6 @@ collections:
                   - { name: label, label: "Caption", widget: string }
                   - { name: prefix, label: "Before the number", widget: string, required: false }
                   - { name: suffix, label: "After the number", widget: string, required: false, hint: "e.g. %" }
-              - { name: donateTitle, label: "Donate title", widget: string }
-              - { name: donateBody, label: "Donate text", widget: text }
-              - name: cta
-                label: "Donate button"
-                widget: object
-                fields:
-                  - { name: label, label: "Button text", widget: string }
-                  - { name: href, label: "Link (internal, leave as #)", widget: string, required: false }
           # ---- Catering page ----
           - name: catering
             label: "Catering page"

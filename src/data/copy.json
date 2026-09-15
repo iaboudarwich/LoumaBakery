@@ -46,8 +46,7 @@
     "title": "The work, and who does it",
     "lede": "Hiring people other places overlook is how this bakery is built.",
     "body": [
-      "We hire people who are often shut out of work, and train them to be great at it.",
-      "If you'd like to support that, you can give. Every dollar goes to training and wages."
+      "We hire people who are often shut out of work, and train them to be great at it."
     ],
     "values": [
       { "title": "Real jobs", "body": "Paid, skilled work with room to grow. Not busywork, not a photo op." },
@@ -56,10 +55,7 @@
     ],
     "stats": [
       { "value": 100, "label": "of tips shared", "suffix": "%" }
-    ],
-    "donateTitle": "Support the mission",
-    "donateBody": "Every dollar goes straight to training and wages. No overhead, no middleman.",
-    "cta": { "label": "Donate via PayPal", "href": "#" }
+    ]
   },
   "catering": {
     "eyebrow": "For your table",

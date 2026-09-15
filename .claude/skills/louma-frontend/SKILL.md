@@ -12,6 +12,8 @@ description: Frontend design discipline for the Louma site — flatness, shape l
 - Controlled asymmetry: 55/45 or 60/40 splits, never 50/50; one collage moment per page max; grids never leave orphan rows.
 - Long body text max-width ~640px. Statements may slightly bleed their container.
 - Astro gotcha: page-scoped styles neither reach child components nor beat their specificity; use :global(html.sys-slab) prefixes for slab overrides.
+- Hero is a thesis: lead with the most characteristic thing (the morning bake, the face), not a generic big-number template.
+- Precision over accessories: spacing, type and detail matter more than more effects. Remove one accessory before shipping.
 
 ## Motion (the COMPLETE whitelist; timings locked)
 - Sketch draw-on-scroll: one-shot ~1.1s ease-out cubic-bezier(0.22,1,0.36,1), 80ms subpath stagger; a watchdog guarantees a mark on screen is never left invisible.
@@ -40,3 +42,6 @@ Responsive to ~360px. Visible :focus-visible outlines. Keyboard operable (incl. 
 - theme-color AND body background both brand cream (Safari tints from either).
 - Map iframe: tap-to-load facade on touch, lazy auto-load on desktop.
 - mobileCtaBar flag: sticky bottom newsletter pill on phones (parks at footer, hides with keyboard).
+
+## CSS hygiene
+Watch selector specificity so section/element rules don't cancel paddings/margins. Prefer tokens over literal values. Keep critical nav/hero CSS inlined in the base head (BaseLayout) to protect first paint.

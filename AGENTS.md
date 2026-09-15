@@ -9,5 +9,6 @@ Reality check for tools that read this file instead:
   backend). Not Sveltia.
 - Definition of done ends with the deploy verified (Netlify), not just a
   preview link handed over.
-- Skills: `louma-brand` for visual/brand/voice, `louma-frontend` for layout,
-  type, motion and the accessibility floor.
+- Skills live in `.claude/skills/<name>/SKILL.md` (the only copy):
+  `louma-brand` for visual/brand/voice, `louma-frontend` for layout, type,
+  motion and the accessibility floor.

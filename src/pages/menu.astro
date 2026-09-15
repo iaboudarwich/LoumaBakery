@@ -108,15 +108,16 @@ const addOns = menuData.addOns;
                 {panels[item.name] && (
                   <div class="row-expand" id={`x-${cat.id}-${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}>
                     <div class="row-expand-inner">
+                      {/* Loaded on tap, not with the page (most visitors never open a
+                          row): the URLs wait in data-*; width/height reserve the box. */}
                       <img
                         class="row-expand-img"
-                        src={panels[item.name]}
-                        srcset={expandSets[item.name]}
+                        data-src={panels[item.name]}
+                        data-srcset={expandSets[item.name]}
                         sizes="(max-width: 400px) calc(100vw - 2.5rem), 360px"
                         alt={item.alt ?? item.name}
                         width={panelDims[item.name].w}
                         height={panelDims[item.name].h}
-                        loading="lazy"
                         decoding="async"
                       />
                     </div>
@@ -302,6 +303,8 @@ const addOns = menuData.addOns;
     transition: grid-template-rows 320ms var(--ease-out);
   }
   .row-expand-inner { overflow: hidden; min-height: 0; }
+  /* Until a tap assigns src, never show a broken-image icon or alt text. */
+  .row-expand-img:not([src]) { visibility: hidden; }
   .row-expand-img {
     width: min(100%, 360px);
     height: auto;
@@ -422,11 +425,33 @@ const addOns = menuData.addOns;
   // aria-expanded; the area settles open downward via grid-rows.
   if (!hoverFine) {
     let open: HTMLElement | null = null;
+    // Expand photos load on first intent instead of with the page. The press
+    // (pointerdown) starts the request a beat before the click lands.
+    const hydrate = (row: HTMLElement) => {
+      const img = row.querySelector<HTMLImageElement>('.row-expand-img');
+      if (img && !img.getAttribute('src') && img.dataset.src) {
+        if (img.dataset.srcset) img.srcset = img.dataset.srcset;
+        img.src = img.dataset.src;
+      }
+      return img;
+    };
     document.querySelectorAll<HTMLButtonElement>('.row-toggle').forEach((btn) => {
-      btn.addEventListener('click', () => {
+      const pressRow = btn.closest<HTMLElement>('.menu-row');
+      if (pressRow) btn.addEventListener('pointerdown', () => hydrate(pressRow), { passive: true });
+      btn.addEventListener('click', async () => {
         const row = btn.closest<HTMLElement>('.menu-row');
-        if (!row) return;
+        if (!row || row.dataset.opening) return;
         const wasOpen = row.classList.contains('is-open');
+        if (!wasOpen) {
+          const img = hydrate(row);
+          if (img && !img.complete) {
+            // Give a just-requested photo a brief moment to decode so the row
+            // opens with it in place; never hold the tap longer than 150ms.
+            row.dataset.opening = 'true';
+            await Promise.race([img.decode().catch(() => {}), new Promise((res) => setTimeout(res, 150))]);
+            delete row.dataset.opening;
+          }
+        }
         if (open && open !== row) {
           open.classList.remove('is-open');
           open.querySelector('.row-toggle')?.setAttribute('aria-expanded', 'false');

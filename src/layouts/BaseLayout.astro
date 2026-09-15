@@ -22,7 +22,7 @@ interface Props {
   transparentNav?: boolean;
   /** Keep the page out of search indexes (internal pages). */
   noindex?: boolean;
-  /** schema.org structured data: 'bakery' (home), 'localbusiness' (visit), or none. */
+  /** schema.org structured data (Bakery on home and visit), or none. Both values emit the same entity. */
   schema?: 'bakery' | 'localbusiness';
   /** Show the footer newsletter. Pages with their own signup (home) pass false. */
   footerNewsletter?: boolean;
@@ -48,7 +48,7 @@ const canonical = new URL(Astro.url.pathname, SITE_URL).href;
 const ogImage = new URL(image, SITE_URL).href;
 
 // schema.org structured data, assembled from the single config source.
-// Bakery on the home page; LocalBusiness (with opening hours) on /visit.
+// One Bakery entity (same @id) on the home page and /visit.
 const postalAddress = {
   '@type': 'PostalAddress',
   streetAddress: siteConfig.address.street,
@@ -79,35 +79,30 @@ const openingHours = siteConfig.hours
     closes: to24(h.close),
   }));
 
+// TODO(owner): settings.json still holds the placeholder phone. Structured data
+// is republished by search engines, so the placeholder stays out of it; the
+// real number flows in automatically once it replaces "000-0000".
+const telephone = /000-0000/.test(siteConfig.phone) ? undefined : siteConfig.phone;
+
 const jsonLd =
-  schema === 'localbusiness'
+  schema === 'bakery' || schema === 'localbusiness'
     ? {
         '@context': 'https://schema.org',
-        '@type': 'LocalBusiness',
+        '@type': 'Bakery',
+        '@id': `${SITE_URL}/#bakery`,
         name: siteConfig.name,
         description: siteConfig.tagline,
         url: SITE_URL,
-        telephone: siteConfig.phone,
+        telephone,
         email: siteConfig.email,
         image: ogImage,
         priceRange: '$$',
         address: postalAddress,
         openingHoursSpecification: openingHours,
+        hasMenu: new URL('/menu/', SITE_URL).href,
+        sameAs: [siteConfig.links.instagram],
       }
-    : schema === 'bakery'
-      ? {
-          '@context': 'https://schema.org',
-          '@type': 'Bakery',
-          name: siteConfig.name,
-          description: siteConfig.tagline,
-          url: SITE_URL,
-          telephone: siteConfig.phone,
-          email: siteConfig.email,
-          image: ogImage,
-          priceRange: '$$',
-          address: postalAddress,
-        }
-      : null;
+    : null;
 ---
 
 <html
@@ -154,7 +149,7 @@ const jsonLd =
 
     <!-- Fonts are self-hosted via Fontsource (imported in the component script). -->
 
-    <!-- schema.org structured data (home: Bakery, visit: LocalBusiness).
+    <!-- schema.org structured data (home and visit: Bakery).
          Escape `<` so a value containing </script> can't break out. -->
     {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')} is:inline />}
 

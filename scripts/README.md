@@ -12,7 +12,7 @@ One tab, first row is the header: `Name | Price | Description | Category | Tags 
 
 - **Name**: required.
 - **Price**: `$4.50` or `4.50`. Empty price = the item still shows, with no price.
-- **Category**: must be exactly one of Viennoiserie, Bread, Pastry, Savory, Coffee, Matcha, Tea, Fridge & Bottled, Monthly Special.
+- **Category**: must be exactly one of Viennoiserie, Bread, Pastry, Savory, Coffee, Matcha, Tea, Fridge & Bottled.
 - **Tags**: optional, comma-separated (e.g. `vegan, gf`).
 - **Active**: exactly `Active` or `Inactive`. Only Active items appear.
 

@@ -2,8 +2,8 @@
 
 All photos here are from Louma Bakery's own commissioned shoots, photographed
 by Kayla on 2026-08-30 and 2026-09-04. Processed from the originals (kept
-outside the repo): converted to sRGB, long edge 2400px (plain-croissant 1600px),
-metadata stripped. The build makes the web sizes from these.
+outside the repo): converted to sRGB, long edge 2400px (plain-croissant 1600px;
+crops are never upscaled), metadata stripped. The build makes the web sizes from these.
 
 Photos in `unplaced/` are kept for the Visit, Mission, Careers and Catering
 pages but are NOT bundled: the glob in src/lib/images.ts only matches files
@@ -27,8 +27,12 @@ directly in this folder. To use one, move it up a level and reference it.
 | unplaced/madeleine-production.jpg | Unplaced, not bundled | Kayla | 2026-08-30 | 20260830_LoumaBakery_0300 |
 | unplaced/louma-cap.jpg | Unplaced, not bundled | Kayla | 2026-08-30 | 20260830_LoumaBakery_0340 |
 | raspberry-tart.jpg | Menu: Small Raspberry Tart | Kayla | 2026-09-04 | 20260904_LoumaBakery_0034 |
-| bread-wall.jpg | Menu: Sourdough Bread | Kayla | 2026-09-04 | 20260904_LoumaBakery_0041 |
-| madeleines.jpg | Menu: Madeleine Vanilla | Kayla | 2026-09-04 | 20260904_LoumaBakery_0049 |
+| sourdough.jpg | Menu: Sourdough Bread (1012x1262 crop of one boule) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0041 |
+| unplaced/bread-wall.jpg | Unplaced, not bundled (shelf of mixed breads) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0041 |
+| madeleine-vanilla.jpg | Menu: Madeleine Vanilla (crop, white finish only) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0049 |
+| madeleine-chocolate.jpg | Menu: Madeleine Chocolate (crop, chocolate finish only) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0049 |
+| madeleine-raspberry.jpg | Menu: Madeleine Raspberry (crop, raspberry finish only) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0049 |
+| unplaced/madeleines.jpg | Unplaced, not bundled (tray of all three finishes) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0049 |
 | almond-croissant.jpg | Menu: Nutty Croissant | Kayla | 2026-09-04 | 20260904_LoumaBakery_0146 |
 | croissant-cut.jpg | Story chapter 01 | Kayla | 2026-09-04 | 20260904_LoumaBakery_0307 |
 | out-of-oven.jpg | Story chapter 02 | Kayla | 2026-09-04 | 20260904_LoumaBakery_0255 |

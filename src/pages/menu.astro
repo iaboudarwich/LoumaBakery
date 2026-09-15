@@ -84,6 +84,7 @@ const addOns = menuData.addOns;
                     </span>
                   </button>
                 ) : (
+                  <div class="row-plain">
                   <div class="row-head">
                     <h3 class="row-name">{item.name}</h3>
                     {item.price && (
@@ -92,6 +93,7 @@ const addOns = menuData.addOns;
                         <span class="row-price mono">{item.price}</span>
                       </>
                     )}
+                  </div>
                   </div>
                 )}
                 {item.description && <p class="row-desc">{item.description}</p>}
@@ -240,7 +242,9 @@ const addOns = menuData.addOns;
     border-bottom: 1px solid var(--hairline);
   }
   .row-head { display: flex; align-items: baseline; gap: var(--space-3); }
-  .row-name { font-family: var(--font-display); font-weight: 500; font-size: 22px; color: var(--ink); display: inline-block; }
+  /* line-height: inherit so the plain-row <h3> matches the photo-row <span>
+     (the global heading rule would otherwise make plain rows shorter). */
+  .row-name { line-height: inherit; font-family: var(--font-display); font-weight: 500; font-size: 22px; color: var(--ink); display: inline-block; }
   /* Tactile row hover (menuHover flag): the dish name leans in, price warms. */
   @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
     .menu-row[data-menu-hover] .row-name,
@@ -276,6 +280,12 @@ const addOns = menuData.addOns;
     color: inherit;
   }
   .row-toggle .row-head { width: 100%; }
+  /* Imageless rows get the same box as the toggle button (44px min, 2px pad)
+     so photo and plain rows share one vertical rhythm. */
+  .row-plain {
+    min-height: 44px;
+    padding: 2px 0;
+  }
   /* Tap-to-expand area (touch): grid-rows 0fr->1fr, settles downward. */
   .row-expand {
     display: grid;
@@ -382,11 +392,13 @@ const addOns = menuData.addOns;
       imgs[front].classList.remove('is-front');
       front = back;
     };
-    document.querySelectorAll<HTMLElement>('.menu-row[data-img]').forEach((row) => {
-      row.addEventListener('mouseenter', () => show(row.dataset.img));
-      row.addEventListener('focusin', () => show(row.dataset.img));
-    });
-    const list = document.querySelector('.menu-body');
+    // Delegated on the whole list: pointer or focus on a photo row shows its
+    // photo; anything else (an imageless row, a category heading, the add-ons)
+    // hides the panel, so it never shows one item's photo beside another item.
+    const list = document.querySelector<HTMLElement>('.menu-body');
+    const photoFor = (e: Event) => (e.target as Element | null)?.closest<HTMLElement>('.menu-row')?.dataset.img;
+    list?.addEventListener('mouseover', (e) => show(photoFor(e)));
+    list?.addEventListener('focusin', (e) => show(photoFor(e)));
     list?.addEventListener('mouseleave', () => panel.classList.remove('is-on'));
   }
 

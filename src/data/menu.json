@@ -74,8 +74,8 @@
           "name": "Sourdough Bread",
           "description": "",
           "tags": [],
-          "image": "bread-wall.jpg",
-          "alt": "Sourdough loaves on oak shelves against patterned tile"
+          "image": "sourdough.jpg",
+          "alt": "A scored sourdough boule on an oak bread shelf"
         },
         {
           "name": "Baguette",
@@ -120,18 +120,22 @@
           "name": "Madeleine Vanilla",
           "description": "",
           "tags": [],
-          "image": "madeleines.jpg",
-          "alt": "A sheet tray of glazed madeleines, some dipped in dark chocolate"
+          "image": "madeleine-vanilla.jpg",
+          "alt": "White-glazed vanilla madeleines on parchment"
         },
         {
           "name": "Madeleine Chocolate",
           "description": "",
-          "tags": []
+          "tags": [],
+          "image": "madeleine-chocolate.jpg",
+          "alt": "Madeleines dipped in dark chocolate on parchment"
         },
         {
           "name": "Madeleine Raspberry",
           "description": "",
-          "tags": []
+          "tags": [],
+          "image": "madeleine-raspberry.jpg",
+          "alt": "Raspberry-glazed madeleines on a lined sheet tray"
         },
         {
           "name": "Lemon Cake",
@@ -393,19 +397,6 @@
         {
           "name": "Loonen Still Water",
           "price": "$6.00",
-          "description": "",
-          "tags": []
-        }
-      ]
-    },
-    {
-      "id": "special",
-      "title": "Monthly Special",
-      "order": 9,
-      "items": [
-        {
-          "name": "PEACH-y something",
-          "price": "$8.00",
           "description": "",
           "tags": []
         }

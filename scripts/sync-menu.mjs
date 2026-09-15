@@ -26,7 +26,6 @@ export const ALLOWED_CATEGORIES = [
   'Matcha',
   'Tea',
   'Fridge & Bottled',
-  'Monthly Special',
 ];
 
 const PRICE_RE = /^\$?\d+(\.\d{2})?$/;

@@ -31,8 +31,8 @@ directly in this folder. To use one, move it up a level and reference it.
 | sourdough.jpg | Menu: Sourdough Bread (1012x1262 crop of one boule) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0041 |
 | unplaced/bread-wall.jpg | Unplaced, not bundled (shelf of mixed breads) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0041 |
 | madeleine-vanilla.jpg | Menu: Madeleine Vanilla (crop, white finish only) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0049 |
-| madeleine-chocolate.jpg | Menu: Madeleine Chocolate (crop, chocolate finish only) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0049 |
-| madeleine-raspberry.jpg | Menu: Madeleine Raspberry (crop, raspberry finish only) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0049 |
+| madeleine-chocolate.jpg | Menu: Madeleine Chocolate (crop, chocolate finish only, 1486x1800) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0049 |
+| madeleine-raspberry.jpg | Menu: Madeleine Raspberry (crop, raspberry finish only, 1380x1800) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0049 |
 | unplaced/madeleines.jpg | Unplaced, not bundled (tray of all three finishes) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0049 |
 | almond-croissant.jpg | Menu: Nutty Croissant | Kayla | 2026-09-04 | 20260904_LoumaBakery_0146 |
 | croissant-cut.jpg | Story chapter 01 | Kayla | 2026-09-04 | 20260904_LoumaBakery_0307 |

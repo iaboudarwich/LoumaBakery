@@ -119,6 +119,7 @@ const today = new Date().toISOString().slice(0, 10);
   .tier-items li::before { content: '·'; position: absolute; left: 0; color: var(--clay); }
 
   .inquiry { padding-block: var(--space-9); }
+  .inquiry .sec-head > h2 + p { margin-top: var(--space-2); }
 
   @media (max-width: 820px) {
     .process-grid, .tiers-grid { grid-template-columns: 1fr; }

@@ -20,10 +20,3 @@ export { default as Wordmark } from "../assets/brand/wordmark.svg";
 export { default as Baguette } from "../assets/brand/baguette-baked.svg";
 export { default as Toast } from "../assets/brand/toast-baked.svg";
 
-/** Intrinsic aspect ratios, for reserving layout space without shift. */
-export const brandRatios = {
-  face: 286 / 265,
-  wordmark: 374 / 240,
-  baguette: 280 / 100,
-  toast: 200 / 232,
-} as const;

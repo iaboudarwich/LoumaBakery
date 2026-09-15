@@ -26,8 +26,12 @@ interface Props {
 }
 const { src, alt, sizes = '100vw', widths, priority = false, class: className, anim, tilt, quality } = Astro.props;
 
+// Read dimensions from the metadata `clone`: touching `src.width` directly marks
+// the full-size original as referenced, and Astro then copies it into dist even
+// though no page links to it. getImage() already uses the clone internally.
+const srcWidth = (src as ImageMetadata & { clone?: ImageMetadata }).clone?.width ?? src.width;
 const candidate = widths ?? [400, 800, 1200, 1600];
-const useWidths = Array.from(new Set(candidate.filter((w) => w <= src.width).concat(src.width))).sort(
+const useWidths = Array.from(new Set(candidate.filter((w) => w <= srcWidth).concat(srcWidth))).sort(
   (a, b) => a - b,
 );
 const pictureAttributes: Record<string, unknown> = { class: `limg ${className ?? ''}`.trim() };

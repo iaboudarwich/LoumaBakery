@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------
 # Security headers for the whole site.
 # CSP whitelists exactly what the site uses: self, inline styles/scripts that
-# Astro emits, Google Fonts (until self-hosted), and the Google Maps embed.
+# Astro emits, self-hosted fonts, and the Google Maps embed.
 # frame-ancestors/X-Frame-Options block clickjacking.
 # ----------------------------------------------------------------------------
 [[headers]]
@@ -19,6 +19,15 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
     Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+
+# ----------------------------------------------------------------------------
+# Fingerprinted build assets (/_astro/*: hashed JS, CSS, fonts, images) never
+# change under the same URL, so browsers may cache them for a year.
+# ----------------------------------------------------------------------------
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
 
 # ----------------------------------------------------------------------------
 # /admin (Decap CMS, self-hosted bundle — no CDN anywhere). unsafe-inline/eval

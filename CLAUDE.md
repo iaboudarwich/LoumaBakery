@@ -3,7 +3,7 @@
 You are building/maintaining the Louma Bakery website. Read this every session.
 
 ## What this is
-A neighborhood bakery on Wilshire (Santa Monica), opening July 2026, with an inclusive-employment mission (many teammates have intellectual or developmental differences; the bakery exists partly to show that done right). Founder: Milla Ghandour; named for her sister Louma. Tone: warm, plain-spoken, proud, never saccharine.
+A neighborhood bakery on Wilshire (Santa Monica), open and trading (as of September 2026), with an inclusive-employment mission (many teammates have intellectual or developmental differences; the bakery exists partly to show that done right). Founder: Milla Ghandour; named for her sister Louma. Tone: warm, plain-spoken, proud, never saccharine.
 
 ## Stack & rules
 - Astro, static output, TypeScript strict. No heavy UI framework.

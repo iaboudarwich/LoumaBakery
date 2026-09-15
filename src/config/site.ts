@@ -47,5 +47,3 @@ export const siteConfig = {
 /** Convenience: the production URL. */
 export const SITE_URL = siteConfig.url;
 
-/** Back-compat alias for Phase 1 code that imported `site`. */
-export const site = siteConfig;

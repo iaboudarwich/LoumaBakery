@@ -102,8 +102,6 @@ collections:
           - { name: story1Alt, label: "Photo 1 description", widget: string, required: false, hint: "What photo 1 shows, for screen readers." }
           - { name: story2, label: "Story: photo 2", widget: image, choose_url: false }
           - { name: story2Alt, label: "Photo 2 description", widget: string, required: false, hint: "What the photo shows, for screen readers." }
-          - { name: story3, label: "Story: photo 3", widget: image, choose_url: false }
-          - { name: story3Alt, label: "Photo 3 description", widget: string, required: false, hint: "What the photo shows, for screen readers." }
           - { name: ig1, label: "Home: accent photo", widget: image, choose_url: false, hint: "The small inset photo in the home story block." }
           - { name: ig1Alt, label: "Accent photo description", widget: string, required: false, hint: "What the photo shows, for screen readers." }
 
@@ -331,29 +329,6 @@ collections:
               - { name: body, label: "Text", widget: text }
               - { name: image, label: "Photo", widget: image, required: false, choose_url: false, hint: "Optional photo for this chapter. Portrait works best." }
               - { name: alt, label: "Photo description", widget: string, required: false, hint: "What the photo shows, for screen readers." }
-
-  # =================================================== TESTIMONIALS =========
-  - name: testimonials
-    label: "Testimonials"
-    description: "Short quotes shown around the site."
-    delete: false
-    editor: { preview: false }
-    files:
-      - name: testimonials
-        label: "Testimonials"
-        file: "src/data/testimonials.json"
-        description: "Add, edit, or remove quotes."
-        fields:
-          - name: testimonials
-            label: "Quotes"
-            label_singular: "Quote"
-            widget: list
-            summary: "{{fields.quote}}"
-            fields:
-              - { name: id, label: "Internal ID", widget: string, hint: "Leave it as it is." }
-              - { name: quote, label: "Quote", widget: text }
-              - { name: name, label: "Name", widget: string }
-              - { name: role, label: "Role", widget: string, required: false, hint: "e.g. Neighbor, Regular." }
 
   # ===================================================== INGREDIENTS =========
   - name: ingredients

@@ -72,7 +72,7 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 const builders: Record<string, () => void> = {
   // --- Hero media drift (hero only, very slow) ---
   kenBurns() {
-    $('.hero-media [data-anim="ken-burns"], .hero [data-anim="ken-burns"]').forEach((el) => {
+    $('.hero-media [data-anim="ken-burns"]').forEach((el) => {
       const ctrl = animate(el, { scale: [1, 1.05] }, { duration: 28, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' });
       add('kenBurns', () => { ctrl.stop(); (el as HTMLElement).style.transform = ''; });
     });

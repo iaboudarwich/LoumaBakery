@@ -31,26 +31,7 @@ export const features = {
   toast: true,
   /** Slim sticky bottom CTA bar on phones (thumb-reach newsletter jump). */
   mobileCtaBar: true,
-
-  // --- Classic-layout-only type treatment ---
-  /** Bolder display headline treatment (classic layout only). */
-  boldDisplay: true,
 } as const;
 
 export type FeatureFlag = keyof typeof features;
 
-/** Layout system.
- *  'slab'    = the editorial-slab system: flat, full-bleed color bands, extreme
- *              type split, pill shape language, ghost buttons (default).
- *  'classic' = the previous layout, exactly as it shipped.
- */
-export type LayoutSystem = 'slab' | 'classic';
-export const layoutSystem: LayoutSystem = 'slab';
-
-/** Hero variant.
- *  'media'    = full-bleed bakery photo/video, content bottom-left (default).
- *  'editorial'= type-led headline on cream with a framed photo.
- *  'photo'    = the full-bleed photo + panel.
- */
-export type HeroStyle = 'media' | 'editorial' | 'photo';
-export const heroStyle: HeroStyle = 'media';

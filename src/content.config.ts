@@ -67,16 +67,6 @@ const copy = defineCollection({
     .loose(),
 });
 
-const testimonials = defineCollection({
-  // wrapped as { testimonials: [...] } so the CMS can edit it (Decap can't edit
-  // a root-level array). Unwrap to the list here.
-  loader: file('src/data/testimonials.json', { parser: (text) => JSON.parse(text).testimonials }),
-  schema: z.object({
-    quote: z.string(),
-    name: z.string(),
-    role: z.string().optional(),
-  }),
-});
 
 const marquee = defineCollection({
   // wrapped as { items: [...] } for the CMS; unwrap here.
@@ -113,7 +103,6 @@ const ingredients = defineCollection({
 export const collections = {
   menu,
   copy,
-  testimonials,
   marquee,
   storyChapters,
   ingredients,

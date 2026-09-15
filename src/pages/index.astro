@@ -2,7 +2,7 @@
 import { getEntry, getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { siteConfig } from '../config/site';
-import { features as f, heroStyle, layoutSystem } from '../config/features';
+import { features as f } from '../config/features';
 import Img from '../components/Img.astro';
 import Sketch from '../components/Sketch.astro';
 import NewsletterForm from '../components/NewsletterForm.astro';
@@ -13,7 +13,6 @@ import images from '../data/images.json';
 const heroPhoto = pick(images.hero);
 const story1Photo = pick(images.story1);
 const story2Photo = pick(images.story2);
-const story3Photo = pick(images.story3);
 const ig1Photo = pick(images.ig1);
 // Hero AVIF must stay <=150KB at every phone size (CLAUDE.md). A 430px @3x
 // phone picks the 1600w variant, so quality is tuned against that file.
@@ -23,16 +22,9 @@ const HERO_QUALITY = 45;
 const home = (await getEntry('copy', 'home'))!.data;
 const menu = (await getCollection('menu')).sort((a, b) => a.data.order - b.data.order);
 const marquee = (await getCollection('marquee')).sort((a, b) => a.data.order - b.data.order);
-const chapters = (await getCollection('storyChapters')).sort((a, b) => a.data.order - b.data.order);
-const testimonials = await getCollection('testimonials');
-
-const lead = testimonials[0]?.data;
-const altBlocks = chapters.slice(0, 3);
-
 // Home shows a tight 6-item signature grid, not the full category-by-category
 // menu (that lives on /menu). Keeps the page short and gives the CTA a job.
 const featured = menu.flatMap((cat) => cat.data.items).slice(0, 6);
-const featuredPhotos = featured.map((item) => pick(item.image));
 
 // Order link is a placeholder until a real Uber Eats URL is set — render the
 // button inert ("Ordering soon") rather than a dead link. Becomes a real link
@@ -42,7 +34,7 @@ const orderReady = !!siteConfig.links.uberEats && siteConfig.links.uberEats !== 
 // The hero must never dead-end. Real Order link when ready; otherwise the
 // newsletter (copy.json home.newsletterCta) so the CTA
 // still goes somewhere; falls back to the inert "Ordering soon" if that flag is
-// off. Used by all three hero variants.
+// off.
 const heroCta = orderReady
   ? { as: 'a' as const, href: siteConfig.links.uberEats, external: true, label: home.cta?.label ?? 'Order' }
   : f.heroNewsletterCta
@@ -50,10 +42,8 @@ const heroCta = orderReady
     : { as: 'button' as const, href: '', external: false, label: 'Ordering soon' };
 ---
 
-<BaseLayout transparentNav={heroStyle === 'photo' || heroStyle === 'media'} schema="bakery" footerNewsletter={false} preloadHeroFont>
+<BaseLayout transparentNav schema="bakery" footerNewsletter={false} preloadHeroFont>
   {/* ================= SLAB HOME: photo band > cream > burgundy > cream ===== */}
-  {layoutSystem === 'slab' ? (
-  <>
   <section class="hero-media slab-hero">
     {heroPhoto && <Img src={heroPhoto} alt="" class="hero-bg" anim={f.kenBurns ? 'ken-burns' : undefined} priority quality={HERO_QUALITY} sizes="100vw" />}
     {/* Video-ready: set siteConfig.links.heroVideo to autoplay over the photo
@@ -151,237 +141,6 @@ const heroCta = orderReady
       </div>
     </div>
   </section>
-  </>
-  ) : (
-  <>
-  {/* ============================================ 1 · HERO ========= */}
-  {heroStyle === 'media' ? (
-    <section class="hero-media">
-      {heroPhoto && <Img src={heroPhoto} alt="" class="hero-bg" anim={f.kenBurns ? 'ken-burns' : undefined} priority quality={HERO_QUALITY} sizes="100vw" />}
-      {/* Video-ready: set siteConfig.links.heroVideo to a bakery-interior MP4/WebM
-          and it autoplays muted/looped over the photo poster. PLACEHOLDER: empty
-          until real footage lands (see src/config/site.ts). */}
-      {siteConfig.links.heroVideo && (
-        <video class="hero-video" data-hero-video={siteConfig.links.heroVideo} autoplay muted loop playsinline aria-hidden="true">
-          <source src={siteConfig.links.heroVideo} />
-        </video>
-      )}
-      <div class="hero-media-scrim" aria-hidden="true"></div>
-      <div class="container hero-media-inner">
-        <div class="hero-media-content">
-          <p class="eyebrow hero-media-eyebrow">{home.eyebrow}</p>
-          <h1 class="hero-headline hero-media-headline">{home.title}</h1>
-          {home.lede && <p class="hero-media-lede">{home.lede}</p>}
-          {heroCta.as === 'button' ? (
-            <button class="btn btn-primary hero-media-cta" type="button" disabled aria-disabled="true" title="Online ordering isn't available yet.">
-              {heroCta.label}
-            </button>
-          ) : (
-            <a class="btn btn-primary hero-media-cta" href={heroCta.href} target={heroCta.external ? '_blank' : undefined} rel={heroCta.external ? 'noopener' : undefined}>
-              {heroCta.label}
-            </a>
-          )}
-        </div>
-      </div>
-    </section>
-  ) : heroStyle === 'photo' ? (
-    <section class="hero">
-      {heroPhoto && <Img src={heroPhoto} alt="" class="hero-bg" anim={f.kenBurns ? 'ken-burns' : undefined} priority quality={HERO_QUALITY} sizes="100vw" />}
-      {siteConfig.links.heroVideo && (
-        <video class="hero-video" data-hero-video={siteConfig.links.heroVideo} autoplay muted loop playsinline aria-hidden="true">
-          <source src={siteConfig.links.heroVideo} />
-        </video>
-      )}
-      <div class="hero-overlay" aria-hidden="true"></div>
-      <div class="container hero-grid">
-        <div class="hero-panel">
-          <p class="eyebrow hero-eyebrow">{home.eyebrow}</p>
-          <h1 class="hero-headline">{home.title}</h1>
-          {home.lede && <p class="hero-lede">{home.lede}</p>}
-          {heroCta.as === 'button' ? (
-            <button class="btn btn-primary hero-cta" type="button" disabled aria-disabled="true" title="Online ordering isn't available yet.">
-              {heroCta.label}
-            </button>
-          ) : (
-            <a class="btn btn-primary hero-cta" href={heroCta.href} target={heroCta.external ? '_blank' : undefined} rel={heroCta.external ? 'noopener' : undefined}>
-              {heroCta.label}
-            </a>
-          )}
-        </div>
-      </div>
-    </section>
-  ) : (
-    <section class="hero-ed">
-      <div class="container hero-ed-grid">
-        <div class="hero-ed-text">
-          <p class="eyebrow">{home.eyebrow}</p>
-          <h1 class="hero-headline hero-ed-headline">{home.title}</h1>
-          {home.lede && <p class="hero-ed-lede">{home.lede}</p>}
-          {heroCta.as === 'button' ? (
-            <button class="btn btn-primary hero-ed-cta" type="button" disabled aria-disabled="true" title="Online ordering isn't available yet.">
-              {heroCta.label}
-            </button>
-          ) : (
-            <a class="btn btn-primary hero-ed-cta" href={heroCta.href} target={heroCta.external ? '_blank' : undefined} rel={heroCta.external ? 'noopener' : undefined}>
-              {heroCta.label}
-            </a>
-          )}
-          <div class="hero-ed-sketch" aria-hidden="true">
-            <Sketch name="baguette" width={160} height={57} color="var(--red)" draw={f.scrollDraw} />
-          </div>
-        </div>
-        <div class="hero-ed-media">
-          {heroPhoto && <Img src={heroPhoto} alt="" class="hero-ed-photo" anim={f.kenBurns ? 'ken-burns' : undefined} priority quality={HERO_QUALITY} sizes="(max-width: 860px) 100vw, 46vw" />}
-        </div>
-      </div>
-    </section>
-  )}
-
-  {/* ====================================== 2 · EDITORIAL (thesis) = */}
-  <section class="editorial section">
-    <div class="editorial-inner" data-anim={f.reveal ? 'reveal' : undefined} data-reveal="rise" data-reveal-children>
-      <h2 class="editorial-line">{home.craftLine}</h2>
-      {home.body.map((p) => <p class="editorial-body">{p}</p>)}
-      {home.missionLine && <p class="editorial-mission">{home.missionLine}</p>}
-      <div class="home-break" aria-hidden="true">
-        <Sketch name="baguette" width={150} height={54} color="var(--clay)" draw={f.scrollDraw} />
-      </div>
-    </div>
-  </section>
-
-  {/* ==================================== 3 · SIGNATURE (full-bleed) */}
-  {altBlocks[0] && (
-    <section class="block block--fullbleed">
-      {story1Photo && <Img src={story1Photo} alt="" class="block-bg" anim={f.kenBurns ? 'ken-burns' : undefined} sizes="100vw" />}
-      <div class="block-overlay" aria-hidden="true"></div>
-      <div class="container block-fb-text on-dark">
-        {altBlocks[0].data.eyebrow && <p class="eyebrow">{altBlocks[0].data.eyebrow}</p>}
-        <h2>{altBlocks[0].data.title}</h2>
-        <p>{altBlocks[0].data.body}</p>
-      </div>
-    </section>
-  )}
-
-  {/* ==================================== 4 · NUMERAL block ======== */}
-  {altBlocks[1] && (
-    <section class="block block--numeral section">
-      <div class="container block-numeral-grid" data-anim={f.reveal ? 'reveal' : undefined} data-reveal-children>
-        <div class="block-numeral-text">
-          {/* Numbered markers removed by request; could return later as small
-              custom images (drawn numerals) if the brand wants them back. */}
-          <h2>{altBlocks[1].data.title}</h2>
-          <p>{altBlocks[1].data.body}</p>
-        </div>
-        {story2Photo && <Img src={story2Photo} alt={altBlocks[1].data.title} class="block-numeral-img" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 100vw, 45vw" />}
-      </div>
-    </section>
-  )}
-
-  {/* ==================================== 5 · DUO block =========== */}
-  {altBlocks[2] && (
-    <section class="block block--duo section">
-      <div class="container block-duo-grid" data-anim={f.reveal ? 'reveal' : undefined} data-reveal-children>
-        <div class="block-duo-imgs">
-          {story3Photo && <Img src={story3Photo} alt={altBlocks[2].data.title} class="duo-img duo-img--1" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 50vw, 30vw" />}
-          {ig1Photo && <Img src={ig1Photo} alt="" class="duo-img duo-img--2" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 50vw, 30vw" />}
-        </div>
-        <div class="block-duo-text">
-          {altBlocks[2].data.eyebrow && <p class="eyebrow">{altBlocks[2].data.eyebrow}</p>}
-          <h2>{altBlocks[2].data.title}</h2>
-          <p>{altBlocks[2].data.body}</p>
-        </div>
-      </div>
-    </section>
-  )}
-
-  {/* ======================================= 6 · MARQUEE (accent) = */}
-  <section class="marquee" aria-label="Louma in a few words" data-anim={f.reveal ? 'reveal' : undefined}>
-    <div class="marquee-vp" data-anim={f.marquee ? 'marquee' : undefined}>
-      <div class="marquee-track">
-        {marquee.map((m) => (
-          <span class="marquee-item">
-            <span>{m.data.text}</span>
-            <span class="marquee-dot" aria-hidden="true">·</span>
-          </span>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  {/* Section break ornament */}
-  <div class="home-break home-break--toast container" aria-hidden="true">
-    <Sketch name="toast" width={84} height={97} color="var(--clay)" draw={f.scrollDraw} />
-  </div>
-
-  {/* =================================== 7 · PRODUCT GRID ========= */}
-  <section class="menu-sec section">
-    <div class="container">
-      <header class="sec-head">
-        <p class="eyebrow">The menu</p>
-        <h2>{home.menuTitle}</h2>
-      </header>
-      <ul class="product-grid" role="list" data-anim={f.reveal ? 'reveal' : undefined} data-reveal-children>
-        {featured.map((item, i) => (
-          <li class="product-card">
-            {featuredPhotos[i] && <Img src={featuredPhotos[i]!} alt={item.name} class="product-img" sizes="(max-width: 520px) 90vw, 300px" />}
-            <div class="product-meta">
-              <div class="product-row">
-                <h4 class="product-name">{item.name}</h4>
-                {item.price && <span class="product-price mono">{item.price}</span>}
-              </div>
-              {item.description && <p class="product-desc">{item.description}</p>}
-            </div>
-          </li>
-        ))}
-      </ul>
-      <p class="menu-more"><a class="btn btn-ghost" href="/menu">See the full menu</a></p>
-    </div>
-  </section>
-
-  {/* ==================================== 8 · TESTIMONIAL ========= */}
-  {lead && (
-    <section class="testimonial section">
-      <figure class="container testimonial-inner">
-        <blockquote class="testimonial-quote" data-anim={f.reveal ? 'reveal' : undefined} data-reveal="fade">“{lead.quote}”</blockquote>
-        <figcaption class="testimonial-by mono">
-          {lead.name}{lead.role && <span class="testimonial-role"> · {lead.role}</span>}
-        </figcaption>
-      </figure>
-    </section>
-  )}
-
-  {/* ============================ 9 · FIND US + NEWSLETTER ======= */}
-  <section class="findus section">
-    <div class="container findus-grid" data-anim={f.reveal ? 'reveal' : undefined} data-reveal-children>
-      <div class="findus-info">
-        <p class="eyebrow">Visit</p>
-        <h2>{home.findTitle}</h2>
-        <address class="findus-address">
-          <p>{siteConfig.address.street}<br />{siteConfig.address.city}, {siteConfig.address.state} {siteConfig.address.zip}</p>
-          <ul class="findus-hours" role="list">
-            {siteConfig.hours.map((h) => (
-              <li>
-                <span class="mono">{h.days}</span>
-                <span class="mono findus-hours-time">{h.close ? `${h.open}–${h.close}` : h.open}</span>
-              </li>
-            ))}
-          </ul>
-          <p class="findus-contact">
-            <a href={`tel:${siteConfig.phone.replace(/[^+\d]/g, '')}`}>{siteConfig.phone}</a><br />
-            <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
-          </p>
-        </address>
-      </div>
-
-      <div class="findus-news on-dark" id="newsletter">
-        <h2 class="news-title">{home.newsletterTitle}</h2>
-        {home.newsletterBody && <p class="news-body">{home.newsletterBody}</p>}
-        <NewsletterForm variant="page" />
-      </div>
-    </div>
-  </section>
-  </>
-  )}
   {/* Footer comes from BaseLayout. */}
 </BaseLayout>
 
@@ -390,7 +149,6 @@ const heroCta = orderReady
      three deliberate dark/accent moments break it: the hero photo, the
      full-bleed signature block, the burgundy marquee ribbon, and the footer.
      Sections separate by rhythm (consistent vertical padding), not color. */
-  .section { padding-block: clamp(2.75rem, 5.5vw, 4.75rem); }
 
   /* --- Slab home --- */
   .slab-body { margin-top: var(--space-5); }
@@ -398,11 +156,6 @@ const heroCta = orderReady
   .slab-sketch { margin-top: var(--space-5); }
   .slab-find { margin-top: clamp(3rem, 6vw, 5rem); }
   :global(html.sys-slab) .band .menu-more { text-align: start; margin-top: var(--space-5); }
-
-  /* Hand-drawn section-break ornaments (small, charming accents). */
-  .home-break { display: flex; justify-content: center; }
-  .editorial-inner .home-break { margin-top: var(--space-6); }
-  .home-break--toast { padding-block: var(--space-4); }
 
   /* ============================ 1 · HERO (media, full-bleed) ===== */
   .hero-media {
@@ -432,18 +185,6 @@ const heroCta = orderReady
   }
   .hero-media-content { max-width: clamp(320px, 60vw, 680px); color: var(--surface-0); }
   .hero-media .hero-media-eyebrow { color: color-mix(in srgb, var(--surface-0) 86%, transparent); }
-  .hero-media .hero-media-headline {
-    margin-top: var(--space-3);
-    font-family: var(--font-display);
-    font-weight: 300;
-    font-style: italic;
-    font-size: var(--t-hero);
-    line-height: var(--lh-tight);
-    letter-spacing: -0.012em;
-    color: var(--butter);
-    text-wrap: balance;
-    text-shadow: 0 1px 28px color-mix(in srgb, var(--ink) 55%, transparent);
-  }
   .hero-media-lede {
     margin-top: var(--space-4);
     color: color-mix(in srgb, var(--surface-0) 92%, transparent);
@@ -487,74 +228,7 @@ const heroCta = orderReady
     :global(body.has-cta-bar) .hero-media { min-height: 78svh; }
   }
 
-  /* ============================ 1 · HERO (editorial, type-led) ===== */
-  .hero-ed {
-    background: linear-gradient(180deg, var(--butter), var(--surface-0) 72%);
-    display: flex;
-    align-items: center;
-    min-height: calc(100vh - var(--nav-h)); /* fallback */
-    min-height: calc(100svh - var(--nav-h));
-    padding-block: clamp(2rem, 6vw, 5rem);
-  }
-  .hero-ed-grid {
-    display: grid;
-    grid-template-columns: 1.05fr 0.95fr;
-    gap: clamp(var(--space-6), 5vw, var(--space-8));
-    align-items: center;
-    width: 100%;
-  }
-  /* Scoped under .hero-ed so it beats the photo-hero's `.hero-headline` rule
-     (which the shared class would otherwise apply: cream color + dark shadow). */
-  .hero-ed .hero-ed-headline {
-    margin-top: var(--space-3);
-    font-family: var(--font-display);
-    /* 500 (not the photo-hero's 300): thin italic is too faint as ink-on-cream;
-       medium weight gives the headline real presence and clear legibility. */
-    font-weight: 500;
-    font-style: italic;
-    font-size: var(--t-hero);
-    line-height: var(--lh-tight);
-    letter-spacing: -0.012em;
-    color: var(--ink);
-    text-shadow: none;
-    text-wrap: balance;
-  }
-  .hero-ed-lede {
-    margin-top: var(--space-4);
-    color: var(--body);
-    font-size: clamp(17px, 1.4vw, 20px);
-    max-width: 44ch;
-  }
-  .hero-ed-cta { margin-top: var(--space-6); }
-  .hero-ed-sketch { margin-top: var(--space-7); }
-  /* Framed, secondary photo (not a full-bleed blurred card). */
-  .hero-ed-media {
-    position: relative;
-    border-radius: var(--radius-lg);
-    border: 1px solid color-mix(in srgb, var(--clay) 30%, transparent);
-    box-shadow: var(--shadow-lg);
-    overflow: hidden;
-    background: var(--surface-2);
-  }
-  @media (max-width: 860px) {
-    .hero-ed { min-height: 0; }
-    .hero-ed-grid { grid-template-columns: 1fr; gap: var(--space-6); }
-    .hero-ed-media { order: -1; }
-    .hero-ed-sketch { display: none; }
-  }
-  @media (max-width: 430px) {
-    .hero-ed .hero-ed-headline { font-size: clamp(34px, 11vw, 48px); }
-  }
-
-  /* ===================================== 1 · HERO (photo) ===== */
-  .hero {
-    position: relative;
-    min-height: 100vh; /* fallback */
-    min-height: 100svh;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-  }
+  /* ========================= HERO video (optional, over the photo) ===== */
   .hero-video { display: none; }
   .hero-video:not([data-hero-video=""]) {
     display: block;
@@ -564,71 +238,6 @@ const heroCta = orderReady
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-  /* Stronger scrim so the headline + body are legible over ANY hero photo. */
-  .hero-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    background:
-      linear-gradient(100deg, color-mix(in srgb, var(--ink) 84%, transparent) 0%, color-mix(in srgb, var(--ink) 52%, transparent) 48%, color-mix(in srgb, var(--ink) 28%, transparent) 100%),
-      linear-gradient(0deg, color-mix(in srgb, var(--ink) 30%, transparent), transparent 45%);
-  }
-  .hero-grid { position: relative; z-index: 2; width: 100%; }
-  .hero-panel {
-    max-width: clamp(320px, 52vw, 600px);
-    margin-inline-start: clamp(0px, 2vw, 40px);
-    padding: clamp(1.5rem, 4vw, 3rem);
-    background: color-mix(in srgb, var(--ink) 46%, transparent);
-    border: 1px solid color-mix(in srgb, var(--surface-0) 22%, transparent);
-    -webkit-backdrop-filter: blur(12px) saturate(120%);
-    backdrop-filter: blur(12px) saturate(120%);
-    border-radius: var(--radius-lg);
-    box-shadow:
-      0 24px 60px color-mix(in srgb, var(--ink) 46%, transparent),
-      inset 0 1px 0 color-mix(in srgb, var(--surface-0) 20%, transparent);
-    color: var(--surface-0);
-  }
-  .hero-eyebrow { color: color-mix(in srgb, var(--surface-0) 84%, transparent); }
-  .hero-headline {
-    margin-top: var(--space-3);
-    font-family: var(--font-display);
-    font-weight: 300;
-    font-style: italic;
-    font-size: var(--t-hero);
-    line-height: var(--lh-tight);
-    letter-spacing: -0.012em;
-    color: var(--surface-0);
-    text-wrap: balance;
-    text-shadow: 0 1px 24px color-mix(in srgb, var(--ink) 40%, transparent);
-  }
-  .hero-lede {
-    margin-top: var(--space-4);
-    color: color-mix(in srgb, var(--surface-0) 92%, transparent);
-    font-size: clamp(17px, 1.4vw, 20px);
-    max-width: 42ch;
-  }
-  .hero-cta { margin-top: var(--space-6); }
-
-  /* ================================ 2 · EDITORIAL ===== */
-  .editorial-inner { max-width: 720px; margin-inline: auto; padding-inline: var(--gutter); text-align: center; }
-  .editorial-line {
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-size: var(--t-h2);
-    color: var(--ink);
-    margin-bottom: var(--space-5);
-  }
-  .editorial-body { margin-inline: auto; color: var(--body); }
-  .editorial-body + .editorial-body { margin-top: var(--space-4); }
-  .editorial-mission {
-    margin-top: var(--space-6);
-    font-family: var(--font-display);
-    font-style: italic;
-    font-size: clamp(20px, 2.2vw, 28px);
-    color: var(--burgundy);
-    max-width: 28ch;
-    margin-inline: auto;
   }
 
   /* ================================ MARQUEE (accent) ===== */
@@ -651,45 +260,8 @@ const heroCta = orderReady
   }
   .marquee-dot { color: var(--coral); }
 
-  /* ================================ ALT-BLOCKS ===== */
-  .block h2 { margin-bottom: var(--space-3); }
-
-  .block--fullbleed { position: relative; min-height: min(70vh, 560px); min-height: min(70svh, 560px); display: flex; align-items: flex-end; overflow: hidden; }
-  .block-overlay { position: absolute; inset: 0; z-index: 1; background: linear-gradient(0deg, color-mix(in srgb, var(--ink) 76%, transparent), transparent 72%); }
-  .block-fb-text { position: relative; z-index: 2; padding-block: var(--space-8); max-width: 620px; }
-  .block-fb-text h2, .block-fb-text p { color: var(--surface-0); }
-
-  .block-numeral-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(var(--space-5), 5vw, var(--space-8)); align-items: center; }
-
-  .block-duo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(var(--space-5), 5vw, var(--space-8)); align-items: center; }
-  .block-duo-imgs { position: relative; min-height: 420px; }
-
-  /* ================================ MENU (6 signatures) ===== */
-  /* auto-fit so the items fill each row evenly (no orphan gaps). */
-  .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-5); }
+  /* ================================ MENU PREVIEW ===== */
   .menu-more { margin-top: var(--space-6); text-align: center; max-width: none; }
-  .product-card {
-    display: flex;
-    flex-direction: column;
-    background: var(--surface-1);
-    border: 1px solid var(--hairline);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
-    transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
-  }
-  .product-meta { padding: var(--space-4); display: flex; flex-direction: column; flex: 1; }
-  .product-row { display: flex; justify-content: space-between; gap: var(--space-3); align-items: baseline; }
-  .product-name { font-size: clamp(20px, calc(20px + (100vw - 1920px) * 0.003906), 22.5px); }
-  .product-price { color: var(--burgundy); }
-  .product-desc { margin-top: var(--space-2); font-size: clamp(14px, calc(14px + (100vw - 1920px) * 0.003125), 16px); color: var(--muted); }
-
-  /* ================================ TESTIMONIAL ===== */
-  .testimonial { text-align: center; }
-  .testimonial-inner { max-width: 800px; }
-  .testimonial-quote { font-family: var(--font-display); font-style: italic; font-weight: 300; font-size: clamp(26px, 3.4vw, 44px); line-height: 1.25; color: var(--ink); }
-  .testimonial-by { margin-top: var(--space-5); color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px); }
-  .testimonial-role { color: var(--clay); }
 
   /* ================================ FIND US ===== */
   .findus-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(var(--space-5), 5vw, var(--space-7)); align-items: stretch; }
@@ -716,14 +288,6 @@ const heroCta = orderReady
 
   /* ===================================== Responsive ===== */
   @media (max-width: 860px) {
-    .block-numeral-grid,
-    .block-duo-grid,
     .findus-grid { grid-template-columns: 1fr; }
-    .block-duo-imgs { min-height: 0; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
-  }
-  /* Tighten the hero on phones so the panel doesn't dominate the screen. */
-  @media (max-width: 430px) {
-    .hero { min-height: 78svh; }
-    .hero-panel { padding: 1.25rem 1.25rem 1.5rem; }
   }
 </style>

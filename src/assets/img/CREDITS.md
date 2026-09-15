@@ -20,7 +20,7 @@ directly in this folder. To use one, move it up a level and reference it.
 | baguette.jpg | Menu: Baguette | Kayla | 2026-08-30 | 20260830_LoumaBakery_0258 |
 | latte.jpg | Menu: Latte | Kayla | 2026-08-30 | 20260830_LoumaBakery_0190 |
 | seeded-knot.jpg | Home collage (ig1; item unconfirmed) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0281 |
-| staff-at-case.jpg | images.json story3 (classic layout only) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0375 |
+| unplaced/staff-at-case.jpg | Unplaced, not bundled (was the classic layout's story3) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0375 |
 | unplaced/seeded-knot-tissue.jpg | Unplaced, not bundled (item unconfirmed) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0278 |
 | unplaced/seeded-knot-detail.jpg | Unplaced, not bundled (item unconfirmed) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0083 |
 | unplaced/viennoiserie-spread.jpg | Unplaced, not bundled | Kayla | 2026-08-30 | 20260830_LoumaBakery_0079 |

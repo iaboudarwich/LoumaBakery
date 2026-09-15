@@ -2,7 +2,7 @@
 import { getEntry, getCollection } from 'astro:content';
 import { getImage } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { features as f, layoutSystem } from '../config/features';
+import { features as f } from '../config/features';
 import Sketch from '../components/Sketch.astro';
 import { resolveImage } from '../lib/images';
 import { noOrphan } from '../lib/typography';
@@ -140,7 +140,7 @@ const addOns = menuData.addOns;
       </>
     ))}
 
-    {layoutSystem === 'slab' && firstPanel && (
+    {firstPanel && (
       <aside class="menu-panel" aria-hidden="true" data-first={firstPanel}>
         {/* src is seeded by JS on hover devices only: a display:none img with a
             src still downloads on mobile. */}

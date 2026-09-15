@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { siteConfig } from '../config/site';
 import { features as f } from '../config/features';
 import Img from '../components/Img.astro';
+import HeroPicture from '../components/HeroPicture.astro';
 import Sketch from '../components/Sketch.astro';
 import NewsletterForm from '../components/NewsletterForm.astro';
 import { resolveImage as pick } from '../lib/images';
@@ -11,6 +12,8 @@ import images from '../data/images.json';
 
 // No placeholder fallbacks: a missing or unresolved photo renders no image.
 const heroPhoto = pick(images.hero);
+// Portrait-phone crop of the same photo (art direction; see HeroPicture).
+const heroPortraitPhoto = pick(images.heroPortrait);
 const story1Photo = pick(images.story1);
 const story2Photo = pick(images.story2);
 const ig1Photo = pick(images.ig1);
@@ -45,7 +48,7 @@ const heroCta = orderReady
 <BaseLayout transparentNav schema="bakery" footerNewsletter={false} preloadHeroFont>
   {/* ================= SLAB HOME: photo band > cream > burgundy > cream ===== */}
   <section class="hero-media slab-hero">
-    {heroPhoto && <Img src={heroPhoto} alt="" class="hero-bg" anim={f.kenBurns ? 'ken-burns' : undefined} priority quality={HERO_QUALITY} sizes="100vw" />}
+    {heroPhoto && <HeroPicture landscape={heroPhoto} portrait={heroPortraitPhoto} quality={HERO_QUALITY} anim={f.kenBurns ? 'ken-burns' : undefined} />}
     {/* Video-ready: set siteConfig.links.heroVideo to autoplay over the photo
         poster. PLACEHOLDER: empty until real footage lands (src/config/site.ts). */}
     {siteConfig.links.heroVideo && (

@@ -12,6 +12,7 @@ directly in this folder. To use one, move it up a level and reference it.
 | File | Slot | Photographer | Shoot | Original |
 |------|------|--------------|-------|----------|
 | hero.jpg | Home hero; source of public/og-default.jpg | Kayla | 2026-08-30 | 20260830_LoumaBakery_0578 |
+| hero-portrait.jpg | Home hero on portrait phones (3:4 center crop, 4644x6192 from the original, 1500x2000) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0578 |
 | plain-croissant.jpg | Menu: Plain Croissant (second copy of the hero frame) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0578 |
 | kitchen-team.jpg | Home collage (story2) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0139 |
 | lamination.jpg | Home collage (story1) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0198 |

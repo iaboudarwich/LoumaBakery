@@ -3,7 +3,7 @@
  * (native POST → Netlify success page); with JS we submit in the background
  * and show an inline confirmation + toast, with a brand-voice retry on error.
  *
- * Honeypot: forms carry netlify-honeypot="bot-field" + a hidden bot-field.
+ * Honeypot: forms carry data-netlify-honeypot="bot-field" + a hidden bot-field.
  * If a bot fills it we silently no-op (and Netlify drops it server-side too).
  *
  * Per-form copy is read from data-success / data-error (with sensible

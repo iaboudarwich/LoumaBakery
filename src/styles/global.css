@@ -1,7 +1,6 @@
 /* =====================================================================
    Louma global styles. Import tokens first, then this.
-   Fonts are loaded via <link> in the document head (preconnect +
-   display=swap) — see the page/layout head, not here.
+   Fonts are self-hosted: src/styles/fonts.css, imported by BaseLayout.
    ===================================================================== */
 @import "./tokens.css";
 
@@ -127,19 +126,7 @@ p + p {
   margin-top: var(--space-4);
 }
 
-/* Reusable type utilities ------------------------------------------- */
-.hero-type {
-  font-family: var(--font-display);
-  font-weight: 300;
-  font-style: italic;
-  font-size: var(--t-hero);
-  line-height: var(--lh-tight);
-  color: var(--ink);
-}
-
-/* Section label: letterspaced mono + a short clay dash rule. ONE treatment,
-   used for every eyebrow site-wide (coral dash on dark surfaces). The dash
-   echoes the hand-drawn line language without spending the red budget. */
+/* Section label: the mono stamp (restyled for the slab below). */
 .eyebrow {
   display: inline-flex;
   align-items: center;
@@ -150,18 +137,6 @@ p + p {
   text-transform: uppercase;
   font-weight: 500;
   color: var(--muted);
-}
-.eyebrow::before {
-  content: "";
-  flex: 0 0 auto;
-  width: 1.4em;
-  height: 2px;
-  border-radius: 1px;
-  background: var(--clay);
-}
-.on-dark .eyebrow::before,
-.site-foot .eyebrow::before {
-  background: var(--coral);
 }
 
 .smallcaps {
@@ -331,8 +306,6 @@ a {
   border: 1.5px dashed color-mix(in srgb, var(--clay) 55%, transparent);
 }
 
-
-
 /* Responsive image wrapper (<Img> → <Picture>). The .limg picture carries the
    layout box (aspect-ratio/radius from the slot class); the img always covers. */
 .limg { display: block; overflow: hidden; }
@@ -343,7 +316,6 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
 .hero-bg { position: absolute; inset: 0; z-index: 0; }
 .chapter-img { aspect-ratio: 4 / 5; border-radius: var(--radius-lg); }
 .founder-img { aspect-ratio: 3 / 4; border-radius: var(--radius-lg); }
-.ing-img { aspect-ratio: 1; border-radius: var(--radius-md); }
 .chapter--flip .chapter-img { order: 2; }
 
 @media (max-width: 820px) {
@@ -436,9 +408,6 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
 /* Pre-paint hidden states (revealed by JS) */
 .fx-reveal [data-anim="reveal"] { opacity: 0; }
 
-
-
-
 /* Toast */
 #toast-region {
   position: fixed;
@@ -466,7 +435,6 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 /* Ingredient slider cursor affordance */
 .ing-track.is-dragging { cursor: grabbing; user-select: none; }
-
 
 /* ===================================================== SLAB SYSTEM =====
    html.sys-slab: the editorial-slab layout (the site's only layout). Flat
@@ -503,7 +471,6 @@ html.sys-slab .statement {
   text-wrap: balance;
   letter-spacing: -0.01em;
   color: var(--ink);
-  text-wrap: balance;
   max-width: 14ch;
 }
 html.sys-slab .statement--hero {
@@ -512,8 +479,7 @@ html.sys-slab .statement--hero {
   font-weight: 300;
   color: var(--butter);
 }
-html.sys-slab .band--burgundy .statement,
-html.sys-slab .band--ink .statement {
+html.sys-slab .band--burgundy .statement {
   color: var(--butter);
   font-style: italic;
   font-weight: 300;
@@ -532,9 +498,6 @@ html.sys-slab .info-h {
   letter-spacing: 0.1em;
   color: var(--burgundy);
 }
-html.sys-slab .eyebrow::before,
-html.sys-slab .foot-h::before,
-html.sys-slab .info-h::before { display: none; }
 html.sys-slab .on-dark .eyebrow,
 html.sys-slab .site-foot .eyebrow,
 html.sys-slab .site-foot .foot-h { color: var(--coral); }
@@ -543,7 +506,6 @@ html.sys-slab .site-foot .foot-h { color: var(--coral); }
    section surfaces. Hard cuts, no seams. Surface tints retired from sections. */
 html.sys-slab .band { padding-block: clamp(3.25rem, 7vw, 6.5rem); }
 html.sys-slab .band--burgundy { background: var(--burgundy); color: var(--butter); }
-html.sys-slab .band--ink { background: var(--ink); color: var(--surface-0); }
 html.sys-slab .page-head { background: var(--surface-0); border-bottom: 1px solid var(--hairline); }
 html.sys-slab .founder { background: var(--surface-0); border-block: 1px solid var(--hairline); }
 html.sys-slab .tiers { background: var(--surface-0); }
@@ -584,14 +546,14 @@ html.sys-slab .btn-coral {
   html.sys-slab .btn-coral:hover { background: var(--ink); border-color: var(--ink); color: var(--butter); }
 }
 /* Ghost on dark bands/footer + over the hero photo. */
-html.sys-slab :is(.on-dark, .site-foot, .band--burgundy, .band--ink) .btn:not(.btn-primary):not(.btn-coral),
+html.sys-slab :is(.on-dark, .site-foot, .band--burgundy) .btn:not(.btn-primary):not(.btn-coral),
 html.sys-slab .btn--cream {
   border-color: var(--butter);
   color: var(--butter);
   background: transparent;
 }
 @media (hover: hover) and (pointer: fine) {
-  html.sys-slab :is(.on-dark, .site-foot, .band--burgundy, .band--ink) .btn:not(.btn-primary):not(.btn-coral):hover,
+  html.sys-slab :is(.on-dark, .site-foot, .band--burgundy) .btn:not(.btn-primary):not(.btn-coral):hover,
   html.sys-slab .btn--cream:hover { background: color-mix(in srgb, var(--butter) 14%, transparent); color: var(--butter); }
 }
 /* Inert "Ordering soon": intentional dashed ghost. */

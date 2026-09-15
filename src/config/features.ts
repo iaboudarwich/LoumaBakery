@@ -33,5 +33,3 @@ export const features = {
   mobileCtaBar: true,
 } as const;
 
-export type FeatureFlag = keyof typeof features;
-

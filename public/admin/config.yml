@@ -186,7 +186,6 @@ collections:
               - { name: eyebrow, label: "Eyebrow", widget: string }
               - { name: title, label: "Headline", widget: string }
               - { name: lede, label: "Intro line", widget: text }
-              - { name: body, label: "Paragraphs", widget: list, required: false, field: { name: text, label: "Paragraph", widget: text } }
               - { name: allergenNote, label: "Allergen note", widget: text }
           # ---- Story page ----
           - name: story

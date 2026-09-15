@@ -31,8 +31,6 @@ export const siteConfig = {
   links: {
     uberEats: settings.links.uberEats,
     instagram: settings.links.instagram,
-    /** Order/contact form endpoint. Netlify Forms by default; swap to a Formspree URL if used. */
-    formspreeOrNetlify: '', // PLACEHOLDER — swap before launch (empty = use Netlify Forms)
     /** Hero background video URL. Empty = the hero photo only; wire when footage lands. */
     heroVideo: '', // PLACEHOLDER — swap before launch (hero background video MP4/WebM)
   },

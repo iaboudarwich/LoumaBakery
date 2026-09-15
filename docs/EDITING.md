@@ -38,7 +38,7 @@ shrinks and optimizes it on its own.
 
 **Site settings** → **Settings**. Hours are one row per group of days; for a
 closed day put `Closed` in Opens and leave Closes empty. Paste the full Uber
-Eats, PayPal, or Instagram link into its field. Publish.
+Eats or Instagram link into its field. Publish.
 
 ## Change the words on a page
 

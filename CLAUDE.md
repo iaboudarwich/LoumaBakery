@@ -13,7 +13,7 @@ A neighborhood bakery on Wilshire (Santa Monica), open and trading (as of Septem
 - Production URL from one SITE_URL config value. Netlify hosting. Menu will sync from a Google Sheet (scripts/sync-menu.mjs, inactive until SHEET_CSV_URL is set).
 - Forms are Netlify Forms: data-netlify + data-netlify-honeypot + hidden form-name, posted via fetch by src/scripts/forms.ts (newsletter, careers, catering). Submissions only arrive once the dashboard Form detection toggle is on and the site is redeployed.
 
-## THE DESIGN SYSTEM ("editorial slab", layoutSystem flag, default 'slab')
+## THE DESIGN SYSTEM ("editorial slab", the only layout)
 - FLAT: no box-shadows, no gradients, no backdrop blur, anywhere. Depth = surface change + 1px hairlines (--hairline tokens). Text on photos sits on flat solid ink/burgundy panels.
 - BANDS: every section is one committed slab: cream (--surface-0), burgundy, ink, or full-bleed photo. The band change is the divider. Surface tints (surface-1/2/3) never back a section, small component fills only.
 - TYPE SPLIT: one Cormorant .statement per band (clamp(2.75rem,8vw,7rem), weight 300-400, leading ~0.95-1.0). Everything else DM Sans 14-16px. DM Mono is the DATA VOICE: hours, prices, address, phone, labels, form inputs. Deviation note: hero/editorial headlines may use up to 500 only where 300/400 is illegible.

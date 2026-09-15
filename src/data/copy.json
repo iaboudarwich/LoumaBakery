@@ -21,7 +21,6 @@
     "eyebrow": "The menu",
     "title": "What we bake",
     "lede": "Baked through the morning and sold until it runs out. Ask at the counter for food prices.",
-    "body": [],
     "allergenNote": "Our kitchen handles wheat, dairy, eggs, nuts, and sesame. We can't guarantee any item is free of them. Ask us and we'll tell you what's in it."
   },
   "story": {
@@ -105,7 +104,6 @@
     "eyebrow": "404",
     "title": "Lost your way?",
     "lede": "We couldn't find that page. Let's get you back to something warm.",
-    "body": [],
     "cta": { "label": "Back home", "href": "/" }
   }
 }

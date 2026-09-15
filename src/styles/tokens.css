@@ -42,7 +42,6 @@
   --t-h3: clamp(24px, 2.6vw, 34px);
   --t-h4: clamp(20px, 2vw, 26px);
   --t-body: clamp(16px, 1.15vw, 18px);
-  --t-small: clamp(14px, calc(14px + (100vw - 1920px) * 0.003125), 16px);
   --t-eyebrow: clamp(12px, calc(12px + (100vw - 1920px) * 0.002344), 13.5px);        /* DM Mono stamp: 12px by spec (the 13px floor's one exception) */
 
   /* --- Line heights --- */
@@ -55,7 +54,6 @@
   --track-sc: 0.08em;
 
   /* --- Spacing scale (rem) --- */
-  --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
   --space-4: 1rem;
@@ -64,7 +62,6 @@
   --space-7: 3rem;
   --space-8: 4rem;
   --space-9: 6rem;
-  --space-10: 8rem;
 
   /* --- Layout --- */
   --measure: 68ch;          /* readable line length */
@@ -83,12 +80,10 @@
 
   /* --- Shadows (warm, low) --- */
   --shadow-sm: 0 1px 2px rgba(42, 31, 24, 0.06), 0 2px 6px rgba(42, 31, 24, 0.05);
-  --shadow-md: 0 4px 12px rgba(42, 31, 24, 0.08), 0 12px 28px rgba(42, 31, 24, 0.07);
   --shadow-lg: 0 10px 30px rgba(42, 31, 24, 0.10), 0 24px 60px rgba(42, 31, 24, 0.09);
 
   /* --- Motion --- */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --dur-fast: 160ms;
   --dur: 280ms;
-  --dur-slow: 520ms;
 }

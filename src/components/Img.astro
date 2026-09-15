@@ -19,12 +19,10 @@ interface Props {
   class?: string;
   /** Motion hook placed on the <picture> (e.g. 'ken-burns'). */
   anim?: string;
-  /** Place the 3D-tilt pointer hook on the <picture>. */
-  tilt?: boolean;
   /** Encoder quality (1-100). Omit for the service default. */
   quality?: number;
 }
-const { src, alt, sizes = '100vw', widths, priority = false, class: className, anim, tilt, quality } = Astro.props;
+const { src, alt, sizes = '100vw', widths, priority = false, class: className, anim, quality } = Astro.props;
 
 // Read dimensions from the metadata `clone`: touching `src.width` directly marks
 // the full-size original as referenced, and Astro then copies it into dist even
@@ -36,7 +34,6 @@ const useWidths = Array.from(new Set(candidate.filter((w) => w <= srcWidth).conc
 );
 const pictureAttributes: Record<string, unknown> = { class: `limg ${className ?? ''}`.trim() };
 if (anim) pictureAttributes['data-anim'] = anim;
-if (tilt) pictureAttributes['data-fx-tilt-img'] = '';
 ---
 
 <Picture

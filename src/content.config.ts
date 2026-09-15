@@ -96,7 +96,6 @@ const ingredients = defineCollection({
   schema: z.object({
     name: z.string(),
     note: z.string().optional(),
-    image: z.string().optional(), // PLACEHOLDER path
   }),
 });
 

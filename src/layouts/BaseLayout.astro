@@ -7,16 +7,7 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 // Self-hosted fonts (Fontsource, font-display: swap) — bundled and served from
 // our own origin so first paint isn't blocked on Google Fonts before the LCP.
-import '@fontsource/cormorant-garamond/300.css';
-import '@fontsource/cormorant-garamond/400.css';
-import '@fontsource/cormorant-garamond/500.css';
-import '@fontsource/cormorant-garamond/300-italic.css';
-import '@fontsource/cormorant-sc/500.css';
-import '@fontsource/dm-sans/300.css';
-import '@fontsource/dm-sans/400.css';
-import '@fontsource/dm-sans/500.css';
-import '@fontsource/dm-mono/400.css';
-import '@fontsource/dm-mono/500.css';
+import '../styles/fonts.css';
 // Same file the 300-italic CSS above references (Vite dedupes to one URL).
 import heroFont from '@fontsource/cormorant-garamond/files/cormorant-garamond-latin-300-italic.woff2?url';
 

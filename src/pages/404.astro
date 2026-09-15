@@ -44,6 +44,9 @@ const c = (await getEntry('copy', 'notFound'))!.data;
     font-size: var(--t-h1);
     color: var(--ink);
   }
+  /* The slab heading rule sets h1 to 400; Cormorant only ships 300 italic, so
+     pin the loaded italic weight instead of letting the browser substitute. */
+  :global(html.sys-slab) h1.nf-title { font-weight: 300; }
   .nf-lede { margin-top: var(--space-4); color: var(--body); }
   .nf-cta { margin-top: var(--space-6); }
 </style>

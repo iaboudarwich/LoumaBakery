@@ -5,7 +5,7 @@ import { file } from 'astro/loaders';
 /**
  * Content collections. All copy/data lives here (or in the seed JSON under
  * src/data/) — never hardcoded in markup. Image fields are string paths
- * (placeholders) for now; swap to the asset pipeline when real photos land.
+ * resolved by src/lib/images.ts (no placeholder fallbacks).
  */
 
 const menu = defineCollection({
@@ -40,7 +40,6 @@ const copy = defineCollection({
       body: z.array(z.string()).default([]),
       cta: z.object({ label: z.string(), href: z.string() }).optional(),
       // Home-specific section copy (optional; other pages ignore).
-      countdownLabel: z.string().optional(),
       craftLine: z.string().optional(),
       missionLine: z.string().optional(),
       menuTitle: z.string().optional(),
@@ -48,9 +47,9 @@ const copy = defineCollection({
       findTitle: z.string().optional(),
       newsletterTitle: z.string().optional(),
       newsletterBody: z.string().optional(),
+      newsletterCta: z.string().optional(),
       // Inner-page structured copy (optional; each page reads what it needs).
       allergenNote: z.string().optional(),
-      openingTag: z.string().optional(),
       mapEmbed: z.string().optional(),
       donateTitle: z.string().optional(),
       donateBody: z.string().optional(),

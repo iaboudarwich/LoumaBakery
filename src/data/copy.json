@@ -1,8 +1,8 @@
 {
   "home": {
-    "eyebrow": "Wilshire · Opening July 2026",
-    "title": "Out of the oven by eight",
-    "lede": "A neighborhood bakery on Wilshire, opening July 2026.",
+    "eyebrow": "Wilshire · Santa Monica",
+    "title": "Out of the oven every morning",
+    "lede": "A neighborhood bakery on Wilshire, now open.",
     "craftLine": "European craft. Levantine soul.",
     "body": [
       "Long ferments and laminated layers, like the best Paris bakeries. Cardamom and orange blossom, like home.",
@@ -12,14 +12,15 @@
     "menuTitle": "What we bake",
     "ovenTitle": "From the oven",
     "findTitle": "Find us",
-    "newsletterTitle": "Get word when we open",
-    "newsletterBody": "One note when the doors open. Nothing else.",
+    "newsletterTitle": "Hear from the bakery",
+    "newsletterBody": "The odd note about new bakes and the monthly special. Nothing else.",
+    "newsletterCta": "Get the newsletter",
     "cta": { "label": "Order on Uber Eats", "href": "#" }
   },
   "menu": {
     "eyebrow": "The menu",
     "title": "What we bake",
-    "lede": "Baked through the morning and sold until it runs out, with food prices coming soon.",
+    "lede": "Baked through the morning and sold until it runs out. Ask at the counter for food prices.",
     "body": [],
     "allergenNote": "Our kitchen handles wheat, dairy, eggs, nuts, and sesame. We can't guarantee any item is free of them. Ask us and we'll tell you what's in it."
   },
@@ -81,7 +82,7 @@
   "careers": {
     "eyebrow": "Join us",
     "title": "Work at Louma",
-    "lede": "We're hiring ahead of opening, in the kitchen and at the counter.",
+    "lede": "We're hiring in the kitchen and at the counter.",
     "body": [
       "Most roles don't need bakery experience. Showing up and wanting to learn counts for more.",
       "We hire people who are often shut out of work, and train them to be great at it. Tell us a little about yourself and we'll be in touch."
@@ -96,13 +97,12 @@
   "visit": {
     "eyebrow": "Come by",
     "title": "Visit",
-    "lede": "On Wilshire in Santa Monica. Opening July 2026.",
+    "lede": "On Wilshire in Santa Monica.",
     "body": [
       "Street parking, and a lot behind the building.",
       "A short walk from the Metro E Line. Bike racks out front.",
       "The door's the one with the face on it."
     ],
-    "openingTag": "Opening July 2026",
     "mapEmbed": "https://www.google.com/maps/embed?pb=!1m3!2m1!1s3223+Wilshire+Blvd,+Santa+Monica,+CA+90403!6i14"
   },
   "notFound": {

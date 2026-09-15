@@ -11,7 +11,7 @@ const src = readFileSync(join(root, 'public/admin/config.yml'), 'utf8');
 
 // Replace the whole backend block (up to the first top-level key after it)
 // with the in-memory test backend.
-const demoBackend = `# GENERATED FILE — built from /admin/config.yml by scripts/gen-admin-demo.mjs.
+const demoBackend = `# GENERATED FILE: built from /admin/config.yml by scripts/gen-admin-demo.mjs.
 # Demo mode: in-memory test backend, no auth, nothing is saved.
 backend:
   name: test-repo

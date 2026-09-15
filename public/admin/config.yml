@@ -1,5 +1,5 @@
 # =============================================================================
-#  Louma Bakery — content editor (Decap CMS)
+#  Louma Bakery: content editor (Decap CMS)
 #  Editors log in with email + password (no GitHub account) via DecapBridge.
 #  Everything saved here is committed to the repo and goes live on the next
 #  Netlify build (usually a minute or two).
@@ -13,7 +13,7 @@
 # -----------------------------------------------------------------------------
 backend:
   name: git-gateway
-  repo: issamlife21-hue/LoumaBakery        # owner/repo — already correct
+  repo: issamlife21-hue/LoumaBakery        # owner/repo, already correct
   branch: main
   identity_url: https://auth.decapbridge.com/sites/PLACEHOLDER_DECAPBRIDGE_SITE_ID
   gateway_url: https://gateways.decapbridge.com
@@ -29,7 +29,7 @@ site_url: https://loumabakeryy.netlify.app
 display_url: https://loumabakeryy.netlify.app
 logo_url: https://loumabakeryy.netlify.app/favicon.svg
 
-# Save & publish immediately (no draft/review step) — simplest for one manager.
+# Save & publish immediately (no draft/review step): simplest for one manager.
 publish_mode: simple
 
 # Uploaded photos are committed here, where the site optimizes them at build.
@@ -62,7 +62,7 @@ collections:
                 label: "Items"
                 label_singular: "Item"
                 widget: list
-                summary: "{{fields.name}} — {{fields.price}}"
+                summary: "{{fields.name}} · {{fields.price}}"
                 fields:
                   - { name: name, label: "Name", widget: string, required: true, hint: "e.g. Butter Croissant" }
                   - { name: price, label: "Price", widget: string, required: false, pattern: ['^\$?\d+(\.\d{2})?$', "Type a price like $4.50 or 4.50"], hint: "e.g. $4.50" }
@@ -96,15 +96,15 @@ collections:
         label: "Site photos"
         file: "src/data/images.json"
         fields:
-          - { name: hero, label: "Home — hero photo", widget: image, choose_url: false, hint: "The big photo at the top of the home page. Landscape, at least 1600px wide, under 3MB." }
-          - { name: founder, label: "Story — founder portrait", widget: image, required: false, choose_url: false, hint: "Portrait photo on the Our Story page. At least 1200px tall, under 3MB." }
-          - { name: story1, label: "Story — photo 1", widget: image, choose_url: false, hint: "First story photo (also the big “01” block on the home page)." }
+          - { name: hero, label: "Home: hero photo", widget: image, choose_url: false, hint: "The big photo at the top of the home page. Landscape, at least 1600px wide, under 3MB." }
+          - { name: founder, label: "Story: founder portrait", widget: image, required: false, choose_url: false, hint: "Portrait photo on the Our Story page. At least 1200px tall, under 3MB." }
+          - { name: story1, label: "Story: photo 1", widget: image, choose_url: false, hint: "First story photo (also the big “01” block on the home page)." }
           - { name: story1Alt, label: "Photo 1 description", widget: string, required: false, hint: "What photo 1 shows, for screen readers." }
-          - { name: story2, label: "Story — photo 2", widget: image, choose_url: false }
+          - { name: story2, label: "Story: photo 2", widget: image, choose_url: false }
           - { name: story2Alt, label: "Photo 2 description", widget: string, required: false, hint: "What the photo shows, for screen readers." }
-          - { name: story3, label: "Story — photo 3", widget: image, choose_url: false }
+          - { name: story3, label: "Story: photo 3", widget: image, choose_url: false }
           - { name: story3Alt, label: "Photo 3 description", widget: string, required: false, hint: "What the photo shows, for screen readers." }
-          - { name: ig1, label: "Home — accent photo", widget: image, choose_url: false, hint: "The small inset photo in the home story block." }
+          - { name: ig1, label: "Home: accent photo", widget: image, choose_url: false, hint: "The small inset photo in the home story block." }
           - { name: ig1Alt, label: "Accent photo description", widget: string, required: false, hint: "What the photo shows, for screen readers." }
 
   # ================================================== SITE SETTINGS =========
@@ -173,12 +173,13 @@ collections:
               - { name: findTitle, label: "“Find us” title", widget: string }
               - { name: newsletterTitle, label: "Newsletter title", widget: string }
               - { name: newsletterBody, label: "Newsletter line", widget: string }
+              - { name: newsletterCta, label: "Newsletter button", widget: string, required: false, hint: "Label on the home hero and phone bottom bar buttons, e.g. Get the newsletter" }
               - name: cta
                 label: "Order button"
                 widget: object
                 fields:
                   - { name: label, label: "Button text", widget: string }
-                  - { name: href, label: "Link (internal — leave as #)", widget: string, required: false }
+                  - { name: href, label: "Link (internal, leave as #)", widget: string, required: false }
           # ---- Menu page ----
           - name: menu
             label: "Menu page"
@@ -240,7 +241,7 @@ collections:
                 widget: object
                 fields:
                   - { name: label, label: "Button text", widget: string }
-                  - { name: href, label: "Link (internal — leave as #)", widget: string, required: false }
+                  - { name: href, label: "Link (internal, leave as #)", widget: string, required: false }
           # ---- Catering page ----
           - name: catering
             label: "Catering page"
@@ -296,7 +297,6 @@ collections:
               - { name: title, label: "Headline", widget: string }
               - { name: lede, label: "Intro line", widget: text }
               - { name: body, label: "Paragraphs", widget: list, field: { name: text, label: "Paragraph", widget: text } }
-              - { name: openingTag, label: "Opening badge", widget: string }
               - { name: mapEmbed, label: "Map embed link (internal)", widget: string, hint: "The Google Map. Leave as is unless the address changes." }
           # ---- 404 page ----
           - name: notFound

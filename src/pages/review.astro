@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { Baguette } from '../lib/brand';
+import Img from '../components/Img.astro';
+import { resolveImage } from '../lib/images';
 
 // Internal effects review. Not linked from anywhere; noindex. Each effect has a
 // live on/off toggle that flips its flag for THIS view (window.__FX), so a
@@ -16,6 +18,18 @@ const effects: { name: string; desc: string; kind: string; scroll?: boolean; poi
   { name: 'toast', desc: 'Transient corner notices.', kind: 'toast' },
 ];
 const names = effects.map((e) => e.name);
+// Demo media are real shoot photos (no placeholder blocks). Each one is a photo
+// the live pages already render through <Img> with default widths/quality, so
+// Astro reuses those exact transforms and /review adds no image weight.
+const kenBurnsPhoto = resolveImage('lamination.jpg');
+const wipePhoto = resolveImage('kitchen-team.jpg');
+const ingDemo = [
+  ['Flour', 'bakery-rack.jpg'],
+  ['Butter', 'croissant-cut.jpg'],
+  ['Salt', 'storefront.jpg'],
+  ['Levain', 'out-of-oven.jpg'],
+  ['Time', 'seeded-knot.jpg'],
+].map(([name, file]) => ({ name, photo: resolveImage(file) }));
 ---
 
 {/* Set every effect OFF for this view so demos start isolated. Runs during
@@ -60,14 +74,14 @@ const names = effects.map((e) => e.name);
             </div>
 
             <div class="fx-demo">
-              {e.kind === 'img' && <div class="ph ph-a demo-img" aria-hidden="true" data-anim="ken-burns"></div>}
+              {e.kind === 'img' && kenBurnsPhoto && <Img src={kenBurnsPhoto} alt="" class="demo-img" anim="ken-burns" sizes="(max-width: 720px) 90vw, 560px" />}
               {e.kind === 'draw' && <Baguette class="demo-sketch" width={200} height={71} aria-hidden="true" data-anim="scroll-draw" />}
               {e.kind === 'reveal' && <div class="demo-reveal" data-anim="reveal">Hello from the bakery.</div>}
-              {e.kind === 'wipe' && <div class="demo-img limg" data-anim="wipe"><div class="ph ph-b demo-img" aria-hidden="true"></div></div>}
+              {e.kind === 'wipe' && wipePhoto && <Img src={wipePhoto} alt="" class="demo-img" anim="wipe" sizes="(max-width: 720px) 90vw, 560px" />}
               {e.kind === 'marquee' && (
                 <div class="demo-marquee" data-anim="marquee">
                   <div class="marquee-track">
-                    <span class="marquee-item">Out of the oven by eight <span class="marquee-dot">·</span></span>
+                    <span class="marquee-item">Out of the oven every morning <span class="marquee-dot">·</span></span>
                     <span class="marquee-item">Baked on Wilshire <span class="marquee-dot">·</span></span>
                   </div>
                 </div>
@@ -75,8 +89,8 @@ const names = effects.map((e) => e.name);
               {e.kind === 'toast' && <button type="button" class="btn btn-ghost" data-demo-toast>Fire a toast</button>}
               {e.kind === 'slider' && (
                 <ul class="ing-track demo-slider" role="list" data-anim="ingredient-slider">
-                  {['Flour', 'Butter', 'Salt', 'Levain', 'Time'].map((n) => (
-                    <li class="ing-card"><div class="ph ph-c ing-img" aria-hidden="true"></div><h3 class="ing-name">{n}</h3></li>
+                  {ingDemo.map(({ name, photo }) => (
+                    <li class="ing-card">{photo && <Img src={photo} alt="" class="ing-img" sizes="160px" />}<h3 class="ing-name">{name}</h3></li>
                   ))}
                 </ul>
               )}
@@ -139,7 +153,7 @@ const names = effects.map((e) => e.name);
   /* Demo area */
   .fx-demo { padding: var(--space-5); border-top: 1px dashed color-mix(in srgb, var(--ink) 12%, transparent); min-height: 140px; display: flex; align-items: center; justify-content: center; background: var(--surface-0); }
   .demo-hint { font-size: 13px; color: var(--muted); text-align: center; }
-  .demo-img { width: 100%; aspect-ratio: 16 / 9; border-radius: var(--radius-md); }
+  :global(.demo-img) { width: 100%; aspect-ratio: 16 / 9; border-radius: var(--radius-md); }
   .demo-panel { background: var(--ink); color: var(--surface-0); padding: var(--space-5); border-radius: var(--radius-md); width: 100%; }
   .demo-panel .eyebrow { color: color-mix(in srgb, var(--surface-0) 70%, transparent); }
   .demo-panel-title { font-family: var(--font-display); font-style: italic; font-size: 26px; margin-top: var(--space-2); }
@@ -161,7 +175,7 @@ const names = effects.map((e) => e.name);
   .demo-photo .row-price { color: var(--burgundy); }
   .demo-slider { width: 100%; display: flex; gap: var(--space-3); overflow-x: auto; cursor: grab; }
   .demo-slider .ing-card { flex: 0 0 auto; width: 110px; }
-  .demo-slider .ing-img { aspect-ratio: 1; border-radius: var(--radius-md); }
+  .demo-slider :global(.ing-img) { aspect-ratio: 1; border-radius: var(--radius-md); }
   .demo-slider .ing-name { margin-top: var(--space-2); font-size: 16px; }
   .demo-rail { position: relative; width: 100%; }
   .demo-rail .chapter { display: flex; gap: var(--space-3); align-items: center; }

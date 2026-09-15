@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { getEntry } from 'astro:content';
 import { siteConfig, SITE_URL } from '../config/site';
 import { features, layoutSystem } from '../config/features';
 import Nav from '../components/Nav.astro';
@@ -37,7 +38,7 @@ interface Props {
 const {
   title,
   description = siteConfig.tagline,
-  image = '/og-default.jpg', // PLACEHOLDER OG image until real art lands
+  image = '/og-default.jpg', // center crop of src/assets/img/hero.jpg (Kayla shoot)
   ogType = 'website',
   transparentNav = false,
   noindex = false,
@@ -45,6 +46,7 @@ const {
   footerNewsletter = true,
 } = Astro.props;
 
+const newsletterCta = (await getEntry('copy', 'home'))?.data.newsletterCta ?? 'Get the newsletter';
 const pageTitle = title ? `${title} · ${siteConfig.name}` : `${siteConfig.name} · ${siteConfig.tagline}`;
 const canonical = new URL(Astro.url.pathname, SITE_URL).href;
 const ogImage = new URL(image, SITE_URL).href;
@@ -235,7 +237,7 @@ const jsonLd =
 
     {features.mobileCtaBar && (
       <div class="mobile-cta-bar" data-cta-bar>
-        <a class="btn mobile-cta-link" href="#newsletter">Get word when we open</a>
+        <a class="btn mobile-cta-link" href="#newsletter">{newsletterCta}</a>
       </div>
     )}
 

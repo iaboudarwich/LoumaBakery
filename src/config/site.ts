@@ -31,16 +31,13 @@ export const siteConfig = {
     instagram: settings.links.instagram,
     /** Order/contact form endpoint. Netlify Forms by default; swap to a Formspree URL if used. */
     formspreeOrNetlify: '', // PLACEHOLDER — swap before launch (empty = use Netlify Forms)
-    /** Hero background video URL. Empty = poster/placeholder only; wire when footage lands. */
+    /** Hero background video URL. Empty = the hero photo only; wire when footage lands. */
     heroVideo: '', // PLACEHOLDER — swap before launch (hero background video MP4/WebM)
   },
 
-  /** Opening day. Used by the countdown. */
-  openingDateISO: '2026-07-01T08:00:00-07:00',
-
   /** Form confirmation / error copy, in the brand voice. Single source. */
   forms: {
-    newsletterSuccess: "You're on the list. We'll write when the ovens are warm.",
+    newsletterSuccess: "You're on the list. We'll write when there's something new from the oven.",
     cateringSuccess: "Got it. We'll be in touch within two business days.",
     careersSuccess: "Thanks for reaching out. We'll be in touch soon.",
     error: "That didn't send. Try again, or email hello@loumabakery.com.",

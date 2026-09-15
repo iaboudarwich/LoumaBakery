@@ -8,13 +8,13 @@ import Sketch from '../components/Sketch.astro';
 import NewsletterForm from '../components/NewsletterForm.astro';
 import { resolveImage as pick } from '../lib/images';
 import images from '../data/images.json';
-import heroFallback from '../assets/placeholders/hero.jpg';
-import featureImg from '../assets/placeholders/feature.jpg';
-import landscapeImg from '../assets/placeholders/landscape.jpg';
-import portraitImg from '../assets/placeholders/portrait.jpg';
-import squareImg from '../assets/placeholders/square.jpg';
 
-const heroPhoto = pick(images.hero) ?? heroFallback;
+// No placeholder fallbacks: a missing or unresolved photo renders no image.
+const heroPhoto = pick(images.hero);
+const story1Photo = pick(images.story1);
+const story2Photo = pick(images.story2);
+const story3Photo = pick(images.story3);
+const ig1Photo = pick(images.ig1);
 // Hero AVIF must stay <=150KB at every phone size (CLAUDE.md). A 430px @3x
 // phone picks the 1600w variant, so quality is tuned against that file.
 const HERO_QUALITY = 45;
@@ -32,6 +32,7 @@ const altBlocks = chapters.slice(0, 3);
 // Home shows a tight 6-item signature grid, not the full category-by-category
 // menu (that lives on /menu). Keeps the page short and gives the CTA a job.
 const featured = menu.flatMap((cat) => cat.data.items).slice(0, 6);
+const featuredPhotos = featured.map((item) => pick(item.image));
 
 // Order link is a placeholder until a real Uber Eats URL is set — render the
 // button inert ("Ordering soon") rather than a dead link. Becomes a real link
@@ -39,13 +40,13 @@ const featured = menu.flatMap((cat) => cat.data.items).slice(0, 6);
 const orderReady = !!siteConfig.links.uberEats && siteConfig.links.uberEats !== 'https://www.ubereats.com/';
 
 // The hero must never dead-end. Real Order link when ready; otherwise the
-// newsletter ("Get word when we open", the existing footer string) so the CTA
+// newsletter (copy.json home.newsletterCta) so the CTA
 // still goes somewhere; falls back to the inert "Ordering soon" if that flag is
 // off. Used by all three hero variants.
 const heroCta = orderReady
   ? { as: 'a' as const, href: siteConfig.links.uberEats, external: true, label: home.cta?.label ?? 'Order' }
   : f.heroNewsletterCta
-    ? { as: 'a' as const, href: '#newsletter', external: false, label: 'Get word when we open' }
+    ? { as: 'a' as const, href: '#newsletter', external: false, label: home.newsletterCta ?? 'Get the newsletter' }
     : { as: 'button' as const, href: '', external: false, label: 'Ordering soon' };
 ---
 
@@ -54,7 +55,7 @@ const heroCta = orderReady
   {layoutSystem === 'slab' ? (
   <>
   <section class="hero-media slab-hero">
-    <Img src={heroPhoto} alt="" class="hero-bg" anim={f.kenBurns ? 'ken-burns' : undefined} priority quality={HERO_QUALITY} sizes="100vw" />
+    {heroPhoto && <Img src={heroPhoto} alt="" class="hero-bg" anim={f.kenBurns ? 'ken-burns' : undefined} priority quality={HERO_QUALITY} sizes="100vw" />}
     {/* Video-ready: set siteConfig.links.heroVideo to autoplay over the photo
         poster. PLACEHOLDER: empty until real footage lands (src/config/site.ts). */}
     {siteConfig.links.heroVideo && (
@@ -69,7 +70,7 @@ const heroCta = orderReady
         <h1 class="statement statement--hero">{home.title}</h1>
         {home.lede && <p class="hero-media-lede">{home.lede}</p>}
         {heroCta.as === 'button' ? (
-          <button class="btn hero-media-cta" type="button" disabled aria-disabled="true" title="Online ordering opens with the bakery.">{heroCta.label}</button>
+          <button class="btn hero-media-cta" type="button" disabled aria-disabled="true" title="Online ordering isn't available yet.">{heroCta.label}</button>
         ) : (
           <a class="btn btn--cream hero-media-cta" href={heroCta.href} target={heroCta.external ? '_blank' : undefined} rel={heroCta.external ? 'noopener' : undefined}>{heroCta.label}</a>
         )}
@@ -85,9 +86,9 @@ const heroCta = orderReady
     </div>
     {/* TODO(photo-ids): ig1 is seeded-knot.jpg; item name unconfirmed (see src/lib/images.ts). */}
     <div class="container collage" aria-hidden="false">
-      <Img src={pick(images.story1) ?? featureImg} alt={images.story1Alt} class="collage-a" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 42vw, 460px" />
-      <Img src={pick(images.story2) ?? portraitImg} alt={images.story2Alt} class="collage-b" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 34vw, 380px" />
-      <Img src={pick(images.ig1) ?? squareImg} alt={images.ig1Alt} class="collage-c" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 30vw, 320px" />
+      {story1Photo && <Img src={story1Photo} alt={images.story1Alt} class="collage-a" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 42vw, 460px" />}
+      {story2Photo && <Img src={story2Photo} alt={images.story2Alt} class="collage-b" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 34vw, 380px" />}
+      {ig1Photo && <Img src={ig1Photo} alt={images.ig1Alt} class="collage-c" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 30vw, 320px" />}
     </div>
   </section>
 
@@ -156,7 +157,7 @@ const heroCta = orderReady
   {/* ============================================ 1 · HERO ========= */}
   {heroStyle === 'media' ? (
     <section class="hero-media">
-      <Img src={heroPhoto} alt="" class="hero-bg" anim={f.kenBurns ? 'ken-burns' : undefined} priority quality={HERO_QUALITY} sizes="100vw" />
+      {heroPhoto && <Img src={heroPhoto} alt="" class="hero-bg" anim={f.kenBurns ? 'ken-burns' : undefined} priority quality={HERO_QUALITY} sizes="100vw" />}
       {/* Video-ready: set siteConfig.links.heroVideo to a bakery-interior MP4/WebM
           and it autoplays muted/looped over the photo poster. PLACEHOLDER: empty
           until real footage lands (see src/config/site.ts). */}
@@ -172,7 +173,7 @@ const heroCta = orderReady
           <h1 class="hero-headline hero-media-headline">{home.title}</h1>
           {home.lede && <p class="hero-media-lede">{home.lede}</p>}
           {heroCta.as === 'button' ? (
-            <button class="btn btn-primary hero-media-cta" type="button" disabled aria-disabled="true" title="Online ordering opens with the bakery.">
+            <button class="btn btn-primary hero-media-cta" type="button" disabled aria-disabled="true" title="Online ordering isn't available yet.">
               {heroCta.label}
             </button>
           ) : (
@@ -185,7 +186,7 @@ const heroCta = orderReady
     </section>
   ) : heroStyle === 'photo' ? (
     <section class="hero">
-      <Img src={heroPhoto} alt="" class="hero-bg" anim={f.kenBurns ? 'ken-burns' : undefined} priority quality={HERO_QUALITY} sizes="100vw" />
+      {heroPhoto && <Img src={heroPhoto} alt="" class="hero-bg" anim={f.kenBurns ? 'ken-burns' : undefined} priority quality={HERO_QUALITY} sizes="100vw" />}
       {siteConfig.links.heroVideo && (
         <video class="hero-video" data-hero-video={siteConfig.links.heroVideo} autoplay muted loop playsinline aria-hidden="true">
           <source src={siteConfig.links.heroVideo} />
@@ -198,7 +199,7 @@ const heroCta = orderReady
           <h1 class="hero-headline">{home.title}</h1>
           {home.lede && <p class="hero-lede">{home.lede}</p>}
           {heroCta.as === 'button' ? (
-            <button class="btn btn-primary hero-cta" type="button" disabled aria-disabled="true" title="Online ordering opens with the bakery.">
+            <button class="btn btn-primary hero-cta" type="button" disabled aria-disabled="true" title="Online ordering isn't available yet.">
               {heroCta.label}
             </button>
           ) : (
@@ -217,7 +218,7 @@ const heroCta = orderReady
           <h1 class="hero-headline hero-ed-headline">{home.title}</h1>
           {home.lede && <p class="hero-ed-lede">{home.lede}</p>}
           {heroCta.as === 'button' ? (
-            <button class="btn btn-primary hero-ed-cta" type="button" disabled aria-disabled="true" title="Online ordering opens with the bakery.">
+            <button class="btn btn-primary hero-ed-cta" type="button" disabled aria-disabled="true" title="Online ordering isn't available yet.">
               {heroCta.label}
             </button>
           ) : (
@@ -230,7 +231,7 @@ const heroCta = orderReady
           </div>
         </div>
         <div class="hero-ed-media">
-          <Img src={heroPhoto} alt="" class="hero-ed-photo" anim={f.kenBurns ? 'ken-burns' : undefined} priority quality={HERO_QUALITY} sizes="(max-width: 860px) 100vw, 46vw" />
+          {heroPhoto && <Img src={heroPhoto} alt="" class="hero-ed-photo" anim={f.kenBurns ? 'ken-burns' : undefined} priority quality={HERO_QUALITY} sizes="(max-width: 860px) 100vw, 46vw" />}
         </div>
       </div>
     </section>
@@ -251,7 +252,7 @@ const heroCta = orderReady
   {/* ==================================== 3 · SIGNATURE (full-bleed) */}
   {altBlocks[0] && (
     <section class="block block--fullbleed">
-      <Img src={pick(images.story1) ?? featureImg} alt="" class="block-bg" anim={f.kenBurns ? 'ken-burns' : undefined} sizes="100vw" />
+      {story1Photo && <Img src={story1Photo} alt="" class="block-bg" anim={f.kenBurns ? 'ken-burns' : undefined} sizes="100vw" />}
       <div class="block-overlay" aria-hidden="true"></div>
       <div class="container block-fb-text on-dark">
         {altBlocks[0].data.eyebrow && <p class="eyebrow">{altBlocks[0].data.eyebrow}</p>}
@@ -271,7 +272,7 @@ const heroCta = orderReady
           <h2>{altBlocks[1].data.title}</h2>
           <p>{altBlocks[1].data.body}</p>
         </div>
-        <Img src={pick(images.story2) ?? portraitImg} alt={altBlocks[1].data.title} class="block-numeral-img" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 100vw, 45vw" />
+        {story2Photo && <Img src={story2Photo} alt={altBlocks[1].data.title} class="block-numeral-img" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 100vw, 45vw" />}
       </div>
     </section>
   )}
@@ -281,8 +282,8 @@ const heroCta = orderReady
     <section class="block block--duo section">
       <div class="container block-duo-grid" data-anim={f.reveal ? 'reveal' : undefined} data-reveal-children>
         <div class="block-duo-imgs">
-          <Img src={pick(images.story3) ?? portraitImg} alt={altBlocks[2].data.title} class="duo-img duo-img--1" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 50vw, 30vw" />
-          <Img src={pick(images.ig1) ?? squareImg} alt="" class="duo-img duo-img--2" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 50vw, 30vw" />
+          {story3Photo && <Img src={story3Photo} alt={altBlocks[2].data.title} class="duo-img duo-img--1" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 50vw, 30vw" />}
+          {ig1Photo && <Img src={ig1Photo} alt="" class="duo-img duo-img--2" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 50vw, 30vw" />}
         </div>
         <div class="block-duo-text">
           {altBlocks[2].data.eyebrow && <p class="eyebrow">{altBlocks[2].data.eyebrow}</p>}
@@ -320,9 +321,9 @@ const heroCta = orderReady
         <h2>{home.menuTitle}</h2>
       </header>
       <ul class="product-grid" role="list" data-anim={f.reveal ? 'reveal' : undefined} data-reveal-children>
-        {featured.map((item) => (
+        {featured.map((item, i) => (
           <li class="product-card">
-            <Img src={pick(item.image) ?? landscapeImg} alt={item.name} class="product-img" sizes="(max-width: 520px) 90vw, 300px" />
+            {featuredPhotos[i] && <Img src={featuredPhotos[i]!} alt={item.name} class="product-img" sizes="(max-width: 520px) 90vw, 300px" />}
             <div class="product-meta">
               <div class="product-row">
                 <h4 class="product-name">{item.name}</h4>
@@ -406,6 +407,7 @@ const heroCta = orderReady
   /* ============================ 1 · HERO (media, full-bleed) ===== */
   .hero-media {
     position: relative;
+    background: var(--ink); /* flat ground; keeps the copy legible if no photo is set */
     min-height: 100vh; /* fallback */
     min-height: 100svh;
     display: flex;

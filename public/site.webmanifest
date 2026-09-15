@@ -1,7 +1,7 @@
 {
   "name": "Louma Bakery",
   "short_name": "Louma",
-  "description": "A neighborhood bakery on Wilshire — opening July 2026.",
+  "description": "A neighborhood bakery on Wilshire in Santa Monica.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FAF5EA",

@@ -43,7 +43,7 @@ const orderReady = !!siteConfig.links.uberEats && siteConfig.links.uberEats !== 
       {orderReady ? (
         <a class="order-cta" href={siteConfig.links.uberEats} target="_blank" rel="noopener">Order</a>
       ) : (
-        <span class="order-cta is-inert" aria-disabled="true" title="Online ordering opens with the bakery.">Ordering soon</span>
+        <span class="order-cta is-inert" aria-disabled="true" title="Online ordering isn't available yet.">Ordering soon</span>
       )}
       <button
         type="button"

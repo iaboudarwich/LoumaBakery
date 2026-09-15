@@ -346,28 +346,6 @@ a {
 }
 
 
-/* --- Placeholder image blocks (swap for real <img> later) --- */
-.ph {
-  --c1: var(--surface-2);
-  --c2: var(--surface-3);
-  background: linear-gradient(135deg, var(--c1), var(--c2));
-  position: relative;
-  overflow: hidden;
-}
-.ph::after {
-  content: "placeholder";
-  position: absolute;
-  inset-block-end: 8px;
-  inset-inline-end: 10px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--ink) 32%, transparent);
-}
-.ph-a { --c1: var(--clay); --c2: var(--burgundy); }
-.ph-b { --c1: var(--amber-warm); --c2: var(--clay); }
-.ph-c { --c1: var(--surface-3); --c2: var(--amber-warm); }
 
 /* Responsive image wrapper (<Img> → <Picture>). The .limg picture carries the
    layout box (aspect-ratio/radius from the slot class); the img always covers. */
@@ -379,8 +357,6 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
 .hero-bg,
 .block-bg { position: absolute; inset: 0; z-index: 0; }
 .product-img { aspect-ratio: 4 / 3; }
-.ph-film { aspect-ratio: 3 / 4; border-radius: var(--radius-md); }
-.ph-ig { aspect-ratio: 1; border-radius: var(--radius-sm); }
 .block-numeral-img { aspect-ratio: 4 / 5; border-radius: var(--radius-lg); }
 .hero-ed-photo { aspect-ratio: 4 / 5; }
 .chapter-img { aspect-ratio: 4 / 5; border-radius: var(--radius-lg); }
@@ -607,7 +583,6 @@ html.sys-slab :is(.product-card, .value-card, .role, .tier, .ing-card) {
   border: 1px solid var(--hairline-strong);
 }
 html.sys-slab .role--feature { background: var(--butter); }
-html.sys-slab .ph { background: var(--butter); }
 html.sys-slab .hero-ed { background: var(--butter); }
 
 /* 1.5 Ghost buttons default; ONE filled CTA per page (.btn-primary/.btn-coral
@@ -706,7 +681,6 @@ html.sys-slab .slab-menulist li {
 html.sys-slab .sm-name { font-family: var(--font-display); font-size: clamp(22px, 2.4vw, 30px); color: var(--ink); }
 html.sys-slab .sm-dots { flex: 1; border-bottom: 1px dotted var(--hairline-strong); transform: translateY(-4px); }
 html.sys-slab .sm-price { color: var(--burgundy); font-size: 15px; }
-html.sys-slab .map-frame { background: var(--butter); }
 
 /* ===================================================== MOBILE / iOS =====
    <=768px: body never below 16px; <=430px: calmer rhythm (bands ~65% of

@@ -1,4 +1,5 @@
 ---
+import { getEntry } from 'astro:content';
 import { siteConfig } from '../config/site';
 import { Wordmark } from '../lib/brand';
 import FaceDraw from './FaceDraw.astro';
@@ -12,6 +13,7 @@ const { newsletter = true } = Astro.props;
 
 const { address, hours, links } = siteConfig;
 const year = new Date().getFullYear();
+const home = (await getEntry('copy', 'home'))?.data;
 
 const explore = [
   { label: 'Menu', href: '/menu' },
@@ -29,7 +31,7 @@ const explore = [
     {newsletter && (
       <div class="foot-newsletter" id="newsletter">
         <div class="foot-news">
-          <p class="foot-news-h">Get word when we open</p>
+          {home?.newsletterTitle && <p class="foot-news-h">{home.newsletterTitle}</p>}
           <NewsletterForm variant="footer" />
         </div>
       </div>
@@ -77,7 +79,7 @@ const explore = [
     </div>
 
     <div class="foot-base">
-      <p class="mono">© {year} {siteConfig.name}. Opening July 2026.</p>
+      <p class="mono">© {year} {siteConfig.name}.</p>
       <p class="mono">Wilshire · Santa Monica</p>
     </div>
   </div>

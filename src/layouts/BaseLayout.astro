@@ -79,10 +79,9 @@ const openingHours = siteConfig.hours
     closes: to24(h.close),
   }));
 
-// TODO(owner): settings.json still holds the placeholder phone. Structured data
-// is republished by search engines, so the placeholder stays out of it; the
-// real number flows in automatically once it replaces "000-0000".
-const telephone = /000-0000/.test(siteConfig.phone) ? undefined : siteConfig.phone;
+// siteConfig.phone is empty while settings.json holds the placeholder, so the
+// placeholder never reaches structured data; a real number flows in on its own.
+const telephone = siteConfig.phone || undefined;
 
 const jsonLd =
   schema === 'bakery' || schema === 'localbusiness'

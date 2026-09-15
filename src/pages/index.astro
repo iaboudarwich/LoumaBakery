@@ -129,7 +129,7 @@ const heroCta = orderReady
             ))}
           </ul>
           <p class="findus-contact mono">
-            <a href={`tel:${siteConfig.phone.replace(/[^+\d]/g, '')}`}>{siteConfig.phone}</a><br />
+            {siteConfig.phone && <><a href={`tel:${siteConfig.phone.replace(/[^+\d]/g, '')}`}>{siteConfig.phone}</a><br /></>}
             <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
           </p>
         </address>

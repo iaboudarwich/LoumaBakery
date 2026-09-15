@@ -21,7 +21,10 @@ export const siteConfig = {
   tagline: 'A neighborhood bakery on Wilshire',
 
   // --- Editor-managed (from settings.json via the CMS) ---
-  phone: settings.phone,
+  /** Empty while settings.json holds the placeholder, so nothing renders or
+      dials it. A real number there shows up in the footer, home, visit and
+      the JSON-LD with no other edits. */
+  phone: /000-0000/.test(settings.phone) ? '' : settings.phone,
   email: settings.email,
   address: settings.address,
   hours: settings.hours,

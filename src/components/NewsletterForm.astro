@@ -53,14 +53,14 @@ const formClass = variant === 'footer' ? 'foot-news-form' : 'news-form';
     min-height: 48px;
     padding: 0 0.9rem;
     font-size: clamp(16px, calc(16px + (100vw - 1920px) * 0.003125), 18px); /* iOS zooms on focus below 16px */
-    border: 1px solid color-mix(in srgb, var(--surface-0) 30%, transparent);
+    border: 1px solid color-mix(in srgb, var(--butter) 30%, transparent);
     border-radius: var(--radius-md);
-    background: #382c22; /* opaque dark fill — light value text reads */
-    color: var(--surface-0);
+    background: var(--ink); /* opaque dark fill so the light text reads */
+    color: var(--butter);
   }
   .news-row input::placeholder,
   .foot-news-row input::placeholder {
-    color: #b3a695;
+    color: color-mix(in srgb, var(--butter) 60%, var(--ink)); /* 6.3:1 on the ink fill */
   }
   @media (max-width: 520px) {
     .news-row,

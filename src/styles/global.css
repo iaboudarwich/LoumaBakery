@@ -146,7 +146,7 @@ p + p {
   color: var(--burgundy);
 }
 .on-dark .eyebrow,
-.site-foot .eyebrow { color: var(--coral); }
+.site-foot .eyebrow { color: var(--peach); }
 
 .smallcaps {
   font-family: var(--font-sc);
@@ -170,7 +170,7 @@ p + p {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 0.25rem 0.6rem;
-  border: 1px solid color-mix(in srgb, var(--clay) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--burgundy) 55%, transparent);
   border-radius: var(--radius-pill);
   color: var(--burgundy);
   background: color-mix(in srgb, var(--butter) 55%, transparent);
@@ -230,8 +230,8 @@ a {
 
 /* --------------------------------------------------- Selection accent */
 ::selection {
-  background: var(--coral);
-  color: var(--surface-0);
+  background: var(--peach);
+  color: var(--butter);
 }
 
 /* ----------------------------------------------------- Reduced motion */
@@ -359,7 +359,7 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 .page-head {
   padding-block: var(--space-8) var(--space-7);
-  background: var(--surface-0);
+  background: var(--butter);
   border-bottom: 1px solid var(--hairline);
 }
 .page-head .container { max-width: calc(var(--container) * 11 / 15); } /* 880px at the 1200px container */
@@ -392,7 +392,7 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
   padding: 0.7rem 1.1rem;
   border: 1px solid var(--hairline-strong);
   border-radius: var(--radius-pill);
-  background: var(--surface-0);
+  background: var(--butter);
   color: var(--ink);
   font-size: clamp(16px, calc(16px + (100vw - 1920px) * 0.003125), 18px);
 }
@@ -428,7 +428,7 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
 .on-dark .form-msg--success,
 .site-foot .form-msg--success { color: var(--butter); }
 .on-dark .form-msg--error,
-.site-foot .form-msg--error { color: var(--coral); }
+.site-foot .form-msg--error { color: var(--peach); }
 
 /* ===================================================== Motion scaffolding
    Hidden initial states apply ONLY when the matching html class is present
@@ -453,9 +453,9 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
   pointer-events: auto;
   padding: 0.8rem 1.1rem;
   background: var(--ink);
-  color: var(--surface-0);
+  color: var(--butter);
   border-radius: var(--radius-md);
-  border-inline-start: 3px solid var(--coral);
+  border-inline-start: 3px solid var(--peach);
   font-family: var(--font-mono);
   font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px);
   max-width: 320px;
@@ -529,23 +529,23 @@ html.sys-slab .info-h {
   letter-spacing: 0.1em;
   color: var(--burgundy);
 }
-html.sys-slab .site-foot .foot-h { color: var(--coral); }
+html.sys-slab .site-foot .foot-h { color: var(--peach); }
 
 /* 1.2 Bands: cream is the page default; burgundy and ink are the only other
    section surfaces. Hard cuts, no seams. Surface tints retired from sections. */
 .band { padding-block: clamp(3.25rem, 7vw, 6.5rem); }
 .band--burgundy { background: var(--burgundy); color: var(--butter); }
 /* Prefixed: these override fills set in page <style> blocks. */
-html.sys-slab .founder { background: var(--surface-0); border-block: 1px solid var(--hairline); }
-html.sys-slab .tiers { background: var(--surface-0); }
+html.sys-slab .founder { background: var(--butter); border-block: 1px solid var(--hairline); }
+html.sys-slab .tiers { background: var(--butter); }
 html.sys-slab .stats { background: var(--burgundy); }
 html.sys-slab .stats .stat-value { color: var(--butter); }
 html.sys-slab .stats .stat-label { color: color-mix(in srgb, var(--butter) 82%, transparent); }
-html.sys-slab .allergen { background: var(--surface-0); border: 1px solid var(--hairline); }
-html.sys-slab .pillnav { background: var(--surface-0); }
+html.sys-slab .allergen { background: var(--butter); border: 1px solid var(--hairline); }
+html.sys-slab .pillnav { background: var(--butter); }
 /* Component fills stay flat and bordered. */
 html.sys-slab :is(.value-card, .role, .tier, .ing-card) {
-  background: var(--surface-0);
+  background: var(--butter);
   border: 1px solid var(--hairline-strong);
 }
 html.sys-slab .role--feature { background: var(--butter); }
@@ -633,7 +633,7 @@ html.sys-slab .marquee-dot { color: color-mix(in srgb, var(--butter) 60%, transp
    above, so this wins by coming later. */
 .field select {
   padding-inline-end: 2.4rem;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236E1F2A' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23A10017' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1rem center;
 }

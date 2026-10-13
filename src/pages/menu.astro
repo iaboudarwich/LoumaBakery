@@ -38,7 +38,7 @@ const addOns = menuData.addOns;
       <p class="eyebrow">{c.eyebrow}</p>
       <h1>{noOrphan(c.title ?? '')}</h1>
       {c.lede && <p class="lede">{c.lede}</p>}
-      <Sketch name="baguette" width={150} height={54} class="head-sketch" color="var(--clay)" draw={f.scrollDraw} />
+      <Sketch name="baguette" width={150} height={54} class="head-sketch" color="var(--burgundy)" draw={f.scrollDraw} />
     </div>
   </header>
 
@@ -131,7 +131,7 @@ const addOns = menuData.addOns;
     position: sticky;
     top: var(--nav-h);
     z-index: 500;
-    background: color-mix(in srgb, var(--surface-0) 88%, transparent);
+    background: color-mix(in srgb, var(--butter) 88%, transparent);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border-block: 1px solid var(--hairline);
@@ -150,7 +150,7 @@ const addOns = menuData.addOns;
     min-height: 44px;
     padding: 0 1.1rem;
     border-radius: var(--radius-pill);
-    background: var(--surface-2);
+    background: var(--white);
     color: var(--body);
     font-family: var(--font-mono);
     font-weight: 400; /* DM Mono ships 400/500 only: never ask for a light it doesn't have */
@@ -160,7 +160,7 @@ const addOns = menuData.addOns;
     transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
   }
   @media (hover: hover) and (pointer: fine) {
-    .pill:hover { background: var(--surface-3); }
+    .pill:hover { background: var(--fairy); }
   }
   .pill { min-width: 44px; }
   /* Native momentum + snap on the pill rail. */
@@ -182,7 +182,7 @@ const addOns = menuData.addOns;
     place-items: center;
     padding: 0;
     border: 0;
-    background: var(--surface-0);
+    background: var(--butter);
     color: var(--burgundy);
     font-family: var(--font-mono);
     font-size: clamp(18px, calc(18px + (100vw - 1920px) * 0.003906), 20.5px);
@@ -210,7 +210,7 @@ const addOns = menuData.addOns;
 
   .menu-body { padding-block: var(--space-7) var(--space-9); }
   .menu-cat { padding-top: var(--space-6); scroll-margin-top: calc(var(--nav-h) + 64px); }
-  .menu-cat-title { font-size: clamp(24px, 3vw, 34px); color: var(--clay); margin-bottom: var(--space-5); }
+  .menu-cat-title { font-size: clamp(24px, 3vw, 34px); color: var(--burgundy); margin-bottom: var(--space-5); }
 
   .menu-rows { display: flex; flex-direction: column; }
   /* Row: name, dotted leader, price, then the photo thumbnail when the item has one. */
@@ -249,7 +249,7 @@ const addOns = menuData.addOns;
   .allergen {
     margin-top: var(--space-8);
     padding: var(--space-5);
-    background: var(--surface-2);
+    background: var(--white);
     border-radius: var(--radius-lg);
     max-width: 70ch;
   }

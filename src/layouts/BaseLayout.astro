@@ -121,7 +121,7 @@ const jsonLd =
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <meta name="theme-color" content="#FAF5EA" />
+    <meta name="theme-color" content="#FBF5D4" />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <!-- Favicons + app icons (generated from face.svg) -->
@@ -178,8 +178,8 @@ const jsonLd =
         left: 1rem;
         top: -3rem;
         z-index: 10000;
-        background: var(--burgundy, #6e1f2a);
-        color: #fbf5d4;
+        background: var(--burgundy, #A10017);
+        color: var(--butter, #FBF5D4);
         padding: 0.6rem 1rem;
         border-radius: 8px;
         transition: top 160ms ease;
@@ -205,10 +205,10 @@ const jsonLd =
       }
       .site-nav[data-scrolled='true'],
       .site-nav:not([data-transparent='true']) {
-        background: color-mix(in srgb, var(--surface-0, #faf5ea) 78%, transparent);
+        background: color-mix(in srgb, var(--butter, #FBF5D4) 78%, transparent);
         -webkit-backdrop-filter: saturate(140%) blur(12px);
         backdrop-filter: saturate(140%) blur(12px);
-        box-shadow: 0 1px 0 color-mix(in srgb, #2a1f18 8%, transparent);
+        box-shadow: 0 1px 0 color-mix(in srgb, var(--ink, #1D1D1B) 8%, transparent);
       }
       /* Reserve nav height on non-hero pages so content isn't hidden. */
       body:not([data-hero='true']) {

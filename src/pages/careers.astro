@@ -90,18 +90,18 @@ const roles = c.roles ?? [];
   .roles-list { display: flex; flex-direction: column; gap: var(--space-4); }
   .role {
     padding: var(--space-6);
-    background: var(--surface-1);
+    background: var(--butter);
     border-radius: var(--radius-lg);
     border: 1px solid var(--hairline);
     transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
   }
   .role--feature {
-    background: linear-gradient(135deg, color-mix(in srgb, var(--coral) 22%, var(--surface-1)), var(--surface-1));
-    border-color: color-mix(in srgb, var(--coral) 45%, transparent);
+    background: linear-gradient(135deg, color-mix(in srgb, var(--peach) 22%, var(--butter)), var(--butter));
+    border-color: color-mix(in srgb, var(--peach) 45%, transparent);
   }
   .role-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
   .role-title { font-size: clamp(22px, 2.4vw, 30px); }
-  .role-type { color: var(--clay); font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px); letter-spacing: 0.06em; text-transform: uppercase; }
+  .role-type { color: var(--burgundy); font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px); letter-spacing: 0.06em; text-transform: uppercase; }
   .role-body { margin: var(--space-3) 0 var(--space-4); color: var(--body); max-width: 64ch; }
   .role-apply { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--font-mono); font-size: clamp(14px, calc(14px + (100vw - 1920px) * 0.003125), 16px); color: var(--burgundy); text-decoration: none; }
   @media (hover: hover) and (pointer: fine) {

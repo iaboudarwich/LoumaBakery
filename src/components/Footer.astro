@@ -40,7 +40,7 @@ const explore = [
     <div class="foot-cols">
       <!-- Brand -->
       <div class="foot-col foot-brand">
-        <FaceDraw class="foot-face" width={104} height={96} color="var(--coral)" />
+        <FaceDraw class="foot-face" width={104} height={96} color="var(--peach)" />
         <Wordmark class="foot-wordmark" width={180} height={116} aria-label={siteConfig.name} />
         <p class="foot-tag">{siteConfig.tagline}.</p>
       </div>
@@ -87,7 +87,7 @@ const explore = [
 <style>
   .site-foot {
     background: var(--ink);
-    color: color-mix(in srgb, var(--surface-0) 78%, transparent);
+    color: color-mix(in srgb, var(--butter) 78%, transparent);
     padding-block: var(--space-8) var(--space-6);
     margin-top: var(--space-8);
   }
@@ -98,14 +98,14 @@ const explore = [
   .foot-newsletter:not(:empty) {
     padding-bottom: var(--space-7);
     margin-bottom: var(--space-7);
-    border-bottom: 1px solid color-mix(in srgb, var(--surface-0) 14%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--butter) 14%, transparent);
   }
   .foot-news { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4); }
   .foot-news-h {
     font-family: var(--font-display);
     font-style: italic;
     font-size: clamp(20px, 2.4vw, 28px);
-    color: var(--surface-0);
+    color: var(--butter);
   }
   /* Newsletter form/input styling lives in NewsletterForm.astro (scoped to where it renders). */
 
@@ -116,7 +116,7 @@ const explore = [
   }
 
   .foot-brand .foot-face {
-    color: var(--coral);
+    color: var(--peach);
   }
   .foot-brand .foot-wordmark {
     color: var(--butter);
@@ -125,7 +125,7 @@ const explore = [
   }
   .foot-tag {
     margin-top: var(--space-4);
-    color: color-mix(in srgb, var(--surface-0) 72%, transparent);
+    color: color-mix(in srgb, var(--butter) 72%, transparent);
     font-style: italic;
     font-family: var(--font-display);
     font-size: clamp(20px, 2.2vw, 28px);
@@ -144,7 +144,7 @@ const explore = [
     letter-spacing: var(--track-eyebrow);
     text-transform: uppercase;
     font-weight: 500;
-    color: color-mix(in srgb, var(--surface-0) 88%, transparent);
+    color: color-mix(in srgb, var(--butter) 88%, transparent);
     margin-bottom: var(--space-4);
   }
 
@@ -164,7 +164,7 @@ const explore = [
     padding: 2px 0;
   }
   .foot-hours-time {
-    color: color-mix(in srgb, var(--surface-0) 62%, transparent);
+    color: color-mix(in srgb, var(--butter) 62%, transparent);
   }
 
   .foot-links {
@@ -177,13 +177,13 @@ const explore = [
   .foot-links a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; } /* tap targets */
 
   .site-foot a {
-    color: color-mix(in srgb, var(--surface-0) 82%, transparent);
+    color: color-mix(in srgb, var(--butter) 82%, transparent);
     text-decoration: none;
     transition: color var(--dur-fast) var(--ease-out);
   }
   @media (hover: hover) and (pointer: fine) {
     .site-foot a:hover {
-      color: var(--coral);
+      color: var(--peach);
       text-decoration: underline;
       text-decoration-thickness: 1px;
       text-underline-offset: 0.2em;
@@ -197,9 +197,9 @@ const explore = [
     flex-wrap: wrap;
     margin-top: var(--space-8);
     padding-top: var(--space-5);
-    border-top: 1px solid color-mix(in srgb, var(--surface-0) 14%, transparent);
+    border-top: 1px solid color-mix(in srgb, var(--butter) 14%, transparent);
     font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px);
-    color: color-mix(in srgb, var(--surface-0) 55%, transparent);
+    color: color-mix(in srgb, var(--butter) 55%, transparent);
   }
 
   @media (max-width: 760px) {

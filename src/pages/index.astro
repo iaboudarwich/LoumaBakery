@@ -72,7 +72,7 @@ const heroCta = orderReady
     <div class="container" data-anim={f.reveal ? 'reveal' : undefined} data-reveal-children>
       <h2 class="statement">{home.craftLine}</h2>
       <div class="slab-body">{home.body.map((p) => <p>{p}</p>)}</div>
-      <div class="slab-sketch" aria-hidden="true"><Sketch name="baguette" width={150} height={54} color="var(--clay)" draw={f.scrollDraw} /></div>
+      <div class="slab-sketch" aria-hidden="true"><Sketch name="baguette" width={150} height={54} color="var(--burgundy)" draw={f.scrollDraw} /></div>
     </div>
     <div class="container collage" aria-hidden="false">
       {story1Photo && <Img src={story1Photo} alt={images.story1Alt} class="collage-a" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 680px) 78vw, (max-width: 860px) 42vw, 460px" />}
@@ -182,11 +182,11 @@ const heroCta = orderReady
     padding-top: calc(var(--nav-h) + var(--space-6));
     padding-bottom: max(clamp(2.5rem, 7vw, 5.5rem), calc(env(safe-area-inset-bottom) + 1.5rem));
   }
-  .hero-media-content { max-width: clamp(320px, 60vw, 680px); color: var(--surface-0); }
-  .hero-media .hero-media-eyebrow { color: color-mix(in srgb, var(--surface-0) 86%, transparent); }
+  .hero-media-content { max-width: clamp(320px, 60vw, 680px); color: var(--butter); }
+  .hero-media .hero-media-eyebrow { color: color-mix(in srgb, var(--butter) 86%, transparent); }
   .hero-media-lede {
     margin-top: var(--space-4);
-    color: color-mix(in srgb, var(--surface-0) 92%, transparent);
+    color: color-mix(in srgb, var(--butter) 92%, transparent);
     font-size: clamp(17px, 1.4vw, 20px);
     max-width: 46ch;
     text-shadow: 0 1px 16px color-mix(in srgb, var(--ink) 45%, transparent);
@@ -257,7 +257,7 @@ const heroCta = orderReady
     font-style: italic;
     font-size: clamp(18px, 2vw, 26px);
   }
-  .marquee-dot { color: var(--coral); }
+  .marquee-dot { color: var(--peach); }
 
   /* ================================ MENU PREVIEW ===== */
   .menu-more { margin-top: var(--space-6); text-align: center; max-width: none; }
@@ -275,15 +275,15 @@ const heroCta = orderReady
   .findus-news {
     scroll-margin-top: calc(var(--nav-h) + var(--space-5));
     background: var(--burgundy);
-    color: var(--surface-0);
+    color: var(--butter);
     border-radius: var(--radius-lg);
     padding: clamp(1.5rem, 4vw, 2.5rem);
     display: flex;
     flex-direction: column;
     justify-content: center;
   }
-  .news-title { color: var(--surface-0); }
-  .news-body { margin: var(--space-3) 0 var(--space-5); color: color-mix(in srgb, var(--surface-0) 78%, transparent); }
+  .news-title { color: var(--butter); }
+  .news-body { margin: var(--space-3) 0 var(--space-5); color: color-mix(in srgb, var(--butter) 78%, transparent); }
 
   /* ===================================== Responsive ===== */
   @media (max-width: 860px) {

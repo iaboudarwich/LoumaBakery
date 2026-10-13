@@ -96,21 +96,21 @@ const today = new Date().toISOString().slice(0, 10);
   .process { padding-block: var(--space-8); }
   .process-grid { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
   .step-title { margin-bottom: var(--space-2); font-size: clamp(26px, calc(26px + (100vw - 1920px) * 0.005469), 29.5px); }
-  .step::before { content: ''; display: block; width: 40px; height: 2px; background: var(--clay); margin-bottom: var(--space-4); }
+  .step::before { content: ''; display: block; width: 40px; height: 2px; background: var(--burgundy); margin-bottom: var(--space-4); }
 
-  .tiers { padding-block: var(--space-8) var(--space-9); background: var(--surface-1); }
+  .tiers { padding-block: var(--space-8) var(--space-9); background: var(--butter); }
   .tiers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); }
   .tier {
     position: relative;
     padding: var(--space-6);
-    background: var(--surface-0);
+    background: var(--butter);
     border: 1px solid var(--hairline);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
   }
   .tier-note {
     position: absolute; top: -10px; left: var(--space-5);
-    background: var(--coral); color: var(--ink);
+    background: var(--peach); color: var(--ink);
     font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px); letter-spacing: 0.1em; text-transform: uppercase;
     padding: 0.25rem 0.6rem; border-radius: var(--radius-pill);
   }
@@ -118,7 +118,7 @@ const today = new Date().toISOString().slice(0, 10);
   .tier-price { color: var(--burgundy); font-size: clamp(18px, calc(18px + (100vw - 1920px) * 0.003906), 20.5px); margin: var(--space-2) 0 var(--space-4); }
   .tier-items { display: flex; flex-direction: column; gap: var(--space-2); color: var(--body); font-size: clamp(15px, calc(15px + (100vw - 1920px) * 0.003125), 17px); }
   .tier-items li { padding-left: 1.2em; position: relative; }
-  .tier-items li::before { content: '·'; position: absolute; left: 0; color: var(--clay); }
+  .tier-items li::before { content: '·'; position: absolute; left: 0; color: var(--burgundy); }
 
   .inquiry { padding-block: var(--space-9); }
   .inquiry .sec-head > h2 + p { margin-top: var(--space-2); }

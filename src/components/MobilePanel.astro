@@ -34,7 +34,7 @@ const { links, currentPath } = Astro.props;
 </aside>
 
 <style>
-  :global(html.sys-slab) .mobile-panel { background: var(--surface-0); border-inline-start: 1px solid var(--hairline); }
+  :global(html.sys-slab) .mobile-panel { background: var(--butter); border-inline-start: 1px solid var(--hairline); }
 
   .mobile-overlay {
     position: fixed;
@@ -50,7 +50,7 @@ const { links, currentPath } = Astro.props;
     inset-inline-end: 0;
     z-index: 1200;
     width: min(82vw, 360px);
-    background: var(--surface-1);
+    background: var(--butter);
     box-shadow: var(--shadow-lg);
     padding-top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + var(--space-4));
     padding-inline: var(--space-6) max(var(--space-6), env(safe-area-inset-right));
@@ -87,7 +87,7 @@ const { links, currentPath } = Astro.props;
     width: 0.9em;
     height: 2px;
     border-radius: 1px;
-    background: var(--clay);
+    background: var(--burgundy);
   }
 
   /* Reduced motion: no slide, instant show. */

@@ -29,7 +29,7 @@ const founder = c.founder;
       {c.lede && <p class="lede">{c.lede}</p>}
       {/* Small toast accent in the header corner (was floating in dead space
           between sections). */}
-      <Sketch name="toast" width={92} height={107} class="head-toast" color="var(--clay)" draw={f.scrollDraw} />
+      <Sketch name="toast" width={92} height={107} class="head-toast" color="var(--burgundy)" draw={f.scrollDraw} />
     </div>
   </header>
 
@@ -125,7 +125,7 @@ const founder = c.founder;
   .chapter-grid--text { grid-template-columns: 1fr; }
   .chapter-text h2 { margin-bottom: var(--space-3); }
 
-  .founder { padding-block: var(--space-8); background: var(--surface-1); }
+  .founder { padding-block: var(--space-8); background: var(--butter); }
   .founder-grid { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: var(--space-7); align-items: center; }
   .founder-portrait { position: relative; }
   .founder-mark { position: absolute; bottom: -16px; right: -8px; color: var(--red); }
@@ -148,11 +148,11 @@ const founder = c.founder;
     width: min(70vw, 240px);
     scroll-snap-align: start;
     padding: var(--space-5);
-    background: var(--surface-1);
+    background: var(--butter);
     border: 1px solid var(--hairline);
     border-radius: var(--radius-lg);
   }
-  .ing-index { display: block; color: var(--clay); font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px); margin-bottom: var(--space-3); }
+  .ing-index { display: block; color: var(--burgundy); font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px); margin-bottom: var(--space-3); }
   .ing-name { font-size: clamp(22px, calc(22px + (100vw - 1920px) * 0.004687), 25px); }
   .ing-note { margin-top: var(--space-2); color: var(--muted); font-size: clamp(14px, calc(14px + (100vw - 1920px) * 0.003125), 16px); }
 

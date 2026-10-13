@@ -107,7 +107,7 @@ const orderReady = !!siteConfig.links.uberEats && siteConfig.links.uberEats !== 
     line-height: 1;
   }
   .site-nav[data-transparent='true']:not([data-scrolled='true']) .brand {
-    color: var(--surface-0);
+    color: var(--butter);
   }
 
   .nav-links {
@@ -158,14 +158,14 @@ const orderReady = !!siteConfig.links.uberEats && siteConfig.links.uberEats !== 
     .nav-links a::after { transition: none; }
   }
   .site-nav[data-transparent='true']:not([data-scrolled='true']) .nav-links a {
-    color: color-mix(in srgb, var(--surface-0) 88%, transparent);
+    color: color-mix(in srgb, var(--butter) 88%, transparent);
   }
   /* Over the hero scrim the underline reads in butter, not burgundy. */
   .site-nav[data-transparent='true']:not([data-scrolled='true']) .nav-links a::after {
     background: var(--butter);
   }
   .site-nav[data-transparent='true']:not([data-scrolled='true']) .nav-links a[aria-current='page']::after {
-    background: var(--coral);
+    background: var(--peach);
   }
 
   .nav-right {
@@ -192,15 +192,15 @@ const orderReady = !!siteConfig.links.uberEats && siteConfig.links.uberEats !== 
   @media (hover: hover) and (pointer: fine) {
     .order-cta:hover {
       background: var(--red);
-      color: var(--surface-0);
+      color: var(--butter);
     }
   }
   /* Inert "Ordering soon": same soft coming-soon language as .btn:disabled
-     (warm surface + clay-dashed hairline), sized for the bar. */
+     (white chip + burgundy-dashed hairline), sized for the bar. */
   .order-cta.is-inert {
-    background: var(--surface-2);
+    background: var(--white);
     color: color-mix(in srgb, var(--burgundy) 78%, var(--muted));
-    border: 1.5px dashed color-mix(in srgb, var(--clay) 55%, transparent);
+    border: 1.5px dashed color-mix(in srgb, var(--burgundy) 55%, transparent);
     cursor: default;
   }
   .site-nav[data-transparent='true']:not([data-scrolled='true']) .order-cta.is-inert {
@@ -214,7 +214,7 @@ const orderReady = !!siteConfig.links.uberEats && siteConfig.links.uberEats !== 
      else solid cream with a hairline. The kill-all rule strips the blur. */
   :global(html.sys-slab) .site-nav[data-scrolled='true'],
   :global(html.sys-slab) .site-nav:not([data-transparent='true']) {
-    background: var(--surface-0);
+    background: var(--butter);
     border-bottom: 1px solid var(--hairline);
   }
   :global(html.sys-slab) .site-nav[data-transparent='true']:not([data-scrolled='true']) {
@@ -256,7 +256,7 @@ const orderReady = !!siteConfig.links.uberEats && siteConfig.links.uberEats !== 
     transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
   }
   .site-nav[data-transparent='true']:not([data-scrolled='true']) .nav-toggle-bar {
-    background: var(--surface-0);
+    background: var(--butter);
   }
 
   /* Open: lift the bar above the overlay/panel so the close control is visible

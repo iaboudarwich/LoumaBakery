@@ -3,29 +3,24 @@
    Prefer these over literal values everywhere. (louma-brand skill.)
    ===================================================================== */
 :root {
-  /* --- Accent / brand reds --- */
-  --red: #ED2739;          /* accent only — max ~3 uses per page */
-  --burgundy: #6E1F2A;     /* workhorse: buttons, links */
-  --clay: #B8533F;
-  --amber-warm: #C8853A;
-  --coral: #EF6E78;        /* warm fill for dark/sticker moments */
-  --navy-stitch: #2B3A55;  /* dashed sticker / stitch borders */
+  /* --- Brand palette: the only colours on the site ---
+     Source: docs/brand/palette.css (LB-Brand-Assets-2026_01, page 3).
+     Nothing else may be a literal colour; everything below derives from these. */
+  --red:        #ED2739;   /* Louma Red, primary */
+  --burgundy:   #A10017;
+  --peach:      #FF676C;
+  --tangerine:  #FF8926;
+  --fairy:      #DDEAC3;
+  --butter:     #FBF5D4;   /* page background */
+  --white:      #FFFFFF;
+  --ink:        #1D1D1B;   /* text */
 
-  /* --- Text --- */
-  --ink: #2A1F18;          /* headings */
-  --body: #4A3D34;         /* body copy */
-  --muted: #665A4D;        /* captions, meta — WCAG AA (>=4.5:1) on surface-0..3 */
-
-  /* --- Surfaces (cream stack, light → deep) --- */
-  --surface-0: #FAF5EA;
-  --surface-1: #F5EDD8;
-  --surface-2: #EFE2C4;
-  --surface-3: #E8D4AA;
-  --butter: #FBF5D4;       /* brightest cream — stroke color on dark */
+  /* --- Derived text (mixed from ink + butter only) --- */
+  --body: color-mix(in srgb, var(--ink) 85%, var(--butter));   /* body copy: 9.9:1 on butter */
+  --muted: color-mix(in srgb, var(--ink) 70%, var(--butter));  /* captions, meta: 5.9:1 on butter, 6.5:1 on white */
 
   /* --- Semantic aliases --- */
-  --bg: var(--surface-0);
-  --bg-alt: var(--surface-1);
+  --bg: var(--butter);
   --link: var(--burgundy);
   --link-hover: var(--red);
 
@@ -78,9 +73,9 @@
   --hairline: color-mix(in srgb, var(--ink) 8%, transparent);
   --hairline-strong: color-mix(in srgb, var(--ink) 16%, transparent);
 
-  /* --- Shadows (warm, low) --- */
-  --shadow-sm: 0 1px 2px rgba(42, 31, 24, 0.06), 0 2px 6px rgba(42, 31, 24, 0.05);
-  --shadow-lg: 0 10px 30px rgba(42, 31, 24, 0.10), 0 24px 60px rgba(42, 31, 24, 0.09);
+  /* --- Shadows (built from ink; the flat rule in global.css cancels them on the site) --- */
+  --shadow-sm: 0 1px 2px color-mix(in srgb, var(--ink) 6%, transparent), 0 2px 6px color-mix(in srgb, var(--ink) 5%, transparent);
+  --shadow-lg: 0 10px 30px color-mix(in srgb, var(--ink) 10%, transparent), 0 24px 60px color-mix(in srgb, var(--ink) 9%, transparent);
 
   /* --- Motion --- */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);

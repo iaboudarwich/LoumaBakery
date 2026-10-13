@@ -65,6 +65,8 @@ public/
   admin-demo/      the same editor on an in-memory backend (config.yml generated at prebuild)
 scripts/           build/maintenance scripts (see scripts/README.md)
 docs/EDITING.md    the non-developer editing guide
+docs/BRAND.md      the brand reference: colours, typeface, marks, and how the site diverges
+docs/brand/        the designer's master assets (.ai, page SVGs, previews, palette)
 ```
 
 ## Content: where it lives and how it reaches the page

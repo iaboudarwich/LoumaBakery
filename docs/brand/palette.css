@@ -1,0 +1,36 @@
+/* =====================================================================
+   Louma Bakery — OFFICIAL brand palette
+   Source: LB-Brand-Assets-2026_01-v001.ai, page 3
+   Verified two ways: the PDF text layer, and the Illustrator XMP swatch
+   group. Both agree exactly.
+
+   REFERENCE ONLY. This file is not imported anywhere. The live tokens
+   are in src/styles/tokens.css and currently differ. See docs/BRAND.md
+   for the gap.
+   ===================================================================== */
+:root {
+  /* --- The six working colours --- */
+  --brand-louma-red: #ED2739;  /* primary: logo, illustrations, display type */
+  --brand-butter:    #FBF5D4;  /* the background cream, every board page    */
+  --brand-burgundy:  #A10017;  /* deep red, dark tiles and contrast lockups */
+  --brand-peach:     #FF676C;  /* soft warm pink                            */
+  --brand-tangerine: #FF8926;  /* orange accent                             */
+  --brand-fairy:     #DDEAC3;  /* pale sage, the only cool colour           */
+
+  /* --- Neutrals --- */
+  --brand-white: #FFFFFF;
+  --brand-black: #000000;
+  --brand-registration-black: #1D1D1B;  /* print only, 100% K */
+}
+
+/* ---------------------------------------------------------------------
+   The 12 approved logo lockups (board page 4). Logo colour on fill
+   colour. Tiles sitting on Butter carry a thin keyline.
+
+   Butter    on Louma Red      Butter    on Burgundy
+   Louma Red on Butter         Burgundy  on Butter
+   Butter    on Peach          Burgundy  on Peach
+   Tangerine on Butter         Peach     on Butter
+   Louma Red on Burgundy       Butter    on Tangerine
+   Burgundy  on Fairy          Peach     on Fairy
+   --------------------------------------------------------------------- */

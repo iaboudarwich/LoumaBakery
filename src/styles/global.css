@@ -314,15 +314,15 @@ html.sys-slab .btn-coral {
   html.sys-slab .btn-primary:hover,
   html.sys-slab .btn-coral:hover { background: var(--ink); border-color: var(--ink); color: var(--butter); }
 }
-/* Ghost on dark bands/footer + over the hero photo. */
-html.sys-slab :is(.on-dark, .site-foot, .band--burgundy) .btn:not(.btn-primary):not(.btn-coral),
+/* Ghost on dark bands/footer, the mobile CTA bar, and over the hero photo. */
+html.sys-slab :is(.on-dark, .site-foot, .band--burgundy, .mobile-cta-bar) .btn:not(.btn-primary):not(.btn-coral),
 html.sys-slab .btn--cream {
   border-color: var(--butter);
   color: var(--butter);
   background: transparent;
 }
 @media (hover: hover) and (pointer: fine) {
-  html.sys-slab :is(.on-dark, .site-foot, .band--burgundy) .btn:not(.btn-primary):not(.btn-coral):hover,
+  html.sys-slab :is(.on-dark, .site-foot, .band--burgundy, .mobile-cta-bar) .btn:not(.btn-primary):not(.btn-coral):hover,
   html.sys-slab .btn--cream:hover { background: color-mix(in srgb, var(--butter) 14%, transparent); color: var(--butter); }
 }
 /* Inert "Ordering soon" (until a real Order link exists): an intentional
@@ -629,7 +629,10 @@ html.sys-slab .marquee-dot { color: color-mix(in srgb, var(--butter) 60%, transp
   -webkit-appearance: none;
   appearance: none;
 }
+/* Room for the chevron. Same specificity as the shared .field control rule
+   above, so this wins by coming later. */
 .field select {
+  padding-inline-end: 2.4rem;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236E1F2A' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1rem center;
@@ -677,10 +680,8 @@ html.sys-slab .marquee-dot { color: color-mix(in srgb, var(--butter) 60%, transp
     padding-inline: max(var(--gutter), env(safe-area-inset-left)) max(var(--gutter), env(safe-area-inset-right));
   }
   .mobile-cta-bar.is-parked { display: none; }
+  /* Colors come from the ghost-on-dark button rule (.mobile-cta-bar is in its list). */
   .mobile-cta-link {
-    border: 1.5px solid var(--butter);
-    color: var(--butter);
-    background: transparent;
     min-height: 44px;
     padding: 10px 24px;
     font-size: clamp(15px, calc(15px + (100vw - 1920px) * 0.003125), 17px);

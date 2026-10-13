@@ -1,5 +1,6 @@
 ---
 import { siteConfig } from '../config/site';
+import MobilePanel from './MobilePanel.astro';
 
 interface Props {
   transparent?: boolean;
@@ -58,28 +59,14 @@ const orderReady = !!siteConfig.links.uberEats && siteConfig.links.uberEats !== 
     </div>
   </div>
 
-  <!-- Mobile slide-in panel -->
-  <div class="mobile-overlay" data-overlay hidden></div>
-  <aside id="mobile-panel" class="mobile-panel" aria-label="Menu" aria-hidden="true" hidden>
-    <ul class="mobile-links" role="list">
-      {
-        links.map((l) => (
-          <li>
-            <a href={l.href} aria-current={isActive(l.href) ? 'page' : undefined}>
-              {l.label}
-            </a>
-          </li>
-        ))
-      }
-      <li>
-        {orderReady ? (
-          <a class="order-cta order-cta--block" href={siteConfig.links.uberEats} target="_blank" rel="noopener">Order on Uber Eats</a>
-        ) : (
-          <span class="order-cta order-cta--block is-inert" aria-disabled="true">Ordering soon</span>
-        )}
-      </li>
-    </ul>
-  </aside>
+  <!-- Mobile slide-in panel. The CTA is slotted so it keeps this file's .order-cta styles. -->
+  <MobilePanel links={links} currentPath={path}>
+    {orderReady ? (
+      <a slot="cta" class="order-cta order-cta--block" href={siteConfig.links.uberEats} target="_blank" rel="noopener">Order on Uber Eats</a>
+    ) : (
+      <span slot="cta" class="order-cta order-cta--block is-inert" aria-disabled="true">Ordering soon</span>
+    )}
+  </MobilePanel>
 </nav>
 
 {/* No-JS fallback: the mobile toggle needs JS, so without it surface the links
@@ -234,7 +221,6 @@ const orderReady = !!siteConfig.links.uberEats && siteConfig.links.uberEats !== 
     background: color-mix(in srgb, var(--ink) 90%, transparent);
   }
   :global(html.sys-slab) .order-cta { border-radius: 9999px; }
-  :global(html.sys-slab) .mobile-panel { background: var(--surface-0); border-inline-start: 1px solid var(--hairline); }
 
   /* Hide-on-scroll-down / show-on-scroll-up (keeps the glass state). */
   .site-nav { transition: transform 0.35s var(--ease-out); will-change: transform; padding-top: env(safe-area-inset-top, 0px); height: calc(var(--nav-h) + env(safe-area-inset-top, 0px)); }
@@ -283,60 +269,7 @@ const orderReady = !!siteConfig.links.uberEats && siteConfig.links.uberEats !== 
     transform: translateY(-4px) rotate(-45deg);
   }
 
-  /* --- Mobile panel --- */
-  .mobile-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 1100;
-    background: color-mix(in srgb, var(--ink) 45%, transparent);
-  }
-  .mobile-panel {
-    position: fixed;
-    inset-block: 0;
-    min-height: 100vh; /* fallback */
-    min-height: 100svh;
-    inset-inline-end: 0;
-    z-index: 1200;
-    width: min(82vw, 360px);
-    background: var(--surface-1);
-    box-shadow: var(--shadow-lg);
-    padding-top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + var(--space-4));
-    padding-inline: var(--space-6) max(var(--space-6), env(safe-area-inset-right));
-    padding-bottom: calc(var(--space-6) + env(safe-area-inset-bottom, 0px));
-    transform: translateX(100%);
-    transition: transform var(--dur) var(--ease-out);
-  }
-  .mobile-panel[data-open='true'] {
-    transform: translateX(0);
-  }
-  .mobile-links {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    margin: 0;
-    padding: 0;
-  }
-  .mobile-links a {
-    display: flex;
-    align-items: center;
-    gap: 0.5em;
-    min-height: 44px;
-    font-family: var(--font-display);
-    font-size: clamp(22px, calc(22px + (100vw - 1920px) * 0.004687), 25px);
-    color: var(--ink);
-    text-decoration: none;
-  }
-  /* Active page: red text + a short clay dash, matching the eyebrow language. */
-  .mobile-links a[aria-current='page'] {
-    color: var(--red);
-  }
-  .mobile-links a[aria-current='page']::before {
-    content: '';
-    width: 0.9em;
-    height: 2px;
-    border-radius: 1px;
-    background: var(--clay);
-  }
+  /* Order pill as rendered inside the mobile panel (slotted into MobilePanel). */
   .order-cta--block {
     margin-top: var(--space-4);
     justify-content: center;
@@ -354,17 +287,11 @@ const orderReady = !!siteConfig.links.uberEats && siteConfig.links.uberEats !== 
       display: flex;
     }
   }
-
-  /* Reduced motion: no slide, instant show. */
-  @media (prefers-reduced-motion: reduce) {
-    .mobile-panel {
-      transition: none;
-    }
-  }
 </style>
 
 <script>
-  // Nav behavior: scroll-glass toggle, mobile panel with focus trap + Esc.
+  // Nav behavior: scroll state + hide-on-scroll. The mobile panel's
+  // open/close behavior lives in MobilePanel.astro.
   // Bound per page-load: with view transitions the nav DOM is swapped on every
   // navigation, so a run-once module leaves the fresh nav with NO scroll
   // listener → data-scrolled never flips → the bar sits transparent over light
@@ -380,9 +307,6 @@ const orderReady = !!siteConfig.links.uberEats && siteConfig.links.uberEats !== 
     if (!nav || nav.dataset.navBound === 'true') return;
     nav.dataset.navBound = 'true';
     cleanupScroll?.(); // drop the stale window listener from the previous page
-    const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
-    const panel = document.querySelector<HTMLElement>('#mobile-panel');
-    const overlay = document.querySelector<HTMLElement>('[data-overlay]');
 
     // --- Scroll glass + hide-on-scroll-down / show-on-scroll-up (rAF throttled) ---
     if (nav) {
@@ -411,76 +335,6 @@ const orderReady = !!siteConfig.links.uberEats && siteConfig.links.uberEats !== 
       window.addEventListener('scroll', onScroll, { passive: true });
       cleanupScroll = () => window.removeEventListener('scroll', onScroll);
     }
-
-    // --- Mobile panel ---
-    if (!(toggle && panel && overlay)) return;
-    const focusables = () =>
-      Array.from(
-        panel.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'),
-      ).filter((el) => el.offsetParent !== null);
-
-    const open = () => {
-      // Keep the bar visible while the menu is open.
-      if (nav) { nav.dataset.menuOpen = 'true'; nav.dataset.hidden = 'false'; }
-      panel.hidden = false;
-      overlay.hidden = false;
-      // next frame so the transition runs
-      requestAnimationFrame(() => {
-        panel.dataset.open = 'true';
-      });
-      panel.setAttribute('aria-hidden', 'false');
-      toggle.setAttribute('aria-expanded', 'true');
-      toggle.setAttribute('aria-label', 'Close menu');
-      document.body.style.overflow = 'hidden';
-      focusables()[0]?.focus();
-      document.addEventListener('keydown', onKeydown);
-    };
-
-    const close = () => {
-      if (nav) nav.dataset.menuOpen = 'false';
-      panel.dataset.open = 'false';
-      panel.setAttribute('aria-hidden', 'true');
-      toggle.setAttribute('aria-expanded', 'false');
-      toggle.setAttribute('aria-label', 'Open menu');
-      document.body.style.overflow = '';
-      document.removeEventListener('keydown', onKeydown);
-      // Return focus to the trigger.
-      toggle.focus();
-      // hide after transition so it leaves the tab order
-      const hide = () => {
-        panel.hidden = true;
-        overlay.hidden = true;
-      };
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduce) hide();
-      else window.setTimeout(hide, 300);
-    };
-
-    const onKeydown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        close();
-        return;
-      }
-      if (e.key === 'Tab') {
-        const items = focusables();
-        if (items.length === 0) return;
-        const first = items[0];
-        const last = items[items.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
-      }
-    };
-
-    toggle.addEventListener('click', () =>
-      toggle.getAttribute('aria-expanded') === 'true' ? close() : open(),
-    );
-    overlay.addEventListener('click', close);
-    panel.querySelectorAll('a[href]').forEach((a) => a.addEventListener('click', close));
   }
 
   // First load (no page-load event when transitions are off) + every swap.

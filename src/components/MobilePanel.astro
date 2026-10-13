@@ -1,0 +1,188 @@
+---
+interface Props {
+  links: { label: string; href: string }[];
+  currentPath: string;
+}
+const { links, currentPath } = Astro.props;
+
+// Mobile slide-in menu panel (<=860px), rendered inside Nav's <nav>.
+// Nav owns the hamburger toggle, the link list and the no-JS fallback; this
+// component owns the overlay, the panel, and the open/close behavior (focus
+// trap, Esc, overlay tap, link tap).
+//
+// The Order / "Ordering soon" pill arrives through the `cta` slot so it keeps
+// Nav's scoped .order-cta styles (Astro scoped styles don't reach a child
+// component's own markup, but they do reach slotted markup).
+---
+
+<div class="mobile-overlay" data-overlay hidden></div>
+<aside id="mobile-panel" class="mobile-panel" aria-label="Menu" aria-hidden="true" hidden>
+  <ul class="mobile-links" role="list">
+    {
+      links.map((l) => (
+        <li>
+          <a href={l.href} aria-current={currentPath === l.href ? 'page' : undefined}>
+            {l.label}
+          </a>
+        </li>
+      ))
+    }
+    <li>
+      <slot name="cta" />
+    </li>
+  </ul>
+</aside>
+
+<style>
+  :global(html.sys-slab) .mobile-panel { background: var(--surface-0); border-inline-start: 1px solid var(--hairline); }
+
+  .mobile-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    background: color-mix(in srgb, var(--ink) 45%, transparent);
+  }
+  .mobile-panel {
+    position: fixed;
+    inset-block: 0;
+    min-height: 100vh; /* fallback */
+    min-height: 100svh;
+    inset-inline-end: 0;
+    z-index: 1200;
+    width: min(82vw, 360px);
+    background: var(--surface-1);
+    box-shadow: var(--shadow-lg);
+    padding-top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + var(--space-4));
+    padding-inline: var(--space-6) max(var(--space-6), env(safe-area-inset-right));
+    padding-bottom: calc(var(--space-6) + env(safe-area-inset-bottom, 0px));
+    transform: translateX(100%);
+    transition: transform var(--dur) var(--ease-out);
+  }
+  .mobile-panel[data-open='true'] {
+    transform: translateX(0);
+  }
+  .mobile-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+  }
+  .mobile-links a {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    min-height: 44px;
+    font-family: var(--font-display);
+    font-size: clamp(22px, calc(22px + (100vw - 1920px) * 0.004687), 25px);
+    color: var(--ink);
+    text-decoration: none;
+  }
+  /* Active page: red text + a short clay dash, matching the eyebrow language. */
+  .mobile-links a[aria-current='page'] {
+    color: var(--red);
+  }
+  .mobile-links a[aria-current='page']::before {
+    content: '';
+    width: 0.9em;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--clay);
+  }
+
+  /* Reduced motion: no slide, instant show. */
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-panel {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // Mobile panel behavior: open/close, focus trap, Esc, overlay tap, link tap.
+  // Bound per page-load: with view transitions the nav DOM is swapped on every
+  // navigation, so a run-once module would leave the fresh panel unbound. The
+  // panel-identity guard stops a double bind on first load, which fires BOTH
+  // the ready path and astro:page-load.
+  function initMobilePanel() {
+    const nav = document.querySelector<HTMLElement>('.site-nav');
+    const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
+    const panel = document.querySelector<HTMLElement>('#mobile-panel');
+    const overlay = document.querySelector<HTMLElement>('[data-overlay]');
+    if (!(toggle && panel && overlay) || panel.dataset.panelBound === 'true') return;
+    panel.dataset.panelBound = 'true';
+
+    const focusables = () =>
+      Array.from(
+        panel.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'),
+      ).filter((el) => el.offsetParent !== null);
+
+    const open = () => {
+      // Keep the bar visible while the menu is open.
+      if (nav) { nav.dataset.menuOpen = 'true'; nav.dataset.hidden = 'false'; }
+      panel.hidden = false;
+      overlay.hidden = false;
+      // next frame so the transition runs
+      requestAnimationFrame(() => {
+        panel.dataset.open = 'true';
+      });
+      panel.setAttribute('aria-hidden', 'false');
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Close menu');
+      document.body.style.overflow = 'hidden';
+      focusables()[0]?.focus();
+      document.addEventListener('keydown', onKeydown);
+    };
+
+    const close = () => {
+      if (nav) nav.dataset.menuOpen = 'false';
+      panel.dataset.open = 'false';
+      panel.setAttribute('aria-hidden', 'true');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open menu');
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', onKeydown);
+      // Return focus to the trigger.
+      toggle.focus();
+      // hide after transition so it leaves the tab order
+      const hide = () => {
+        panel.hidden = true;
+        overlay.hidden = true;
+      };
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) hide();
+      else window.setTimeout(hide, 300);
+    };
+
+    const onKeydown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        close();
+        return;
+      }
+      if (e.key === 'Tab') {
+        const items = focusables();
+        if (items.length === 0) return;
+        const first = items[0];
+        const last = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    toggle.addEventListener('click', () =>
+      toggle.getAttribute('aria-expanded') === 'true' ? close() : open(),
+    );
+    overlay.addEventListener('click', close);
+    panel.querySelectorAll('a[href]').forEach((a) => a.addEventListener('click', close));
+  }
+
+  // First load (no page-load event when transitions are off) + every swap.
+  if (document.readyState !== 'loading') initMobilePanel();
+  else document.addEventListener('DOMContentLoaded', initMobilePanel, { once: true });
+  document.addEventListener('astro:page-load', initMobilePanel);
+</script>

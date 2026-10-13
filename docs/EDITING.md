@@ -1,73 +1,95 @@
 # Editing the Louma Bakery website
 
-You have a simple editor at **https://loumabakeryy.netlify.app/admin/**.
-No code, no GitHub account. Log in with your email and password, change what
-you need, click **Publish**. The site updates a minute or two later.
+This guide is for the person who keeps the website up to date. You do not need to know any code.
 
-Nothing is deleted for good. Every change is saved with a history, and your
-developer can undo anything. When in doubt, make the change and look at the
-live site.
+## Before you start
 
-Want to try it first without logging in? Open **/admin-demo**. It looks and
-works the same, but nothing you do there is saved.
+The website has an editor at **https://loumabakeryy.netlify.app/admin/**.
 
----
+**The login is not switched on yet.** Your developer still has to finish one setup step (see "Things that still need a developer" below). Until then, the editor will not let you in.
 
-## Change a price
+Once the login works:
 
-1. Open the editor and click **Menu**, then **Menu items**.
-2. Open the category, then the item.
-3. Type the new price the way it should look, like `$4.50`.
+1. Open the editor and log in with your email and password.
+2. Pick what you want to change from the list on the left.
+3. Make your change.
 4. Click **Publish**.
+5. Wait about two minutes, then refresh the website. Your change is live.
 
-## Add or remove a menu item
+Every change is saved with a full history. Nothing is lost for good. If something goes wrong, your developer can put it back.
 
-Menu → the category → **Items**. Add Item at the bottom, or the trash icon to
-remove one. Drag the handle on the left to reorder. Publish when done.
+## What to change, and where
 
-## Swap a photo
+| To change this | Go here in the editor |
+|---|---|
+| A menu item's name or description | Menu → Menu items → open the category → open the item |
+| A price | Menu → Menu items → the category → the item → Price |
+| Add a menu item | Menu → Menu items → the category → **Add item** at the top of the list |
+| Remove a menu item | Menu → Menu items → the category → the **X** on that item |
+| The order of menu items | Menu → Menu items → the category → drag the item by the two short lines at its top |
+| A menu item's photo | Menu → Menu items → the category → the item → Photo |
+| The add-ons list (like extra shots) | Menu → Menu items → Add-ons |
+| The big photo at the top of the home page | Images → Site photos → Home: hero photo |
+| The photos on the Our Story page | Images → Site photos → Story: photo 1 or photo 2 |
+| The small extra photo on the home page | Images → Site photos → Home: accent photo |
+| Opening hours | Site settings → Settings → Opening hours |
+| The address | Site settings → Settings → Address |
+| The phone number | Site settings → Settings → Phone number |
+| The email address | Site settings → Settings → Email address |
+| The Uber Eats or Instagram link | Site settings → Settings → Links |
+| A page's headline, intro, or paragraphs | Page text → All pages → open that page |
+| The open jobs on the Careers page | Page text → All pages → Careers page → Open roles |
+| The catering steps or options | Page text → All pages → Catering page |
+| The values on the Mission page | Page text → All pages → Mission page → Values |
+| The "page not found" page and its button | Page text → All pages → "Page not found" page |
+| The scrolling words on the home page | Marquee words → Marquee |
+| The numbered chapters on the Our Story page | Story chapters → Chapters |
+| The "what goes in" list on the Our Story page | Ingredients → Ingredients |
 
-For a menu item: open the item, click **Photo**, upload the new one, Publish.
-For the big site photos (hero, story, and so on): click **Images**, pick the
-slot by its label, upload, Publish.
+## Good habits
 
-A good photo is landscape, at least 1200px wide, and under 3MB. The site
-shrinks and optimizes it on its own.
+**Photos.** Use a photo at least 1200 pixels wide and under 3MB. The website shrinks and sharpens it for you. Every photo has a **Photo description** box. Write one plain sentence about what the photo shows, like "Croissants cooling on a wire rack." People who cannot see the photo hear this sentence.
 
-## Change hours, address, phone, or links
+**Prices.** Type them the way they should look, like `$4.50`. Leave the box empty if an item has no price yet. It will still show, just without a price.
 
-**Site settings** → **Settings**. Hours are one row per group of days; for a
-closed day put `Closed` in Opens and leave Closes empty. Paste the full Uber
-Eats or Instagram link into its field. Publish.
+**Hours.** Use one row for each group of days. For a closed day, type `Closed` in Opens and leave Closes empty.
 
-## Change the words on a page
+**Phone number.** The site hides the phone number until a real one is entered. Type it like `+1 (310) 555-1234` and it will appear in the footer, on the home page, and on the Visit page.
 
-**Page text** → **All pages**. Each page is a section; open it and edit the
-headline, intro, or paragraphs. A few fields are marked internal. Leave those
-alone. Publish.
+**Internal ID.** Some items have a box called Internal ID. Leave it as it is. The website uses it behind the scenes.
 
----
+**The Mission page.** Never add numbers about team members' disabilities. This is a firm rule for the bakery.
 
-## The menu will soon come from the Google Sheet
+**Short is better.** Menu descriptions work best as one line. The rest of the site is written in plain, warm sentences. Try to keep that voice.
 
-Once the sheet is connected, the menu on the site will update itself from
-your Google Sheet every day (and the Menu section of this editor becomes
-read-mostly). How that gets switched on is written down in
-`scripts/README.md`. Until then, edit the menu here as usual.
+## Practicing first
+
+There is a practice editor at **https://loumabakeryy.netlify.app/admin-demo/**. Click **Login**. No password is needed.
+
+It shows the same menus and boxes as the real editor, but **the boxes start empty**. It does not load the website's real words or photos. Nothing you do there is saved. Use it to learn where things are, not to check how a change will look.
+
+## The menu and the Google Sheet
+
+The menu can be set up to update itself from a Google Sheet every morning. **This is not switched on yet.** For now, edit the menu in the editor as usual.
+
+If it is switched on later, the sheet becomes the source of the menu. Menu changes made in the editor will be replaced by the sheet the next morning. Photo descriptions for menu items will also be lost, because the sheet has no column for them.
+
+## Things that still need a developer
+
+These cannot be changed in the editor. Ask your developer.
+
+* **Switching on the editor login.** The login service (DecapBridge) needs its site code added to the website.
+* **The Google Sheet menu sync.** Someone has to publish the sheet and connect it.
+* **Getting form messages by email.** The newsletter, careers, and catering forms collect replies in the Netlify dashboard. No one is emailed yet when a new one arrives. Your developer or Netlify account owner can turn on email alerts.
+* **The words on forms.** Field names like "Name" and "Event date", the buttons like "Send inquiry" and "Notify me", and the messages people see after sending.
+* **The menu bar and footer.** The page names at the top ("Menu", "Our Story", and so on), "Ordering soon", and the footer headings and tagline.
+* **Some section headings.** For example "Where you'd fit", "Pick a starting point", "Catering inquiry", "A short list, done well", "Find us", "See the full menu", and the Hours, Address, and Getting here headings on the Visit page.
+* **The page name in the browser tab.**
+* **The map on the Visit page.** It is set up for the current address.
+* **Colors, fonts, spacing, layout, and the hand-drawn sketches.**
+* **Adding a new page.**
+* **The web address (domain).**
 
 ## Inviting another editor
 
-An admin does this from the DecapBridge dashboard, not this editor:
-DecapBridge → your site → Collaborators → invite by email.
-
-## Quick reference
-
-| I want to... | Go to |
-|---|---|
-| Change a price or item | Menu |
-| Swap a menu photo | Menu → item → Photo |
-| Change the hero or story photos | Images |
-| Change hours or the address | Site settings |
-| Change the Uber Eats link | Site settings → Links |
-| Reword a page | Page text |
-| Just try the editor | /admin-demo |
+An admin does this in the DecapBridge dashboard, not in the editor. Go to DecapBridge, open the site, choose Collaborators, and invite the person by email.

@@ -99,9 +99,14 @@ h4 {
   font-family: var(--font-display);
   color: var(--ink);
   line-height: var(--lh-snug);
-  font-weight: 500;
   text-wrap: balance;
 }
+/* Headings are 400. Prefixed for specificity: this must beat weight-setting
+   classes on headings (.smallcaps on menu category titles, .foot-h, .info-h).
+   .statement headings take their weight from .statement. */
+html.sys-slab h1:not(.statement),
+html.sys-slab h2:not(.statement),
+html.sys-slab h3 { font-weight: 400; }
 
 h1 {
   font-size: var(--t-h1);
@@ -115,10 +120,11 @@ h3 {
 }
 h4 {
   font-size: var(--t-h4);
+  font-weight: 500;
 }
 
 p {
-  max-width: var(--measure);
+  max-width: min(640px, 70ch);
   text-wrap: pretty;
 }
 
@@ -126,18 +132,21 @@ p + p {
   margin-top: var(--space-4);
 }
 
-/* Section label: the mono stamp (restyled for the slab below). */
+/* Section label: the mono stamp. 12px by spec (CLAUDE.md); the 13px floor
+   covers body copy, not this. */
 .eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 0.7em;
   font-family: var(--font-mono);
   font-size: var(--t-eyebrow);
-  letter-spacing: var(--track-eyebrow);
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   font-weight: 500;
-  color: var(--muted);
+  color: var(--burgundy);
 }
+.on-dark .eyebrow,
+.site-foot .eyebrow { color: var(--coral); }
 
 .smallcaps {
   font-family: var(--font-sc);
@@ -265,17 +274,24 @@ a {
    Reused across all pages so layout/components stay single-sourced.
    ===================================================================== */
 
-/* --- Buttons --- */
-.btn {
+/* --- Buttons ---
+   Ghost pill by default; ONE filled CTA per page (.btn-primary/.btn-coral both
+   render as the filled burgundy pill). The html.sys-slab prefix is kept on the
+   button rules for its specificity: it decides which rule wins against
+   component classes on the same element (e.g. .mobile-cta-link). */
+html.sys-slab .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 48px;
-  padding: 0 1.5rem;
-  border: 1px solid transparent;
+  min-height: 0;
+  padding: 14px 28px;
+  border: 1.5px solid var(--burgundy);
   border-radius: var(--radius-pill);
-  font-family: var(--font-mono);
-  font-size: clamp(14px, calc(14px + (100vw - 1920px) * 0.003125), 16px);
+  background: transparent;
+  color: var(--burgundy);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: clamp(15px, calc(15px + (100vw - 1920px) * 0.003125), 17px);
   letter-spacing: 0.02em;
   text-decoration: none;
   cursor: pointer;
@@ -283,27 +299,41 @@ a {
     color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out),
     transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
 }
+@media (hover: hover) and (pointer: fine) { html.sys-slab .btn:hover { background: color-mix(in srgb, var(--burgundy) 9%, transparent); color: var(--burgundy); } }
 /* Tactile press. */
 @media (prefers-reduced-motion: no-preference) {
   .btn:not(:disabled):not([aria-disabled="true"]):active { transform: translateY(1px) scale(0.985); }
 }
-.btn-primary { background: var(--burgundy); color: var(--butter); }
-@media (hover: hover) and (pointer: fine) { .btn-primary:hover { background: var(--red); color: var(--surface-0); } }
-.btn-coral { background: var(--coral); color: var(--ink); }
-@media (hover: hover) and (pointer: fine) { .btn-coral:hover { background: var(--butter); } }
-.btn-ghost { background: transparent; border-color: currentColor; color: var(--burgundy); }
-@media (hover: hover) and (pointer: fine) { .btn-ghost:hover { background: var(--burgundy); color: var(--butter); border-color: var(--burgundy); } }
-/* Inert state (e.g. "Ordering soon" until a real Order link exists).
-   Reads as a soft, deliberate "coming soon" chip — clay-dashed hairline on a
-   warm surface — never a greyed-out dead control. */
-.btn:disabled,
-.btn[aria-disabled="true"] {
+html.sys-slab .btn-primary,
+html.sys-slab .btn-coral {
+  background: var(--burgundy);
+  border-color: var(--burgundy);
+  color: var(--butter);
+}
+@media (hover: hover) and (pointer: fine) {
+  html.sys-slab .btn-primary:hover,
+  html.sys-slab .btn-coral:hover { background: var(--ink); border-color: var(--ink); color: var(--butter); }
+}
+/* Ghost on dark bands/footer + over the hero photo. */
+html.sys-slab :is(.on-dark, .site-foot, .band--burgundy) .btn:not(.btn-primary):not(.btn-coral),
+html.sys-slab .btn--cream {
+  border-color: var(--butter);
+  color: var(--butter);
+  background: transparent;
+}
+@media (hover: hover) and (pointer: fine) {
+  html.sys-slab :is(.on-dark, .site-foot, .band--burgundy) .btn:not(.btn-primary):not(.btn-coral):hover,
+  html.sys-slab .btn--cream:hover { background: color-mix(in srgb, var(--butter) 14%, transparent); color: var(--butter); }
+}
+/* Inert "Ordering soon" (until a real Order link exists): an intentional
+   dashed ghost, never a greyed-out dead control. */
+html.sys-slab .btn:disabled,
+html.sys-slab .btn[aria-disabled="true"] {
   cursor: not-allowed;
   pointer-events: none;
-  box-shadow: none;
-  background: var(--surface-2);
-  color: color-mix(in srgb, var(--burgundy) 78%, var(--muted));
-  border: 1.5px dashed color-mix(in srgb, var(--clay) 55%, transparent);
+  background: transparent;
+  border: 1.5px dashed color-mix(in srgb, var(--burgundy) 55%, transparent);
+  color: color-mix(in srgb, var(--burgundy) 80%, var(--muted));
 }
 
 /* Responsive image wrapper (<Img> → <Picture>). The .limg picture carries the
@@ -329,7 +359,8 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 .page-head {
   padding-block: var(--space-8) var(--space-7);
-  background: var(--surface-1);
+  background: var(--surface-0);
+  border-bottom: 1px solid var(--hairline);
 }
 .page-head .container { max-width: calc(var(--container) * 11 / 15); } /* 880px at the 1200px container */
 .page-head h1 { margin-top: var(--space-3); }
@@ -352,29 +383,28 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
   font-weight: 500;
   color: var(--muted);
 }
+/* Inputs and selects join the pill language; the textarea keeps the 16px card radius. */
 .field input,
 .field select,
 .field textarea {
   width: 100%;
   min-height: 48px;
-  padding: 0.7rem 0.9rem;
+  padding: 0.7rem 1.1rem;
   border: 1px solid var(--hairline-strong);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-pill);
   background: var(--surface-0);
   color: var(--ink);
   font-size: clamp(16px, calc(16px + (100vw - 1920px) * 0.003125), 18px);
 }
 .field input::placeholder,
 .field textarea::placeholder { color: var(--muted); }
-.field textarea { min-height: 130px; resize: vertical; }
+.field textarea { min-height: 130px; resize: vertical; padding-inline: 0.9rem; border-radius: 16px; }
 .field input:focus-visible,
 .field select:focus-visible,
 .field textarea:focus-visible {
   outline: 2.5px solid var(--burgundy);
   outline-offset: 2px;
   border-color: var(--burgundy);
-  /* warm focus ring with personality */
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--burgundy) 12%, transparent);
 }
 .form-grid {
   display: grid;
@@ -426,7 +456,6 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
   color: var(--surface-0);
   border-radius: var(--radius-md);
   border-inline-start: 3px solid var(--coral);
-  box-shadow: var(--shadow-lg);
   font-family: var(--font-mono);
   font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px);
   max-width: 320px;
@@ -437,12 +466,16 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
 .ing-track.is-dragging { cursor: grabbing; user-select: none; }
 
 /* ===================================================== SLAB SYSTEM =====
-   html.sys-slab: the editorial-slab layout (the site's only layout). Flat
-   surfaces, full-bleed color bands, extreme type split, one shape language,
-   ghost buttons.
+   The editorial-slab layout, the site's only layout: flat surfaces,
+   full-bleed color bands, extreme type split, one shape language.
+   html.sys-slab is set unconditionally by BaseLayout. Where a rule below
+   still carries the html.sys-slab prefix, the prefix is there for its
+   specificity, not to pick a system: those rules override base styles that
+   live in page/component <style> blocks (or chain off one that does).
    ===================================================================== */
 
-/* Three radii only: pill (buttons/tags/inputs), 16px (cards/tiles), 0 (bleed). */
+/* Three radii only: pill (buttons/tags/inputs), 16px (cards/tiles), 0 (bleed).
+   Overrides tokens.css, so this must outrank its :root. */
 html.sys-slab {
   --radius-sm: 16px;
   --radius-md: 16px;
@@ -451,17 +484,20 @@ html.sys-slab {
   --t-body: clamp(15px, calc(15px + (100vw - 1920px) * 0.003125), 17px);
 }
 
-/* 1.1 Flat everything: depth is surface change + hairlines, nothing else. */
-html.sys-slab *,
-html.sys-slab *::before,
-html.sys-slab *::after {
+/* 1.1 Flat everything: depth is surface change + hairlines, nothing else.
+   !important because page/component styles still declare shadows, a
+   text-shadow and backdrop blurs (Nav, menu pill bar, catering tiers, hero). */
+*,
+*::before,
+*::after {
   box-shadow: none !important;
   text-shadow: none !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
 }
 
-/* 1.3 Extreme type split: one Cormorant statement per band; the rest is small. */
+/* 1.3 Extreme type split: one Cormorant statement per band; the rest is small.
+   Prefixed: overrides mission.astro's .statement. */
 html.sys-slab .statement {
   font-family: var(--font-display);
   font-weight: 400;
@@ -484,29 +520,22 @@ html.sys-slab .band--burgundy .statement {
   font-style: italic;
   font-weight: 300;
 }
-html.sys-slab h1:not(.statement),
-html.sys-slab h2:not(.statement),
-html.sys-slab h3 { font-weight: 400; }
-html.sys-slab p { max-width: min(640px, 70ch); }
 
-/* 1.8 Label stamp: mono, tracked, no dash. Converts every eyebrow site-wide. */
-html.sys-slab .eyebrow,
+/* 1.8 Label stamp on the footer and visit headings (base styles in Footer.astro
+   and visit.astro). The .eyebrow itself is defined in Typography above. */
 html.sys-slab .foot-h,
 html.sys-slab .info-h {
-  /* The brand stamp is 12px by spec (CLAUDE.md); the 13px floor covers body copy, not this. */
   font-size: clamp(12px, calc(12px + (100vw - 1920px) * 0.002344), 13.5px);
   letter-spacing: 0.1em;
   color: var(--burgundy);
 }
-html.sys-slab .on-dark .eyebrow,
-html.sys-slab .site-foot .eyebrow,
 html.sys-slab .site-foot .foot-h { color: var(--coral); }
 
 /* 1.2 Bands: cream is the page default; burgundy and ink are the only other
    section surfaces. Hard cuts, no seams. Surface tints retired from sections. */
-html.sys-slab .band { padding-block: clamp(3.25rem, 7vw, 6.5rem); }
-html.sys-slab .band--burgundy { background: var(--burgundy); color: var(--butter); }
-html.sys-slab .page-head { background: var(--surface-0); border-bottom: 1px solid var(--hairline); }
+.band { padding-block: clamp(3.25rem, 7vw, 6.5rem); }
+.band--burgundy { background: var(--burgundy); color: var(--butter); }
+/* Prefixed: these override fills set in page <style> blocks. */
 html.sys-slab .founder { background: var(--surface-0); border-block: 1px solid var(--hairline); }
 html.sys-slab .tiers { background: var(--surface-0); }
 html.sys-slab .stats { background: var(--burgundy); }
@@ -521,59 +550,15 @@ html.sys-slab :is(.value-card, .role, .tier, .ing-card) {
 }
 html.sys-slab .role--feature { background: var(--butter); }
 
-/* 1.5 Ghost buttons default; ONE filled CTA per page (.btn-primary/.btn-coral
-   render as the filled burgundy pill; use once per page). */
-html.sys-slab .btn {
-  background: transparent;
-  border: 1.5px solid var(--burgundy);
-  color: var(--burgundy);
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-size: clamp(15px, calc(15px + (100vw - 1920px) * 0.003125), 17px);
-  min-height: 0;
-  padding: 14px 28px;
-  border-radius: var(--radius-pill);
-}
-@media (hover: hover) and (pointer: fine) { html.sys-slab .btn:hover { background: color-mix(in srgb, var(--burgundy) 9%, transparent); color: var(--burgundy); } }
-html.sys-slab .btn-primary,
-html.sys-slab .btn-coral {
-  background: var(--burgundy);
-  border-color: var(--burgundy);
-  color: var(--butter);
-}
-@media (hover: hover) and (pointer: fine) {
-  html.sys-slab .btn-primary:hover,
-  html.sys-slab .btn-coral:hover { background: var(--ink); border-color: var(--ink); color: var(--butter); }
-}
-/* Ghost on dark bands/footer + over the hero photo. */
-html.sys-slab :is(.on-dark, .site-foot, .band--burgundy) .btn:not(.btn-primary):not(.btn-coral),
-html.sys-slab .btn--cream {
-  border-color: var(--butter);
-  color: var(--butter);
-  background: transparent;
-}
-@media (hover: hover) and (pointer: fine) {
-  html.sys-slab :is(.on-dark, .site-foot, .band--burgundy) .btn:not(.btn-primary):not(.btn-coral):hover,
-  html.sys-slab .btn--cream:hover { background: color-mix(in srgb, var(--butter) 14%, transparent); color: var(--butter); }
-}
-/* Inert "Ordering soon": intentional dashed ghost. */
-html.sys-slab .btn:disabled,
-html.sys-slab .btn[aria-disabled="true"] {
-  background: transparent;
-  border: 1.5px dashed color-mix(in srgb, var(--burgundy) 55%, transparent);
-  color: color-mix(in srgb, var(--burgundy) 80%, var(--muted));
-}
-/* Inputs join the pill language. */
-html.sys-slab .field input,
-html.sys-slab .field select,
+/* Newsletter inputs join the pill language (base styles in NewsletterForm.astro). */
 html.sys-slab .news-row input,
 html.sys-slab .foot-news-row input {
   border-radius: var(--radius-pill);
   padding-inline: 1.1rem;
 }
-html.sys-slab .field textarea { border-radius: 16px; }
 
-/* Flat hero: no gradient scrim; the text sits on a flat ink panel. */
+/* Flat hero: no gradient scrim; the text sits on a flat ink panel.
+   Prefixed: overrides index.astro. */
 html.sys-slab .hero-media-scrim { background: color-mix(in srgb, var(--ink) 18%, transparent); }
 html.sys-slab .hero-media-content {
   background: color-mix(in srgb, var(--ink) 88%, transparent);
@@ -583,7 +568,8 @@ html.sys-slab .hero-media-content {
 }
 html.sys-slab .hero-media-lede { text-shadow: none; }
 
-/* Ghost marquee: outline-only Cormorant on the burgundy band. */
+/* Ghost marquee: outline-only Cormorant on the burgundy band.
+   Prefixed: overrides index.astro. */
 html.sys-slab .marquee { background: transparent; padding-block: var(--space-5) 0; }
 html.sys-slab .marquee-item {
   font-size: clamp(30px, 4.5vw, 58px);
@@ -593,29 +579,29 @@ html.sys-slab .marquee-item {
 html.sys-slab .marquee-dot { color: color-mix(in srgb, var(--butter) 60%, transparent); -webkit-text-stroke: 0; }
 
 /* 1.9 Collage moment: overlapping tiles at slight rotations. */
-html.sys-slab .collage {
+.collage {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: var(--space-7);
 }
-html.sys-slab .collage .limg { border-radius: 16px; border: 1px solid var(--hairline-strong); }
-html.sys-slab .collage-a { width: 38%; transform: rotate(-2deg); z-index: 1; }
-html.sys-slab .collage-b { width: 30%; transform: rotate(1.5deg) translateY(8%); margin-inline: -4%; z-index: 2; }
-html.sys-slab .collage-c { width: 26%; transform: rotate(3deg); z-index: 1; }
+.collage .limg { border-radius: 16px; border: 1px solid var(--hairline-strong); }
+.collage-a { width: 38%; transform: rotate(-2deg); z-index: 1; }
+.collage-b { width: 30%; transform: rotate(1.5deg) translateY(8%); margin-inline: -4%; z-index: 2; }
+.collage-c { width: 26%; transform: rotate(3deg); z-index: 1; }
 
 /* Slab menu preview list (home). */
-html.sys-slab .slab-menulist { max-width: 760px; margin-top: var(--space-5); }
-html.sys-slab .slab-menulist li {
+.slab-menulist { max-width: 760px; margin-top: var(--space-5); }
+.slab-menulist li {
   display: flex;
   align-items: baseline;
   gap: var(--space-3);
   padding-block: var(--space-3);
   border-bottom: 1px solid var(--hairline);
 }
-html.sys-slab .sm-name { font-family: var(--font-display); font-size: clamp(22px, 2.4vw, 30px); color: var(--ink); }
-html.sys-slab .sm-dots { flex: 1; border-bottom: 1px dotted var(--hairline-strong); transform: translateY(-4px); }
-html.sys-slab .sm-price { color: var(--burgundy); font-size: clamp(15px, calc(15px + (100vw - 1920px) * 0.003125), 17px); }
+.sm-name { font-family: var(--font-display); font-size: clamp(22px, 2.4vw, 30px); color: var(--ink); }
+.sm-dots { flex: 1; border-bottom: 1px dotted var(--hairline-strong); transform: translateY(-4px); }
+.sm-price { color: var(--burgundy); font-size: clamp(15px, calc(15px + (100vw - 1920px) * 0.003125), 17px); }
 
 /* ===================================================== MOBILE / iOS =====
    <=768px: body never below 16px; <=430px: calmer rhythm (bands ~65% of
@@ -625,16 +611,16 @@ html.sys-slab .sm-price { color: var(--burgundy); font-size: clamp(15px, calc(15
   html.sys-slab { --t-body: 16px; }
 }
 @media (max-width: 430px) {
-  html.sys-slab .band { padding-block: clamp(2.25rem, 9vw, 3rem); }
+  .band { padding-block: clamp(2.25rem, 9vw, 3rem); }
   html.sys-slab .statement { font-size: clamp(2.25rem, 10.5vw, 2.75rem); }
   html.sys-slab .statement--hero { font-size: clamp(2.4rem, 11vw, 2.9rem); }
 }
 @media (max-width: 680px) {
   /* Collage stacks as a neat offset pair; the third tile rests. */
-  html.sys-slab .collage { flex-direction: column; align-items: center; }
-  html.sys-slab .collage-a { width: 86%; transform: rotate(-1.5deg); }
-  html.sys-slab .collage-b { width: 76%; transform: rotate(1.5deg); margin: -6% 0 0 10%; }
-  html.sys-slab .collage-c { display: none; }
+  .collage { flex-direction: column; align-items: center; }
+  .collage-a { width: 86%; transform: rotate(-1.5deg); }
+  .collage-b { width: 76%; transform: rotate(1.5deg); margin: -6% 0 0 10%; }
+  .collage-c { display: none; }
 }
 
 /* Flat select/date on iOS (kill the native chrome; add a drawn chevron). */
@@ -644,7 +630,6 @@ html.sys-slab .sm-price { color: var(--burgundy); font-size: clamp(15px, calc(15
   appearance: none;
 }
 .field select {
-  padding-inline-end: 2.4rem;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236E1F2A' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1rem center;

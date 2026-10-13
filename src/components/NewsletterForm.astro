@@ -21,10 +21,12 @@ const formClass = variant === 'footer' ? 'foot-news-form' : 'news-form';
   data-netlify="true"
   data-netlify-honeypot="bot-field"
   class={formClass}
-  data-success={siteConfig.forms.newsletterSuccess}
-  data-error={siteConfig.forms.error}
 >
   <input type="hidden" name="form-name" value="newsletter" />
+  {/* Messages live in hidden elements, not form attributes: Netlify rewrites the
+      <form> tag at deploy and mangles apostrophes in its attribute values. */}
+  <span hidden data-form-msg="success">{siteConfig.forms.newsletterSuccess}</span>
+  <span hidden data-form-msg="error">{siteConfig.forms.error}</span>
   <p class="visually-hidden" aria-hidden="true"><label>Don’t fill this out: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
   <label class="visually-hidden" for={id}>Email address</label>
   <div class={rowClass}>

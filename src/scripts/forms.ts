@@ -6,8 +6,12 @@
  * Honeypot: forms carry data-netlify-honeypot="bot-field" + a hidden bot-field.
  * If a bot fills it we silently no-op (and Netlify drops it server-side too).
  *
- * Per-form copy is read from data-success / data-error (with sensible
- * fallbacks), so messages live with the markup, not here.
+ * Per-form copy is read from hidden [data-form-msg="success|error"] elements
+ * inside each form (with sensible fallbacks), so messages live with the markup.
+ *
+ * Forms are found by their hidden form-name input, not by data-netlify or
+ * attributes on <form>: Netlify rewrites the <form> tag at deploy (strips
+ * data-netlify, re-escapes attribute values) but leaves its contents intact.
  */
 const DEFAULT_SUCCESS = "Thanks, we've got it. We'll be in touch.";
 const DEFAULT_ERROR = "That didn't go through. Give it another try, or email hello@loumabakery.com.";
@@ -29,9 +33,14 @@ function showMessage(form: HTMLFormElement, kind: 'success' | 'error', text: str
   box.textContent = text;
 }
 
+function msg(form: HTMLFormElement, kind: 'success' | 'error'): string | undefined {
+  return form.querySelector(`[data-form-msg="${kind}"]`)?.textContent?.trim() || undefined;
+}
+
 function initForms() {
-  document.querySelectorAll<HTMLFormElement>('form[data-netlify]').forEach((form) => {
-    if (form.dataset.fxBound) return;
+  document.querySelectorAll<HTMLInputElement>('input[type="hidden"][name="form-name"]').forEach((input) => {
+    const form = input.form;
+    if (!form || form.dataset.fxBound) return;
     form.dataset.fxBound = 'true';
 
     form.addEventListener('submit', async (e) => {
@@ -42,8 +51,8 @@ function initForms() {
       if (honey && honey.value) return;
 
       const btn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
-      const okMsg = form.getAttribute('data-success') || DEFAULT_SUCCESS;
-      const errMsg = form.getAttribute('data-error') || DEFAULT_ERROR;
+      const okMsg = msg(form, 'success') || DEFAULT_SUCCESS;
+      const errMsg = msg(form, 'error') || DEFAULT_ERROR;
       const toast = window.LoumaFX?.toast;
 
       // clear any prior error

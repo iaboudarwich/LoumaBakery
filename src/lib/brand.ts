@@ -11,16 +11,13 @@
  *
  * The art is the designer's master (see src/assets/brand/README.md); the
  * viewBox roles are stable, so markup sizes against them:
- *  - Face     286×265  filled outline · footer / 404 / ornament
  *  - Wordmark 374×240  filled outline · nav (cropped), footer lockup, 404
- *  - Baguette 280×100  filled outline · scroll-draw sketch
- *  - Toast    200×232  filled outline · scroll-draw sketch
+ *  - Baguette 280×100  filled outline · the scroll-draw demo on /review
+ * The face is rendered by FaceDraw.astro; every other drawing by Doodle.astro.
  * More drawings, one per file: src/assets/brand/doodles/.
  */
-export { default as Face } from "../assets/brand/face-baked.svg";
 export { default as Wordmark } from "../assets/brand/wordmark.svg";
 export { default as Baguette } from "../assets/brand/baguette-baked.svg";
-export { default as Toast } from "../assets/brand/toast-baked.svg";
 
 
 /** viewBox cropping the wordmark to its art (the file keeps its 374×240 role

@@ -181,7 +181,6 @@ collections:
               - { name: instagramTitle, label: "Instagram heading", widget: string, hint: "Above the row of Instagram photos, e.g. Follow along" }
               - { name: newsletterTitle, label: "Newsletter title", widget: string, hint: "Also shown in the footer." }
               - { name: newsletterBody, label: "Newsletter line", widget: string }
-              - { name: newsletterCta, label: "Newsletter button", widget: string, hint: "Not shown on the site at the moment (the home hero and the phone bottom bar no longer have this button)." }
           # ---- Story page ----
           - name: story
             label: "Our Story page"

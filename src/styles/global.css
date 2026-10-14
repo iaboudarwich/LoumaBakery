@@ -77,7 +77,6 @@ button {
    callout on controls (body text stays selectable). */
 a,
 button,
-.pill,
 input,
 select,
 textarea,
@@ -86,8 +85,7 @@ textarea,
   touch-action: manipulation;
 }
 a,
-button,
-.pill {
+button {
   -webkit-touch-callout: none;
 }
 
@@ -117,19 +115,11 @@ html.sys-slab h1,
 html.sys-slab h2:not(.foot-h):not(.label),
 html.sys-slab h3 { font-weight: 700; }
 
-h1 {
-  font-size: var(--t-h1);
-  line-height: var(--lh-tight);
-}
-h2 {
-  font-size: var(--t-h2);
-}
-h3 {
-  font-size: var(--t-h3);
-}
-h4 {
-  font-size: var(--t-h4);
-}
+/* Base sizes from the layout system's scale (every page heading also carries
+   a role class: .display, .h2, ...). */
+h1 { font-size: var(--fs-display); line-height: var(--lh-tight); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-lead); }
 h4,
 h5,
 h6 { font-weight: 500; }
@@ -142,22 +132,6 @@ p {
 p + p {
   margin-top: var(--space-4);
 }
-
-/* Section label: the stamp, Owners Narrow 500. 12px by spec (CLAUDE.md); the
-   13px floor covers body copy, not this. */
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.7em;
-  font-family: var(--font-display);
-  font-size: var(--t-eyebrow);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-weight: 500;
-  color: var(--burgundy);
-}
-.on-dark .eyebrow,
-.site-foot .eyebrow { color: var(--peach); }
 
 .mono {
   font-family: var(--font-body);
@@ -304,15 +278,13 @@ html.sys-slab .btn-coral {
   html.sys-slab .btn-coral:hover { background: var(--ink); border-color: var(--ink); color: var(--butter); }
 }
 /* Ghost on dark bands/footer, the mobile CTA bar, and over the hero photo. */
-html.sys-slab :is(.on-dark, .site-foot, .band--burgundy) .btn:not(.btn-primary):not(.btn-coral),
-html.sys-slab .btn--cream {
+html.sys-slab :is(.on-dark, .site-foot) .btn:not(.btn-primary):not(.btn-coral) {
   border-color: var(--butter);
   color: var(--butter);
   background: transparent;
 }
 @media (hover: hover) and (pointer: fine) {
-  html.sys-slab :is(.on-dark, .site-foot, .band--burgundy) .btn:not(.btn-primary):not(.btn-coral):hover,
-  html.sys-slab .btn--cream:hover { background: color-mix(in srgb, var(--butter) 14%, transparent); color: var(--butter); }
+  html.sys-slab :is(.on-dark, .site-foot) .btn:not(.btn-primary):not(.btn-coral):hover { background: color-mix(in srgb, var(--butter) 14%, transparent); color: var(--butter); }
 }
 /* Inert "Ordering soon" (until a real Order link exists): an intentional
    dashed ghost, never a greyed-out dead control. */
@@ -345,8 +317,7 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 /* --- Forms --- */
 .field { display: flex; flex-direction: column; gap: var(--space-2); }
-/* Field labels share the eyebrow's mono/tracked language (no dash — one dash
-   per section, not per field). */
+/* Field labels: Owners 500, small caps-style tracking. */
 .field > label {
   font-family: var(--font-body);
   font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px);
@@ -458,8 +429,7 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
   backdrop-filter: none !important;
 }
 
-/* 1.8 Label stamp on the footer headings (base styles in Footer.astro). The
-   .eyebrow itself is defined in Typography above. */
+/* 1.8 Label stamp on the footer headings (base styles in Footer.astro). */
 html.sys-slab .foot-h {
   font-size: clamp(12px, calc(12px + (100vw - 1920px) * 0.002344), 13.5px);
   font-weight: 500;
@@ -475,10 +445,8 @@ html.sys-slab :is(.role, .tier) {
   background: var(--butter);
   border: 1px solid var(--hairline-strong);
 }
-html.sys-slab .role--feature { background: var(--butter); }
 
 /* Newsletter inputs join the pill language (base styles in NewsletterForm.astro). */
-html.sys-slab .news-row input,
 html.sys-slab .foot-news-row input {
   border-radius: 0;
   padding-inline: 1.1rem;

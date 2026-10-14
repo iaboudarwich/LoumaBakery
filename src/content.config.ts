@@ -45,7 +45,6 @@ const copy = defineCollection({
       instagramTitle: z.string().optional(),
       newsletterTitle: z.string().optional(),
       newsletterBody: z.string().optional(),
-      newsletterCta: z.string().optional(),
       // Initiative, Menu
       intro: paragraphs,
       sections: z.array(titledSection).optional(),

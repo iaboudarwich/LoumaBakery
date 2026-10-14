@@ -11,7 +11,7 @@ quietly.
 One tab, first row is the header: `Name | Price | Description | Category | Tags | Image | Active`
 
 - **Name**: required.
-- **Price**: `$4.50` or `4.50`. Empty price = the item still shows, with no price.
+- **Price**: optional, `$4.50` or `4.50`. Checked, but never written: the site shows no prices.
 - **Category**: must be exactly one of Viennoiserie, Bread, Pastry, Savory, Coffee, Matcha, Tea, Fridge & Bottled.
 - **Tags**: optional, comma-separated (e.g. `vegan, gf`).
 - **Active**: exactly `Active` or `Inactive`. Only Active items appear.

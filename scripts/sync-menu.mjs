@@ -83,15 +83,19 @@ if (errors.length) {
   process.exit(1);
 }
 
-// Transform: only Active rows make the site. An empty price is kept: the item
-// is written without a price key and the menu renders it as a text-only row.
+// Transform: only Active rows make the site. The site shows no prices, so the
+// sheet's Price column is validated but never written. The sheet has no column
+// for photo descriptions or drawings, so an item keeps the `alt` it already
+// has (matched by name) and a category keeps its `icon`.
 // Category order follows ALLOWED_CATEGORIES; the CMS/current file shape is kept
-// ({ categories: [{ id, title, order, items: [...] }] }).
+// ({ categories: [{ id, title, order, icon, items: [...] }] }).
 const current = JSON.parse(readFileSync(MENU_PATH, 'utf8'));
 const idFor = (title) => {
   const existing = current.categories.find((c) => c.title === title);
   return existing ? existing.id : title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 };
+
+const altFor = (name) => current.categories.flatMap((c) => c.items).find((it) => it.name === name)?.alt;
 
 const categories = ALLOWED_CATEGORIES.map((title, i) => ({
   id: idFor(title),
@@ -103,10 +107,10 @@ const categories = ALLOWED_CATEGORIES.map((title, i) => ({
     .filter((r) => r.category === title && r.active === 'Active')
     .map((r) => ({
       name: r.name,
-      ...(r.price ? { price: r.price.startsWith('$') ? r.price : `$${r.price}` } : {}),
       description: r.description,
       tags: r.tags ? r.tags.split(/[;,]/).map((t) => t.trim().toLowerCase()).filter(Boolean) : [],
       ...(r.image ? { image: r.image } : {}),
+      ...(altFor(r.name) ? { alt: altFor(r.name) } : {}),
     })),
 })).filter((c) => c.items.length > 0);
 

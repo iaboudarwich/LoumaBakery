@@ -104,13 +104,3 @@ document.addEventListener('focusout', () => {
   });
 });
 
-// Sticky CTA bar: park it while the footer (which contains the signup form or
-// sits right under the home newsletter) is on screen.
-const ctaBar = document.querySelector<HTMLElement>('[data-cta-bar]');
-const footer = document.querySelector('.site-foot');
-if (ctaBar && footer && 'IntersectionObserver' in window) {
-  const io = new IntersectionObserver((es) => {
-    es.forEach((e) => ctaBar.classList.toggle('is-parked', e.isIntersecting));
-  }, { rootMargin: '0px 0px 40px 0px' });
-  io.observe(footer);
-}

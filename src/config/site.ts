@@ -35,8 +35,6 @@ export const siteConfig = {
     uberEats: settings.links.uberEats,
     instagram: settings.links.instagram,
     instagramHandle: settings.links.instagramHandle,
-    /** Hero background video URL. Empty = the hero photo only; wire when footage lands. */
-    heroVideo: '', // PLACEHOLDER — swap before launch (hero background video MP4/WebM)
   },
 
   /** Form confirmation / error copy, in the brand voice. Single source. */

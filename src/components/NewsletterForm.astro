@@ -2,17 +2,16 @@
 import { siteConfig } from '../config/site';
 
 /**
- * Single newsletter signup form (Netlify Forms). Used by the homepage and the
- * global footer. Variant only changes class hooks + the input id (so two can
- * coexist on one page without an id clash). Copy comes from siteConfig.forms.
+ * The newsletter signup form (Netlify Forms), rendered once, in the global
+ * footer. Copy comes from siteConfig.forms.
  */
 interface Props {
-  variant?: 'page' | 'footer';
+  /** Kept for the footer's call site; the footer is the only variant now. */
+  variant?: 'footer';
 }
-const { variant = 'page' } = Astro.props;
-const id = variant === 'footer' ? 'foot-news-email' : 'news-email';
-const rowClass = variant === 'footer' ? 'foot-news-row' : 'news-row';
-const formClass = variant === 'footer' ? 'foot-news-form' : 'news-form';
+const id = 'foot-news-email';
+const rowClass = 'foot-news-row';
+const formClass = 'foot-news-form';
 ---
 
 <form
@@ -37,17 +36,13 @@ const formClass = variant === 'footer' ? 'foot-news-form' : 'news-form';
 
 <style>
   /* Styles live here (not the parent) because the input is rendered by this
-     component — Astro's scoped styles don't reach a child's elements. Both
-     variants sit on dark panels, so the dark fill works for both. */
-  .news-form { max-width: 460px; }
+     component; Astro's scoped styles don't reach a child's elements. */
   .foot-news-form { flex: 1; min-width: min(280px, 100%); max-width: 460px; }
 
-  .news-row,
   .foot-news-row {
     display: flex;
     gap: var(--space-2);
   }
-  .news-row input,
   .foot-news-row input {
     flex: 1;
     min-height: 48px;
@@ -58,27 +53,10 @@ const formClass = variant === 'footer' ? 'foot-news-form' : 'news-form';
     background: var(--ink); /* opaque dark fill so the light text reads */
     color: var(--butter);
   }
-  .news-row input::placeholder,
   .foot-news-row input::placeholder {
     color: color-mix(in srgb, var(--butter) 60%, var(--ink)); /* 6.3:1 on the ink fill */
   }
   @media (max-width: 520px) {
-    .news-row,
     .foot-news-row { flex-direction: column; }
-  }
-  /* On the burgundy newsletter card (home) the filled burgundy CTA vanished into
-     the card, so there it inverts: butter fill, burgundy text (7.56:1). Same
-     size and position. The footer variant sits on ink and keeps the default. */
-  :global(html.sys-slab) .news-form .btn-coral {
-    background: var(--butter);
-    border-color: var(--butter);
-    color: var(--burgundy);
-  }
-  @media (hover: hover) and (pointer: fine) {
-    :global(html.sys-slab) .news-form .btn-coral:hover {
-      background: var(--white);
-      border-color: var(--white);
-      color: var(--burgundy);
-    }
   }
 </style>

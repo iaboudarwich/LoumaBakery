@@ -21,5 +21,8 @@ const devOnlyReview = {
 
 export default defineConfig({
   site: SITE_URL,
+  // /mission became /initiative. Netlify serves the real 301 (netlify.toml);
+  // this makes the old URL work in `astro dev` and preview too.
+  redirects: { '/mission': '/initiative' },
   integrations: [sitemap(), devOnlyReview],
 });

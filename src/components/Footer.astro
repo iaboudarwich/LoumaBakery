@@ -16,12 +16,13 @@ const year = new Date().getFullYear();
 const home = (await getEntry('copy', 'home'))?.data;
 
 const explore = [
-  { label: 'Menu', href: '/menu' },
   { label: 'Our Story', href: '/story' },
-  { label: 'Mission', href: '/mission' },
+  { label: 'The Louma Initiative', href: '/initiative' },
+  { label: 'Menu', href: '/menu' },
+  { label: 'Shop', href: '/shop' },
   { label: 'Catering', href: '/catering' },
   { label: 'Careers', href: '/careers' },
-  { label: 'Visit', href: '/visit' },
+  { label: 'Contact', href: '/visit' },
 ];
 ---
 
@@ -32,6 +33,7 @@ const explore = [
       <div class="foot-newsletter" id="newsletter">
         <div class="foot-news">
           {home?.newsletterTitle && <p class="foot-news-h">{home.newsletterTitle}</p>}
+          {home?.newsletterBody && <p class="foot-news-body">{home.newsletterBody}</p>}
           <NewsletterForm variant="footer" />
         </div>
       </div>
@@ -61,8 +63,8 @@ const explore = [
             }
           </ul>
           <p class="foot-contact">
-            {siteConfig.phone && <><a href={`tel:${siteConfig.phone.replace(/[^+\d]/g, '')}`}>{siteConfig.phone}</a><br /></>}
-            <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+            <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a><br />
+            <a href={`mailto:${siteConfig.ordersEmail}`}>{siteConfig.ordersEmail}</a> for larger orders
           </p>
         </address>
       </div>
@@ -106,6 +108,10 @@ const explore = [
     font-weight: 500;
     font-size: clamp(20px, 2.4vw, 28px);
     color: var(--butter);
+  }
+  .foot-news-body {
+    margin-top: var(--space-2);
+    color: color-mix(in srgb, var(--butter) 78%, transparent);
   }
   /* Newsletter form/input styling lives in NewsletterForm.astro (scoped to where it renders). */
 

@@ -1,0 +1,15 @@
+{
+  "preorderLink": "",
+  "giftCardLink": "",
+  "products": [
+    {
+      "name": "Louma Hat",
+      "price": "$32",
+      "description": "Louma logo front and side embroidered hat.",
+      "size": "One size",
+      "image": "",
+      "alt": "Red Louma Bakery cap with the logo embroidered in cream",
+      "link": ""
+    }
+  ]
+}

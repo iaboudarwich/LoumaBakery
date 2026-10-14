@@ -4,13 +4,15 @@ import { file } from 'astro/loaders';
 
 /**
  * Content collections. All copy/data lives here (or in the seed JSON under
- * src/data/) — never hardcoded in markup. Image fields are string paths
+ * src/data/), never hardcoded in markup. Image fields are string paths
  * resolved by src/lib/images.ts (no placeholder fallbacks).
+ *
+ * Decap can't edit a root-level array, so list files are wrapped in an object
+ * ({ "categories": [...] }, { "items": [...] }) and unwrapped here. Single-object
+ * files (story, shop) load as one entry.
  */
 
 const menu = defineCollection({
-  // menu.json is wrapped as { "categories": [...] } so the CMS can edit it
-  // (Decap can't edit a root-level array). Unwrap to the category list here.
   loader: file('src/data/menu.json', { parser: (text) => JSON.parse(text).categories }),
   schema: z.object({
     title: z.string(),
@@ -18,91 +20,96 @@ const menu = defineCollection({
     items: z.array(
       z.object({
         name: z.string(),
-        price: z.string().optional(), // string so "$4.50" / "MP" render verbatim; absent = not yet priced
         description: z.string().default(''),
         tags: z.array(z.string()).default([]),
-        image: z.string().optional(), // filename in src/assets/img
+        image: z.string().optional(), // filename in src/assets/img (not shown on /menu)
         alt: z.string().optional(), // describes the photo; falls back to the item name
       }),
     ),
   }),
 });
 
+const paragraphs = z.array(z.string()).default([]);
+const titledSection = z.object({ title: z.string(), paragraphs });
+
 const copy = defineCollection({
   loader: file('src/data/copy.json'),
-  // One entry per page (keyed by page slug). Fields are optional so each
-  // page uses what it needs; extra keys pass through.
+  // One entry per page (keyed by page slug). Fields are optional so each page
+  // reads what it needs.
   schema: z
     .object({
-      eyebrow: z.string().optional(),
       title: z.string().optional(),
-      lede: z.string().optional(),
-      body: z.array(z.string()).default([]),
-      cta: z.object({ label: z.string(), href: z.string() }).optional(),
-      // Home-specific section copy (optional; other pages ignore).
-      craftLine: z.string().optional(),
-      missionLine: z.string().optional(),
-      menuTitle: z.string().optional(),
-      ovenTitle: z.string().optional(),
-      findTitle: z.string().optional(),
+      // Home
+      tagline: z.string().optional(),
+      instagramTitle: z.string().optional(),
       newsletterTitle: z.string().optional(),
       newsletterBody: z.string().optional(),
       newsletterCta: z.string().optional(),
-      // Inner-page structured copy (optional; each page reads what it needs).
+      // Initiative, Menu
+      intro: paragraphs,
+      sections: z.array(titledSection).optional(),
+      pillars: z.array(z.string()).optional(),
       allergenNote: z.string().optional(),
-      mapEmbed: z.string().optional(),
-      founder: z
-        .object({ name: z.string(), role: z.string(), body: z.array(z.string()).default([]) })
-        .optional(),
-      values: z.array(z.object({ title: z.string(), body: z.string() })).optional(),
-      stats: z
-        .array(z.object({ value: z.number(), label: z.string(), prefix: z.string().optional(), suffix: z.string().optional() }))
-        .optional(),
+      // Shop
+      status: z.string().optional(),
+      preorder: z.object({ title: z.string(), body: z.string().default('') }).optional(),
+      giftCards: z.object({ title: z.string(), body: z.string().default('') }).optional(),
+      merch: z.object({ title: z.string() }).optional(),
+      // Catering, Careers, 404 (unchanged pages)
+      eyebrow: z.string().optional(),
+      lede: z.string().optional(),
+      body: paragraphs,
+      cta: z.object({ label: z.string(), href: z.string() }).optional(),
       steps: z.array(z.object({ n: z.string().optional(), title: z.string(), body: z.string() })).optional(),
       tiers: z
         .array(z.object({ name: z.string(), price: z.string(), items: z.array(z.string()).default([]), note: z.string().optional() }))
         .optional(),
       roles: z.array(z.object({ title: z.string(), type: z.string().optional(), body: z.string() })).optional(),
     })
-    .loose(),
+    .strict(),
 });
 
-
-const marquee = defineCollection({
-  // wrapped as { items: [...] } for the CMS; unwrap here.
-  loader: file('src/data/marquee.json', { parser: (text) => JSON.parse(text).items }),
+const story = defineCollection({
+  loader: file('src/data/story.json', { parser: (text) => [{ id: 'story', ...JSON.parse(text) }] }),
   schema: z.object({
-    text: z.string(),
-    order: z.number().default(0),
+    letter: z.object({ paragraphs, signature: z.string() }),
+    sections: z.array(titledSection),
   }),
 });
 
-const storyChapters = defineCollection({
-  // wrapped as { chapters: [...] } for the CMS; unwrap here.
-  loader: file('src/data/story-chapters.json', { parser: (text) => JSON.parse(text).chapters }),
+const shop = defineCollection({
+  loader: file('src/data/shop.json', { parser: (text) => [{ id: 'shop', ...JSON.parse(text) }] }),
   schema: z.object({
-    order: z.number().default(0),
-    eyebrow: z.string().optional(),
-    title: z.string(),
-    body: z.string(),
-    image: z.string().optional(), // filename in src/assets/img
-    alt: z.string().optional(), // describes the photo; falls back to the title
+    preorderLink: z.string().default(''),
+    giftCardLink: z.string().default(''),
+    products: z.array(
+      z.object({
+        name: z.string(),
+        price: z.string().default(''),
+        description: z.string().default(''),
+        size: z.string().default(''),
+        image: z.string().default(''), // filename in src/assets/img; empty = no image slot
+        alt: z.string().default(''),
+        link: z.string().default(''), // empty = disabled "Coming soon"
+      }),
+    ),
   }),
 });
 
-const ingredients = defineCollection({
-  // wrapped as { ingredients: [...] } for the CMS; unwrap here.
-  loader: file('src/data/ingredients.json', { parser: (text) => JSON.parse(text).ingredients }),
+const instagram = defineCollection({
+  loader: file('src/data/instagram.json', {
+    parser: (text) => JSON.parse(text).items.map((it: object, i: number) => ({ id: `tile-${i + 1}`, ...it })),
+  }),
   schema: z.object({
-    name: z.string(),
-    note: z.string().optional(),
+    image: z.string().default(''), // filename in src/assets/img; empty tiles are skipped
+    alt: z.string().default(''),
   }),
 });
 
 export const collections = {
   menu,
   copy,
-  marquee,
-  storyChapters,
-  ingredients,
+  story,
+  shop,
+  instagram,
 };

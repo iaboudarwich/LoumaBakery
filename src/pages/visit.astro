@@ -5,24 +5,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { siteConfig } from '../config/site';
 import { features as f } from '../config/features';
 
+// Contact page (route stays /visit). Everything below comes from settings.json.
 const c = (await getEntry('copy', 'visit'))!.data;
-const { address, hours } = siteConfig;
-
-// Only ever frame a real Google Maps embed. A CMS editor can change this string,
-// so validate the origin at build time; anything else renders no map (the Google
-// Maps link below still works) rather than framing an arbitrary site.
-const mapEmbed =
-  typeof c.mapEmbed === 'string' && /^https:\/\/www\.google\.com\/maps\/embed/.test(c.mapEmbed)
-    ? c.mapEmbed
-    : undefined;
+const { address, hours, email, ordersEmail } = siteConfig;
+const { instagram, instagramHandle } = siteConfig.links;
 ---
 
-<BaseLayout title="Visit" description={c.lede} schema="localbusiness">
+<BaseLayout title={c.title} schema="localbusiness">
   <header class="page-head">
     <div class="container">
-      <p class="eyebrow">{c.eyebrow}</p>
       <h1>{noOrphan(c.title ?? '')}</h1>
-      {c.lede && <p class="lede">{c.lede}</p>}
     </div>
   </header>
 
@@ -46,33 +38,17 @@ const mapEmbed =
           <address class="addr">
             <p>{address.street}<br />{address.city}, {address.state} {address.zip}</p>
             <p class="addr-contact">
-              {siteConfig.phone && <><a href={`tel:${siteConfig.phone.replace(/[^+\d]/g, '')}`}>{siteConfig.phone}</a><br /></>}
-              <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+              <a href={`mailto:${email}`}>{email}</a><br />
+              <a href={`mailto:${ordersEmail}`}>{ordersEmail}</a> for larger orders<br />
+              <a href={instagram} target="_blank" rel="noopener">{instagramHandle}</a>
             </p>
           </address>
         </div>
-
-        {c.body.length > 0 && (
-          <div class="info-block">
-            <h2 class="info-h smallcaps">Getting here</h2>
-            {c.body.map((p) => <p class="directions">{p}</p>)}
-          </div>
-        )}
       </div>
 
       <div class="visit-map">
-        {mapEmbed ? (
-          <div class="map-shell" data-map-src={mapEmbed}>
-            {/* Tap-to-load facade: the iframe stays off the critical path on
-                mobile (and can't scroll-trap). Desktop auto-loads it lazily. */}
-            <button type="button" class="map-facade" data-map-load>
-              <span class="map-facade-addr mono">
-                {address.street}<br />{address.city}, {address.state} {address.zip}
-              </span>
-              <span class="btn map-facade-btn" aria-hidden="true">Load map</span>
-            </button>
-          </div>
-        ) : null}
+        {/* MAP SLOT: the hand-drawn map image goes here in the photos phase.
+            Intentionally empty for now (the Google Maps embed was removed). */}
         <a
           class="map-link mono"
           href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${address.street}, ${address.city}, ${address.state} ${address.zip}`)}`}
@@ -111,41 +87,7 @@ const mapEmbed =
   .addr { font-style: normal; line-height: 1.8; }
   .addr-contact { margin-top: var(--space-3); }
   .addr-contact a { color: var(--burgundy); }
-  .directions { color: var(--body); max-width: 52ch; }
-  .directions + .directions { margin-top: var(--space-3); }
 
-  .visit-map { position: sticky; top: calc(var(--nav-h) + var(--space-4)); }
-  .map-shell {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    border-radius: 0;
-    border: 1px solid var(--hairline-strong);
-    overflow: hidden;
-    background: var(--butter);
-  }
-  .map-shell iframe {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-  }
-  .map-facade {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-4);
-    background: var(--butter);
-    border: 0;
-    text-align: center;
-  }
-  .map-facade-addr { color: var(--body); font-size: clamp(15px, calc(15px + (100vw - 1920px) * 0.003125), 17px); line-height: 1.7; }
-  .map-facade-btn { pointer-events: none; }
   .map-link {
     display: inline-flex;
     align-items: center;
@@ -160,35 +102,5 @@ const mapEmbed =
 
   @media (max-width: 820px) {
     .visit-grid { grid-template-columns: 1fr; }
-    .visit-map { position: static; }
   }
 </style>
-
-<script>
-  // Map facade: inject the iframe on tap (touch) or automatically once the
-  // shell nears the viewport (hover/desktop devices keep the lazy feel).
-  const shell = document.querySelector<HTMLElement>('.map-shell');
-  if (shell) {
-    const src = shell.dataset.mapSrc!;
-    const load = () => {
-      if (shell.dataset.loaded) return;
-      shell.dataset.loaded = 'true';
-      const f = document.createElement('iframe');
-      f.src = src;
-      f.title = 'Map to Louma Bakery';
-      f.loading = 'lazy';
-      f.referrerPolicy = 'no-referrer-when-downgrade';
-      f.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox');
-      f.setAttribute('allowfullscreen', '');
-      shell.appendChild(f);
-      shell.querySelector('.map-facade')?.remove();
-    };
-    shell.querySelector('[data-map-load]')?.addEventListener('click', load);
-    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-      const io = new IntersectionObserver((es) => {
-        if (es.some((e) => e.isIntersecting)) { io.disconnect(); load(); }
-      }, { rootMargin: '200px' });
-      io.observe(shell);
-    }
-  }
-</script>

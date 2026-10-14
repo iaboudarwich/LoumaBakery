@@ -7,13 +7,13 @@
 # ----------------------------------------------------------------------------
 # Security headers for the whole site.
 # CSP whitelists exactly what the site uses: self, inline styles/scripts that
-# Astro emits, self-hosted fonts, and the Google Maps embed.
+# Astro emits, and self-hosted fonts. No third-party frames (the map embed is gone).
 # frame-ancestors/X-Frame-Options block clickjacking.
 # ----------------------------------------------------------------------------
 [[headers]]
   for = "/*"
   [headers.values]
-    Content-Security-Policy = "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; frame-src https://www.google.com; connect-src 'self'"
+    Content-Security-Policy = "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; frame-src 'none'; connect-src 'self'"
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
@@ -46,3 +46,14 @@
   [headers.values]
     Content-Security-Policy = "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; img-src 'self' data: blob: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:"
     X-Robots-Tag = "noindex, nofollow"
+
+# ----------------------------------------------------------------------------
+# /mission became /initiative (The Louma Initiative). force = true because the
+# static build also writes a meta-refresh page at /mission/ (from the Astro
+# redirect, for dev), and Netlify would otherwise serve that file instead.
+# ----------------------------------------------------------------------------
+[[redirects]]
+  from = "/mission"
+  to = "/initiative"
+  status = 301
+  force = true

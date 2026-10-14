@@ -1,60 +1,73 @@
 {
   "home": {
-    "eyebrow": "Wilshire · Santa Monica",
-    "title": "Out of the oven every morning",
-    "lede": "A neighborhood bakery on Wilshire, now open.",
-    "craftLine": "European craft. Levantine soul.",
+    "tagline": "A sister-run neighborhood bakery in Santa Monica",
     "body": [
-      "Long ferments and laminated layers, like the best Paris bakeries. Cardamom and orange blossom, like home.",
-      "Louma is named for Milla's sister. A small place with a big idea: a bakery run well can be somewhere everyone belongs."
+      "Louma Bakery is rooted in European baking traditions with a Lebanese twist. We serve slow-fermented breads, classic pastries, seasonal offerings, and great coffee and matcha. From delicate viennoiserie and organic sourdough to nostalgic Lebanese classics such as our za’atar croissant and kaak bread.",
+      "Our small team bakes everything daily from scratch in our open kitchen on Wilshire Blvd. Each component of our menu is crafted with care and invites you into our story."
     ],
-    "missionLine": "Built so everyone at the counter belongs.",
-    "menuTitle": "What we bake",
-    "ovenTitle": "From the oven",
-    "findTitle": "Find us",
+    "instagramTitle": "Follow along",
     "newsletterTitle": "Hear from the bakery",
     "newsletterBody": "The odd note about new bakes. Nothing else.",
-    "newsletterCta": "Get the newsletter",
-    "cta": { "label": "Order on Uber Eats", "href": "#" }
-  },
-  "menu": {
-    "eyebrow": "The menu",
-    "title": "What we bake",
-    "lede": "Baked through the morning and sold until it runs out. Ask at the counter for food prices.",
-    "allergenNote": "Our kitchen handles wheat, dairy, eggs, nuts, and sesame. We can't guarantee any item is free of them. Ask us and we'll tell you what's in it."
+    "newsletterCta": "Get the newsletter"
   },
   "story": {
-    "eyebrow": "Our story",
-    "title": "Named for Louma",
-    "lede": "How a sister's name became a bakery on Wilshire.",
-    "body": [
-      "Milla Ghandour started Louma with one belief: good bread and good work belong to everyone.",
-      "Many of the people who make Louma run have intellectual or developmental differences. Done right, that's a strength."
+    "title": "Our Story"
+  },
+  "initiative": {
+    "title": "The Louma Initiative",
+    "intro": [
+      "From the beginning, our vision has been clear: pair exceptional baking with real, life-changing opportunities. People with disabilities are deeply underrepresented in hospitality, an industry with so much room for growth, creativity, and community. We want to help change that.",
+      "We grew up hanging out in our family’s kitchen, and some of our closest moments as sisters happened there. So that’s where we started. Inspired by Louma’s own experience with intellectual and developmental differences, we set out to build a bakery where people of all abilities can learn, work, and feel valued. Everyone deserves the chance to build skills, gain confidence, and be part of a team that sees their talent."
     ],
-    "founder": {
-      "name": "Milla Ghandour",
-      "role": "Founder",
-      "body": [
-        "Milla grew up baking with her sister Louma. The bakery carries her name, and a promise about who it's for.",
-        "She spent years in professional kitchens before building one she'd want to work in: fair pay, and a door open to people most places overlook."
-      ]
+    "sections": [
+      {
+        "title": "Opening doors",
+        "paragraphs": [
+          "Our training and employment program is up and running. Our mission-based staff train alongside our team, learning skills they can take anywhere: food prep, packaging, customer service.",
+          "We partner with Breaking Barriers, an organization that specializes in supported employment. Their job coaches work one-on-one with our mission-based staff on site, so everyone has the support they need from day one. The goal is simple: real pathways into meaningful work, and more independence along the way."
+        ]
+      },
+      {
+        "title": "Built to last",
+        "paragraphs": [
+          "Louma Bakery is owned by The Louma Initiative, a registered 501(c)(3) nonprofit. The Initiative supports people with intellectual and developmental differences through four pillars: employment, research, education, and community outreach. The bakery is the employment pillar in action, and all of its profits go directly back to the Initiative. Every coffee and croissant helps fund the rest of that work."
+        ]
+      }
+    ],
+    "pillars": [
+      "Employment",
+      "Research",
+      "Education",
+      "Community outreach"
+    ]
+  },
+  "menu": {
+    "title": "Menu",
+    "intro": [
+      "We make everything in-house, from dough to filling, in our open-plan kitchen.",
+      "Our menu changes with the seasons, as we strive to use fresh ingredients as much as possible, however you’ll always find a few Louma classics on our counter.",
+      "Alongside the pastry case, you’ll find salads and sandwiches for lunch, granola to take home, and a full coffee, matcha, and tea bar.",
+      "We’re a small-batch bakery and sometimes the good stuff goes early. We recommend coming before 10 AM for the widest selection."
+    ],
+    "allergenNote": "Our kitchen handles wheat, dairy, eggs, nuts, and sesame. We can't guarantee any item is free of them. Ask us and we'll tell you what's in it."
+  },
+  "shop": {
+    "title": "Shop",
+    "status": "Coming soon",
+    "preorder": {
+      "title": "Pre-orders",
+      "body": "Pre-order your favorite tartes, pastries, and cakes in advance, for collection in person. Needs 48 hours notice."
+    },
+    "giftCards": {
+      "title": "Gift cards",
+      "body": ""
+    },
+    "merch": {
+      "title": "Merch"
     }
   },
-  "mission": {
-    "eyebrow": "Why we're here",
-    "title": "The work, and who does it",
-    "lede": "Hiring people other places overlook is how this bakery is built.",
-    "body": [
-      "We hire people who are often shut out of work, and train them to be great at it."
-    ],
-    "values": [
-      { "title": "Real jobs", "body": "Paid, skilled work with room to grow. Not busywork, not a photo op." },
-      { "title": "Designed to fit", "body": "We shape roles and training around how people actually learn and work." },
-      { "title": "High standards", "body": "Inclusion and excellence aren't a trade-off. The bread proves it every morning." }
-    ],
-    "stats": [
-      { "value": 100, "label": "of tips shared", "suffix": "%" }
-    ]
+  "visit": {
+    "title": "Come say hi"
   },
   "catering": {
     "eyebrow": "For your table",
@@ -64,14 +77,53 @@
       "Tell us the date and the headcount. We'll send back what we can do."
     ],
     "steps": [
-      { "n": "01", "title": "Tell us", "body": "Send the date and a rough idea. The form below is enough." },
-      { "n": "02", "title": "We propose", "body": "We reply within two business days with options and a quote." },
-      { "n": "03", "title": "We bake", "body": "Pickup on Wilshire or delivery nearby, fresh that morning." }
+      {
+        "n": "01",
+        "title": "Tell us",
+        "body": "Send the date and a rough idea. The form below is enough."
+      },
+      {
+        "n": "02",
+        "title": "We propose",
+        "body": "We reply within two business days with options and a quote."
+      },
+      {
+        "n": "03",
+        "title": "We bake",
+        "body": "Pickup on Wilshire or delivery nearby, fresh that morning."
+      }
     ],
     "tiers": [
-      { "name": "The Box", "price": "from $40", "items": ["Assorted pastries", "Serves 6-8", "Pickup only"], "note": "Best for small meetings" },
-      { "name": "The Spread", "price": "from $120", "items": ["Breads, pastries, spreads", "Serves 15-20", "Pickup or local delivery"], "note": "Our most popular" },
-      { "name": "Wholesale", "price": "Let's talk", "items": ["Standing weekly order", "For cafés and shops", "Net terms available"], "note": "Recurring partners" }
+      {
+        "name": "The Box",
+        "price": "from $40",
+        "items": [
+          "Assorted pastries",
+          "Serves 6-8",
+          "Pickup only"
+        ],
+        "note": "Best for small meetings"
+      },
+      {
+        "name": "The Spread",
+        "price": "from $120",
+        "items": [
+          "Breads, pastries, spreads",
+          "Serves 15-20",
+          "Pickup or local delivery"
+        ],
+        "note": "Our most popular"
+      },
+      {
+        "name": "Wholesale",
+        "price": "Let's talk",
+        "items": [
+          "Standing weekly order",
+          "For cafés and shops",
+          "Net terms available"
+        ],
+        "note": "Recurring partners"
+      }
     ]
   },
   "careers": {
@@ -83,27 +135,35 @@
       "We hire people who are often shut out of work, and train them to be great at it. Tell us a little about yourself and we'll be in touch."
     ],
     "roles": [
-      { "title": "Training Track", "type": "Paid · entry", "body": "A paid, supported path into baking and counter work. Start here if you've never been given the chance. No experience needed." },
-      { "title": "Baker", "type": "Full-time", "body": "Shape and bake bread and pastry through the morning. Experience helps; attitude counts more." },
-      { "title": "Counter & Service", "type": "Part / full-time", "body": "Run the register and keep the case full and the room warm." },
-      { "title": "Job Coach / Trainer", "type": "Full-time", "body": "Support and grow the Training Track team on the floor. Background in IDD support preferred." }
+      {
+        "title": "Training Track",
+        "type": "Paid · entry",
+        "body": "A paid, supported path into baking and counter work. Start here if you've never been given the chance. No experience needed."
+      },
+      {
+        "title": "Baker",
+        "type": "Full-time",
+        "body": "Shape and bake bread and pastry through the morning. Experience helps; attitude counts more."
+      },
+      {
+        "title": "Counter & Service",
+        "type": "Part / full-time",
+        "body": "Run the register and keep the case full and the room warm."
+      },
+      {
+        "title": "Job Coach / Trainer",
+        "type": "Full-time",
+        "body": "Support and grow the Training Track team on the floor. Background in IDD support preferred."
+      }
     ]
-  },
-  "visit": {
-    "eyebrow": "Come by",
-    "title": "Visit",
-    "lede": "On Wilshire in Santa Monica.",
-    "body": [
-      "Street parking, and a lot behind the building.",
-      "A short walk from the Metro E Line. Bike racks out front.",
-      "The door's the one with the face on it."
-    ],
-    "mapEmbed": "https://www.google.com/maps/embed?pb=!1m3!2m1!1s3223+Wilshire+Blvd,+Santa+Monica,+CA+90403!6i14"
   },
   "notFound": {
     "eyebrow": "404",
     "title": "Lost your way?",
     "lede": "We couldn't find that page. Let's get you back to something warm.",
-    "cta": { "label": "Back home", "href": "/" }
+    "cta": {
+      "label": "Back home",
+      "href": "/"
+    }
   }
 }

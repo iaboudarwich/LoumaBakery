@@ -1,49 +1,26 @@
 ---
-import { getEntry, getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { siteConfig } from '../config/site';
 import { features as f } from '../config/features';
 import Img from '../components/Img.astro';
 import Sketch from '../components/Sketch.astro';
-import NewsletterForm from '../components/NewsletterForm.astro';
+import InstagramStrip from '../components/InstagramStrip.astro';
+import { Wordmark, WORDMARK_ART } from '../lib/brand';
 import { resolveImage as pick } from '../lib/images';
 import images from '../data/images.json';
 
 // No placeholder fallbacks: a missing or unresolved photo renders no image.
 const heroPhoto = pick(images.hero);
-const story1Photo = pick(images.story1);
-const story2Photo = pick(images.story2);
-const ig1Photo = pick(images.ig1);
 // Hero AVIF must stay <=150KB at every phone size (CLAUDE.md). A 430px @3x
 // phone picks the 1600w variant, so quality is tuned against that file.
 const HERO_QUALITY = 45;
 
 // --- All content pulled from collections / config. No hardcoded copy. ---
 const home = (await getEntry('copy', 'home'))!.data;
-const menu = (await getCollection('menu')).sort((a, b) => a.data.order - b.data.order);
-const marquee = (await getCollection('marquee')).sort((a, b) => a.data.order - b.data.order);
-// Home shows a tight 6-item signature grid, not the full category-by-category
-// menu (that lives on /menu). Keeps the page short and gives the CTA a job.
-const featured = menu.flatMap((cat) => cat.data.items).slice(0, 6);
-
-// Order link is a placeholder until a real Uber Eats URL is set — render the
-// button inert ("Ordering soon") rather than a dead link. Becomes a real link
-// the moment a non-default URL lands in settings.
-const orderReady = !!siteConfig.links.uberEats && siteConfig.links.uberEats !== 'https://www.ubereats.com/';
-
-// The hero must never dead-end. Real Order link when ready; otherwise the
-// newsletter (copy.json home.newsletterCta) so the CTA
-// still goes somewhere; falls back to the inert "Ordering soon" if that flag is
-// off.
-const heroCta = orderReady
-  ? { as: 'a' as const, href: siteConfig.links.uberEats, external: true, label: home.cta?.label ?? 'Order' }
-  : f.heroNewsletterCta
-    ? { as: 'a' as const, href: '#newsletter', external: false, label: home.newsletterCta ?? 'Get the newsletter' }
-    : { as: 'button' as const, href: '', external: false, label: 'Ordering soon' };
 ---
 
-<BaseLayout transparentNav schema="bakery" footerNewsletter={false}>
-  {/* ================= SLAB HOME: photo band > cream > burgundy > cream ===== */}
+<BaseLayout transparentNav schema="bakery" description={home.tagline}>
   <section class="hero-media slab-hero">
     {heroPhoto && <Img src={heroPhoto} alt="" class="hero-bg" anim={f.kenBurns ? 'ken-burns' : undefined} priority quality={HERO_QUALITY} sizes="100vw" />}
     {/* Video-ready: set siteConfig.links.heroVideo to autoplay over the photo
@@ -56,13 +33,13 @@ const heroCta = orderReady
     <div class="hero-media-scrim" aria-hidden="true"></div>
     <div class="container hero-media-inner">
       <div class="hero-media-content">
-        <p class="eyebrow hero-media-eyebrow">{home.eyebrow}</p>
-        <h1 class="statement statement--hero">{home.title}</h1>
-        {home.lede && <p class="hero-media-lede">{home.lede}</p>}
-        {heroCta.as === 'button' ? (
-          <button class="btn hero-media-cta" type="button" disabled aria-disabled="true" title="Online ordering isn't available yet.">{heroCta.label}</button>
-        ) : (
-          <a class="btn btn--cream hero-media-cta" href={heroCta.href} target={heroCta.external ? '_blank' : undefined} rel={heroCta.external ? 'noopener' : undefined}>{heroCta.label}</a>
+        <h1 class="hero-wordmark">
+          <span class="visually-hidden">{siteConfig.name}</span>
+          <Wordmark class="hero-wordmark-art" viewBox={WORDMARK_ART} aria-hidden="true" />
+        </h1>
+        {home.tagline && <p class="hero-media-lede">{home.tagline}</p>}
+        {f.heroNewsletterCta && home.newsletterCta && (
+          <a class="btn btn--cream hero-media-cta" href="#newsletter">{home.newsletterCta}</a>
         )}
       </div>
     </div>
@@ -70,51 +47,10 @@ const heroCta = orderReady
 
   <section class="band">
     <div class="container" data-anim={f.reveal ? 'reveal' : undefined} data-reveal-children>
-      <h2 class="statement">{home.craftLine}</h2>
       <div class="slab-body">{home.body.map((p) => <p>{p}</p>)}</div>
       <div class="slab-sketch" aria-hidden="true"><Sketch name="baguette" width={150} height={54} color="var(--burgundy)" draw={f.scrollDraw} /></div>
     </div>
-    <div class="container collage" aria-hidden="false">
-      {story1Photo && <Img src={story1Photo} alt={images.story1Alt} class="collage-a" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 680px) 78vw, (max-width: 860px) 42vw, 460px" />}
-      {story2Photo && <Img src={story2Photo} alt={images.story2Alt} class="collage-b" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 680px) 68vw, (max-width: 860px) 34vw, 380px" />}
-      {ig1Photo && <Img src={ig1Photo} alt={images.ig1Alt} class="collage-c" anim={f.imageWipe ? 'wipe' : undefined} sizes="(max-width: 860px) 30vw, 320px" />}
-    </div>
-  </section>
-
-  <section class="band band--burgundy on-dark">
-    <div class="container" data-anim={f.reveal ? 'reveal' : undefined}>
-      <h2 class="statement">{home.missionLine}</h2>
-    </div>
-    <div class="marquee" aria-label="Louma in a few words">
-      <div class="marquee-vp" data-anim={f.marquee ? 'marquee' : undefined}>
-        <div class="marquee-track">
-          {marquee.map((m) => (
-            <span class="marquee-item"><span>{m.data.text}</span><span class="marquee-dot" aria-hidden="true">·</span></span>
-          ))}
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="band">
-    <div class="container">
-      <p class="eyebrow">The menu</p>
-      <ul class="slab-menulist" role="list" data-anim={f.reveal ? 'reveal' : undefined} data-reveal-children>
-        {featured.map((item) => (
-          <li>
-            <span class="sm-name">{item.name}</span>
-            {item.price && (
-              <>
-                <span class="sm-dots" aria-hidden="true"></span>
-                <span class="sm-price mono">{item.price}</span>
-              </>
-            )}
-          </li>
-        ))}
-      </ul>
-      <p class="menu-more"><a class="btn" href="/menu">See the full menu</a></p>
-    </div>
-    <div class="container findus-grid slab-find" data-anim={f.reveal ? 'reveal' : undefined} data-reveal-children>
+    <div class="container slab-find" data-anim={f.reveal ? 'reveal' : undefined}>
       <div class="findus-info">
         <p class="eyebrow">Find us</p>
         <address class="findus-address">
@@ -127,34 +63,31 @@ const heroCta = orderReady
               </li>
             ))}
           </ul>
-          <p class="findus-contact mono">
-            {siteConfig.phone && <><a href={`tel:${siteConfig.phone.replace(/[^+\d]/g, '')}`}>{siteConfig.phone}</a><br /></>}
-            <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
-          </p>
         </address>
-      </div>
-      <div class="findus-news on-dark" id="newsletter">
-        <h2 class="news-title">{home.newsletterTitle}</h2>
-        {home.newsletterBody && <p class="news-body">{home.newsletterBody}</p>}
-        <NewsletterForm variant="page" />
       </div>
     </div>
   </section>
-  {/* Footer comes from BaseLayout. */}
+
+  <section class="band">
+    <div class="container">
+      {home.instagramTitle && <h2>{home.instagramTitle}</h2>}
+      <div class="slab-ig"><InstagramStrip /></div>
+    </div>
+  </section>
+  {/* Footer (with the newsletter, target of #newsletter) comes from BaseLayout. */}
 </BaseLayout>
 
 <style>
-  /* The homepage rides on ONE background tone (cream, the page default). Only
-     three deliberate dark/accent moments break it: the hero photo, the
-     full-bleed signature block, the burgundy marquee ribbon, and the footer.
-     Sections separate by rhythm (consistent vertical padding), not color. */
+  /* The homepage rides on ONE background tone (butter, the page default):
+     the hero photo and the footer are the only dark moments. Sections
+     separate by rhythm (consistent vertical padding), not colour. */
 
   /* --- Slab home --- */
   .slab-body { margin-top: var(--space-5); }
   .slab-body p + p { margin-top: var(--space-3); }
   .slab-sketch { margin-top: var(--space-5); }
   .slab-find { margin-top: clamp(3rem, 6vw, 5rem); }
-  :global(html.sys-slab) .band .menu-more { text-align: start; margin-top: var(--space-5); }
+  .slab-ig { margin-top: var(--space-5); }
 
   /* ============================ 1 · HERO (media, full-bleed) ===== */
   .hero-media {
@@ -192,6 +125,15 @@ const heroCta = orderReady
     text-shadow: 0 1px 16px color-mix(in srgb, var(--ink) 45%, transparent);
   }
   .hero-media-cta { margin-top: var(--space-6); }
+  /* The drawn wordmark is the headline: butter on the dark panel, sized like
+     the old hero statement's line. :global because the svg is a child's. */
+  .hero-wordmark { line-height: 1; }
+  .hero-wordmark :global(.hero-wordmark-art) {
+    display: block;
+    width: min(100%, 520px);
+    height: auto;
+    color: var(--butter);
+  }
   /* While the phone CTA bar is shown (<=768px), the hero ends above it so the
      bar never covers the hero's own CTA. Phones <=430px keep their shorter
      78svh hero (below); short landscape hides the bar and restores 100svh. */
@@ -201,10 +143,8 @@ const heroCta = orderReady
       min-height: calc(100svh - 64px - env(safe-area-inset-bottom, 0px));
     }
   }
-  /* Desktop: the headline uses the content width. The global 14ch statement
-     cap left "morning" alone on a third line from 1366px up. */
+  /* Desktop: the hero content gets more width. */
   @media (min-width: 861px) {
-    :global(html.sys-slab) .hero-media .statement--hero { max-width: none; }
     /* html.sys-slab prefix: must outrank the global slab content cap (720px). */
     :global(html.sys-slab) .hero-media-content { max-width: clamp(320px, 60vw, 820px); }
   }
@@ -217,7 +157,6 @@ const heroCta = orderReady
       padding-bottom: max(clamp(0.75rem, 4svh, 1.5rem), calc(env(safe-area-inset-bottom) + 0.75rem));
     }
     :global(html.sys-slab) .hero-media-content { max-width: min(680px, 78vw); }
-    :global(html.sys-slab) .hero-media .statement--hero { font-size: clamp(2.2rem, 13svh, 3.6rem); max-width: none; }
     .hero-media-lede { margin-top: clamp(0.5rem, 2.5svh, 1rem); }
     .hero-media-cta { margin-top: clamp(0.625rem, 3svh, 1.5rem); }
     :global(body.has-cta-bar) .hero-media { min-height: 100vh; min-height: 100svh; } /* bar hidden here */
@@ -239,54 +178,10 @@ const heroCta = orderReady
     object-fit: cover;
   }
 
-  /* ================================ MARQUEE (accent) ===== */
-  .marquee {
-    background: var(--burgundy);
-    color: var(--butter);
-    padding-block: var(--space-4);
-    overflow: hidden;
-  }
-  .marquee-vp { overflow: hidden; }
-  .marquee-track { display: flex; white-space: nowrap; }
-  .marquee-item {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-5);
-    padding-inline: var(--space-3);
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-size: clamp(18px, 2vw, 26px);
-  }
-  .marquee-dot { color: var(--peach); }
-
-  /* ================================ MENU PREVIEW ===== */
-  .menu-more { margin-top: var(--space-6); text-align: center; max-width: none; }
-
   /* ================================ FIND US ===== */
-  .findus-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(var(--space-5), 5vw, var(--space-7)); align-items: stretch; }
-  .findus-info h2 { margin: var(--space-2) 0 var(--space-5); }
   .findus-address { font-style: normal; line-height: 1.8; }
   .findus-hours { margin: var(--space-4) 0; font-size: clamp(14px, calc(14px + (100vw - 1920px) * 0.003125), 16px); max-width: 360px; }
   .findus-hours li { display: flex; justify-content: space-between; gap: var(--space-3); padding: 2px 0; }
   .findus-hours-time { color: var(--muted); }
-  .findus-contact a { color: var(--burgundy); }
 
-  /* Burgundy (not ink) so it doesn't fuse with the ink footer directly below. */
-  .findus-news {
-    scroll-margin-top: calc(var(--nav-h) + var(--space-5));
-    background: var(--burgundy);
-    color: var(--butter);
-    border-radius: 0;
-    padding: clamp(1.5rem, 4vw, 2.5rem);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .news-title { color: var(--butter); }
-  .news-body { margin: var(--space-3) 0 var(--space-5); color: color-mix(in srgb, var(--butter) 78%, transparent); }
-
-  /* ===================================== Responsive ===== */
-  @media (max-width: 860px) {
-    .findus-grid { grid-template-columns: 1fr; }
-  }
 </style>

@@ -10,9 +10,8 @@ const { links, currentPath } = Astro.props;
 // component owns the overlay, the panel, and the open/close behavior (focus
 // trap, Esc, overlay tap, link tap).
 //
-// The Order / "Ordering soon" pill arrives through the `cta` slot so it keeps
-// Nav's scoped .order-cta styles (Astro scoped styles don't reach a child
-// component's own markup, but they do reach slotted markup).
+// An optional call to action can arrive through the `cta` slot (slotted markup
+// keeps the parent's scoped styles). Nav passes none at the moment.
 ---
 
 <div class="mobile-overlay" data-overlay hidden></div>
@@ -27,9 +26,11 @@ const { links, currentPath } = Astro.props;
         </li>
       ))
     }
-    <li>
-      <slot name="cta" />
-    </li>
+    {Astro.slots.has('cta') && (
+      <li>
+        <slot name="cta" />
+      </li>
+    )}
   </ul>
 </aside>
 

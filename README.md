@@ -1,6 +1,6 @@
 # Louma Bakery website
 
-Marketing site for Louma Bakery, a neighborhood bakery on Wilshire in Santa Monica. Seven public pages (home, menu, story, mission, careers, catering, visit) plus a 404. Content is edited by a non-developer through a git-backed CMS. Three Netlify Forms collect newsletter signups, job applications and catering inquiries.
+Marketing site for Louma Bakery, a neighborhood bakery on Wilshire in Santa Monica. Eight public pages (home, story, initiative, menu, shop, catering, careers, visit/Contact) plus a 404. Content is edited by a non-developer through a git-backed CMS. Three Netlify Forms collect newsletter signups, job applications and catering inquiries.
 
 Live: https://loumabakeryy.netlify.app (note the double "y"; see Accounts below).
 
@@ -47,9 +47,9 @@ There is no automated test suite and no CI beyond Netlify's build. See "How chan
 
 ```
 src/
-  pages/           one .astro file per route (index, menu, story, mission, careers, catering, visit, 404)
+  pages/           one .astro file per route (see Routes below)
   layouts/         BaseLayout.astro: <head>, meta, JSON-LD, fonts, nav, footer, mobile CTA bar
-  components/      Nav, MobilePanel (the phone slide-in menu), Footer, NewsletterForm, Img, Sketch, FaceDraw
+  components/      Nav, MobilePanel (the phone slide-in menu), Footer, NewsletterForm, InstagramStrip, Img, Sketch, FaceDraw
   data/            ALL editable content as JSON (what the CMS edits)
   content.config.ts  zod schemas that load src/data/*.json into content collections
   config/site.ts   site-wide values (URL, name, contact via settings.json, form messages)
@@ -69,12 +69,42 @@ docs/BRAND.md      the brand reference: colours, typeface, marks, and how the si
 docs/brand/        the designer's master assets (.ai, page SVGs, previews, palette)
 ```
 
+## Routes
+
+Main nav (the wordmark is the Home link): Our Story, The Louma Initiative, Menu, Shop. The footer adds Catering, Careers and Contact.
+
+| Route | Page file | Content it reads |
+|---|---|---|
+| `/` | `src/pages/index.astro` | `copy.json` → `home`, `images.json` (hero), `instagram.json` |
+| `/story` | `src/pages/story.astro` | `copy.json` → `story` (headline), `story.json` |
+| `/initiative` | `src/pages/initiative.astro` | `copy.json` → `initiative` |
+| `/menu` | `src/pages/menu.astro` | `copy.json` → `menu`, `menu.json` (no prices, no photos) |
+| `/shop` | `src/pages/shop.astro` | `copy.json` → `shop`, `shop.json` |
+| `/catering` | `src/pages/catering.astro` | `copy.json` → `catering`, plus the catering form |
+| `/careers` | `src/pages/careers.astro` | `copy.json` → `careers`, plus the careers form |
+| `/visit` (labelled "Contact") | `src/pages/visit.astro` | `copy.json` → `visit`, `settings.json` |
+| 404 | `src/pages/404.astro` | `copy.json` → `notFound` |
+
+**Redirect:** `/mission` → `/initiative`, a 301 with `force = true` in `netlify.toml`. `astro.config.mjs` has the same redirect so `astro dev` and `preview` follow it; on a static build that also writes a meta-refresh page at `dist/mission/`, which the forced Netlify rule overrides.
+
 ## Content: where it lives and how it reaches the page
 
-1. **The data** is JSON in `src/data/`: `menu.json`, `copy.json` (every page's words, keyed by page), `settings.json` (phone, email, address, hours, Uber Eats and Instagram links), `images.json` (which photo goes in which slot), `story-chapters.json`, `ingredients.json`, `marquee.json`.
+1. **The data** is JSON in `src/data/`, one CMS collection per file:
+
+   | File | What it holds | CMS collection |
+   |---|---|---|
+   | `copy.json` | The words for every page, keyed by page (`home`, `story`, `initiative`, `menu`, `shop`, `visit`, `catering`, `careers`, `notFound`) | Page text |
+   | `story.json` | The founder's letter (paragraphs and signature) and the Our Story sections (title + paragraphs) | Our Story |
+   | `shop.json` | Pre-order and gift card links, and the merch products (name, price, description, size, image, alt, link). An empty link shows "Coming soon". | Shop |
+   | `menu.json` | Menu categories and items (name, description, tags; `image`/`alt` are kept but not shown), and the add-ons list. No prices. | Menu |
+   | `instagram.json` | Up to six square tiles for the home page strip (image + alt), each linking to the Instagram profile | Instagram strip |
+   | `settings.json` | Two emails (general and larger orders), address, hours, Instagram link and handle, Uber Eats link (kept, not rendered). No phone number is listed, by the owner's choice. | Site settings |
+   | `images.json` | Which photo fills which slot. Only `hero` renders today; the other keys are left over from the old Story page. | Images |
+
+   Text in `story.json`, `copy.json` and `shop.json` is the owner's own writing. Don't reword it (see the copy rules in `CLAUDE.md`).
 2. **`src/content.config.ts`** loads those files as content collections and validates them. Lists are wrapped in an object in the JSON (`{ "categories": [...] }`, `{ "items": [...] }`) because Decap cannot edit a top-level array; each loader unwraps them. A schema failure breaks the build, which is the point: bad content never ships.
 3. **Pages read collections** with `getEntry('copy', 'menu')`, `getCollection('menu')` and so on. `settings.json` and `images.json` are imported directly (`src/config/site.ts`, `src/lib/images.ts`).
-4. **The CMS** (`public/admin/config.yml`) maps one Decap collection onto each JSON file, field by field. If you add a key to a JSON file, add the matching field to `config.yml`, or editors can't see it. As of this README, every key in every data file has a CMS field.
+4. **The CMS** (`public/admin/config.yml`) maps one Decap collection onto each JSON file, field by field. If you add a key to a JSON file, add the matching field to `config.yml` and to the zod schema, or editors can't see it. The `copy` schema is `.strict()`, so a CMS field the schema doesn't know breaks the build on the first save. As of this README, every CMS field, JSON key and schema key match (checked by script for every collection).
 5. **Saving in the CMS** commits the JSON file to `main`, which deploys. On the first save of a file, Decap re-serializes the whole file (one-line objects get expanded), so that first commit shows a large but harmless diff.
 
 Not everything is content. Some copy is still hardcoded in templates and config: form labels and buttons, the form success/error messages (`siteConfig.forms`), nav and footer labels, about a dozen section headings, and page `<title>`s. `docs/EDITING.md` lists them under "Things that still need a developer". Moving any of them into `copy.json` and `config.yml` is straightforward.
@@ -114,7 +144,7 @@ Three forms: `newsletter` (home page and footer; one component, `NewsletterForm.
 
 * `/admin/` is the real editor. **The login is not working yet:** `public/admin/config.yml` has `identity_url: .../sites/PLACEHOLDER_DECAPBRIDGE_SITE_ID`. Create the site in DecapBridge, then replace the whole `backend:` block with the one DecapBridge generates (the comment above the block says so). The `repo:` value there still reads `issamlife21-hue/LoumaBakery`, the GitHub account's old name; GitHub redirects it, but use `iaboudarwich/LoumaBakery` when you replace the block.
 * `/admin-demo/` is the same editor on Decap's in-memory `test-repo` backend, with a "nothing is saved" banner. Its `config.yml` is generated from `/admin/config.yml` by `scripts/gen-admin-demo.mjs` on `prebuild` (gitignored), so the two can't drift. **It opens with empty forms:** `test-repo` is never seeded with the real JSON, so it teaches the layout, not the content. Seeding `window.repoFiles` from the data files at build time would fix it.
-* Collections: Menu, Images, Site settings, Page text, Story chapters, Ingredients, Marquee words. Each is a single file with `delete: false`, so editors can't remove a whole file.
+* Collections: Menu, Images, Site settings, Page text, Our Story, Shop, Instagram strip. Each is a single file with `delete: false`, so editors can't remove a whole file.
 * `publish_mode: simple`: Publish commits straight to `main`. No drafts, no review.
 
 ## Design system, motion, flags
@@ -142,15 +172,17 @@ None of these are hidden. They're listed so you don't rediscover them.
 **Mobile menu (`MobilePanel.astro`), all pre-existing:**
 1. **The X (close) button can't be tapped.** When the panel is open it covers the toggle, so a tap on the X lands on the panel. The nav's `z-index: 1300` while open doesn't help because the panel is a descendant of the nav. Esc, an overlay tap and a link tap all close it.
 2. **Between 769 and 860px wide, tapping outside doesn't close it.** At those widths the nav bar has `will-change: transform`, which makes it the containing block for the panel's `position: fixed` overlay, so the overlay only covers the 56px bar.
-3. **On short landscape phones the lower links are unreachable.** The panel doesn't scroll and the page is scroll-locked while it's open. At 568×320, Careers, Visit and Ordering soon are off-screen; at 844×390, Visit and Ordering soon.
+3. **On short landscape phones the lower links are unreachable.** The panel doesn't scroll and the page is scroll-locked while it's open. Measured before the nav was cut to four links (at 568×320, the last three links were off-screen); recheck with the current nav.
 
 **Mobile newsletter bar:** the bar is 75px tall but `body.has-cta-bar` reserves 64px. The link's own `min-height: 44px` and `padding: 10px 24px` in `global.css` lose to the slab `.btn` rule, so they're dead declarations. Making them win would bring the bar to about 64px.
 
 **Content gaps (owner decisions, not bugs):**
-* 56 of the 60 menu items have no description line. Food items have no prices ("Ask at the counter for food prices"); drinks do.
-* No founder portrait exists. The Story page names Milla Ghandour in text only, and must never use a stand-in photo of someone else.
-* The phone number is a placeholder (`+1 (310) 000-0000`). `site.ts` suppresses it everywhere, including the JSON-LD, until a real one is entered.
-* The Uber Eats link is a placeholder, so the nav shows a dashed "Ordering soon" chip instead of an Order button.
+* 56 of the 60 menu items have no description line. The menu shows no prices at all, by the owner's choice.
+* No founder portrait exists. The Story letter is signed in text only, and must never use a stand-in photo of someone else.
+* No phone number is listed anywhere, by the owner's choice. The two emails in `settings.json` are the contact.
+* The Uber Eats link is kept in `settings.json` but rendered nowhere; the nav has no Order button.
+* Shop: the pre-order and gift card links and the hat's buy link are empty, so each shows "Coming soon". The hat has no photo yet.
+* The hand-drawn map for Contact doesn't exist yet; the slot is marked in `visit.astro`.
 * The hero is a still photo; `siteConfig.links.heroVideo` is empty.
 
 **Other:**
@@ -165,14 +197,12 @@ None of these are hidden. They're listed so you don't rediscover them.
 | Where | What |
 |---|---|
 | `public/admin/config.yml:18` | `PLACEHOLDER_DECAPBRIDGE_SITE_ID`: replace the `backend:` block with DecapBridge's generated one (and the current repo name). |
-| `src/config/site.ts:11` | `TODO(owner)`: real phone number and real Uber Eats URL go in `src/data/settings.json` (CMS: Site settings). |
-| `src/config/site.ts:35` | `heroVideo` placeholder: empty until hero footage exists. |
-| `src/pages/index.astro:50` | Same hero video placeholder, at the point of use. |
-| `src/pages/story.astro:12` | `TODO(founder-portrait)`: text-only until a real portrait of Milla is set as `founder` in `src/data/images.json`. |
-| `src/lib/images.ts:6` | `TODO(founder-portrait)`: same item, from the image side. |
+| `src/config/site.ts:32` | `heroVideo` placeholder: empty until hero footage exists. |
+| `src/pages/index.astro:27` | Same hero video placeholder, at the point of use. |
+| `src/lib/images.ts:6` | `TODO(founder-portrait)`: no portrait of Milla yet (the comment still points at `story.astro`, which no longer has a portrait slot). |
 | `src/lib/images.ts:3` | `TODO(photo-ids)`: `unplaced/seeded-knot-tissue.jpg` and `unplaced/seeded-knot-detail.jpg` look like the za'atar croissant but are not confirmed. |
 
-Outside the code, still waiting on the owner: DecapBridge site and login test, publishing the Google Sheet tab and setting `SHEET_CSV_URL`, real photos for the remaining gaps, a real phone number and Uber Eats link, a domain, form notifications, and transferring the Netlify and GitHub accounts.
+Outside the code, still waiting on the owner: DecapBridge site and login test, publishing the Google Sheet tab and setting `SHEET_CSV_URL`, real photos for the remaining gaps (including the hat and the Contact map), shop links, a real Uber Eats link, a domain, form notifications, and transferring the Netlify and GitHub accounts.
 
 ## Accounts
 

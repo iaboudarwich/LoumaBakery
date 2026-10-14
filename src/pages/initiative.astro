@@ -1,0 +1,56 @@
+---
+import { getEntry } from 'astro:content';
+import { noOrphan } from '../lib/typography';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { features as f } from '../config/features';
+
+// The Louma Initiative (was /mission; /mission 301-redirects here). No photos.
+const c = (await getEntry('copy', 'initiative'))!.data;
+const sections = c.sections ?? [];
+const pillars = c.pillars ?? [];
+---
+
+<BaseLayout title={c.title} description={c.intro[0]}>
+  <header class="page-head">
+    <div class="container">
+      <h1>{noOrphan(c.title ?? '')}</h1>
+    </div>
+  </header>
+
+  <section class="initiative-intro" data-anim={f.reveal ? 'reveal' : undefined}>
+    <div class="container narrow">
+      {c.intro.map((p) => <p class="statement-p">{p}</p>)}
+    </div>
+  </section>
+
+  {sections.map((s) => (
+    <section class="initiative-section" data-anim={f.reveal ? 'reveal' : undefined}>
+      <div class="container narrow">
+        <h2>{s.title}</h2>
+        {s.paragraphs.map((p) => <p>{p}</p>)}
+      </div>
+    </section>
+  ))}
+
+  {pillars.length > 0 && (
+    <section class="initiative-section">
+      <div class="container narrow">
+        <ul class="pillars" role="list">
+          {pillars.map((p) => <li>{p}</li>)}
+        </ul>
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .narrow { max-width: 720px; }
+  .initiative-intro { padding-block: var(--space-8); }
+  .statement-p { font-size: clamp(20px, 2vw, 26px); font-family: var(--font-display); font-weight: 500; color: var(--ink); line-height: 1.4; }
+  .statement-p + .statement-p { margin-top: var(--space-4); }
+
+  .initiative-section { padding-block: var(--space-6); }
+  .initiative-section h2 { margin-bottom: var(--space-3); }
+  .pillars { margin: 0; padding: 0; }
+  .pillars li + li { margin-top: var(--space-2); }
+</style>

@@ -1,19 +1,14 @@
 {
-  "phone": "+1 (310) 000-0000",
-  "email": "hello@loumabakery.com",
-  "address": {
-    "street": "3223 Wilshire Blvd",
-    "city": "Santa Monica",
-    "state": "CA",
-    "zip": "90403"
-  },
+  "email": "contact@loumabakery.com",
+  "ordersEmail": "orders@loumabakery.com",
+  "address": { "street": "3223 Wilshire Blvd", "city": "Santa Monica", "state": "CA", "zip": "90403" },
   "hours": [
-    { "days": "Tuesday – Friday", "open": "7:30 AM", "close": "2:30 PM" },
-    { "days": "Saturday – Sunday", "open": "7:30 AM", "close": "2:30 PM" },
+    { "days": "Tuesday – Sunday", "open": "7:30 AM", "close": "2:30 PM" },
     { "days": "Monday", "open": "Closed", "close": "" }
   ],
   "links": {
-    "uberEats": "https://www.ubereats.com/",
-    "instagram": "https://www.instagram.com/loumabakery/"
+    "instagram": "https://www.instagram.com/loumabakery/",
+    "instagramHandle": "@loumabakery",
+    "uberEats": "https://www.ubereats.com/"
   }
 }

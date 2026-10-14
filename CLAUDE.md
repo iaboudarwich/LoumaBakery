@@ -13,6 +13,35 @@ A neighborhood bakery on Wilshire (Santa Monica), open and trading (as of Septem
 - Production URL from one SITE_URL config value. Netlify hosting. Menu will sync from a Google Sheet (scripts/sync-menu.mjs, inactive until SHEET_CSV_URL is set).
 - Forms are Netlify Forms: data-netlify + data-netlify-honeypot + hidden form-name, posted via fetch by src/scripts/forms.ts (newsletter, careers, catering). Submissions only arrive once the dashboard Form detection toggle is on and the site is redeployed.
 
+## Pages, routes and data
+Main nav (wordmark = Home): Our Story, The Louma Initiative, Menu, Shop. Footer adds Catering, Careers, Contact.
+
+| Route | File | Reads |
+|---|---|---|
+| / | src/pages/index.astro | copy.json `home`, images.json (hero), instagram.json |
+| /story | src/pages/story.astro | copy.json `story` (headline), story.json (letter + sections) |
+| /initiative | src/pages/initiative.astro | copy.json `initiative` |
+| /menu | src/pages/menu.astro | copy.json `menu`, menu.json (no prices, no photos) |
+| /shop | src/pages/shop.astro | copy.json `shop`, shop.json |
+| /catering | src/pages/catering.astro | copy.json `catering` + catering form |
+| /careers | src/pages/careers.astro | copy.json `careers` + careers form |
+| /visit ("Contact") | src/pages/visit.astro | copy.json `visit`, settings.json |
+| 404 | src/pages/404.astro | copy.json `notFound` |
+
+Redirect: /mission -> /initiative (301, force, in netlify.toml; also `redirects` in astro.config.mjs so dev/preview work).
+
+| Data file | Holds | CMS collection |
+|---|---|---|
+| src/data/copy.json | words for every page, keyed by page | Page text |
+| src/data/story.json | the founder's letter (paragraphs + signature) and the story sections | Our Story |
+| src/data/shop.json | pre-order and gift card links, merch products | Shop |
+| src/data/menu.json | menu categories, items (name, description, tags; image/alt kept, not shown), add-ons | Menu |
+| src/data/instagram.json | up to six home-page Instagram tiles (image + alt) | Instagram strip |
+| src/data/settings.json | two emails, address, hours, Instagram link + handle, Uber Eats link (not rendered). No phone number is listed. | Site settings |
+| src/data/images.json | which photo fills which slot (only `hero` renders today) | Images |
+
+Every CMS field in public/admin/config.yml must match its JSON keys and the Zod schema in src/content.config.ts (copy is `.strict()`: an unknown key breaks the build).
+
 ## THE DESIGN SYSTEM ("editorial slab", the only layout)
 Source of truth for the brand: docs/BRAND.md and docs/brand/ (the designer's board). Tokens: src/styles/tokens.css.
 - PALETTE: exactly eight colours. --red #ED2739 (Louma Red, PRIMARY), --burgundy #A10017, --peach #FF676C, --tangerine #FF8926, --fairy #DDEAC3, --butter #FBF5D4 (page background), --white #FFFFFF, --ink #1D1D1B (text). Derived values (--body, --muted, --hairline, --hairline-strong, shadows, focus) are color-mix() of these eight only. No other hex or rgb() anywhere in src/.
@@ -42,10 +71,11 @@ Source of truth for the brand: docs/BRAND.md and docs/brand/ (the designer's boa
 ## COPY RULES (bans on sight)
 - NO em dashes anywhere in rendered copy (verify dist HTML after building).
 - No tricolons ("bread, pastry, and care"), no "not just X, it's Y", no empty superlatives (artisanal/finest/exceptional/premium), no jargon (elevate/journey/crafted/curated/nestled/indulge/savor/delight), no "we are passionate/committed/we believe", no throat-clearing openers.
+- Text in story.json, copy.json and shop.json was written by the owner. Never rewrite, shorten or reword it, even when it uses words this guide otherwise avoids. Typos may be fixed only when asked.
 - Caps: hero = one line (3-8 words) + one sentence. Menu item = ONE concrete line, 8-15 words, ingredient/technique first ("Laminated over three days, baked dark, shatters when you bite it."). Story <= 300 words. Careers = plain sentences; the inclusive mission stated ONCE as plain fact. Visit = scannable mono block + one human line.
 
 ## STANDING RULES (never violate)
-- The mission page NEVER discloses statistics about team members' disabilities. No replacement stats of that nature.
+- The Initiative page (/initiative) NEVER discloses statistics about team members' disabilities. No replacement stats of that nature.
 - Entrance animations never move content upward.
 - The drawings in src/assets/brand/ (the four marks and doodles/) are the designer's masters; never regenerate, redraw, trace or restyle them. Change them only from docs/brand/master.
 - Palette and fonts exactly as tokenized: the eight brand colours in src/styles/tokens.css, the four Owners faces in src/styles/fonts.css.
@@ -63,11 +93,11 @@ Source of truth for the brand: docs/BRAND.md and docs/brand/ (the designer's boa
 - Reveals: one shared IO, fail-safe (hidden states only under JS-set classes; JS off = everything visible).
 - Hero image <=150KB on mobile (AVIF, eager, fetchpriority=high). Fonts: the four Owners woff2 subsets only (Latin, Latin-1, general punctuation, arrows), owners-400 and owners-narrow-700 preloaded.
 - theme-color AND body background both butter #FBF5D4 (Safari tints from either).
-- Map iframe: tap-to-load facade on touch, lazy auto-load on desktop.
+- Map: no iframe (CSP frame-src 'none'). /visit links out to Google Maps; a hand-drawn map image fills the slot later.
 - mobileCtaBar flag: sticky bottom newsletter bar on phones (parks at footer, hides with keyboard).
 
 ## Definition of done (every phase)
 Responsive to mobile · visible keyboard focus · reduced motion respected · no console errors · astro check clean · zero em dashes in dist · committed with a clear message · deploy verified.
 
 ## What remains before handoff (do not attempt without the owner)
-DecapBridge site-id + login test; publish the Google Sheet tab + set SHEET_CSV_URL; Netlify Forms detection toggle; real photos/Uber Eats/phone/domain; account transfer.
+DecapBridge site-id + login test; publish the Google Sheet tab + set SHEET_CSV_URL; Netlify Forms detection toggle; real photos/Uber Eats link/domain; account transfer.

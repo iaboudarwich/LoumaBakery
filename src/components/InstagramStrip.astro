@@ -1,0 +1,48 @@
+---
+import { getCollection } from 'astro:content';
+import { siteConfig } from '../config/site';
+import Img from './Img.astro';
+import { resolveImage } from '../lib/images';
+
+// Up to six square tiles from src/data/instagram.json (CMS: "Instagram strip"),
+// each linking to the Instagram profile in a new tab, then the handle as a link.
+// Tiles with no image (or a photo that can't be found) are skipped; with none
+// left, only the handle renders.
+const tiles = (await getCollection('instagram'))
+  .slice(0, 6)
+  .map((t) => ({ photo: resolveImage(t.data.image), alt: t.data.alt }))
+  .filter((t) => t.photo);
+const { instagram, instagramHandle } = siteConfig.links;
+---
+
+<div class="ig-strip">
+  {tiles.length > 0 && (
+    <ul class="ig-tiles" role="list">
+      {tiles.map((t) => (
+        <li>
+          <a class="ig-tile" href={instagram} target="_blank" rel="noopener">
+            <Img src={t.photo!} alt={t.alt} class="ig-img" sizes="(max-width: 600px) 33vw, 200px" widths={[200, 400]} />
+          </a>
+        </li>
+      ))}
+    </ul>
+  )}
+  <p class="ig-handle"><a href={instagram} target="_blank" rel="noopener">{instagramHandle}</a></p>
+</div>
+
+<style>
+  .ig-tiles {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+  }
+  .ig-tile { display: block; }
+  /* Square crop: the picture carries the box, the img covers it (global .img-cover). */
+  .ig-tile :global(.ig-img) { aspect-ratio: 1; }
+  .ig-handle { margin-top: var(--space-4); }
+  @media (max-width: 600px) {
+    .ig-tiles { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>

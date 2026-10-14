@@ -52,9 +52,14 @@ const postalAddress = {
   postalCode: siteConfig.address.zip,
   addressCountry: 'US',
 };
-const dayMap: Record<string, string[]> = {
-  'Tuesday – Friday': ['Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-  'Saturday – Sunday': ['Saturday', 'Sunday'],
+// "Tuesday – Sunday" -> Tuesday..Sunday; a single day maps to itself. Any
+// label that isn't a day or a range of days is left out of structured data.
+const WEEK = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const daysOf = (label: string): string[] => {
+  const [from, to = from] = label.split(/\s*[–-]\s*/).map((d) => d.trim());
+  const a = WEEK.indexOf(from), b = WEEK.indexOf(to);
+  if (a < 0 || b < 0) return [];
+  return a <= b ? WEEK.slice(a, b + 1) : [...WEEK.slice(a), ...WEEK.slice(0, b + 1)];
 };
 const to24 = (t: string) => {
   const m = t.match(/(\d+):(\d+)\s*(AM|PM)/i);
@@ -66,17 +71,13 @@ const to24 = (t: string) => {
   return `${String(h).padStart(2, '0')}:${min}`;
 };
 const openingHours = siteConfig.hours
-  .filter((h) => h.close && dayMap[h.days])
+  .filter((h) => h.close && daysOf(h.days).length)
   .map((h) => ({
     '@type': 'OpeningHoursSpecification',
-    dayOfWeek: dayMap[h.days].map((d) => `https://schema.org/${d}`),
+    dayOfWeek: daysOf(h.days).map((d) => `https://schema.org/${d}`),
     opens: to24(h.open),
     closes: to24(h.close),
   }));
-
-// siteConfig.phone is empty while settings.json holds the placeholder, so the
-// placeholder never reaches structured data; a real number flows in on its own.
-const telephone = siteConfig.phone || undefined;
 
 const jsonLd =
   schema === 'bakery' || schema === 'localbusiness'
@@ -87,7 +88,6 @@ const jsonLd =
         name: siteConfig.name,
         description: siteConfig.tagline,
         url: SITE_URL,
-        telephone,
         email: siteConfig.email,
         image: ogImage,
         priceRange: '$$',

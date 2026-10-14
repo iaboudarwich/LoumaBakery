@@ -1,33 +1,26 @@
 ---
 import { siteConfig } from '../config/site';
 import MobilePanel from './MobilePanel.astro';
-import { Wordmark } from '../lib/brand';
-
-// The wordmark file keeps its 374x240 role box (footer and 404 size against it);
-// the art sits centred inside. The nav crops to the art itself so the drawing
-// fills the old text's height.
-const WORDMARK_ART = '7.5 53.8 359 132.4';
+// The nav crops the wordmark to its art (WORDMARK_ART) so the drawing fills the
+// old text's height; the file itself keeps its 374x240 role box.
+import { Wordmark, WORDMARK_ART } from '../lib/brand';
 
 interface Props {
   transparent?: boolean;
 }
 const { transparent = false } = Astro.props;
 
-// Nav links — single source. `Order` CTA is separate (external).
+// Main nav: single source for the bar and the mobile panel. The wordmark is the
+// Home link. Catering, Careers and Contact live in the footer, not here.
 const links = [
-  { label: 'Menu', href: '/menu' },
   { label: 'Our Story', href: '/story' },
-  { label: 'Mission', href: '/mission' },
-  { label: 'Catering', href: '/catering' },
-  { label: 'Careers', href: '/careers' },
-  { label: 'Visit', href: '/visit' },
+  { label: 'The Louma Initiative', href: '/initiative' },
+  { label: 'Menu', href: '/menu' },
+  { label: 'Shop', href: '/shop' },
 ];
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const isActive = (href: string) => path === href;
-
-// Order link is a placeholder until a real Uber Eats URL is set.
-const orderReady = !!siteConfig.links.uberEats && siteConfig.links.uberEats !== 'https://www.ubereats.com/';
 ---
 
 <nav class="site-nav" data-transparent={String(transparent)} aria-label="Primary">
@@ -47,11 +40,6 @@ const orderReady = !!siteConfig.links.uberEats && siteConfig.links.uberEats !== 
     </ul>
 
     <div class="nav-right">
-      {orderReady ? (
-        <a class="order-cta" href={siteConfig.links.uberEats} target="_blank" rel="noopener">Order</a>
-      ) : (
-        <span class="order-cta is-inert" aria-disabled="true" title="Online ordering isn't available yet.">Ordering soon</span>
-      )}
       <button
         type="button"
         class="nav-toggle"
@@ -65,14 +53,8 @@ const orderReady = !!siteConfig.links.uberEats && siteConfig.links.uberEats !== 
     </div>
   </div>
 
-  <!-- Mobile slide-in panel. The CTA is slotted so it keeps this file's .order-cta styles. -->
-  <MobilePanel links={links} currentPath={path}>
-    {orderReady ? (
-      <a slot="cta" class="order-cta order-cta--block" href={siteConfig.links.uberEats} target="_blank" rel="noopener">Order on Uber Eats</a>
-    ) : (
-      <span slot="cta" class="order-cta order-cta--block is-inert" aria-disabled="true">Ordering soon</span>
-    )}
-  </MobilePanel>
+  <!-- Mobile slide-in panel. -->
+  <MobilePanel links={links} currentPath={path} />
 </nav>
 
 {/* No-JS fallback: the mobile toggle needs JS, so without it surface the links
@@ -188,41 +170,6 @@ const orderReady = !!siteConfig.links.uberEats && siteConfig.links.uberEats !== 
     gap: var(--space-3);
   }
 
-  .order-cta {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    padding: 0 1.1rem;
-    background: var(--burgundy);
-    color: var(--butter);
-    font-family: var(--font-body);
-    font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px);
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    text-decoration: none;
-    border-radius: 0;
-    transition: background var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .order-cta:hover {
-      background: var(--red);
-      color: var(--butter);
-    }
-  }
-  /* Inert "Ordering soon": same soft coming-soon language as .btn:disabled
-     (white chip + burgundy-dashed hairline), sized for the bar. */
-  .order-cta.is-inert {
-    background: var(--white);
-    color: color-mix(in srgb, var(--burgundy) 78%, var(--muted));
-    border: 1.5px dashed color-mix(in srgb, var(--burgundy) 55%, transparent);
-    cursor: default;
-  }
-  .site-nav[data-transparent='true']:not([data-scrolled='true']) .order-cta.is-inert {
-    background: color-mix(in srgb, var(--ink) 30%, transparent);
-    color: color-mix(in srgb, var(--butter) 90%, transparent);
-    border-color: color-mix(in srgb, var(--butter) 45%, transparent);
-  }
-
   /* SLAB nav: a persistent FLAT bar, legible at every scroll position.
      Over the photo hero it sits on a solid ink strip (no blur); everywhere
      else solid cream with a hairline. The kill-all rule strips the blur. */
@@ -234,7 +181,6 @@ const orderReady = !!siteConfig.links.uberEats && siteConfig.links.uberEats !== 
   :global(html.sys-slab) .site-nav[data-transparent='true']:not([data-scrolled='true']) {
     background: color-mix(in srgb, var(--ink) 90%, transparent);
   }
-  :global(html.sys-slab) .order-cta { border-radius: 0; }
 
   /* Hide-on-scroll-down / show-on-scroll-up (keeps the glass state). */
   .site-nav { transition: transform 0.35s var(--ease-out); will-change: transform; padding-top: env(safe-area-inset-top, 0px); height: calc(var(--nav-h) + env(safe-area-inset-top, 0px)); }
@@ -283,18 +229,9 @@ const orderReady = !!siteConfig.links.uberEats && siteConfig.links.uberEats !== 
     transform: translateY(-4px) rotate(-45deg);
   }
 
-  /* Order pill as rendered inside the mobile panel (slotted into MobilePanel). */
-  .order-cta--block {
-    margin-top: var(--space-4);
-    justify-content: center;
-    min-height: 48px;
-    font-size: clamp(14px, calc(14px + (100vw - 1920px) * 0.003125), 16px);
-  }
-
   /* --- Breakpoint --- */
   @media (max-width: 860px) {
-    .nav-links,
-    .nav-right .order-cta {
+    .nav-links {
       display: none;
     }
     .nav-toggle {

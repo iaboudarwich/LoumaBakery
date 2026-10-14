@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "image": "croissant-cut.jpg",
+      "alt": "Croissants on a wire rack, one torn open to show its layers"
+    },
+    {
+      "image": "pain-au-chocolat.jpg",
+      "alt": "Pain au chocolat on a wire rack in afternoon sun"
+    },
+    {
+      "image": "kaak-bread.jpg",
+      "alt": "A sesame-crusted kaak loaf hanging on a wooden peg"
+    },
+    {
+      "image": "latte.jpg",
+      "alt": "A barista in a Louma apron pouring steamed milk into a paper cup"
+    },
+    {
+      "image": "out-of-oven.jpg",
+      "alt": "Pain au chocolat and almond croissants cooling on a wire rack"
+    },
+    {
+      "image": "sourdough.jpg",
+      "alt": "A scored sourdough boule on an oak bread shelf"
+    }
+  ]
+}

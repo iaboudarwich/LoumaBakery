@@ -43,3 +43,5 @@ Keep the typography clean and the palette committed; let the hand-drawn marks su
 
 ## Voice
 Warm, concrete, unfussy; like talking to a regular at the counter. Active voice. Buttons say what happens. Errors explain and offer a fix, in the brand's voice. Bans: em dashes, tricolons, "not just X, it's Y", empty superlatives (artisanal/finest/exceptional), jargon (crafted/curated/elevate/journey/savor), "we are passionate/committed". Menu lines: one concrete sentence, 8-15 words, ingredient or technique first. The inclusive mission is stated as plain fact, once per page, never with statistics about team members' disabilities.
+
+Owner's words: text in story.json, copy.json and shop.json was written by the owner. Never rewrite, shorten or reword it, even when it uses words this guide otherwise avoids. Typos may be fixed only when asked.

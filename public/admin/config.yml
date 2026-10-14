@@ -40,7 +40,7 @@ collections:
   # =========================================================== MENU =========
   - name: menu
     label: "Menu"
-    description: "Your menu, by category. Each item has a name, price, description, tags, and a photo."
+    description: "Your menu, by category. Each item has a name, a description, and dietary tags. Prices aren't shown on the site."
     delete: false
     editor: { preview: false }
     files:
@@ -62,13 +62,12 @@ collections:
                 label: "Items"
                 label_singular: "Item"
                 widget: list
-                summary: "{{fields.name}} · {{fields.price}}"
+                summary: "{{fields.name}}"
                 fields:
                   - { name: name, label: "Name", widget: string, required: true, hint: "e.g. Butter Croissant" }
-                  - { name: price, label: "Price", widget: string, required: false, pattern: ['^\$?\d+(\.\d{2})?$', "Type a price like $4.50 or 4.50"], hint: "e.g. $4.50" }
                   - { name: description, label: "Description", widget: text, required: false, hint: "One short line about the item." }
                   - { name: tags, label: "Dietary tags", widget: select, multiple: true, required: false, options: ["vegan", "vegetarian", "gf", "nut-free"], hint: "Pick any that apply." }
-                  - { name: image, label: "Photo", widget: image, required: false, choose_url: false, hint: "At least 1200px wide, under 3MB." }
+                  - { name: image, label: "Photo", widget: image, required: false, choose_url: false, hint: "Kept on file. Photos aren't shown on the Menu page right now. At least 1200px wide, under 3MB." }
                   - { name: alt, label: "Photo description", widget: string, required: false, hint: "What the photo shows, for screen readers. e.g. Croissants cooling on a sheet tray" }
           - name: addOns
             label: "Add-ons"
@@ -80,10 +79,9 @@ collections:
                 label: "Add-ons"
                 label_singular: "Add-on"
                 widget: list
-                summary: "{{fields.name}} {{fields.price}}"
+                summary: "{{fields.name}}"
                 fields:
-                  - { name: name, label: "Name", widget: string }
-                  - { name: price, label: "Price", widget: string, hint: "e.g. +$1.00" }
+                  - { name: name, label: "Name", widget: string, hint: "e.g. Oat milk" }
 
   # ========================================================= IMAGES =========
   - name: images
@@ -108,7 +106,7 @@ collections:
   # ================================================== SITE SETTINGS =========
   - name: settings
     label: "Site settings"
-    description: "Hours, address, contact details, and your Order / Instagram links."
+    description: "Hours, address, the two email addresses, and your Instagram / Uber Eats links."
     delete: false
     editor: { preview: false }
     files:
@@ -116,8 +114,8 @@ collections:
         label: "Settings"
         file: "src/data/settings.json"
         fields:
-          - { name: phone, label: "Phone number", widget: string, required: true, pattern: ['^[+()\d\s.-]{7,20}$', "Type a phone number like +1 (310) 555-1234"], hint: "Shown in the footer and on Visit. e.g. +1 (310) 555-1234" }
-          - { name: email, label: "Email address", widget: string, required: true, pattern: ['^[^@\s]+@[^@\s]+\.[^@\s]+$', "Type a full email address"], hint: "Where customers reach you." }
+          - { name: email, label: "Email address", widget: string, required: true, pattern: ['^[^@\s]+@[^@\s]+\.[^@\s]+$', "Type a full email address"], hint: "Where customers reach you. Shown in the footer and on Contact." }
+          - { name: ordersEmail, label: "Email for larger orders", widget: string, required: true, pattern: ['^[^@\s]+@[^@\s]+\.[^@\s]+$', "Type a full email address"], hint: "Shown as \"for larger orders\" in the footer and on Contact." }
           - name: address
             label: "Address"
             widget: object
@@ -132,15 +130,17 @@ collections:
             summary: "{{fields.days}}: {{fields.open}}{{fields.close}}"
             hint: "One row per group of days. For a closed day, put “Closed” in Opens and leave Closes empty."
             fields:
-              - { name: days, label: "Days", widget: string, hint: "e.g. Tuesday – Friday" }
+              - { name: days, label: "Days", widget: string, hint: "e.g. Tuesday – Sunday, or a single day like Monday" }
               - { name: open, label: "Opens", widget: string, hint: "e.g. 7:00 AM  (or “Closed”)" }
               - { name: close, label: "Closes", widget: string, required: false, hint: "e.g. 2:30 PM  (leave empty if closed)" }
           - name: links
             label: "Links"
             widget: object
             fields:
-              - { name: uberEats, label: "Uber Eats order link", widget: string, hint: "Paste your Uber Eats store link here." }
               - { name: instagram, label: "Instagram link", widget: string, hint: "Paste your Instagram profile link here." }
+              - { name: instagramHandle, label: "Instagram handle", widget: string, hint: "Shown on the page, e.g. @loumabakery" }
+              - { name: uberEats, label: "Uber Eats order link", widget: string, hint: "Saved for later. It isn't shown anywhere on the site right now." }
+
 
   # ====================================================== PAGE TEXT =========
   - name: copy
@@ -159,77 +159,77 @@ collections:
             widget: object
             collapsed: true
             fields:
-              - { name: eyebrow, label: "Eyebrow (small label)", widget: string }
-              - { name: title, label: "Headline", widget: string }
-              - { name: lede, label: "Intro line", widget: text }
-              - { name: craftLine, label: "“Craft” line", widget: string }
-              - { name: body, label: "Paragraphs", widget: list, field: { name: text, label: "Paragraph", widget: text } }
-              - { name: missionLine, label: "Mission line", widget: string }
-              - { name: menuTitle, label: "Menu section title", widget: string }
-              - { name: ovenTitle, label: "“From the oven” title", widget: string }
-              - { name: findTitle, label: "“Find us” title", widget: string }
-              - { name: newsletterTitle, label: "Newsletter title", widget: string }
+              - { name: tagline, label: "Tagline", widget: string, hint: "The line under the logo at the top of the page." }
+              - { name: body, label: "Paragraphs", widget: list, field: { name: text, label: "Paragraph", widget: text }, hint: "The short introduction below the photo." }
+              - { name: instagramTitle, label: "Instagram heading", widget: string, hint: "Above the row of Instagram photos, e.g. Follow along" }
+              - { name: newsletterTitle, label: "Newsletter title", widget: string, hint: "Also shown in the footer." }
               - { name: newsletterBody, label: "Newsletter line", widget: string }
-              - { name: newsletterCta, label: "Newsletter button", widget: string, required: false, hint: "Label on the home hero and phone bottom bar buttons, e.g. Get the newsletter" }
-              - name: cta
-                label: "Order button"
-                widget: object
-                fields:
-                  - { name: label, label: "Button text", widget: string }
-                  - { name: href, label: "Link (internal, leave as #)", widget: string, required: false }
-          # ---- Menu page ----
-          - name: menu
-            label: "Menu page"
-            widget: object
-            collapsed: true
-            fields:
-              - { name: eyebrow, label: "Eyebrow", widget: string }
-              - { name: title, label: "Headline", widget: string }
-              - { name: lede, label: "Intro line", widget: text }
-              - { name: allergenNote, label: "Allergen note", widget: text }
+              - { name: newsletterCta, label: "Newsletter button", widget: string, hint: "Label on the home and phone bottom bar buttons, e.g. Get the newsletter" }
           # ---- Story page ----
           - name: story
             label: "Our Story page"
             widget: object
             collapsed: true
             fields:
-              - { name: eyebrow, label: "Eyebrow", widget: string }
-              - { name: title, label: "Headline", widget: string }
-              - { name: lede, label: "Intro line", widget: text }
-              - { name: body, label: "Paragraphs", widget: list, field: { name: text, label: "Paragraph", widget: text } }
-              - name: founder
-                label: "Founder"
-                widget: object
-                fields:
-                  - { name: name, label: "Name", widget: string }
-                  - { name: role, label: "Role", widget: string }
-                  - { name: body, label: "Paragraphs", widget: list, field: { name: text, label: "Paragraph", widget: text } }
-          # ---- Mission page ----
-          - name: mission
-            label: "Mission page"
+              - { name: title, label: "Headline", widget: string, hint: "The letter and sections are under “Our Story” in the left menu." }
+          # ---- Initiative page ----
+          - name: initiative
+            label: "The Louma Initiative page"
             widget: object
             collapsed: true
             fields:
-              - { name: eyebrow, label: "Eyebrow", widget: string }
               - { name: title, label: "Headline", widget: string }
-              - { name: lede, label: "Intro line", widget: text }
-              - { name: body, label: "Paragraphs", widget: list, field: { name: text, label: "Paragraph", widget: text } }
-              - name: values
-                label: "Values"
+              - { name: intro, label: "Introduction", widget: list, field: { name: text, label: "Paragraph", widget: text }, hint: "The opening paragraphs." }
+              - name: sections
+                label: "Sections"
+                label_singular: "Section"
                 widget: list
                 summary: "{{fields.title}}"
                 fields:
-                  - { name: title, label: "Title", widget: string }
-                  - { name: body, label: "Text", widget: text }
-              - name: stats
-                label: "Numbers"
-                widget: list
-                summary: "{{fields.value}} {{fields.label}}"
+                  - { name: title, label: "Section title", widget: string }
+                  - { name: paragraphs, label: "Paragraphs", widget: list, field: { name: text, label: "Paragraph", widget: text } }
+              - { name: pillars, label: "The four pillars", widget: list, field: { name: text, label: "Pillar", widget: string }, hint: "One short name each, e.g. Employment" }
+          # ---- Menu page ----
+          - name: menu
+            label: "Menu page"
+            widget: object
+            collapsed: true
+            fields:
+              - { name: title, label: "Headline", widget: string }
+              - { name: intro, label: "Introduction", widget: list, field: { name: text, label: "Paragraph", widget: text }, hint: "The paragraphs above the menu." }
+              - { name: allergenNote, label: "Allergen note", widget: text }
+          # ---- Shop page ----
+          - name: shop
+            label: "Shop page"
+            widget: object
+            collapsed: true
+            fields:
+              - { name: title, label: "Headline", widget: string }
+              - { name: status, label: "“Not open yet” text", widget: string, hint: "Shown under the headline and on any button that has no link yet, e.g. Coming soon" }
+              - name: preorder
+                label: "Pre-orders"
+                widget: object
                 fields:
-                  - { name: value, label: "Number", widget: number, value_type: int }
-                  - { name: label, label: "Caption", widget: string }
-                  - { name: prefix, label: "Before the number", widget: string, required: false }
-                  - { name: suffix, label: "After the number", widget: string, required: false, hint: "e.g. %" }
+                  - { name: title, label: "Heading", widget: string }
+                  - { name: body, label: "Text", widget: text, required: false }
+              - name: giftCards
+                label: "Gift cards"
+                widget: object
+                fields:
+                  - { name: title, label: "Heading", widget: string }
+                  - { name: body, label: "Text", widget: text, required: false }
+              - name: merch
+                label: "Merch"
+                widget: object
+                fields:
+                  - { name: title, label: "Heading", widget: string, hint: "The products themselves are under “Shop” in the left menu." }
+          # ---- Visit page ----
+          - name: visit
+            label: "Contact page"
+            widget: object
+            collapsed: true
+            fields:
+              - { name: title, label: "Headline", widget: string, hint: "Hours, address and emails are under “Site settings”." }
           # ---- Catering page ----
           - name: catering
             label: "Catering page"
@@ -275,17 +275,6 @@ collections:
                   - { name: title, label: "Role title", widget: string }
                   - { name: type, label: "Type", widget: string, required: false, hint: "e.g. Full-time" }
                   - { name: body, label: "Description", widget: text }
-          # ---- Visit page ----
-          - name: visit
-            label: "Visit page"
-            widget: object
-            collapsed: true
-            fields:
-              - { name: eyebrow, label: "Eyebrow", widget: string }
-              - { name: title, label: "Headline", widget: string }
-              - { name: lede, label: "Intro line", widget: text }
-              - { name: body, label: "Paragraphs", widget: list, field: { name: text, label: "Paragraph", widget: text } }
-              - { name: mapEmbed, label: "Map embed link (internal)", widget: string, hint: "The Google Map. Leave as is unless the address changes." }
           # ---- 404 page ----
           - name: notFound
             label: "“Page not found” page"
@@ -295,7 +284,6 @@ collections:
               - { name: eyebrow, label: "Eyebrow", widget: string }
               - { name: title, label: "Headline", widget: string }
               - { name: lede, label: "Intro line", widget: text }
-              - { name: body, label: "Paragraphs", widget: list, required: false, field: { name: text, label: "Paragraph", widget: text } }
               - name: cta
                 label: "Button"
                 widget: object
@@ -303,72 +291,77 @@ collections:
                   - { name: label, label: "Button text", widget: string }
                   - { name: href, label: "Link", widget: string }
 
-  # ================================================= STORY CHAPTERS =========
-  - name: storyChapters
-    label: "Story chapters"
-    description: "The numbered chapters on the Our Story page."
+  # ====================================================== OUR STORY =========
+  - name: story
+    label: "Our Story"
+    description: "The letter and the sections on the Our Story page."
     delete: false
     editor: { preview: false }
     files:
-      - name: chapters
-        label: "Chapters"
-        file: "src/data/story-chapters.json"
-        description: "Add, edit, reorder, or remove story chapters."
+      - name: story
+        label: "Our Story"
+        file: "src/data/story.json"
         fields:
-          - name: chapters
-            label: "Chapters"
-            label_singular: "Chapter"
+          - name: letter
+            label: "The letter"
+            widget: object
+            fields:
+              - { name: paragraphs, label: "Paragraphs", widget: list, field: { name: text, label: "Paragraph", widget: text } }
+              - { name: signature, label: "Signed", widget: string, hint: "The name at the end of the letter, e.g. Milla" }
+          - name: sections
+            label: "Sections"
+            label_singular: "Section"
             widget: list
             summary: "{{fields.title}}"
             fields:
-              - { name: id, label: "Internal ID", widget: string, hint: "A short code the site uses. Leave it as it is." }
-              - { name: order, label: "Show order", widget: number, value_type: int, default: 1, hint: "1 shows first, then 2, 3…" }
-              - { name: eyebrow, label: "Number label", widget: string, required: false, hint: "e.g. 01" }
-              - { name: title, label: "Title", widget: string }
-              - { name: body, label: "Text", widget: text }
-              - { name: image, label: "Photo", widget: image, required: false, choose_url: false, hint: "Optional photo for this chapter. Portrait works best." }
-              - { name: alt, label: "Photo description", widget: string, required: false, hint: "What the photo shows, for screen readers." }
+              - { name: title, label: "Section title", widget: string }
+              - { name: paragraphs, label: "Paragraphs", widget: list, field: { name: text, label: "Paragraph", widget: text } }
 
-  # ===================================================== INGREDIENTS =========
-  - name: ingredients
-    label: "Ingredients"
-    description: "The short “what goes in” list on the Our Story page."
+  # =========================================================== SHOP =========
+  - name: shop
+    label: "Shop"
+    description: "Links for pre-orders and gift cards, and the merch you sell."
     delete: false
     editor: { preview: false }
     files:
-      - name: ingredients
-        label: "Ingredients"
-        file: "src/data/ingredients.json"
-        description: "Add, edit, reorder, or remove ingredients."
+      - name: shop
+        label: "Shop"
+        file: "src/data/shop.json"
         fields:
-          - name: ingredients
-            label: "Ingredients"
-            label_singular: "Ingredient"
+          - { name: preorderLink, label: "Pre-order link", widget: string, required: false, hint: "Leave empty and the button says “Coming soon”." }
+          - { name: giftCardLink, label: "Gift card link", widget: string, required: false, hint: "Leave empty and the button says “Coming soon”." }
+          - name: products
+            label: "Merch"
+            label_singular: "Product"
             widget: list
-            summary: "{{fields.name}}"
+            summary: "{{fields.name}} · {{fields.price}}"
             fields:
-              - { name: id, label: "Internal ID", widget: string, hint: "Leave it as it is." }
-              - { name: name, label: "Name", widget: string, hint: "e.g. Flour" }
-              - { name: note, label: "Note", widget: text, required: false, hint: "One short line." }
+              - { name: name, label: "Name", widget: string, hint: "e.g. Louma Hat" }
+              - { name: price, label: "Price", widget: string, required: false, hint: "e.g. $32" }
+              - { name: description, label: "Description", widget: text, required: false, hint: "One short line." }
+              - { name: size, label: "Size", widget: string, required: false, hint: "e.g. One size" }
+              - { name: image, label: "Photo", widget: image, required: false, choose_url: false, hint: "Square works best. At least 800px wide, under 3MB." }
+              - { name: alt, label: "Photo description", widget: string, required: false, hint: "What the photo shows, for screen readers." }
+              - { name: link, label: "Buy link", widget: string, required: false, hint: "Leave empty and the button says “Coming soon”." }
 
-  # ======================================================== MARQUEE =========
-  - name: marquee
-    label: "Marquee words"
-    description: "The looping word ribbon on the home page."
+  # ================================================ INSTAGRAM STRIP =========
+  - name: instagram
+    label: "Instagram strip"
+    description: "The row of photos on the home page. Each one links to your Instagram."
     delete: false
     editor: { preview: false }
     files:
-      - name: marquee
-        label: "Marquee"
-        file: "src/data/marquee.json"
-        description: "Short phrases that scroll across the home page."
+      - name: instagram
+        label: "Instagram strip"
+        file: "src/data/instagram.json"
         fields:
           - name: items
-            label: "Words"
-            label_singular: "Phrase"
+            label: "Photos"
+            label_singular: "Photo"
             widget: list
-            summary: "{{fields.text}}"
+            max: 6
+            summary: "{{fields.alt}}"
+            hint: "Up to six. A tile with no photo is skipped."
             fields:
-              - { name: id, label: "Internal ID", widget: string, hint: "Leave it as it is." }
-              - { name: text, label: "Phrase", widget: string }
-              - { name: order, label: "Show order", widget: number, value_type: int, default: 1, hint: "1 shows first, then 2, 3…" }
+              - { name: image, label: "Photo", widget: image, required: false, choose_url: false, hint: "Square works best. At least 600px wide, under 3MB." }
+              - { name: alt, label: "Photo description", widget: string, required: false, hint: "What the photo shows, for screen readers." }

@@ -1,43 +1,24 @@
 ---
 import { getEntry, getCollection } from 'astro:content';
-import { getImage } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { features as f } from '../config/features';
 import Sketch from '../components/Sketch.astro';
-import { resolveImage } from '../lib/images';
 import { noOrphan } from '../lib/typography';
 import menuData from '../data/menu.json';
 
 const c = (await getEntry('copy', 'menu'))!.data;
 const menu = (await getCollection('menu')).sort((a, b) => a.data.order - b.data.order);
-
-// Permanent square thumbnails, cropped at build time. 320w covers the largest
-// everyday slot (96px) at 3x; 160w serves 1x and 2x screens.
-const THUMB = { widths: [160, 320], width: 320, height: 320, fit: 'cover' as const };
-// Mirrors the .row-thumb clamp below: ~64px on phones, 96px from 660px, 128px past 1920px.
-const THUMB_SIZES = '(min-width: 1921px) 128px, (min-width: 660px) 96px, 64px';
-const thumbs: Record<string, { avif: string; webp: string; src: string }> = {};
-for (const cat of menu) {
-  for (const item of cat.data.items) {
-    const meta = resolveImage(item.image);
-    if (!meta) continue;
-    const [avif, webp] = await Promise.all([
-      getImage({ src: meta, ...THUMB, format: 'avif' }),
-      getImage({ src: meta, ...THUMB, format: 'webp' }),
-    ]);
-    thumbs[item.name] = { avif: avif.srcSet.attribute, webp: webp.srcSet.attribute, src: webp.src };
-  }
-}
+// No prices and no photos on the menu: items keep `image`/`alt` in the data
+// (and CMS) for later use, but nothing here renders them.
 // Data-driven add-ons list, rendered right after the category named in the data.
 const addOns = menuData.addOns;
 ---
 
-<BaseLayout title="Menu" description={c.lede}>
+<BaseLayout title={c.title} description={c.intro[0]}>
   <header class="page-head menu-head">
     <div class="container">
-      <p class="eyebrow">{c.eyebrow}</p>
       <h1>{noOrphan(c.title ?? '')}</h1>
-      {c.lede && <p class="lede">{c.lede}</p>}
+      {c.intro.map((p) => <p class="lede">{p}</p>)}
       <Sketch name="baguette" width={150} height={54} class="head-sketch" color="var(--burgundy)" draw={f.scrollDraw} />
     </div>
   </header>
@@ -69,12 +50,6 @@ const addOns = menuData.addOns;
               <div class="row-text">
                 <div class="row-head">
                   <h3 class="row-name">{noOrphan(item.name)}</h3>
-                  {item.price && (
-                    <>
-                      <span class="row-dots" aria-hidden="true"></span>
-                      <span class="row-price mono">{item.price}</span>
-                    </>
-                  )}
                 </div>
                 {item.description && <p class="row-desc">{item.description}</p>}
                 {item.tags.length > 0 && (
@@ -83,23 +58,6 @@ const addOns = menuData.addOns;
                   </ul>
                 )}
               </div>
-              {thumbs[item.name] && (
-                <picture class="row-thumb">
-                  <source type="image/avif" srcset={thumbs[item.name].avif} sizes={THUMB_SIZES} />
-                  <img
-                    class="img-cover"
-                    src={thumbs[item.name].src}
-                    srcset={thumbs[item.name].webp}
-                    sizes={THUMB_SIZES}
-                    alt={item.alt ?? item.name}
-                    width="320"
-                    height="320"
-                    loading="lazy"
-                    decoding="async"
-                    fetchpriority="low"
-                  />
-                </picture>
-              )}
             </li>
           ))}
         </ul>
@@ -109,7 +67,7 @@ const addOns = menuData.addOns;
           <p class="eyebrow" id="h-addons">{addOns.title}</p>
           <ul class="addons-list" role="list">
             {addOns.items.map((a) => (
-              <li class="addon mono">{a.name} <span class="addon-price">{a.price}</span></li>
+              <li class="addon mono">{a.name}</li>
             ))}
           </ul>
         </aside>
@@ -206,14 +164,13 @@ const addOns = menuData.addOns;
     font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px);
     color: var(--body);
   }
-  .addon-price { color: var(--burgundy); }
 
   .menu-body { padding-block: var(--space-7) var(--space-9); }
   .menu-cat { padding-top: var(--space-6); scroll-margin-top: calc(var(--nav-h) + 64px); }
   .menu-cat-title { font-size: clamp(24px, 3vw, 34px); color: var(--burgundy); margin-bottom: var(--space-5); }
 
   .menu-rows { display: flex; flex-direction: column; }
-  /* Row: name, dotted leader, price, then the photo thumbnail when the item has one. */
+  /* Row: the name, then the description and tags. No prices, no photos. */
   .menu-row {
     display: flex;
     align-items: center;
@@ -222,29 +179,14 @@ const addOns = menuData.addOns;
     border-bottom: 1px solid var(--hairline);
   }
   .row-text { flex: 1; min-width: 0; }
-  /* Every row keeps the same 44px minimum box, with or without a photo. */
+  /* Every row keeps the same 44px minimum box. */
   .row-head { display: flex; align-items: baseline; gap: var(--space-3); min-height: 44px; padding-block: 2px; }
   /* line-height: inherit so the <h3> keeps body leading instead of the tighter
      global heading rule. */
   .row-name { text-wrap: balance; line-height: inherit; font-family: var(--font-display); font-weight: 700; font-size: clamp(22px, calc(22px + (100vw - 1920px) * 0.004687), 25px); color: var(--ink); display: inline-block; }
-  .row-dots { flex: 1; border-bottom: 1px dotted color-mix(in srgb, var(--ink) 28%, transparent); transform: translateY(-4px); }
-  .row-price { color: var(--burgundy); font-size: clamp(16px, calc(16px + (100vw - 1920px) * 0.003125), 18px); }
   .row-desc { margin-top: var(--space-2); color: var(--muted); max-width: 60ch; }
   /* .tag chip style is global (one badge language site-wide). */
   .product-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
-  /* Thumbnail: ~64px at 390, 96px from ~660px, never under 48px or over 128px;
-     past 1920px it grows with the large-screen policy. The negative block margin
-     lets it use most of the row padding, keeping photo rows close to name-only
-     rows in height. Rows without a photo render nothing here. */
-  .row-thumb {
-    --thumb: clamp(48px, min(12vw + 17px, max(96px, 96px + (100vw - 1920px) * 0.05)), 128px);
-    flex: 0 0 auto;
-    width: var(--thumb);
-    height: var(--thumb);
-    margin-block: calc(var(--space-3) * -1);
-    border-radius: 0;
-    overflow: hidden;
-  }
 
   .allergen {
     margin-top: var(--space-8);

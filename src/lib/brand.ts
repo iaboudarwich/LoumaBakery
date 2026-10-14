@@ -22,3 +22,7 @@ export { default as Wordmark } from "../assets/brand/wordmark.svg";
 export { default as Baguette } from "../assets/brand/baguette-baked.svg";
 export { default as Toast } from "../assets/brand/toast-baked.svg";
 
+
+/** viewBox cropping the wordmark to its art (the file keeps its 374×240 role
+ *  box). Use where the drawing should fill its height: the nav, the home hero. */
+export const WORDMARK_ART = '7.5 53.8 359 132.4';

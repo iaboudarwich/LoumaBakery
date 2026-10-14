@@ -229,55 +229,46 @@
       "items": [
         {
           "name": "Drip Coffee",
-          "price": "$5.00",
           "description": "",
           "tags": []
         },
         {
           "name": "Iced Coffee",
-          "price": "$5.00",
           "description": "",
           "tags": []
         },
         {
           "name": "Espresso",
-          "price": "$4.00",
           "description": "Marine Layer dark roast, pulled single or double.",
           "tags": []
         },
         {
           "name": "Americano",
-          "price": "$5.00",
           "description": "",
           "tags": []
         },
         {
           "name": "Macchiato",
-          "price": "$5.00",
           "description": "",
           "tags": []
         },
         {
           "name": "Cortado",
-          "price": "$5.50",
           "description": "",
           "tags": []
         },
         {
           "name": "Cappuccino",
-          "price": "$6.00",
           "description": "",
           "tags": []
         },
         {
           "name": "Flat White",
-          "price": "$6.50",
           "description": "",
           "tags": []
         },
         {
           "name": "Latte",
-          "price": "$6.50",
           "description": "",
           "tags": [],
           "image": "latte.jpg",
@@ -285,13 +276,11 @@
         },
         {
           "name": "Vanilla Latte",
-          "price": "$7.00",
           "description": "",
           "tags": []
         },
         {
           "name": "Mocha",
-          "price": "$7.00",
           "description": "",
           "tags": []
         }
@@ -304,19 +293,16 @@
       "items": [
         {
           "name": "Matcha Latte",
-          "price": "$6.50",
           "description": "",
           "tags": []
         },
         {
           "name": "Matcha with Water",
-          "price": "$7.00",
           "description": "",
           "tags": []
         },
         {
           "name": "Matcha Coconut Water",
-          "price": "$8.00",
           "description": "",
           "tags": []
         }
@@ -329,31 +315,26 @@
       "items": [
         {
           "name": "Chamomile",
-          "price": "$5.00",
           "description": "",
           "tags": []
         },
         {
           "name": "Mint Tea",
-          "price": "$5.00",
           "description": "",
           "tags": []
         },
         {
           "name": "Green Tea",
-          "price": "$5.00",
           "description": "",
           "tags": []
         },
         {
           "name": "Herbal Tea",
-          "price": "$5.00",
           "description": "",
           "tags": []
         },
         {
           "name": "Chai Latte",
-          "price": "$7.00",
           "description": "",
           "tags": []
         },
@@ -369,7 +350,6 @@
         },
         {
           "name": "Hot Chocolate",
-          "price": "$6.00",
           "description": "",
           "tags": []
         }
@@ -382,25 +362,21 @@
       "items": [
         {
           "name": "Arnold Palmer",
-          "price": "$6.00",
           "description": "House-brewed tea cut with fresh-squeezed lemon.",
           "tags": []
         },
         {
           "name": "Orange Blossom Lemonade",
-          "price": "$6.50",
           "description": "Orange blossom water, fresh lemon, Loonen sparkling.",
           "tags": []
         },
         {
           "name": "Loonen Sparkling Water",
-          "price": "$6.00",
           "description": "",
           "tags": []
         },
         {
           "name": "Loonen Still Water",
-          "price": "$6.00",
           "description": "",
           "tags": []
         }
@@ -412,40 +388,31 @@
     "afterCategory": "fridge",
     "items": [
       {
-        "name": "Decaf",
-        "price": "+$1.00"
+        "name": "Decaf"
       },
       {
-        "name": "Extra shot",
-        "price": "+$1.00"
+        "name": "Extra shot"
       },
       {
-        "name": "Cold foam",
-        "price": "+$1.25"
+        "name": "Cold foam"
       },
       {
-        "name": "Vanilla syrup",
-        "price": "+$0.50"
+        "name": "Vanilla syrup"
       },
       {
-        "name": "Date syrup",
-        "price": "+$0.50"
+        "name": "Date syrup"
       },
       {
-        "name": "Honey",
-        "price": "+$0.50"
+        "name": "Honey"
       },
       {
-        "name": "Oat milk",
-        "price": "+$1.00"
+        "name": "Oat milk"
       },
       {
-        "name": "Almond milk",
-        "price": "+$1.00"
+        "name": "Almond milk"
       },
       {
-        "name": "Pistachio milk",
-        "price": "+$1.50"
+        "name": "Pistachio milk"
       }
     ]
   }

@@ -1,0 +1,89 @@
+---
+import { getEntry } from 'astro:content';
+import { noOrphan } from '../lib/typography';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Img from '../components/Img.astro';
+import { resolveImage } from '../lib/images';
+
+// Copy in copy.json ("shop"); links and products in src/data/shop.json (CMS: "Shop").
+const c = (await getEntry('copy', 'shop'))!.data;
+const shop = (await getEntry('shop', 'shop'))!.data;
+const soon = c.status ?? '';
+const products = shop.products.map((p) => ({ ...p, photo: p.image ? resolveImage(p.image) : undefined }));
+---
+
+<BaseLayout title={c.title}>
+  <header class="page-head">
+    <div class="container">
+      <h1>{noOrphan(c.title ?? '')}</h1>
+      {soon && <p class="lede">{soon}</p>}
+    </div>
+  </header>
+
+  {/* Each button links to its URL when one is set; with no URL it is a
+      disabled "Coming soon" label, not a link. Link text is the block's own
+      title (no extra copy). */}
+
+  {c.preorder && (
+    <section class="shop-block">
+      <div class="container narrow">
+        <h2>{c.preorder.title}</h2>
+        {c.preorder.body && <p>{c.preorder.body}</p>}
+        <p class="shop-action">
+          {shop.preorderLink
+            ? <a class="btn" href={shop.preorderLink}>{c.preorder.title}</a>
+            : <span class="btn" aria-disabled="true">{soon}</span>}
+        </p>
+      </div>
+    </section>
+  )}
+
+  {c.giftCards && (
+    <section class="shop-block">
+      <div class="container narrow">
+        <h2>{c.giftCards.title}</h2>
+        {c.giftCards.body && <p>{c.giftCards.body}</p>}
+        <p class="shop-action">
+          {shop.giftCardLink
+            ? <a class="btn" href={shop.giftCardLink}>{c.giftCards.title}</a>
+            : <span class="btn" aria-disabled="true">{soon}</span>}
+        </p>
+      </div>
+    </section>
+  )}
+
+  {c.merch && (
+    <section class="shop-block">
+      <div class="container narrow">
+        <h2>{c.merch.title}</h2>
+        <ul class="products" role="list">
+          {products.map((p) => (
+            <li class="product">
+              {p.photo && <Img src={p.photo} alt={p.alt || p.name} class="product-img" sizes="(max-width: 720px) 100vw, 360px" />}
+              <h3>{p.name}</h3>
+              {p.price && <p class="mono">{p.price}</p>}
+              {p.description && <p>{p.description}</p>}
+              {p.size && <p class="mono">{p.size}</p>}
+              <p class="shop-action">
+                {p.link
+                  ? <a class="btn" href={p.link}>{p.name}</a>
+                  : <span class="btn" aria-disabled="true">{soon}</span>}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .narrow { max-width: 720px; }
+  .shop-block { padding-block: var(--space-6); }
+  .shop-block h2 { margin-bottom: var(--space-3); }
+  .shop-action { margin-top: var(--space-4); }
+  .products { margin: 0; padding: 0; }
+  .product + .product { margin-top: var(--space-6); }
+  .product p { margin-top: var(--space-2); }
+  .product :global(.product-img) { aspect-ratio: 1; max-width: 360px; margin-bottom: var(--space-4); }
+</style>

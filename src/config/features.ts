@@ -5,7 +5,7 @@
  */
 export const features = {
   // --- Motion (the complete whitelist; see src/scripts/motion.ts) ---
-  /** The footer face and the menu sketches trace their outline once when seen. */
+  /** The footer face traces its outline once when seen. */
   scrollDraw: true,
   /** Doodles reveal left to right (filled outlines) or draw their stroke, once at 30% in view. */
   doodleDraw: true,

@@ -26,8 +26,12 @@ interface Props {
   animate?: boolean;
   label?: string;
   class?: string;
+  /** A fixed-height box (`size` tall), drawing bottom-left aligned, so a row
+      of different drawings shares one baseline (pillars, headings). Wide
+      drawings get up to twice the width. */
+  box?: boolean;
 }
-const { name, size = 64, color = 'red', animate = false, label, class: className } = Astro.props;
+const { name, size = 64, color = 'red', animate = false, label, class: className, box = false } = Astro.props;
 
 const file = name.replace(/\.svg$/, '');
 const raw = doodles[`../assets/brand/doodles/${file}.svg`] ?? marks[`../assets/brand/${file}.svg`];
@@ -36,6 +40,8 @@ if (!raw) throw new Error(`Doodle: no drawing named "${name}" in src/assets/bran
 const viewBox = (raw.match(/viewBox="([^"]*)"/) || [])[1] ?? '0 0 100 100';
 const [, , vw, vh] = viewBox.split(/[\s,]+/).map(Number);
 const height = Math.round((size * vh) / vw);
+const boxW = Math.min(Math.round((size * vw) / vh), size * 2);
+const w = box ? boxW : size;
 let inner = raw.replace(/^[\s\S]*?<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '');
 
 // Strokes or filled outlines? Stroked art has a visible stroke and no fill.
@@ -44,11 +50,12 @@ const mode = stroked ? 'stroke' : 'fill';
 if (animate && stroked) inner = inner.replace(/<(path|line|polyline|circle|ellipse|rect)\b/g, '<$1 pathLength="1"');
 ---
 
-<span class={`doodle ${className ?? ''}`.trim()} style={`--doodle-w: ${size}px`}>
+<span class={['doodle', box && 'doodle--box', className].filter(Boolean).join(' ')} style={`--doodle-w: ${w}px; --doodle-h: ${size}px`}>
   <svg
     viewBox={viewBox}
-    width={size}
-    height={height}
+    width={w}
+    height={box ? size : height}
+    preserveAspectRatio={box ? 'xMinYMax meet' : undefined}
     fill="currentColor"
     style={`color: var(--${color})`}
     role={label ? 'img' : undefined}
@@ -63,4 +70,6 @@ if (animate && stroked) inner = inner.replace(/<(path|line|polyline|circle|ellip
 <style>
   .doodle { display: inline-block; width: var(--doodle-w); max-width: 100%; line-height: 0; }
   .doodle svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .doodle--box { height: var(--doodle-h); }
+  .doodle--box svg { height: 100%; }
 </style>

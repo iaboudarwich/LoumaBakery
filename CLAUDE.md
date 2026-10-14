@@ -61,7 +61,7 @@ Source of truth for the brand: docs/BRAND.md and docs/brand/ (the designer's boa
 
 ## MOTION WHITELIST (complete; add nothing else)
 - Doodle reveal (Doodle.astro, flag doodleDraw): one-shot 900ms cubic-bezier(0.22,1,0.36,1) when 30% of the drawing is in view. Every master is a filled outline, so it reveals left to right with a clip-path; stroked art would draw on via pathLength. Never left invisible (viewport watchdog). Drawings are accents, never background patterns; at most one per section (the letter's sun and moon, and the four pillars, are the specified exceptions).
-- Sketch draw-on-scroll (flag scrollDraw; the footer face and the /menu sketches only): one-shot ~1.1s, 80ms subpath stagger; the outline traces in, then the fill settles back.
+- Sketch draw-on-scroll (flag scrollDraw; the footer face only): one-shot ~1.1s, 80ms subpath stagger; the outline traces in, then the fill settles back.
 - Entrances: fade + settle 16px DOWNWARD (start 16px ABOVE) or fade in place; 500ms, same bezier, children staggered 80ms, once at ~30% in view. NEVER rise bottom-to-top.
 - Photos never animate: no wipe, zoom, ken-burns, parallax or tilt. There is no marquee.
 - Micro: sketchy link underline, button press scale, brand focus ring.

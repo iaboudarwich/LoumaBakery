@@ -4,6 +4,7 @@
       "id": "viennoiserie",
       "title": "Viennoiserie",
       "order": 1,
+      "icon": "bubble-oui-oui.svg",
       "items": [
         {
           "name": "Plain Croissant",
@@ -71,6 +72,7 @@
       "id": "bread",
       "title": "Bread",
       "order": 2,
+      "icon": "baguette-small.svg",
       "items": [
         {
           "name": "Sourdough Bread",
@@ -114,6 +116,7 @@
       "id": "pastry",
       "title": "Pastry",
       "order": 3,
+      "icon": "cherries.svg",
       "items": [
         {
           "name": "Chocolate Chip Cookie",
@@ -209,6 +212,7 @@
       "id": "savory",
       "title": "Savory",
       "order": 4,
+      "icon": "herb.svg",
       "items": [
         {
           "name": "Quiche Lorraine",
@@ -226,6 +230,7 @@
       "id": "coffee",
       "title": "Coffee",
       "order": 5,
+      "icon": "cup-ooo-la-la.svg",
       "items": [
         {
           "name": "Drip Coffee",
@@ -290,6 +295,7 @@
       "id": "matcha",
       "title": "Matcha",
       "order": 6,
+      "icon": "flower.svg",
       "items": [
         {
           "name": "Matcha Latte",
@@ -312,6 +318,7 @@
       "id": "tea",
       "title": "Tea",
       "order": 7,
+      "icon": "sun-small.svg",
       "items": [
         {
           "name": "Chamomile",
@@ -359,6 +366,7 @@
       "id": "fridge",
       "title": "Fridge & Bottled",
       "order": 8,
+      "icon": "watermelon.svg",
       "items": [
         {
           "name": "Arnold Palmer",

@@ -37,7 +37,7 @@ const reveal = f.reveal ? 'reveal' : undefined;
         </div>
         <div class="info-block">
           <h2 class="info-label label">Hours</h2>
-          <ul class="contact-hours" role="list">
+          <ul class="hours-grid" role="list">
             {hours.map((h) => (
               <li>
                 <span>{h.days}</span>
@@ -82,9 +82,7 @@ const reveal = f.reveal ? 'reveal' : undefined;
     font-size: var(--fs-h2);
     line-height: 1.1;
   }
-  .contact-hours,
   .contact-list { margin: 0; padding: 0; display: grid; gap: var(--space-2); }
-  .contact-hours li { display: flex; justify-content: space-between; gap: var(--space-4); max-width: 26rem; font-weight: 500; font-variant-numeric: tabular-nums; }
   .contact-list a {
     color: var(--butter);
     text-decoration: underline;

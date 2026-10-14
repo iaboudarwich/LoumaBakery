@@ -2,7 +2,7 @@
  * Louma motion engine. Target feel: a printed menu.
  *
  * The COMPLETE effect list (everything else was removed on purpose):
- *  - scrollDraw: the footer face and menu sketches trace their outline once
+ *  - scrollDraw: the footer face traces its outline once
  *  - doodleDraw: doodles reveal left to right (filled) or draw their stroke
  *  - reveal: fade + settle 16px DOWNWARD (or fade in place), staggered children
  *  - toast: transient notices (functional UI)
@@ -62,14 +62,6 @@ const builders: Record<string, () => void> = {
   // --- Sketch draw when seen (one-shot; never left invisible) ---
   scrollDraw() {
     $('[data-anim="scroll-draw"]').forEach((svg) => {
-      // Filled master art (Sketch): hidden until seen, the outline traces in,
-      // then the fill settles back (same path as the face marks below).
-      const outline = Array.from(svg.querySelectorAll<SVGPathElement>('.sk-strokes path'));
-      if (outline.length) {
-        if (!reduced()) svg.classList.add('is-drawing');
-        drawOnScroll(svg, outline, svg);
-        return;
-      }
       const strokes = Array.from(svg.querySelectorAll<SVGPathElement>('path'))
         .filter((p) => getComputedStyle(p).fill === 'none' || svg.getAttribute('fill') === 'none');
       if (strokes.length) drawOnScroll(svg, strokes);
@@ -107,11 +99,15 @@ const builders: Record<string, () => void> = {
         const el = e.target;
         const inPlace = el.getAttribute('data-reveal') === 'fade';
         const targets = prep.get(el) ?? [];
+        // Stagger: 80ms by default; data-reveal-stagger (ms) and
+        // data-reveal-cap (items) tune it, e.g. the menu's 40ms capped at 8.
+        const step = Number(el.getAttribute('data-reveal-stagger') ?? 80) / 1000;
+        const cap = Number(el.getAttribute('data-reveal-cap') ?? Infinity);
         targets.forEach((t, i) => {
           animate(
             t,
             { opacity: 1, ...(inPlace ? {} : { transform: 'translateY(0px)' }) },
-            { duration: 0.5, delay: targets.length > 1 ? i * 0.08 : 0, ease: EASE },
+            { duration: 0.5, delay: targets.length > 1 ? Math.min(i, cap) * step : 0, ease: EASE },
           );
         });
       });
@@ -283,7 +279,7 @@ function toast(msg: string, opts: { tone?: 'default' | 'good' } = {}) {
 /* ============================================================ DRIVER ==== */
 const NAMES = Object.keys(builders);
 const META: Record<string, string> = {
-  scrollDraw: 'The footer face and menu sketches trace their outline once.',
+  scrollDraw: 'The footer face traces its outline once.',
   doodleDraw: 'Doodles reveal left to right once when seen.',
   reveal: 'Sections fade in and settle downward, children staggered.',
   toast: 'Transient corner notices.',

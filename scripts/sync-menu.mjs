@@ -97,6 +97,8 @@ const categories = ALLOWED_CATEGORIES.map((title, i) => ({
   id: idFor(title),
   title,
   order: i + 1,
+  // The sheet has no drawing column: keep the one chosen in the CMS.
+  icon: current.categories.find((c) => c.title === title)?.icon ?? '',
   items: rows
     .filter((r) => r.category === title && r.active === 'Active')
     .map((r) => ({

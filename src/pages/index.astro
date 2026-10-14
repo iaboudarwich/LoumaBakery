@@ -90,12 +90,12 @@ const reveal = f.reveal ? 'reveal' : undefined;
   {/* 6. Visit band: burgundy, butter text. Address left, hours right. */}
   <section class="section block--burgundy visit-band" aria-labelledby="visit-band-h">
     <div class="container grid-12" data-anim={reveal}>
-      <div class="visit-where" style="--span: 7">
+      <div class="visit-where">
         <Doodle name="sun" size={72} color="butter" animate={f.doodleDraw} class="visit-sun" />
         <h2 id="visit-band-h" class="visually-hidden">Visit</h2>
         <address class="visit-address">{address.street}<br />{address.city}, {address.state} {address.zip}</address>
       </div>
-      <ul class="visit-hours" role="list" style="--start: 9; --span: 4">
+      <ul class="hours-grid visit-hours" role="list">
         {hours.map((h) => (
           <li>
             <span>{h.days}</span>
@@ -156,8 +156,13 @@ const reveal = f.reveal ? 'reveal' : undefined;
     line-height: 1.1;
     color: var(--butter);
   }
-  .visit-hours { margin: 0; padding: 0; align-self: end; display: grid; gap: var(--space-2); font-size: var(--fs-lead); }
-  .visit-hours li { display: flex; justify-content: space-between; gap: var(--space-4); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .visit-hours { align-self: end; font-size: var(--fs-lead); }
+  /* Address and hours side by side only where the hours have room on one
+     line each; stacked below that. */
+  @media (min-width: 64rem) {
+    .visit-where { --span: 6; }
+    .visit-hours { --start: 7; --span: 6; justify-self: end; }
+  }
   .visit-directions { grid-column: 1 / -1; }
   .visit-directions a {
     display: inline-flex;

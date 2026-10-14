@@ -43,7 +43,7 @@ const reveal = f.reveal ? 'reveal' : undefined;
         <ul class="pillars" role="list" data-anim={reveal} data-reveal-children>
           {pillars.map((p) => (
             <li class="pillar">
-              <Doodle name={p.icon} size={72} color="red" animate={f.doodleDraw} />
+              <Doodle name={p.icon} size={72} color="red" animate={f.doodleDraw} box />
               <h2 class="pillar-name">{p.name}</h2>
             </li>
           ))}
@@ -69,9 +69,8 @@ const reveal = f.reveal ? 'reveal' : undefined;
     .pillars { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: calc(var(--block-gap) * 1.5); }
   }
   .pillar { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4); }
-  /* Every drawing fits the same 72px box, so the four names line up. */
-  .pillar :global(.doodle) { width: 72px; height: 72px; }
-  .pillar :global(.doodle svg) { width: 100%; height: 100%; }
+  /* Every drawing sits in the same 72px box, bottom-aligned (Doodle `box`),
+     so the four names start on one line at every width. */
   .pillar-name {
     font-family: var(--font-display);
     font-weight: 700;

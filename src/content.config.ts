@@ -17,6 +17,7 @@ const menu = defineCollection({
   schema: z.object({
     title: z.string(),
     order: z.number().default(0),
+    icon: z.string().default(''), // a drawing in src/assets/brand/doodles beside the heading
     items: z.array(
       z.object({
         name: z.string(),

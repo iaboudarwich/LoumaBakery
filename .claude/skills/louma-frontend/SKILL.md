@@ -19,7 +19,7 @@ description: Frontend design discipline for the Louma site. Flatness, square sha
 
 ## Motion (the COMPLETE whitelist; timings locked)
 - Doodle reveal (Doodle.astro): one-shot 900ms, same bezier, at 30% in view; filled outlines (every master) reveal left to right via clip-path, stroked art draws via pathLength; observe the UNCLIPPED wrapper; watchdog so nothing on screen stays hidden.
-- Sketch draw-on-scroll (footer face, menu sketches): one-shot ~1.1s, 80ms subpath stagger; the outline traces in, then the fill settles back.
+- Sketch draw-on-scroll (the footer face): one-shot ~1.1s, 80ms subpath stagger; the outline traces in, then the fill settles back.
 - Entrances: fade + settle 16px DOWNWARD or fade in place; 500ms; children staggered 80ms; once, at ~30% in view. NEVER rise bottom-to-top.
 - Photos never animate (no wipe, zoom, ken-burns, parallax, tilt). No marquee.
 - Micro: sketchy underline on link hover, button press scale ~0.98, brand-color focus ring.

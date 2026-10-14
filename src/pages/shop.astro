@@ -2,72 +2,70 @@
 import { getEntry } from 'astro:content';
 import { noOrphan } from '../lib/typography';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { features as f } from '../config/features';
 import Img from '../components/Img.astro';
+import Doodle from '../components/Doodle.astro';
 import { resolveImage } from '../lib/images';
 
-// Copy in copy.json ("shop"); links and products in src/data/shop.json (CMS: "Shop").
+// Words: copy.json ("shop"). Links and products: shop.json (CMS: "Shop").
+// A block whose link is empty shows the disabled "Coming soon" state (the
+// words come from copy.shop.status); a set link opens in a new tab.
 const c = (await getEntry('copy', 'shop'))!.data;
 const shop = (await getEntry('shop', 'shop'))!.data;
 const soon = c.status ?? '';
 const products = shop.products.map((p) => ({ ...p, photo: p.image ? resolveImage(p.image) : undefined }));
+const reveal = f.reveal ? 'reveal' : undefined;
+
+const blocks = [
+  c.preorder && { key: 'preorder', title: c.preorder.title, body: c.preorder.body, link: shop.preorderLink, label: 'Pre-order', icon: 'baguette-small-2' },
+  c.giftCards && { key: 'gift', title: c.giftCards.title, body: c.giftCards.body, link: shop.giftCardLink, label: 'Buy a gift card', icon: 'hearts' },
+].filter(Boolean) as { key: string; title: string; body: string; link: string; label: string; icon: string }[];
 ---
 
 <BaseLayout title={c.title}>
-  <header class="page-head">
+  <header class="page-intro">
     <div class="container">
-      <h1>{noOrphan(c.title ?? '')}</h1>
-      {soon && <p class="lede">{soon}</p>}
+      <h1 class="display">{noOrphan(c.title ?? '')}</h1>
+      {soon && <p class="label shop-status">{soon}</p>}
     </div>
   </header>
 
-  {/* Each button links to its URL when one is set; with no URL it is a
-      disabled "Coming soon" label, not a link. Link text is the block's own
-      title (no extra copy). */}
-
-  {c.preorder && (
-    <section class="shop-block">
-      <div class="container narrow">
-        <h2>{c.preorder.title}</h2>
-        {c.preorder.body && <p>{c.preorder.body}</p>}
-        <p class="shop-action">
-          {shop.preorderLink
-            ? <a class="btn" href={shop.preorderLink}>{c.preorder.title}</a>
-            : <span class="btn" aria-disabled="true">{soon}</span>}
+  {blocks.map((b) => (
+    <section class="section shop-block" aria-labelledby={`h-${b.key}`}>
+      <div class="container" data-anim={reveal}>
+        <div class="block-head">
+          <Doodle name={b.icon} size={56} color="red" animate={f.doodleDraw} box />
+          <h2 class="h2" id={`h-${b.key}`}>{b.title}</h2>
+        </div>
+        {b.body && <p class="lead block-body">{b.body}</p>}
+        <p class="block-action">
+          {b.link
+            ? <a class="button" href={b.link} target="_blank" rel="noopener">{b.label}<span class="visually-hidden"> (opens in a new tab)</span></a>
+            : <span class="button" aria-disabled="true">{soon}</span>}
         </p>
       </div>
     </section>
-  )}
-
-  {c.giftCards && (
-    <section class="shop-block">
-      <div class="container narrow">
-        <h2>{c.giftCards.title}</h2>
-        {c.giftCards.body && <p>{c.giftCards.body}</p>}
-        <p class="shop-action">
-          {shop.giftCardLink
-            ? <a class="btn" href={shop.giftCardLink}>{c.giftCards.title}</a>
-            : <span class="btn" aria-disabled="true">{soon}</span>}
-        </p>
-      </div>
-    </section>
-  )}
+  ))}
 
   {c.merch && (
-    <section class="shop-block">
-      <div class="container narrow">
-        <h2>{c.merch.title}</h2>
-        <ul class="products" role="list">
+    <section class="section shop-block" aria-labelledby="h-merch">
+      <div class="container">
+        <div class="block-head">
+          <Doodle name="louma-smiley" size={56} color="red" animate={f.doodleDraw} box />
+          <h2 class="h2" id="h-merch">{c.merch.title}</h2>
+        </div>
+        <ul class="products" role="list" data-anim={reveal} data-reveal-children>
           {products.map((p) => (
-            <li class="product">
-              {p.photo && <Img src={p.photo} alt={p.alt || p.name} class="product-img" sizes="(max-width: 720px) 100vw, 360px" />}
-              <h3>{p.name}</h3>
-              {p.price && <p class="mono">{p.price}</p>}
-              {p.description && <p>{p.description}</p>}
-              {p.size && <p class="mono">{p.size}</p>}
-              <p class="shop-action">
+            <li class={`product ${p.link ? 'product--linked' : ''}`.trim()}>
+              {p.photo && <Img src={p.photo} alt={p.alt || p.name} class="ph ph--square product-img" sizes="(max-width: 40rem) 100vw, (max-width: 64rem) 50vw, 440px" widths={[480, 720, 960]} />}
+              <h3 class="product-name">{p.name}</h3>
+              {p.price && <p class="product-price">{p.price}</p>}
+              {p.description && <p class="product-desc">{p.description}</p>}
+              {p.size && <p class="label product-size">{p.size}</p>}
+              <p class="block-action">
                 {p.link
-                  ? <a class="btn" href={p.link}>{p.name}</a>
-                  : <span class="btn" aria-disabled="true">{soon}</span>}
+                  ? <a class="button" href={p.link} target="_blank" rel="noopener">Buy<span class="visually-hidden"> {p.name} (opens in a new tab)</span></a>
+                  : <span class="button" aria-disabled="true">{soon}</span>}
               </p>
             </li>
           ))}
@@ -78,14 +76,49 @@ const products = shop.products.map((p) => ({ ...p, photo: p.image ? resolveImage
 </BaseLayout>
 
 <style>
-  .narrow { max-width: 720px; }
-  .shop-block { padding-block: var(--space-6); }
-  .shop-block h2 { margin-bottom: var(--space-3); }
-  .shop-action { margin-top: var(--space-4); }
-  .products { margin: 0; padding: 0; }
-  .product + .product { margin-top: var(--space-6); }
-  .product p { margin-top: var(--space-2); }
-  .product :global(.product-img) { aspect-ratio: 1; max-width: 360px; margin-bottom: var(--space-4); }
-  /* Product shots are cutouts on transparency: show the whole object, never crop it. */
+  .shop-status {
+    margin-top: var(--space-5);
+    color: var(--burgundy);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .block-head { display: flex; align-items: flex-end; gap: var(--space-4); }
+  .block-body { margin-top: var(--block-gap); max-width: 34em; }
+  .block-action { margin-top: var(--block-gap); }
+
+  /* Merch: 3 columns, 2 on tablets, 1 on phones. */
+  .products {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--section-y) var(--block-gap);
+    margin: var(--block-gap) 0 0;
+    padding: 0;
+  }
+  @media (min-width: 40rem) { .products { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 64rem) { .products { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+  /* The cutout floats on the page: no box, border or tile colour. A square
+     slot, the whole object shown (contain), with generous padding. */
+  .product :global(.product-img) { padding: var(--block-gap); }
   .product :global(.product-img img) { object-fit: contain; }
+  .product-name,
+  .product-price {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: var(--fs-item);
+    line-height: 1.3;
+    color: var(--ink);
+  }
+  .product-name { margin-top: var(--space-4); text-underline-offset: 0.2em; }
+  .product-price { margin-top: var(--space-2); font-variant-numeric: tabular-nums; }
+  .product-desc { margin-top: var(--space-3); color: var(--ink); }
+  .product-size { margin-top: var(--space-3); color: var(--burgundy); }
+  /* A product that can be bought: a 2px red underline on its name on hover. */
+  @media (hover: hover) and (pointer: fine) {
+    .product--linked:hover .product-name {
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-decoration-color: var(--red);
+    }
+  }
 </style>

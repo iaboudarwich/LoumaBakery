@@ -110,7 +110,7 @@ h6 {
   text-wrap: balance;
 }
 /* h1-h3 are Owners Narrow Bold. Prefixed for specificity: this must beat
-   weight-setting classes on headings (.smallcaps on menu category titles).
+   weight-setting classes on headings.
    The footer stamps (.foot-h) and .label headings are h2s set small, so they
    stay 500. */
 html.sys-slab h1,
@@ -159,12 +159,6 @@ p + p {
 .on-dark .eyebrow,
 .site-foot .eyebrow { color: var(--peach); }
 
-.smallcaps {
-  font-family: var(--font-display);
-  letter-spacing: var(--track-sc);
-  font-weight: 500;
-}
-
 .mono {
   font-family: var(--font-body);
   font-weight: 500;
@@ -173,18 +167,6 @@ p + p {
 /* Prices, hours, and any numeric column line up cleanly. */
 .mono {
   font-variant-numeric: tabular-nums;
-}
-
-/* --- Tag / badge chip: ONE style site-wide (menu tags, any future badges) --- */
-.tag {
-  font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 0.25rem 0.6rem;
-  border: 1px solid color-mix(in srgb, var(--burgundy) 55%, transparent);
-  border-radius: 0;
-  color: var(--burgundy);
-  background: color-mix(in srgb, var(--butter) 55%, transparent);
 }
 
 /* ---- Sketchy link underline (sketchyLinks flag → html.links-sketch) ----
@@ -361,20 +343,6 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
 .sec-head { margin-bottom: var(--space-6); }
 .sec-head > h2 { margin-top: var(--space-2); }
 
-.page-head {
-  padding-block: var(--space-8) var(--space-7);
-  background: var(--butter);
-  border-bottom: 1px solid var(--hairline);
-}
-.page-head .container { max-width: calc(var(--container) * 11 / 15); } /* 880px at the 1200px container */
-.page-head h1 { margin-top: var(--space-3); }
-.page-head .lede {
-  margin-top: var(--space-4);
-  font-size: clamp(18px, 1.6vw, 22px);
-  color: var(--body);
-  max-width: 52ch;
-}
-
 /* --- Forms --- */
 .field { display: flex; flex-direction: column; gap: var(--space-2); }
 /* Field labels share the eyebrow's mono/tracked language (no dash — one dash
@@ -502,8 +470,6 @@ html.sys-slab .site-foot .foot-h { color: var(--peach); }
 
 /* Prefixed: these override fills set in page <style> blocks. */
 html.sys-slab .tiers { background: var(--butter); }
-html.sys-slab .allergen { background: var(--butter); border: 1px solid var(--hairline); }
-html.sys-slab .pillnav { background: var(--butter); }
 /* Component fills stay flat and bordered. */
 html.sys-slab :is(.role, .tier) {
   background: var(--butter);
@@ -625,6 +591,56 @@ html.sys-slab .foot-news-row input {
   color: var(--burgundy);
   max-width: 34em;
 }
+
+/* Buttons (the layout system's set; Shop, Catering, Careers).
+   Primary: solid burgundy, butter text, 48px tall, Owners 500 16px; hover red.
+   Disabled ("Coming soon"): a <span aria-disabled="true">, never a link, so it
+   is not focusable; 1px burgundy border, burgundy text at 70%. Square, flat.
+   Prefixed with html.sys-slab so they win over the legacy .btn rules above;
+   .btn.btn-primary (the catering/careers submit and the 404 CTA, whose markup
+   stays as it is) takes the same primary look. The footer's .btn-coral does not. */
+html.sys-slab :is(.button, .btn.btn-primary) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 var(--space-6);
+  border: 1px solid var(--burgundy);
+  background: var(--burgundy);
+  color: var(--butter);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  html.sys-slab :is(.button, .btn.btn-primary):hover { background: var(--red); border-color: var(--red); color: var(--butter); }
+}
+html.sys-slab :is(.button, .btn.btn-primary):focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+html.sys-slab .button[aria-disabled="true"] {
+  background: transparent;
+  border-color: var(--burgundy);
+  color: color-mix(in srgb, var(--burgundy) 70%, var(--butter));
+  cursor: not-allowed;
+}
+
+/* Opening hours: a two-column grid; a day range or a time range never wraps.
+   Each <li> holds two <span>s (days, times). */
+.hours-grid {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  column-gap: var(--block-gap);
+  row-gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.hours-grid li { display: contents; }
+.hours-grid span { white-space: nowrap; }
 
 /* Two-column text row: title 4 columns, copy 7 (columns 6-12). */
 .text-row + .text-row { margin-top: var(--section-y); }

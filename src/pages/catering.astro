@@ -49,7 +49,8 @@ const today = new Date().toISOString().slice(0, 10);
             <li class="tier">
               {t.note && <span class="tier-note mono">{t.note}</span>}
               <h3 class="tier-name">{t.name}</h3>
-              <p class="tier-price mono">{t.price}</p>
+              {/* No prices on the site except the hat in the shop: each tier's
+                  `price` stays in copy.json (and the CMS) but is not shown. */}
               <ul class="tier-items" role="list">
                 {t.items.map((it) => <li>{it}</li>)}
               </ul>
@@ -114,8 +115,7 @@ const today = new Date().toISOString().slice(0, 10);
     padding: 0.25rem 0.6rem;
   }
   .tier-name { font-size: var(--fs-lead); line-height: 1.2; color: var(--ink); }
-  .tier-price { color: var(--burgundy); font-size: var(--fs-body); margin: var(--space-2) 0 var(--space-4); }
-  .tier-items { display: flex; flex-direction: column; gap: var(--space-2); color: var(--body); }
+  .tier-items { margin-top: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); color: var(--body); }
   .tier-items li { padding-left: 1.2em; position: relative; }
   .tier-items li::before { content: '·'; position: absolute; left: 0; color: var(--burgundy); }
   .inquiry .sec-head > h2 + p { margin-top: var(--space-3); }

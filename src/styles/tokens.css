@@ -17,7 +17,8 @@
 
   /* --- Derived text (mixed from ink + butter only) --- */
   --body: color-mix(in srgb, var(--ink) 85%, var(--butter));   /* body copy: 9.9:1 on butter */
-  --muted: color-mix(in srgb, var(--ink) 70%, var(--butter));  /* captions, meta: 5.9:1 on butter, 6.5:1 on white */
+  --muted: color-mix(in srgb, var(--ink) 70%, var(--butter));
+  --ink-80: color-mix(in srgb, var(--ink) 80%, var(--butter));  /* menu descriptions */  /* captions, meta: 5.9:1 on butter, 6.5:1 on white */
 
   /* --- Semantic aliases --- */
   --bg: var(--butter);
@@ -38,6 +39,7 @@
   --fs-h2: clamp(28px, 3.6vw, 48px);       /* Owners Narrow 700 */
   --fs-lead: clamp(20px, 1.8vw, 26px);     /* Owners 400 */
   --fs-body: clamp(16px, 1.15vw, 18px);    /* Owners 400, line-height 1.6 */
+  --fs-item: clamp(19px, 1.4vw, 20px);     /* Owners 500: menu item and product names, prices */
   --fs-small: 14px;                        /* Owners 500, labels */
 
   /* --- Legacy fluid scale: still read by /menu, /shop and the footer until

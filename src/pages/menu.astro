@@ -2,281 +2,267 @@
 import { getEntry, getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { features as f } from '../config/features';
-import Sketch from '../components/Sketch.astro';
+import Doodle from '../components/Doodle.astro';
 import { noOrphan } from '../lib/typography';
 import menuData from '../data/menu.json';
 
+// Words: copy.json ("menu"); items, drawings and add-ons: menu.json (CMS:
+// "Menu"). No prices and no photos, by the owner's choice: items keep
+// `image`/`alt` in the data for later, but nothing here renders them.
 const c = (await getEntry('copy', 'menu'))!.data;
 const menu = (await getCollection('menu')).sort((a, b) => a.data.order - b.data.order);
-// No prices and no photos on the menu: items keep `image`/`alt` in the data
-// (and CMS) for later use, but nothing here renders them.
-// Data-driven add-ons list, rendered right after the category named in the data.
+// Add-ons have no Zod collection; they are read straight from the JSON and
+// shown after the category named in `afterCategory`.
 const addOns = menuData.addOns;
+
+// Dietary tags: a short visible label plus the full word for screen readers.
+const DIET: Record<string, [string, string]> = {
+  vegan: ['VG', 'vegan'],
+  vegetarian: ['V', 'vegetarian'],
+  gf: ['GF', 'gluten-free'],
+  'nut-free': ['NF', 'nut-free'],
+};
+const reveal = f.reveal ? 'reveal' : undefined;
 ---
 
 <BaseLayout title={c.title} description={c.intro[0]}>
-  <header class="page-head menu-head">
+  <header class="page-intro">
     <div class="container">
-      <h1>{noOrphan(c.title ?? '')}</h1>
-      {c.intro.map((p) => <p class="lede">{p}</p>)}
-      <Sketch name="baguette" width={150} height={54} class="head-sketch" color="var(--burgundy)" draw={f.scrollDraw} />
+      <h1 class="display">{noOrphan(c.title ?? '')}</h1>
+      <div class="menu-intro" data-anim={reveal}>
+        {c.intro.map((p) => <p class="lead">{p}</p>)}
+      </div>
     </div>
   </header>
 
-  {/* Sticky category pill nav (progressive: plain anchors; scroll-spy is JS-enhanced) */}
-  <nav class="pillnav" aria-label="Menu categories">
-    <ul class="pillnav-track container" role="list">
+  {/* Category jump bar: plain anchors, sticky under the header. The scroll
+      spy below only adds aria-current. */}
+  <nav class="jumpbar" aria-label="Menu categories">
+    <ul class="jump-track" role="list">
       {menu.map((cat) => (
-        <li>
-          <a class="pill" href={`#menu-${cat.id}`} data-spy={`menu-${cat.id}`}>{cat.data.title}</a>
-        </li>
+        <li><a class="jump-link" href={`#menu-${cat.id}`} data-spy={`menu-${cat.id}`}>{cat.data.title}</a></li>
       ))}
     </ul>
-    {/* Flat edge caps: shown by JS only while more pills sit off that edge
-        (hidden attr = fail-safe, the rail still scrolls without JS). Pointer
-        affordance only; keyboard users reach every pill by Tab. */}
-    <button type="button" class="pillnav-more pillnav-more--start" data-rail="-1" tabindex="-1" aria-hidden="true" hidden>&larr;</button>
-    <button type="button" class="pillnav-more pillnav-more--end" data-rail="1" tabindex="-1" aria-hidden="true" hidden>&rarr;</button>
   </nav>
 
-  <div class="container menu-body">
+  <div class="menu-body">
     {menu.map((cat) => (
-      <>
-      <section class="menu-cat" id={`menu-${cat.id}`} aria-labelledby={`h-${cat.id}`} data-anim={f.reveal ? 'reveal' : undefined}>
-        <h2 class="menu-cat-title smallcaps" id={`h-${cat.id}`}>{cat.data.title}</h2>
-        <ul class="menu-rows" role="list">
-          {cat.data.items.map((item) => (
-            <li class="menu-row">
-              <div class="row-text">
-                <div class="row-head">
-                  <h3 class="row-name">{noOrphan(item.name)}</h3>
-                </div>
-                {item.description && <p class="row-desc">{item.description}</p>}
-                {item.tags.length > 0 && (
-                  <ul class="product-tags" role="list">
-                    {item.tags.map((t) => <li class="tag mono">{t}</li>)}
-                  </ul>
-                )}
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
-      {addOns && cat.id === addOns.afterCategory && addOns.items.length > 0 && (
-        <aside class="menu-addons" aria-labelledby="h-addons">
-          <p class="eyebrow" id="h-addons">{addOns.title}</p>
-          <ul class="addons-list" role="list">
-            {addOns.items.map((a) => (
-              <li class="addon mono">{a.name}</li>
+      <section class="menu-cat" id={`menu-${cat.id}`} aria-labelledby={`h-${cat.id}`}>
+        <div class="container">
+          <div class="cat-head">
+            {cat.data.icon && <Doodle name={cat.data.icon} size={64} color="red" animate={f.doodleDraw} box />}
+            <h2 class="h2" id={`h-${cat.id}`}>{cat.data.title}</h2>
+          </div>
+          <ul class="items" role="list" data-anim={reveal} data-reveal-children data-reveal-stagger="40" data-reveal-cap="8">
+            {cat.data.items.map((item) => (
+              <li class="item">
+                <h3 class="item-name">
+                  {item.name}
+                  {item.tags.map((t) => DIET[t] ? (
+                    <span class="diet"><span aria-hidden="true">{DIET[t][0]}</span><span class="visually-hidden">{DIET[t][1]}</span></span>
+                  ) : null)}
+                </h3>
+                {item.description && <p class="item-desc">{item.description}</p>}
+              </li>
             ))}
           </ul>
-        </aside>
-      )}
-      </>
+          {addOns && cat.id === addOns.afterCategory && addOns.items.length > 0 && (
+            <div class="addons">
+              <h3 class="label addons-label">{addOns.title}</h3>
+              <p class="addons-list">{addOns.items.map((a) => a.name).join(' · ')}</p>
+            </div>
+          )}
+        </div>
+      </section>
     ))}
 
     {c.allergenNote && (
-      <aside class="allergen" aria-label="Allergens">
-        <p class="eyebrow">Allergens</p>
-        <p>{c.allergenNote}</p>
-      </aside>
+      <div class="container">
+        <p class="allergen">{c.allergenNote}</p>
+      </div>
     )}
   </div>
 </BaseLayout>
 
 <style>
-  .pillnav {
+  .menu-intro { margin-top: var(--block-gap); max-width: 34em; }
+  .menu-intro .lead { max-width: none; }
+
+  /* --- Jump bar: one row of text links under the header --- */
+  .jumpbar {
+    --jump-h: 48px;
     position: sticky;
-    top: var(--nav-h);
-    z-index: 500;
-    background: color-mix(in srgb, var(--butter) 88%, transparent);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    border-block: 1px solid var(--hairline);
+    top: calc(var(--nav-h) + env(safe-area-inset-top, 0px));
+    z-index: 900;
+    background: var(--butter);
+    border-bottom: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
   }
-  .pillnav-track {
+  .jump-track {
     display: flex;
-    gap: var(--space-2);
+    gap: var(--block-gap);
+    max-width: var(--container);
+    height: var(--jump-h);
+    margin: 0 auto;
+    padding-block: 0;
+    padding-inline: max(var(--gutter), env(safe-area-inset-left)) max(var(--gutter), env(safe-area-inset-right));
     overflow-x: auto;
-    padding-block: var(--space-3);
+    overscroll-behavior-x: contain;
     scrollbar-width: none;
   }
-  .pillnav-track::-webkit-scrollbar { display: none; }
-  .pill {
+  .jump-track::-webkit-scrollbar { display: none; }
+  .jump-track li { flex: none; }
+  .jump-link {
+    position: relative;
     display: inline-flex;
     align-items: center;
+    height: 100%;
     min-height: 44px;
-    padding: 0 1.1rem;
-    border-radius: 0;
-    background: var(--white);
-    color: var(--body);
     font-family: var(--font-body);
     font-weight: 500;
-    font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px);
+    font-size: var(--fs-small);
+    color: var(--ink);
     text-decoration: none;
     white-space: nowrap;
-    transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
   }
-  @media (hover: hover) and (pointer: fine) {
-    .pill:hover { background: var(--fairy); }
-  }
-  .pill { min-width: 44px; }
-  /* Native momentum + snap on the pill rail. */
-  /* scroll-padding = the container gutter, so start-snap rests the first pill
-     at the gutter instead of pulling it under the left edge. */
-  .pillnav-track {
-    scroll-snap-type: x proximity;
-    overscroll-behavior-x: contain;
-    scroll-padding-inline: max(var(--gutter), env(safe-area-inset-left)) max(var(--gutter), env(safe-area-inset-right));
-  }
-  .pill { scroll-snap-align: start; flex: 0 0 auto; }
-  .pill[aria-current='true'] { background: var(--burgundy); color: var(--butter); }
-  /* Scroll affordance: solid cream cap + hairline over the cut-off pill. */
-  .pillnav-more {
+  /* Active: the header's 2px red rule. */
+  .jump-link::after {
+    content: '';
     position: absolute;
-    inset-block: 0;
-    width: 48px;
+    inset-inline: 0;
+    bottom: 10px;
+    height: 2px;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    transition: transform var(--dur) var(--ease-out);
+  }
+  .jump-link[aria-current='true']::after { transform: scaleX(1); }
+  @media (hover: hover) and (pointer: fine) {
+    .jump-link:hover::after { transform: scaleX(1); background: var(--ink); }
+    .jump-link[aria-current='true']:hover::after { background: var(--red); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .jump-link::after { transition: none; }
+  }
+
+  /* --- Categories --- */
+  .menu-body { padding-top: calc(var(--section-y) / 2); }
+  .menu-cat {
+    padding-bottom: var(--section-y);
+    /* An anchor jump lands the heading one block-gap below both sticky bars. */
+    scroll-margin-top: calc(var(--nav-h) + 48px + env(safe-area-inset-top, 0px) + var(--block-gap));
+  }
+  .cat-head { display: flex; align-items: flex-end; gap: var(--space-4); margin-bottom: var(--block-gap); }
+
+  /* Items: two columns, one below 48rem. No leaders, no rules, no photos. */
+  .items {
     display: grid;
-    place-items: center;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--block-gap);
+    row-gap: var(--block-gap);
+    margin: 0;
     padding: 0;
-    border: 0;
-    background: var(--butter);
+  }
+  @media (max-width: 47.99rem) {
+    .items { grid-template-columns: 1fr; }
+  }
+  .item-name {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: var(--fs-item);
+    line-height: 1.3;
+    color: var(--ink);
+    text-wrap: pretty;
+  }
+  .diet {
+    margin-inline-start: 0.6em;
+    font-size: var(--fs-small);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     color: var(--burgundy);
-    font-family: var(--font-body); font-weight: 500;
-    font-size: clamp(18px, calc(18px + (100vw - 1920px) * 0.003906), 20.5px);
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
+    white-space: nowrap;
   }
-  .pillnav-more[hidden] { display: none; }
-  /* Caps reach the true edge; the landscape safe-area inset is added as padding
-     so the arrow never sits under a notch. */
-  .pillnav-more--end { inset-inline-end: 0; width: calc(48px + env(safe-area-inset-right, 0px)); padding-inline-end: env(safe-area-inset-right, 0px); border-inline-start: 1px solid var(--hairline-strong); }
-  .pillnav-more--start { inset-inline-start: 0; width: calc(48px + env(safe-area-inset-left, 0px)); padding-inline-start: env(safe-area-inset-left, 0px); border-inline-end: 1px solid var(--hairline-strong); }
-
-  /* Add-ons: small mono chips under their drink categories. */
-  .menu-addons { padding-top: var(--space-5); }
-  .addons-list { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
-  .addon {
-    padding: 0.35rem 0.8rem;
-    border: 1px solid var(--hairline-strong);
-    border-radius: 0;
-    font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px);
-    color: var(--body);
+  .item-desc {
+    margin-top: var(--space-2);
+    color: var(--ink-80);
   }
 
-  .menu-body { padding-block: var(--space-7) var(--space-9); }
-  .menu-cat { padding-top: var(--space-6); scroll-margin-top: calc(var(--nav-h) + 64px); }
-  .menu-cat-title { font-size: clamp(24px, 3vw, 34px); color: var(--burgundy); margin-bottom: var(--space-5); }
-
-  .menu-rows { display: flex; flex-direction: column; }
-  /* Row: the name, then the description and tags. No prices, no photos. */
-  .menu-row {
-    display: flex;
-    align-items: center;
-    gap: var(--space-4);
-    padding-block: var(--space-4);
-    border-bottom: 1px solid var(--hairline);
-  }
-  .row-text { flex: 1; min-width: 0; }
-  /* Every row keeps the same 44px minimum box. */
-  .row-head { display: flex; align-items: baseline; gap: var(--space-3); min-height: 44px; padding-block: 2px; }
-  /* line-height: inherit so the <h3> keeps body leading instead of the tighter
-     global heading rule. */
-  .row-name { text-wrap: balance; line-height: inherit; font-family: var(--font-display); font-weight: 700; font-size: clamp(22px, calc(22px + (100vw - 1920px) * 0.004687), 25px); color: var(--ink); display: inline-block; }
-  .row-desc { margin-top: var(--space-2); color: var(--muted); max-width: 60ch; }
-  /* .tag chip style is global (one badge language site-wide). */
-  .product-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
+  /* Add-ons: one line of names under a small label. */
+  .addons { margin-top: var(--section-y); }
+  .addons-label { color: var(--burgundy); margin-bottom: var(--space-2); }
+  .addons-list { color: var(--ink); }
 
   .allergen {
-    margin-top: var(--space-8);
-    padding: var(--space-5);
-    background: var(--white);
-    border-radius: 0;
-    max-width: 70ch;
-  }
-  .allergen p:last-child { margin-top: var(--space-2); color: var(--body); }
-
-  /* --- Slab: typographic list --- */
-  /* 720px measure up to 1920px, then it grows with the container. */
-  :global(html.sys-slab) .menu-cat,
-  :global(html.sys-slab) .menu-addons { max-width: clamp(720px, calc(720px + (100vw - 1920px) * 0.375), 960px); }
-  :global(html.sys-slab) .row-name { font-size: clamp(26px, 2.8vw, 34px); font-weight: 700; }
-
-  /* Hand-drawn baguette tucked into the header corner. */
-  .menu-head { position: relative; overflow: hidden; }
-  .menu-head .container { position: relative; }
-  /* :global — the class lands on the Sketch CHILD component's svg, which a
-     page-scoped selector cannot reach. */
-  .menu-head :global(.head-sketch) {
-    position: absolute;
-    inset-inline-end: 0;
-    inset-block-end: 0;
-    width: clamp(100px, 11vw, 150px);
-    height: auto;
-  }
-  @media (max-width: 680px) {
-    .menu-head :global(.head-sketch) { position: static; margin-top: var(--space-5); width: 110px; }
+    padding-bottom: var(--section-y);
+    font-size: var(--fs-small);
+    color: var(--ink);
   }
 </style>
 
 <script>
-  // Scroll-spy: highlight the pill for the section in view. Progressive —
-  // anchors already work; this only adds aria-current. Throttled by IO.
-  const pills = Array.from(document.querySelectorAll<HTMLAnchorElement>('.pill[data-spy]'));
-  const byId = new Map(pills.map((p) => [p.dataset.spy!, p]));
-  const sections = pills.map((p) => document.getElementById(p.dataset.spy!)).filter(Boolean) as HTMLElement[];
+  // Scroll spy. The active category is the last section whose top has crossed
+  // the line just under the two sticky bars (header + jump bar), the line an
+  // anchor jump lands a heading on. One IntersectionObserver watches a 1px band
+  // at that line, so it fires exactly when a section edge crosses it; each
+  // firing re-reads which section tops are above the line. This keeps a short
+  // category (Savory, two items) active once its heading reaches the bars,
+  // instead of the next tall one.
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('.jump-link[data-spy]'));
+  // Also watched (never made active): the intro above and the allergen note
+  // below, so leaving the categories in either direction re-checks too.
+  const edges = Array.from(document.querySelectorAll<HTMLElement>('main .page-intro, main .allergen'));
+  const sections = links.map((l) => document.getElementById(l.dataset.spy!)).filter(Boolean) as HTMLElement[];
+  const track = document.querySelector<HTMLElement>('.jump-track');
+  const bar = document.querySelector<HTMLElement>('.jumpbar');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const scrollBehavior = (): ScrollBehavior => (reduceMotion.matches ? 'auto' : 'smooth');
+  let current = '';
+  const setActive = (id: string) => {
+    if (id === current) return;
+    current = id;
+    links.forEach((l) => {
+      if (l.dataset.spy === id) l.setAttribute('aria-current', 'true');
+      else l.removeAttribute('aria-current');
+    });
+    // Keep the active link in view inside the bar's own row (never scrolls the page).
+    const active = links.find((l) => l.dataset.spy === id);
+    if (track && active && track.scrollWidth > track.clientWidth) {
+      const left = active.offsetLeft - (track.clientWidth - active.offsetWidth) / 2;
+      track.scrollTo({ left: Math.max(0, left), behavior: reduce.matches ? 'auto' : 'smooth' });
+    }
+  };
 
-  // Edge caps: reveal whichever side still has pills off-screen.
-  const rail = document.querySelector<HTMLElement>('.pillnav-track');
-  const caps = Array.from(document.querySelectorAll<HTMLButtonElement>('.pillnav-more'));
-  if (rail && caps.length && rail.querySelector('.pill')) {
-    let queued = false;
-    const pillEls = rail.querySelectorAll<HTMLElement>('.pill');
-    const first = pillEls[0];
-    const last = pillEls[pillEls.length - 1];
-    // Compare pill edges, not scrollLeft: snap + container padding mean the
-    // rail can rest at a non-zero offset with every leading pill visible.
-    const update = () => {
-      queued = false;
-      const box = rail.getBoundingClientRect();
-      caps.forEach((cap) => {
-        const edge = cap.dataset.rail === '1' ? last : first;
-        const r = edge.getBoundingClientRect();
-        cap.hidden = cap.dataset.rail === '1' ? r.right <= box.right + 1 : r.left >= box.left - 1;
-      });
-    };
-    const queue = () => {
-      if (!queued) { queued = true; requestAnimationFrame(update); }
-    };
-    rail.addEventListener('scroll', queue, { passive: true });
-    if ('ResizeObserver' in window) new ResizeObserver(queue).observe(rail);
-    caps.forEach((cap) => cap.addEventListener('click', () => {
-      rail.scrollBy({ left: Number(cap.dataset.rail) * rail.clientWidth * 0.7, behavior: scrollBehavior() });
-    }));
-    update();
-  }
+  const lineY = () => {
+    const gap = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--block-gap')) || 0;
+    // --block-gap is a clamp(); resolve it through a section's scroll-margin.
+    const sm = sections[0] ? parseFloat(getComputedStyle(sections[0]).scrollMarginTop) : 0;
+    return Math.round((sm || (bar?.getBoundingClientRect().bottom ?? 0) + gap) + 2);
+  };
+  const pick = () => {
+    const y = lineY();
+    let id = '';
+    for (const s of sections) if (s.getBoundingClientRect().top <= y) id = s.id;
+    if (id) setActive(id);
+    else if (current) {
+      current = '';
+      links.forEach((l) => l.removeAttribute('aria-current'));
+      track?.scrollTo({ left: 0, behavior: reduce.matches ? 'auto' : 'smooth' });
+    }
+  };
 
+  let io: IntersectionObserver | null = null;
+  const observe = () => {
+    io?.disconnect();
+    const y = lineY();
+    io = new IntersectionObserver(pick, { rootMargin: `-${y}px 0px -${Math.max(0, window.innerHeight - y - 1)}px 0px`, threshold: 0 });
+    [...sections, ...edges].forEach((s) => io!.observe(s));
+    pick();
+  };
   if ('IntersectionObserver' in window && sections.length) {
-    const setActive = (id: string) => {
-      pills.forEach((p) => p.removeAttribute('aria-current'));
-      const active = byId.get(id);
-      active?.setAttribute('aria-current', 'true');
-      // Keep the active pill visible in the rail.
-      active?.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: scrollBehavior() });
-    };
-    const io = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-        if (visible) setActive(visible.target.id);
-      },
-      { rootMargin: '-45% 0px -50% 0px', threshold: 0 },
-    );
-    sections.forEach((s) => io.observe(s));
+    observe();
+    let t = 0;
+    window.addEventListener('resize', () => { clearTimeout(t); t = window.setTimeout(observe, 150); }, { passive: true });
+    // A tap on a link marks it at once; the observer confirms when the jump lands.
+    links.forEach((l) => l.addEventListener('click', () => setActive(l.dataset.spy!)));
   }
 </script>

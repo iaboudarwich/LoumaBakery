@@ -1,211 +1,104 @@
 # Louma Bakery website
 
-Marketing site for Louma Bakery, a neighborhood bakery on Wilshire in Santa Monica. Eight public pages (home, story, initiative, menu, shop, catering, careers, visit/Contact) plus a 404. Content is edited by a non-developer through a git-backed CMS. Three Netlify Forms collect newsletter signups, job applications and catering inquiries.
+The website of Louma Bakery, a sister-run neighborhood bakery at 3223 Wilshire Blvd in Santa Monica. It has eight public pages and a 404 page. The owner and staff edit the words, photos, menu, hours and shop links themselves through a web editor (the CMS); a developer is only needed for layout or code changes.
 
-Live: https://loumabakeryy.netlify.app (note the double "y"; see Accounts below).
+- Live site: https://loumabakeryy.netlify.app (note the double "y"; the real domain is not connected yet).
+- Handoff checklist (accounts, licences, open items): [`docs/HANDOFF.md`](docs/HANDOFF.md)
+- Guide for the people who edit the site: [`docs/EDITING.md`](docs/EDITING.md)
+- Brand reference: [`docs/BRAND.md`](docs/BRAND.md)
+- The owner's brief for this version of the site: [`docs/brief/2026-10-website-brief.pdf`](docs/brief/2026-10-website-brief.pdf)
+- Rules for anyone (or any AI assistant) changing the code: [`CLAUDE.md`](CLAUDE.md)
 
-If you only read one other file, read `CLAUDE.md`. It is the design system and the house rules (copy bans, motion whitelist, mobile rules), written for whoever edits this next, human or AI. `docs/EDITING.md` is the guide for the person who edits content.
+## The stack
 
----
-
-## Stack, and why
-
-| Piece | Why |
+| Piece | What it does |
 |---|---|
-| **Astro 6, static output** | It's a brochure site: no server, no database, nothing to patch at runtime. Pages are HTML at build time; the little JS there is (nav, forms, motion) is plain TypeScript bundled by Astro. |
-| **TypeScript, strict** | `astro check` is the type gate. No UI framework (no React/Vue); components are `.astro` files. |
-| **Content collections + JSON** (`src/data/*.json`) | Every word and photo choice lives in data, not markup, so the CMS can edit it and the build validates it with zod schemas. |
-| **Decap CMS, self-hosted** (`public/admin/`) | Git-backed: an edit is a commit to `main`, which triggers a deploy. The vendored bundle means no third-party CDN on the admin page. Login goes through **DecapBridge** (email + password, so the editor needs no GitHub account). |
-| **Netlify** | Static hosting, deploy on push, and Netlify Forms (no backend needed for the three forms). |
-| **`astro:assets`** | Build-time AVIF/WebP at several widths from the source photos in the repo. |
-| **`motion`** | Small animation library behind the flag-gated effects in `src/scripts/motion.ts`. |
-| **Owners (Ohno Type Co)** | The brand typeface, self-hosted as four woff2 subsets in `public/fonts/` (Owners Narrow 700 and 500, Owners 400 and 500), declared in `src/styles/fonts.css`; nothing loads from a font CDN. Desktop-licensed: a webfont licence from Ohno Type Co is required before launch. |
+| **Astro 6**, static output | Builds every page to plain HTML at build time. No server, no database. |
+| **TypeScript** (strict) | `npx astro check` is the type check; keep it at 0 errors. |
+| **JSON files in `src/data/`** | Every word, photo choice, menu item and setting. Checked against schemas in `src/content.config.ts` on every build, so bad data fails the build instead of reaching the site. |
+| **Decap CMS** in `public/admin/` | The web editor. Saving in it commits the changed JSON file to GitHub, which triggers a deploy. Login goes through **DecapBridge** (email and password, no GitHub account needed). |
+| **Netlify** | Hosting, automatic deploys, and Netlify Forms for the three forms (newsletter, catering, careers). |
+| **`motion`** | The small animation library behind the drawing reveals and section fade-ins (`src/scripts/motion.ts`). |
+| **Owners** (Ohno Type Co) | The only typeface, four files in `public/fonts/`. A webfont licence is still needed; see the handoff checklist. |
 
 ## Run it locally
 
-Requires Node **22.12 or newer** (`engines` in `package.json`; there is no `.nvmrc`).
+You need Node.js 22.12 or newer.
 
 ```bash
 npm install
-npm run dev        # http://localhost:4321, plus the internal /review page (dev only)
-npm run build      # production build into dist/ (runs scripts/gen-admin-demo.mjs first)
-npm run preview    # serve dist/ locally
-npx astro check    # type and template check; keep this at 0 errors, 0 warnings
+npm run dev        # http://localhost:4321 (also serves /review, an internal page of the animations)
+npm run build      # builds the site into dist/
+npm run preview    # serves dist/ locally
+npx astro check    # type check: should report 0 errors
 ```
 
-There is no automated test suite and no CI beyond Netlify's build. See "How changes were verified" below.
+## Pages
 
-## How deploys work
+The top menu shows Our Story, The Louma Initiative, Menu and Shop; the logo goes home. Catering, Careers and Contact are linked from the footer.
 
-* The GitHub repo `iaboudarwich/LoumaBakery` is linked to the Netlify site **loumabakeryy**. **Every push to `main` builds and publishes to production.** There is no staging branch.
-* Netlify runs `npm run build` and publishes `dist/` (`netlify.toml`). The same file sets the security headers (a strict CSP for the public site, a looser one scoped to `/admin/*` for Decap) and one-year immutable caching on `/_astro/*` (fingerprinted assets).
-* CMS edits are commits to `main` too, so an editor publishing a change triggers a production deploy. Expect a couple of minutes from Publish to live.
-* A manual deploy is possible with the Netlify CLI (it's a devDependency): `npx netlify deploy --dir=dist` for a draft URL, add `--prod` for production. The folder must be linked first (`npx netlify link`; `.netlify/` is gitignored).
-* The production URL comes from one value: `siteConfig.url` in `src/config/site.ts` (exported as `SITE_URL`, used by `astro.config.mjs` for canonical URLs and the sitemap). Change it there when a real domain lands. `public/robots.txt` (sitemap line) and `public/admin/config.yml` (`site_url`, `display_url`, `logo_url`) hard-code the Netlify URL as well; update them at the same time.
-
-## Where things live
-
-```
-src/
-  pages/           one .astro file per route (see Routes below)
-  layouts/         BaseLayout.astro: <head>, meta, JSON-LD, fonts, nav, footer, mobile CTA bar
-  components/      Nav, MobilePanel (the phone slide-in menu), Footer, NewsletterForm, InstagramStrip, Img, Sketch, FaceDraw
-  data/            ALL editable content as JSON (what the CMS edits)
-  content.config.ts  zod schemas that load src/data/*.json into content collections
-  config/site.ts   site-wide values (URL, name, contact via settings.json, form messages)
-  config/features.ts  feature flags for every visual effect
-  lib/images.ts    the photo resolver (see Images)
-  scripts/         client JS: forms.ts (Netlify Forms over fetch), motion.ts (all effects)
-  styles/          tokens.css (palette, type scale, spacing), fonts.css, global.css
-  assets/img/      source photos (build-optimized); unplaced/ = not used, see Images
-  assets/brand/    the wordmark and pencil sketches; these ARE the brand, never regenerate them
-  dev/review.astro internal effects-review page, mounted only by `astro dev`
-public/
-  admin/           Decap CMS (index.html, config.yml, vendored decap-cms bundle)
-  admin-demo/      the same editor on an in-memory backend (config.yml generated at prebuild)
-scripts/           build/maintenance scripts (see scripts/README.md)
-docs/EDITING.md    the non-developer editing guide
-docs/BRAND.md      the brand reference: colours, typeface, marks, and how the site diverges
-docs/brand/        the designer's master assets (.ai, page SVGs, previews, palette)
-```
-
-## Routes
-
-Main nav (the wordmark is the Home link): Our Story, The Louma Initiative, Menu, Shop. The footer adds Catering, Careers and Contact.
-
-| Route | Page file | Content it reads |
+| Address | File | What feeds it |
 |---|---|---|
-| `/` | `src/pages/index.astro` | `copy.json` → `home`, `images.json` (hero), `instagram.json` |
-| `/story` | `src/pages/story.astro` | `copy.json` → `story` (headline), `story.json` |
-| `/initiative` | `src/pages/initiative.astro` | `copy.json` → `initiative` |
-| `/menu` | `src/pages/menu.astro` | `copy.json` → `menu`, `menu.json` (no prices, no photos) |
-| `/shop` | `src/pages/shop.astro` | `copy.json` → `shop`, `shop.json` |
-| `/catering` | `src/pages/catering.astro` | `copy.json` → `catering`, plus the catering form |
-| `/careers` | `src/pages/careers.astro` | `copy.json` → `careers`, plus the careers form |
-| `/visit` (labelled "Contact") | `src/pages/visit.astro` | `copy.json` → `visit`, `settings.json` |
-| 404 | `src/pages/404.astro` | `copy.json` → `notFound` |
+| `/` | `src/pages/index.astro` | `copy.json` → home, `images.json` (hero and gallery), `instagram.json`, `settings.json` (address, hours) |
+| `/story` | `src/pages/story.astro` | `copy.json` → story (title), `story.json` (the letter and five sections), `images.json` → story |
+| `/initiative` | `src/pages/initiative.astro` | `copy.json` → initiative (text and the four pillars) |
+| `/menu` | `src/pages/menu.astro` | `copy.json` → menu, `menu.json` |
+| `/shop` | `src/pages/shop.astro` | `copy.json` → shop, `shop.json` |
+| `/visit` (shown as "Contact") | `src/pages/visit.astro` | `copy.json` → visit (title), `settings.json`, `images.json` → storefront, the hand-drawn map |
+| `/catering` | `src/pages/catering.astro` | `copy.json` → catering, plus the catering form |
+| `/careers` | `src/pages/careers.astro` | `copy.json` → careers, plus the job application form |
+| any unknown address | `src/pages/404.astro` | `copy.json` → notFound |
+| `/mission` | (none) | Redirects permanently to `/initiative` (in `netlify.toml`, and in `astro.config.mjs` for local runs). |
+| `/admin` | `public/admin/` | The editor. Not indexed by search engines. |
+| `/admin-demo` | `public/admin-demo/` | A practice copy of the editor that saves nothing. Its settings are generated from `/admin/config.yml` on every build. |
 
-**Redirect:** `/mission` → `/initiative`, a 301 with `force = true` in `netlify.toml`. `astro.config.mjs` has the same redirect so `astro dev` and `preview` follow it; on a static build that also writes a meta-refresh page at `dist/mission/`, which the forced Netlify rule overrides.
+## The data
 
-## Content: where it lives and how it reaches the page
+Everything editable lives in `src/data/`, one CMS collection per file:
 
-1. **The data** is JSON in `src/data/`, one CMS collection per file:
+| File | What it controls | In the editor |
+|---|---|---|
+| `copy.json` | The words on every page, grouped by page (home, story, initiative, menu, shop, visit, catering, careers, notFound), including each Initiative pillar's drawing | Page text |
+| `story.json` | The founder's letter (paragraphs and signature) and the Our Story sections | Our Story |
+| `menu.json` | Menu categories (name, order, drawing), items (name, description, dietary tags) and the add-ons list. No prices. | Menu |
+| `shop.json` | The pre-order and gift card links, and the products (name, price, description, size, photo, buy link). An empty link shows "Coming soon". | Shop |
+| `images.json` | Which photo goes in which slot (home hero, home gallery, Our Story photos, Contact storefront), each with its description | Photos |
+| `instagram.json` | The six photos in the home page Instagram strip | Instagram strip |
+| `settings.json` | The two email addresses, address, opening hours, Instagram link and handle, and an Uber Eats link that is saved but not shown | Site settings |
 
-   | File | What it holds | CMS collection |
-   |---|---|---|
-   | `copy.json` | The words for every page, keyed by page (`home`, `story`, `initiative`, `menu`, `shop`, `visit`, `catering`, `careers`, `notFound`) | Page text |
-   | `story.json` | The founder's letter (paragraphs and signature) and the Our Story sections (title + paragraphs) | Our Story |
-   | `shop.json` | Pre-order and gift card links, and the merch products (name, price, description, size, image, alt, link). An empty link shows "Coming soon". | Shop |
-   | `menu.json` | Menu categories and items (name, description, tags; `image`/`alt` are kept but not shown), and the add-ons list. No prices. | Menu |
-   | `instagram.json` | Up to six square tiles for the home page strip (image + alt), each linking to the Instagram profile | Instagram strip |
-   | `settings.json` | Two emails (general and larger orders), address, hours, Instagram link and handle, Uber Eats link (kept, not rendered). No phone number is listed, by the owner's choice. | Site settings |
-   | `images.json` | Which photo fills which slot. Only `hero` renders today; the other keys are left over from the old Story page. | Images |
+The editor's setup, field by field, is `public/admin/config.yml`. If you add a field to a JSON file, add it to `config.yml` and to the schema in `src/content.config.ts` too, or editors won't see it (and the page-text schema is strict, so an unknown field fails the build).
 
-   Text in `story.json`, `copy.json` and `shop.json` is the owner's own writing. Don't reword it (see the copy rules in `CLAUDE.md`).
-2. **`src/content.config.ts`** loads those files as content collections and validates them. Lists are wrapped in an object in the JSON (`{ "categories": [...] }`, `{ "items": [...] }`) because Decap cannot edit a top-level array; each loader unwraps them. A schema failure breaks the build, which is the point: bad content never ships.
-3. **Pages read collections** with `getEntry('copy', 'menu')`, `getCollection('menu')` and so on. `settings.json` and `images.json` are imported directly (`src/config/site.ts`, `src/lib/images.ts`).
-4. **The CMS** (`public/admin/config.yml`) maps one Decap collection onto each JSON file, field by field. If you add a key to a JSON file, add the matching field to `config.yml` and to the zod schema, or editors can't see it. The `copy` schema is `.strict()`, so a CMS field the schema doesn't know breaks the build on the first save. As of this README, every CMS field, JSON key and schema key match (checked by script for every collection).
-5. **Saving in the CMS** commits the JSON file to `main`, which deploys. On the first save of a file, Decap re-serializes the whole file (one-line objects get expanded), so that first commit shows a large but harmless diff.
+The menu can also be filled from a Google Sheet once one is published: `scripts/sync-menu.mjs` and the GitHub Action in `.github/workflows/sync-menu.yml`. It is off until the repository variable `SHEET_CSV_URL` is set; see `scripts/README.md`. When it is on, the sheet owns the menu items; the category drawings and photo descriptions are kept, and prices are never written.
 
-Not everything is content. Some copy is still hardcoded in templates and config: form labels and buttons, the form success/error messages (`siteConfig.forms`), nav and footer labels, about a dozen section headings, and page `<title>`s. `docs/EDITING.md` lists them under "Things that still need a developer". Moving any of them into `copy.json` and `config.yml` is straightforward.
+## Photos
 
-### The Google Sheet menu sync (built, not switched on)
+- **`src/assets/img/`** holds the photos the site uses. The build turns each into AVIF and WebP at several sizes, so the source files can be large.
+- **`src/assets/img/unplaced/`** is a library of extra photos from the shoots. Nothing in it is published; move a file up one folder and pick it in the editor to use it.
+- **Size rule for new photos**: JPEG, longest side at most 2400px (the home hero up to 3000px), under 1.5 MB, colour converted to sRGB, and location and camera data removed. Straight, never tilted. The editor's hints say the orientation and minimum size for each slot.
+- **Alt text rule**: every photo has a description, one plain sentence about what is actually in it ("Pain au chocolat cooling on a wire rack on a wooden counter"). It is read aloud to people who can't see the photo.
+- Credits and the source of every file: `src/assets/img/CREDITS.md`.
+- The drawings are in `src/assets/brand/`. They are the designer's master files; change them only from `docs/brand/`.
 
-`scripts/sync-menu.mjs` plus `.github/workflows/sync-menu.yml` can rebuild `menu.json` daily from a published Google Sheet CSV. It does nothing until the repo variable `SHEET_CSV_URL` is set. Setup is in `scripts/README.md`. Before you switch it on, know that:
+## Deploying
 
-* The sheet then **owns the menu**: CMS edits to menu items get overwritten by the next sync.
-* The sheet has **no column for photo descriptions**, so every menu item's `alt` text is dropped on sync (images fall back to the item name as alt). `addOns` survives (the script spreads the existing file).
+- The GitHub repository is linked to the Netlify site **loumabakeryy**. **Every push to the `main` branch builds and publishes the live site automatically**, usually within two minutes. Editor saves are pushes to `main` too.
+- Other branches do not publish anything unless branch deploys are switched on in Netlify (Site configuration → Build & deploy → Branches and deploy contexts).
+- Netlify runs `npm run build` and publishes `dist/`. `netlify.toml` also sets the security headers, caching for `/_astro/` files, and the `/mission` redirect.
+- To undo a bad deploy, see "Rolling back" in `docs/HANDOFF.md`.
+- The site's address is set in one place, `siteConfig.url` in `src/config/site.ts`. When the real domain is connected, change it there and in `public/robots.txt` and the top of `public/admin/config.yml`.
 
-## Images
+## Forms
 
-* Source photos live in `src/assets/img/`. Astro (`astro:assets`, via `src/components/Img.astro`) emits AVIF and WebP at up to four widths (400/800/1200/1600, never wider than the source), with width/height baked in so nothing shifts on load. The hero is eager with high fetch priority; everything else is lazy.
-* `src/lib/images.ts` has **one eager `import.meta.glob`** over `../assets/img/*.{jpg,jpeg,png,webp}`. Data files store a filename (or a CMS path like `/src/assets/img/x.jpg`); `resolveImage()` strips it to the filename and looks it up. A missing file returns `undefined` and the slot renders no image. There are no placeholder fallbacks, on purpose.
-* **The glob is non-recursive on purpose.** `*` does not match subfolders, so anything in `src/assets/img/unplaced/` is never bundled. `unplaced/` holds photos from the September 2026 shoots that are not used yet (17 files, about 9 MB). They are kept in the repo so they're on hand, without each one costing a dozen generated variants in every build. CMS uploads land in `src/assets/img/` directly (Decap `media_folder`), so they're always picked up. To use an unplaced photo, move it up one folder and reference its filename in the data.
-* `Img.astro` reads dimensions from the metadata `clone` deliberately. Touching `src.width` makes Astro copy the full-size original into `dist/`.
-* `dist/` is about 24 MB: about 17 MB of generated image variants and 5 MB of the vendored Decap bundle.
-* Photo credits and which shoot each file came from: `src/assets/img/CREDITS.md`.
+The newsletter (in the footer of every page), the catering inquiry and the job application are Netlify Forms. Each form has a hidden `form-name` field and a hidden spam trap; `src/scripts/forms.ts` sends them without leaving the page and shows the thank-you message. Submissions appear in Netlify under Forms. Email alerts are not set up yet; see the handoff checklist.
 
-## Forms (Netlify Forms)
+## Brand rules, in short
 
-Three forms: `newsletter` (home page and footer; one component, `NewsletterForm.astro`), `careers`, `catering`.
+Full reference: [`docs/BRAND.md`](docs/BRAND.md). The detailed rules for code are in `CLAUDE.md`.
 
-* **Markup:** each `<form>` has `name`, `method="POST"`, `data-netlify="true"`, `data-netlify-honeypot="bot-field"`, a hidden `<input name="form-name">`, and a visually hidden `bot-field` honeypot.
-* **Detection:** Netlify registers forms by scanning the built HTML at deploy time. This only happens when **Form detection** is enabled in the Netlify dashboard (Site configuration, Forms). It is on now; the flag can't be changed through the API.
-* **Submit:** `src/scripts/forms.ts` intercepts submit, POSTs the url-encoded fields to `/` with `fetch`, then shows an inline message plus a toast, or an inline error and restores the button. Without JS the form falls back to a native POST and Netlify's generic "Thank you!" page.
-* **The deploy-time rewrite (important).** When Netlify registers the forms it **rewrites each `<form>` opening tag** in the deployed HTML. It strips `data-netlify` and `data-netlify-honeypot`, sorts the attributes, single-quotes them, and escapes apostrophes as `\'`. That escape is not valid HTML, so any attribute value containing an apostrophe gets shredded into junk attributes. Everything inside the form is left byte-for-byte alone. So:
-  * Client JS must **not** select on `form[data-netlify]`. `forms.ts` finds forms through their hidden `input[name="form-name"]`.
-  * **Never put copy in `<form>` attributes.** Success and error text sits in hidden `<span hidden data-form-msg="success|error">` elements inside each form.
-  * You **cannot see this locally**. `dist/` is the pre-rewrite HTML. Test against the deployed site, or a local copy with the rewrite applied.
-* **Spam:** honeypot only (registered server-side; `honeypot: true` on all three forms). No reCAPTCHA.
-* **Notifications: none are configured.** Submissions sit in the Netlify dashboard (Forms tab) until someone looks. Add an email notification per form there.
-* **Test submissions:** seven test entries exist from launch checks: three named "TEST - ignore" (the newsletter one has an email only) and four named "TEST 2 - ignore". Delete them in the dashboard.
-
-## The CMS
-
-* `/admin/` is the real editor. **The login is not working yet:** `public/admin/config.yml` has `identity_url: .../sites/PLACEHOLDER_DECAPBRIDGE_SITE_ID`. Create the site in DecapBridge, then replace the whole `backend:` block with the one DecapBridge generates (the comment above the block says so). The `repo:` value there still reads `issamlife21-hue/LoumaBakery`, the GitHub account's old name; GitHub redirects it, but use `iaboudarwich/LoumaBakery` when you replace the block.
-* `/admin-demo/` is the same editor on Decap's in-memory `test-repo` backend, with a "nothing is saved" banner. Its `config.yml` is generated from `/admin/config.yml` by `scripts/gen-admin-demo.mjs` on `prebuild` (gitignored), so the two can't drift. **It opens with empty forms:** `test-repo` is never seeded with the real JSON, so it teaches the layout, not the content. Seeding `window.repoFiles` from the data files at build time would fix it.
-* Collections: Menu, Images, Site settings, Page text, Our Story, Shop, Instagram strip. Each is a single file with `delete: false`, so editors can't remove a whole file.
-* `publish_mode: simple`: Publish commits straight to `main`. No drafts, no review.
-
-## Design system, motion, flags
-
-All in `CLAUDE.md` (the authoritative spec), in brief:
-
-* **Flat "editorial slab"**: no shadows, gradients or blur anywhere. A global `*, *::before, *::after { box-shadow/text-shadow/backdrop-filter: none !important }` rule in `global.css` enforces it over any component that still declares one.
-* Tokens in `src/styles/tokens.css`: exactly the eight brand colours (red is primary; red text only at 24px+ because red on butter is 3.86:1). Square corners everywhere (all radii 0). One filled CTA per page. 13px type floor (the 12px stamp label is the one exception).
-* **`html.sys-slab`**: `BaseLayout` always puts this class on `<html>`; there is no other layout system any more. Where a selector in `global.css` (or a component's `:global(html.sys-slab)`) still carries the prefix, it's there for its **specificity**, which decides real conflicts with page-scoped styles. Removing a prefix can silently change rendering. Check computed styles before and after if you touch one.
-* Every effect is behind a flag in `src/config/features.ts`, respects `prefers-reduced-motion`, and is reviewable on `/review` in dev.
-
-## How changes were verified
-
-There are no unit or visual tests in the repo. Recent refactors were checked by hand-rolled harnesses (kept outside the repo), not anything you can re-run from here:
-
-* Sequential full-page screenshots of every route at 320/390/430/1440 before and after, compared pixel by pixel, plus a computed-style dump of every element and its pseudo-elements, with forced `:hover` / `:focus-visible` states. Chromium has to run with GPU rasterization off or anti-aliasing noise causes false diffs.
-* A behavior probe for the mobile menu (open, focus trap, Esc, overlay tap, link tap, no-JS fallback) at portrait and landscape phone sizes.
-
-A Playwright visual-regression setup in the repo would be the single most useful thing to add.
-
-## Known rough edges
-
-None of these are hidden. They're listed so you don't rediscover them.
-
-**Mobile menu (`MobilePanel.astro`), all pre-existing:**
-1. **The X (close) button can't be tapped.** When the panel is open it covers the toggle, so a tap on the X lands on the panel. The nav's `z-index: 1300` while open doesn't help because the panel is a descendant of the nav. Esc, an overlay tap and a link tap all close it.
-2. **Between 769 and 860px wide, tapping outside doesn't close it.** At those widths the nav bar has `will-change: transform`, which makes it the containing block for the panel's `position: fixed` overlay, so the overlay only covers the 56px bar.
-3. **On short landscape phones the lower links are unreachable.** The panel doesn't scroll and the page is scroll-locked while it's open. Measured before the nav was cut to four links (at 568×320, the last three links were off-screen); recheck with the current nav.
-
-**Mobile newsletter bar:** the bar is 75px tall but `body.has-cta-bar` reserves 64px. The link's own `min-height: 44px` and `padding: 10px 24px` in `global.css` lose to the slab `.btn` rule, so they're dead declarations. Making them win would bring the bar to about 64px.
-
-**Content gaps (owner decisions, not bugs):**
-* 56 of the 60 menu items have no description line. The menu shows no prices at all, by the owner's choice.
-* No founder portrait exists. The Story letter is signed in text only, and must never use a stand-in photo of someone else.
-* No phone number is listed anywhere, by the owner's choice. The two emails in `settings.json` are the contact.
-* The Uber Eats link is kept in `settings.json` but rendered nowhere; the nav has no Order button.
-* Shop: the pre-order and gift card links and the hat's buy link are empty, so each shows "Coming soon". The hat has no photo yet.
-* The hand-drawn map for Contact doesn't exist yet; the slot is marked in `visit.astro`.
-* The hero is a still photo; `siteConfig.links.heroVideo` is empty.
-
-**Other:**
-* `/admin-demo` shows empty forms (see The CMS).
-* The CMS login (DecapBridge) isn't set up, so nobody can use `/admin` yet.
-* Form submissions notify nobody.
-* No Node version pin (`.nvmrc`); Netlify uses its default Node.
-* The repo carries about 9 MB of unused photos in `src/assets/img/unplaced/`, by design (see Images).
-
-## Open TODOs in the code
-
-| Where | What |
-|---|---|
-| `public/admin/config.yml:18` | `PLACEHOLDER_DECAPBRIDGE_SITE_ID`: replace the `backend:` block with DecapBridge's generated one (and the current repo name). |
-| `src/config/site.ts:32` | `heroVideo` placeholder: empty until hero footage exists. |
-| `src/pages/index.astro:27` | Same hero video placeholder, at the point of use. |
-| `src/lib/images.ts:6` | `TODO(founder-portrait)`: no portrait of Milla yet (the comment still points at `story.astro`, which no longer has a portrait slot). |
-| `src/lib/images.ts:3` | `TODO(photo-ids)`: `unplaced/seeded-knot-tissue.jpg` and `unplaced/seeded-knot-detail.jpg` look like the za'atar croissant but are not confirmed. |
-
-Outside the code, still waiting on the owner: DecapBridge site and login test, publishing the Google Sheet tab and setting `SHEET_CSV_URL`, real photos for the remaining gaps (including the hat and the Contact map), shop links, a real Uber Eats link, a domain, form notifications, and transferring the Netlify and GitHub accounts.
-
-## Accounts
-
-* **GitHub:** `iaboudarwich/LoumaBakery` (the account was previously `issamlife21-hue`; old URLs redirect).
-* **Netlify:** site **`loumabakeryy`** (id `db42ec37-d865-46fc-9abc-967a5d61f886`). The same Netlify account also has a site called **`loumabakery`** (single "y"): that is the old v1 site from an earlier repo, not this one. Don't deploy to it by mistake.
-* **DecapBridge:** not set up yet.
+- **Eight colours only**: Louma Red `#ED2739` (the main colour), Burgundy `#A10017`, Peach `#FF676C`, Tangerine `#FF8926`, Fairy `#DDEAC3`, Butter `#FBF5D4` (the page background), White and Ink `#1D1D1B`. Red text only at 24px and up; smaller text is ink or burgundy.
+- **One typeface**, Owners, in four styles.
+- **Square corners** everywhere. No shadows, gradients or blur.
+- **Photos straight** and shown as taken: no filters, no text over them, no animation.
+- **Only the designer's drawings** (plus the owner's traced signature and map).
+- **The owner's words appear exactly as written.** Don't rewrite them.
+- No prices on the site except the products in the shop.

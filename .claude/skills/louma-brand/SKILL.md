@@ -15,16 +15,16 @@ Derived, built only from those eight with color-mix(): --body (ink 85% / butter,
 On the board red is everywhere: the logo, every drawing, the type specimen. Use it boldly, with one constraint: red text on butter is 3.86:1, so red TEXT must be 24px or larger, or bold at 18.66px or larger. Small text sits in ink (--body, --muted) or burgundy (7.56:1 on butter). Links are burgundy, and hover burgundy. Butter text on red is also 3.86:1, so anything on a red fill is large too.
 Approved lockups from the board: butter on red, butter on burgundy, red on butter, burgundy on butter, butter on peach, burgundy on peach, tangerine on butter, peach on butter, red on burgundy, butter on tangerine, burgundy on fairy, peach on fairy. Check text-size contrast before using any of them for small type.
 
-## Band surfaces (the slab system)
-Sections are full-bleed slabs in exactly these surfaces: butter, burgundy, ink, or a full-bleed photo. The band change IS the divider (hard cut, no seams, no gradients). Fairy and white are small component fills only (chips, inputs, cards), never a section background. Text over photos sits on a flat solid ink or burgundy panel.
+## Surfaces
+Butter is the page. Burgundy, fairy and white are full-width colour blocks (.block--burgundy/--fairy/--white); ink is the footer only. The colour change IS the divider (hard cut, no seams, no gradients). Photos are straight, full-bleed or in fixed-ratio slots, shown exactly as shot: no text, overlay or filter on them.
 
 ## Type: Owners, four faces
 Owners superfamily by Ohno Type Co. Only these four ship (src/styles/fonts.css, public/fonts):
-- Owners Narrow 700: h1-h3 and the one `.statement` per band (clamp(2.75rem, 8vw, 7rem), leading ~1.05).
-- Owners Narrow 500: h4-h6, eyebrows, labels.
+- Owners Narrow 700: page titles and section headings (--fs-display, --fs-h2).
+- Owners Narrow 500: the footer's column stamps.
 - Owners 400: body copy, 14-16px.
-- Owners 500: emphasis, buttons, and the data voice (hours, prices, address, phone, form fields), tabular numerals.
-No italic face and no other weight ships; font-synthesis is off. Label stamp (the only label treatment): Owners Narrow 500, uppercase, ~12px, 0.1em tracking, burgundy (peach on ink), no dash or rule prefix. A label earns its place or is deleted.
+- Owners 500: emphasis, labels (.label, 14px), buttons, menu item and product names, and the data voice (hours, address, form fields), tabular numerals.
+No italic face and no other weight ships; font-synthesis is off. Labels: Owners 500, 14px, burgundy on butter (butter on burgundy); the footer keeps its 12px uppercase peach stamp. No dash or rule prefix. A label earns its place or is deleted. No prices anywhere except shop products.
 Licence: the files are desktop TTFs; a webfont licence from Ohno Type Co is required before launch.
 
 ## Shapes

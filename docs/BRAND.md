@@ -1,9 +1,8 @@
 # Louma Bakery — brand reference
 
-What the designer supplied, what each piece is, and how it compares to what the site
-ships today.
+What the designer supplied, what each piece is, and how the website uses it.
 
-Assets live in [`docs/brand/`](./brand/). Nothing here has been applied to the site.
+Assets live in [`docs/brand/`](./brand/).
 
 ## Source material
 
@@ -85,8 +84,8 @@ set beneath in Owners Narrow Bold, sitting under the right of the word rather th
 centred. Outlined, so it exports as a single clean path.
 
 **Baguette mark** (page 2). One unbroken stroke: an oval loaf with three scored ears
-that read as hearts. This is the icon, and it is what the site's scroll-draw
-animation traces.
+that read as hearts. This is the icon; on the home page it sits above
+the tagline and reveals once as you scroll.
 
 **Primary illustrations** (page 6). Five groups in Louma Red line art:
 1. Ingredient cluster: garlic bulb, droplets, honey dipper and pot, a bean, a
@@ -109,71 +108,36 @@ doodle set. If one thing ties the illustration system together, it is that.
 
 ---
 
-## How the site compares
+## How the site uses the brand
 
-### Colours: two of six are right
+The website follows the brand book.
 
-| Brand | Brand hex | Site token | Site hex | |
-|---|---|---|---|---|
-| Louma Red | `#ED2739` | `--red` | `#ED2739` | correct |
-| Butter | `#FBF5D4` | `--butter` | `#FBF5D4` | correct |
-| Burgundy | `#A10017` | `--burgundy` | `#6E1F2A` | wrong, far browner |
-| Peach | `#FF676C` | `--coral` | `#EF6E78` | close, not exact |
-| Tangerine | `#FF8926` | `--amber-warm` | `#C8853A` | wrong, muddy |
-| Fairy | `#DDEAC3` | none | none | missing |
-| Black | `#1D1D1B` | `--ink` | `#2A1F18` | brown-black, not neutral |
-
-Tokens with no basis in the brand book: `--clay #B8533F`, `--navy-stitch #2B3A55`,
-and the four-step cream ramp `--surface-0` through `--surface-3`.
-
-The brand has exactly one cream, Butter. The site has four, and none of them is it.
-
-### Red is used backwards
-
-`tokens.css` says Louma Red is "accent only, max ~3 uses per page". On the board, red
-is the dominant colour: the logo, every illustration and the whole type specimen are
-red on Butter. The site treats the brand's primary as a garnish.
-
-### Fonts share nothing
-
-| | Site | Brand |
-|---|---|---|
-| Display | Cormorant Garamond | Owners |
-| Small caps | Cormorant SC | Owners |
-| Body | DM Sans | Owners |
-| Mono | DM Mono | Owners |
-
-Owners is a superfamily. Its width axis is built to do the work the site currently
-splits across four unrelated families.
-
-### The SVGs in src/ are provisional
-
-`src/assets/brand/` holds `wordmark.svg`, `baguette.svg`, `toast.svg` and `face.svg`,
-plus baked draw-animation variants. They match the board in subject, and they came
-from the June package in `~/Downloads/louma-brand-assets_1/`.
-
-That folder's own README says: *"These are placeholders-quality vectors of the real
-art; if a designer later supplies master SVGs, swap the files."*
-
-The master art is now in `docs/brand/master/`. The wordmark and baguette are single
-clean paths and are ready to swap in. The face and the bread slice need cutting out
-of the page-6 file first.
-
----
-
-## Open questions
-
-1. **The address.** The board reads "B3223 Wilshire Blvd, Los Angeles, CA". The site
-   says "3223 Wilshire Blvd, Santa Monica, CA 90403". Two separate problems: a stray
-   leading "B" that looks like a typo, and Los Angeles against Santa Monica. This
-   feeds the JSON-LD and has to match the Google Business Profile exactly.
-2. **Owners licensing.** It is a commercial face and the Drive folder holds desktop
-   TTFs only. Web use needs a webfont licence from Ohno Type Co. 98 files is also far
-   more than a site needs; three or four cuts would cover it.
-3. **How far to correct the palette.** Fixing Burgundy and collapsing the cream ramp
-   touches nearly every page.
-4. **Whether to adopt Owners at all**, given the site's current look was built and
-   signed off around Cormorant and DM Sans.
+- **Colours**: exactly eight, as tokens in `src/styles/tokens.css`: Louma Red
+  `#ED2739`, Burgundy `#A10017`, Peach `#FF676C`, Tangerine `#FF8926`, Fairy `#DDEAC3`,
+  Butter `#FBF5D4`, White `#FFFFFF`, and Ink `#1D1D1B` (the board's registration
+  black) for text. Red is the primary colour, as on the board: the logo, the drawings,
+  the page titles and section headings. Red text is only used at 24px and up, because
+  red on Butter is 3.86:1; smaller text is Ink or Burgundy. Butter is the page;
+  Burgundy, Fairy and White are full-width colour blocks.
+- **Type**: Owners only, four styles served as web fonts: Owners Narrow Bold (titles
+  and headings), Owners Narrow Medium (small labels), Owners Regular (body) and Owners
+  Medium (emphasis, buttons, names, hours). A webfont licence is still needed; see
+  `docs/HANDOFF.md`.
+- **Shapes**: square corners everywhere, no shadows, gradients or blur. (The board's
+  colour tiles are rounded squares; the site keeps every corner square by the owner's
+  choice.)
+- **Drawings**: only the designer's master art, in `src/assets/brand/`: the wordmark,
+  the baguette mark, the face, the bread slice, and the 26 doodles cut from the board.
+  They are used as small red accents and reveal once as you scroll.
+- **Two drawings come from the owner, not the board.** Both were traced from the
+  owner's own material and are kept beside the masters in `src/assets/brand/`:
+  - `signature-milla.svg`: Milla's handwritten signature, from the printed founder's
+    letter. It signs the letter on the Our Story page.
+  - `map-hand-drawn.svg`: the hand-drawn map of the bakery at Wilshire and Centinela,
+    with "welcome to LOUMA BAKERY", from the website brief. It is on the Contact page.
+    A higher-resolution scan of the original would give a cleaner trace.
+- **The address** on the board reads "B3223 Wilshire Blvd, Los Angeles, CA". The site
+  uses the bakery's real address, 3223 Wilshire Blvd, Santa Monica, CA 90403.
 
 ## Watch out for file corruption
 

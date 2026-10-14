@@ -12,9 +12,9 @@ All art is filled outline (each pen line is a closed shape), coloured with `curr
 | File | From | viewBox (role) | Used by |
 |---|---|---|---|
 | `wordmark.svg` | `01-wordmark.svg` | `0 0 374 240` | Nav brand link (cropped to the art), footer, 404 |
-| `baguette.svg` | `02-baguette-mark.svg` | `0 0 280 100` | `Sketch name="baguette"` (home, menu) |
-| `face.svg` | `06-illustrations.svg`, the face | `0 0 286 265` | `FaceDraw` (footer, 404), `Face` |
-| `toast.svg` | `06-illustrations.svg`, the bread slice | `0 0 200 232` | `Sketch name="toast"` (story) |
+| `baguette.svg` | `02-baguette-mark.svg` | `0 0 280 100` | `Doodle name="baguette"` (home, above the tagline) |
+| `face.svg` | `06-illustrations.svg`, the face | `0 0 286 265` | `FaceDraw` (footer, 404) |
+| `toast.svg` | `06-illustrations.svg`, the bread slice | `0 0 200 232` | not used at the moment (the `bread-slice` doodle is) |
 
 Each viewBox is the mark's long-standing role box, so every `width`/`height` in the markup
 stays valid. The art is fitted inside it (2% padding, centred, aspect kept) by a uniform
@@ -25,14 +25,15 @@ viewBox (`7.5 53.8 359 132.4`) so the wordmark fills the bar's height.
 
 ## The `-baked` siblings
 
-`baguette-baked.svg`, `toast-baked.svg` and `face-baked.svg` are what the components
-render. `scripts/bake-sketches.mjs` used to bake a pencil "roughen" filter into the traced
+`face-baked.svg` is what `FaceDraw` renders (`baguette-baked.svg` is used by the dev-only
+/review page; `toast-baked.svg` by nothing at the moment). `scripts/bake-sketches.mjs` used to bake a pencil "roughen" filter into the traced
 placeholders. The masters are already hand-drawn and carry no filter, so the script copies
 them through unchanged: the baked files equal the masters. Re-run it after replacing a mark.
 
-How they draw: `Sketch` and `FaceDraw` render the filled shape at rest, plus one thin
-outline stroke per subpath. When the scroll-draw effect runs, the fill hides, the outlines
-trace in, and the fill settles back. With reduced motion, or motion off, the mark is simply
+How the face draws: `FaceDraw` renders the filled shape at rest, plus one thin outline
+stroke per subpath. When the scroll-draw effect runs, the fill hides, the outlines trace
+in, and the fill settles back. Every other drawing (the doodles and the baguette mark) is
+inlined by `Doodle.astro` and revealed left to right once, with a clip-path. With reduced motion, or motion off, the mark is simply
 filled. No live SVG filter runs anywhere.
 
 ## Doodles
@@ -47,7 +48,9 @@ with 2% padding, `fill="currentColor"`:
   `watermelon`, `live-laugh-louma`, `moon-stars`, `star-kite`, `star-kite-2`.
 
 They were split from the page SVGs by a script that groups subpaths by distance and by
-region; path data was never edited. None is used on the site yet.
+region; path data was never edited. The site uses them through `Doodle.astro` as small
+red accents: on the home page, Our Story, the Initiative pillars, the menu category
+headings and the shop.
 
 ## Traced from the owner's material (not from the board)
 

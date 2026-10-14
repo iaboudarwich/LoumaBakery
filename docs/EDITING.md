@@ -1,95 +1,173 @@
 # Editing the Louma Bakery website
 
-This guide is for the person who keeps the website up to date. You do not need to know any code.
+This guide is for the owner and the staff who keep the website up to date. You don't need to know any code.
 
-## Before you start
+## The basics
 
-The website has an editor at **https://loumabakeryy.netlify.app/admin/**.
-
-**The login is not switched on yet.** Your developer still has to finish one setup step (see "Things that still need a developer" below). Until then, the editor will not let you in.
-
-Once the login works:
+The editor is at **https://loumabakeryy.netlify.app/admin/** (this will move to the real web address once the domain is connected).
 
 1. Open the editor and log in with your email and password.
-2. Pick what you want to change from the list on the left.
+2. In the list on the left, pick the part of the site you want to change (the sections below say which).
 3. Make your change.
 4. Click **Publish**.
 5. Wait about two minutes, then refresh the website. Your change is live.
 
-Every change is saved with a full history. Nothing is lost for good. If something goes wrong, your developer can put it back.
+Every change is saved with its full history, so nothing is ever lost for good. If something goes wrong, the person who looks after the website can put the old version back.
 
-## What to change, and where
+**Your words appear exactly as you type them.** The website never rewrites, shortens or corrects them. Read your text once more before you click Publish.
 
-| To change this | Go here in the editor |
+**Want to practise first?** There is a practice editor at **https://loumabakeryy.netlify.app/admin-demo/**. Click **Login**; no password is needed. It has the same boxes as the real editor, but they start empty and nothing you do there is saved.
+
+## Page by page
+
+### Home page
+
+| To change | Go to |
 |---|---|
-| A menu item's name or description | Menu → Menu items → open the category → open the item |
-| A price | Menu → Menu items → the category → the item → Price |
-| Add a menu item | Menu → Menu items → the category → **Add item** at the top of the list |
-| Remove a menu item | Menu → Menu items → the category → the **X** on that item |
-| The order of menu items | Menu → Menu items → the category → drag the item by the two short lines at its top |
-| A menu item's photo | Menu → Menu items → the category → the item → Photo |
-| The add-ons list (like extra shots) | Menu → Menu items → Add-ons |
-| The big photo at the top of the home page | Images → Site photos → Home: hero photo |
-| The photos on the Our Story page | Images → Site photos → Story: photo 1 or photo 2 |
-| The small extra photo on the home page | Images → Site photos → Home: accent photo |
-| Opening hours | Site settings → Settings → Opening hours |
-| The address | Site settings → Settings → Address |
-| The phone number | Site settings → Settings → Phone number |
-| The email address | Site settings → Settings → Email address |
-| The Uber Eats or Instagram link | Site settings → Settings → Links |
-| A page's headline, intro, or paragraphs | Page text → All pages → open that page |
-| The open jobs on the Careers page | Page text → All pages → Careers page → Open roles |
-| The catering steps or options | Page text → All pages → Catering page |
-| The values on the Mission page | Page text → All pages → Mission page → Values |
-| The "page not found" page and its button | Page text → All pages → "Page not found" page |
-| The scrolling words on the home page | Marquee words → Marquee |
-| The numbered chapters on the Our Story page | Story chapters → Chapters |
-| The "what goes in" list on the Our Story page | Ingredients → Ingredients |
+| The line under the big photo ("A sister-run neighborhood bakery in Santa Monica") | Page text → All pages → Home page → **Tagline** |
+| The two introduction paragraphs | Page text → All pages → Home page → **Paragraphs** |
+| The heading above the Instagram photos | Page text → All pages → Home page → **Instagram heading** |
+| The newsletter heading and line (shown in the footer of every page) | Page text → All pages → Home page → **Newsletter title** and **Newsletter line** |
+| The big photo at the top | Photos → Site photos → **Home: top photo** (see "Swapping a photo") |
+| The six photos further down the page | Photos → Site photos → **Home: photo gallery** |
+| The Instagram photos | Instagram strip (see "The Instagram strip") |
+| The address and hours in the red band | Site settings (see "Hours, address and emails") |
 
-## Good habits
+### Our Story
 
-**Photos.** Use a photo at least 1200 pixels wide and under 3MB. The website shrinks and sharpens it for you. Every photo has a **Photo description** box. Write one plain sentence about what the photo shows, like "Croissants cooling on a wire rack." People who cannot see the photo hear this sentence.
+| To change | Go to |
+|---|---|
+| The page title | Page text → All pages → Our Story page → **Headline** |
+| The letter | Our Story → **The letter** → **Paragraphs**. Each box is one paragraph. **Signed** is the name read out to screen readers for the handwritten signature. |
+| The five sections (title and paragraphs) | Our Story → **Sections**. Open a section to change its title or paragraphs; drag the two short lines at the top of a section to reorder it. |
+| The two photos | Photos → Site photos → **Our Story: photos**. The first shows after the first section, the second after the fourth. |
 
-**Prices.** Type them the way they should look, like `$4.50`. Leave the box empty if an item has no price yet. It will still show, just without a price.
+### The Louma Initiative
 
-**Hours.** Use one row for each group of days. For a closed day, type `Closed` in Opens and leave Closes empty.
+| To change | Go to |
+|---|---|
+| The title and the opening paragraphs | Page text → All pages → The Louma Initiative page → **Headline** and **Introduction** |
+| "Opening doors" and "Built to last" | Page text → All pages → The Louma Initiative page → **Sections** |
+| The four pillars and their drawings | Page text → All pages → The Louma Initiative page → **The four pillars**. Each pillar has a **Pillar** name and a **Drawing** picked from the list of brand drawings. |
 
-**Phone number.** The site hides the phone number until a real one is entered. Type it like `+1 (310) 555-1234` and it will appear in the footer, on the home page, and on the Visit page.
+This page has no photos, by the owner's choice. Never add numbers about team members' disabilities to this page. This is a firm rule for the bakery.
 
-**Internal ID.** Some items have a box called Internal ID. Leave it as it is. The website uses it behind the scenes.
+### Menu
 
-**The Mission page.** Never add numbers about team members' disabilities. This is a firm rule for the bakery.
+| To change | Go to |
+|---|---|
+| The title, the four introduction paragraphs and the allergen note | Page text → All pages → Menu page |
+| Menu items, categories and add-ons | Menu → Menu items (see "Editing the menu") |
 
-**Short is better.** Menu descriptions work best as one line. The rest of the site is written in plain, warm sentences. Try to keep that voice.
+### Shop
 
-## Practicing first
+| To change | Go to |
+|---|---|
+| The title and the "Coming soon" words | Page text → All pages → Shop page → **Headline** and **"Not open yet" text** |
+| The Pre-orders and Gift cards headings and text | Page text → All pages → Shop page → **Pre-orders** and **Gift cards** |
+| The Merch heading | Page text → All pages → Shop page → **Merch** |
+| The buttons' links and the products | Shop (see "Shop links and products") |
 
-There is a practice editor at **https://loumabakeryy.netlify.app/admin-demo/**. Click **Login**. No password is needed.
+### Contact
 
-It shows the same menus and boxes as the real editor, but **the boxes start empty**. It does not load the website's real words or photos. Nothing you do there is saved. Use it to learn where things are, not to check how a change will look.
+| To change | Go to |
+|---|---|
+| The title ("Come say hi") | Page text → All pages → Contact page → **Headline** |
+| Address, hours, emails, Instagram | Site settings (see "Hours, address and emails") |
+| The storefront photo | Photos → Site photos → **Contact: storefront photo** |
 
-## The menu and the Google Sheet
+The hand-drawn map and the "Get directions" link update themselves from the address. A new map drawing needs the person who looks after the website.
 
-The menu can be set up to update itself from a Google Sheet every morning. **This is not switched on yet.** For now, edit the menu in the editor as usual.
+### Catering and Careers
 
-If it is switched on later, the sheet becomes the source of the menu. Menu changes made in the editor will be replaced by the sheet the next morning. Photo descriptions for menu items will also be lost, because the sheet has no column for them.
+| To change | Go to |
+|---|---|
+| The small label, title, intro line and paragraphs | Page text → All pages → Catering page (or Careers page) |
+| The three catering steps | Page text → All pages → Catering page → **Process steps** |
+| The catering options | Page text → All pages → Catering page → **Options / tiers** (name, bullet points, small badge) |
+| The open jobs | Page text → All pages → Careers page → **Open roles**. The job list in the application form updates by itself. |
 
-## Things that still need a developer
+### The "page not found" page
 
-These cannot be changed in the editor. Ask your developer.
+Page text → All pages → "Page not found" page: the label, headline, line and button.
 
-* **Switching on the editor login.** The login service (DecapBridge) needs its site code added to the website.
-* **The Google Sheet menu sync.** Someone has to publish the sheet and connect it.
-* **Getting form messages by email.** The newsletter, careers, and catering forms collect replies in the Netlify dashboard. No one is emailed yet when a new one arrives. Your developer or Netlify account owner can turn on email alerts.
-* **The words on forms.** Field names like "Name" and "Event date", the buttons like "Send inquiry" and "Notify me", and the messages people see after sending.
-* **The menu bar and footer.** The page names at the top ("Menu", "Our Story", and so on), "Ordering soon", and the footer headings and tagline.
-* **Some section headings.** For example "Where you'd fit", "Pick a starting point", "Catering inquiry", "A short list, done well", "Find us", "See the full menu", and the Hours, Address, and Getting here headings on the Visit page.
-* **The page name in the browser tab.**
-* **The map on the Visit page.** It is set up for the current address.
-* **Colors, fonts, spacing, layout, and the hand-drawn sketches.**
-* **Adding a new page.**
-* **The web address (domain).**
+## Editing the menu
 
-## Inviting another editor
+Go to **Menu → Menu items**. The menu is a list of categories, and each category has a list of items.
 
-An admin does this in the DecapBridge dashboard, not in the editor. Go to DecapBridge, open the site, choose Collaborators, and invite the person by email.
+- **Change an item**: open the category, open the item, change its **Name** or **Description**. Descriptions work best as one short line.
+- **Dietary tags**: open the item and pick from **Dietary tags** (vegan, vegetarian, gf, nut-free). They show after the item's name as small labels (VG, V, GF, NF).
+- **Add an item**: open the category and click **Add item** at the top of its Items list.
+- **Remove an item**: click the **X** on that item.
+- **Reorder items**: drag an item by the two short lines at its top.
+- **A category's drawing**: open the category and pick a **Drawing**. It shows beside the category heading.
+- **Category order**: change **Show order** (1 shows first, then 2, 3 and so on).
+- **Add-ons** (extra shot, oat milk and so on): **Add-ons** at the bottom. **Show after category** is the Internal ID of the category the list follows (for example `fridge`).
+- Leave **Internal ID** as it is; the website uses it behind the scenes.
+- Items keep a **Photo** and **Photo description**, but the Menu page doesn't show photos at the moment.
+
+**The menu and the Google Sheet.** The menu can be set up to update itself every morning from a Google Sheet. This is not switched on. If it is switched on later, the sheet becomes the source of the menu items, and item changes made in the editor are replaced by the sheet the next morning (category drawings and photo descriptions are kept).
+
+## Shop links and products
+
+Go to **Shop**.
+
+**When Square (or another shop) is ready:**
+
+1. Copy the page address of your pre-order page from Square.
+2. Paste it into **Pre-order link**.
+3. Do the same for gift cards in **Gift card link**.
+4. Click **Publish**.
+
+While a link box is empty, its button says "Coming soon" and can't be clicked. Once a link is there, the button opens your shop page in a new tab.
+
+**Adding a product:**
+
+1. Under **Merch**, click **Add product**.
+2. Fill in **Name**, **Price** (for example `$32`), **Description** and **Size**.
+3. Add a **Photo**: a cutout of the product on a transparent background (a PNG) works best, at least 800 pixels wide. The whole product is always shown, never cropped.
+4. Write a **Photo description**, one plain sentence about what the photo shows.
+5. Paste the product's **Buy link** when it can be bought online. Without one, its button says "Coming soon".
+
+## Swapping a photo
+
+Go to **Photos → Site photos**, click the photo you want to replace, and upload the new one. Then update its **description**.
+
+| Slot | Shape | Minimum size |
+|---|---|---|
+| Home: top photo | Landscape (wider than tall) | 2400 pixels wide |
+| Home: photo gallery, 1st, 3rd, 4th, 6th | Portrait (taller than wide) | 1600 pixels on the long side |
+| Home: photo gallery, 2nd and 5th | Landscape | 1600 pixels on the long side |
+| Our Story: photos | Portrait | 1200 pixels wide |
+| Contact: storefront photo | Portrait | 1200 pixels wide |
+| Instagram strip | Square works best | 600 pixels wide |
+
+- Keep each photo under 3 MB. The website makes the small, fast versions itself.
+- Use photos that are straight and not tilted. The website shows them exactly as taken, cropped to fit the slot's shape.
+- **Every photo needs a description**: one plain sentence about what is actually in the photo, like "Pain au chocolat cooling on a wire rack on a wooden counter". People who can't see the photo hear this sentence.
+
+## The Instagram strip
+
+Go to **Instagram strip**. There are up to six photos. Click a photo to replace it, and update its **Photo description**. Every tile links to the bakery's Instagram page. A tile without a photo is skipped.
+
+## Hours, address and emails
+
+Go to **Site settings → Settings**.
+
+- **Opening hours**: one row for each group of days, for example "Tuesday – Sunday", "7:30 AM", "2:30 PM". For a closed day, type `Closed` in **Opens** and leave **Closes** empty. Hours show on the home page, the Contact page, the footer and in search results.
+- **Address**: street, city, state and ZIP. The map link updates by itself.
+- **Email address**: the main contact email.
+- **Email for larger orders**: shown with "for larger orders".
+- **Instagram link** and **Instagram handle** (for example `@loumabakery`).
+- **Uber Eats order link**: saved for later; it isn't shown anywhere yet.
+
+## Things that need the person who looks after the website
+
+These can't be changed in the editor:
+
+- The page names in the top menu and the footer, and the footer's own text.
+- The words on the forms (field names, buttons, the thank-you messages).
+- A few small headings, for example "Pick a starting point", "Catering inquiry", "Where you'd fit", "Tell us about you", and Address, Hours and Contact on the Contact page.
+- The drawings, the hand-drawn map, colours, fonts and layout.
+- Adding a new page, and the web address (domain).
+- Email alerts for form replies, and inviting another editor (see `docs/HANDOFF.md`).

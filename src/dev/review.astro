@@ -1,35 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { Baguette } from '../lib/brand';
-import Img from '../components/Img.astro';
-import { resolveImage } from '../lib/images';
+import Doodle from '../components/Doodle.astro';
 
 // Internal effects review. Not linked from anywhere; noindex. Each effect has a
 // live on/off toggle that flips its flag for THIS view (window.__FX), so a
 // reviewer can isolate effects one at a time.
 
 const effects: { name: string; desc: string; kind: string; scroll?: boolean; pointer?: boolean }[] = [
-  { name: 'kenBurns', desc: 'Slow drift on the hero photo (desktop).', kind: 'img' },
-  { name: 'scrollDraw', desc: 'Sketches draw themselves once when seen.', kind: 'draw', scroll: true },
+  { name: 'scrollDraw', desc: 'The footer face and menu sketches trace their outline once.', kind: 'draw', scroll: true },
+  { name: 'doodleDraw', desc: 'Doodles reveal left to right once when seen.', kind: 'doodle', scroll: true },
   { name: 'reveal', desc: 'Sections fade in and settle downward, staggered.', kind: 'reveal', scroll: true },
-  { name: 'imageWipe', desc: 'Feature images unveil with a soft wipe.', kind: 'wipe', scroll: true },
-  { name: 'marquee', desc: 'One slow ghost ticker; pauses on hover.', kind: 'marquee' },
-  { name: 'ingredientSlider', desc: 'Drag the ingredient row to scroll it.', kind: 'slider', pointer: true },
   { name: 'toast', desc: 'Transient corner notices.', kind: 'toast' },
 ];
 const names = effects.map((e) => e.name);
-// Demo media are real shoot photos (no placeholder blocks). Each one is a photo
-// the live pages already render through <Img> with default widths/quality, so
-// Astro reuses those exact transforms and /review adds no image weight.
-const kenBurnsPhoto = resolveImage('lamination.jpg');
-const wipePhoto = resolveImage('kitchen-team.jpg');
-const ingDemo = [
-  ['Flour', 'bakery-rack.jpg'],
-  ['Butter', 'croissant-cut.jpg'],
-  ['Salt', 'storefront.jpg'],
-  ['Levain', 'out-of-oven.jpg'],
-  ['Time', 'zaatar-croissant.jpg'],
-].map(([name, file]) => ({ name, photo: resolveImage(file) }));
 ---
 
 {/* Set every effect OFF for this view so demos start isolated. Runs during
@@ -74,26 +58,10 @@ const ingDemo = [
             </div>
 
             <div class="fx-demo">
-              {e.kind === 'img' && kenBurnsPhoto && <Img src={kenBurnsPhoto} alt="" class="demo-img" anim="ken-burns" sizes="(max-width: 720px) 90vw, 560px" />}
               {e.kind === 'draw' && <Baguette class="demo-sketch" width={200} height={71} aria-hidden="true" data-anim="scroll-draw" />}
+              {e.kind === 'doodle' && <Doodle name="hearts" size={120} color="red" animate />}
               {e.kind === 'reveal' && <div class="demo-reveal" data-anim="reveal">Hello from the bakery.</div>}
-              {e.kind === 'wipe' && wipePhoto && <Img src={wipePhoto} alt="" class="demo-img" anim="wipe" sizes="(max-width: 720px) 90vw, 560px" />}
-              {e.kind === 'marquee' && (
-                <div class="demo-marquee" data-anim="marquee">
-                  <div class="marquee-track">
-                    <span class="marquee-item">Out of the oven every morning <span class="marquee-dot">·</span></span>
-                    <span class="marquee-item">Baked on Wilshire <span class="marquee-dot">·</span></span>
-                  </div>
-                </div>
-              )}
               {e.kind === 'toast' && <button type="button" class="btn btn-ghost" data-demo-toast>Fire a toast</button>}
-              {e.kind === 'slider' && (
-                <ul class="ing-track demo-slider" role="list" data-anim="ingredient-slider">
-                  {ingDemo.map(({ name, photo }) => (
-                    <li class="ing-card">{photo && <Img src={photo} alt="" class="ing-img" sizes="108px" />}<h3 class="ing-name">{name}</h3></li>
-                  ))}
-                </ul>
-              )}
             </div>
           </li>
         ))}
@@ -143,7 +111,7 @@ const ingDemo = [
   .switch { display: inline-flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; flex-shrink: 0; }
   .switch input { position: absolute; opacity: 0; width: 0; height: 0; }
   .switch-ui { width: 44px; height: 26px; border-radius: 0; background: var(--fairy); position: relative; transition: background var(--dur-fast) var(--ease-out); }
-  .switch-ui::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 0; background: var(--butter); box-shadow: var(--shadow-sm); transition: transform var(--dur-fast) var(--ease-out); }
+  .switch-ui::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 0; background: var(--butter); transition: transform var(--dur-fast) var(--ease-out); }
   .switch input:checked + .switch-ui { background: var(--burgundy); }
   .switch input:checked + .switch-ui::after { transform: translateX(18px); }
   .switch input:focus-visible + .switch-ui { outline: 2.5px solid var(--burgundy); outline-offset: 2px; }
@@ -152,17 +120,8 @@ const ingDemo = [
 
   /* Demo area */
   .fx-demo { padding: var(--space-5); border-top: 1px dashed color-mix(in srgb, var(--ink) 12%, transparent); min-height: 140px; display: flex; align-items: center; justify-content: center; background: var(--butter); }
-  :global(.demo-img) { width: 100%; aspect-ratio: 16 / 9; border-radius: 0; }
   .demo-sketch { color: var(--red); }
   .demo-reveal { font-family: var(--font-display); font-size: clamp(24px, calc(24px + (100vw - 1920px) * 0.004687), 27px); color: var(--burgundy); }
-  .demo-marquee { width: 100%; overflow: hidden; background: var(--burgundy); color: var(--butter); padding-block: var(--space-3); border-radius: 0; }
-  .demo-marquee .marquee-track { display: flex; white-space: nowrap; width: max-content; }
-  .demo-marquee .marquee-item { display: inline-flex; gap: var(--space-4); padding-inline: var(--space-3); font-family: var(--font-display); font-weight: 500; font-size: clamp(18px, calc(18px + (100vw - 1920px) * 0.003906), 20.5px); }
-  .demo-marquee .marquee-dot { color: var(--peach); }
-  .demo-slider { width: 100%; display: flex; gap: var(--space-3); overflow-x: auto; cursor: grab; }
-  .demo-slider .ing-card { flex: 0 0 auto; width: 110px; }
-  .demo-slider :global(.ing-img) { aspect-ratio: 1; border-radius: 0; }
-  .demo-slider .ing-name { margin-top: var(--space-2); font-size: clamp(16px, calc(16px + (100vw - 1920px) * 0.003125), 18px); }
 
   .review-foot { margin-top: var(--space-8); color: var(--muted); font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px); }
 </style>
@@ -175,7 +134,7 @@ const ingDemo = [
     if (!fx) return;
     // Clear pre-paint hidden states so demos are visible by default (off = shown,
     // on = re-animates). Done here so it runs after the head class script.
-    ['fx-reveal'].forEach((c) =>
+    ['fx-reveal', 'fx-doodle'].forEach((c) =>
       document.documentElement.classList.remove(c),
     );
     document.querySelectorAll<HTMLInputElement>('[data-fx-toggle]').forEach((cb) => {

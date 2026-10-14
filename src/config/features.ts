@@ -1,33 +1,20 @@
 /**
  * Feature flags. Every visual effect is gated here; each ALSO respects
- * prefers-reduced-motion and mobile at the CSS/JS level. Flip a flag to false
- * to remove that effect everywhere.
+ * prefers-reduced-motion at the CSS/JS level. Flip a flag to false to remove
+ * that effect everywhere. Photos never animate.
  */
 export const features = {
   // --- Motion (the complete whitelist; see src/scripts/motion.ts) ---
-  /** Slow drift on the hero media (desktop only). */
-  kenBurns: true,
-  /** Sketches draw themselves once when seen; never left invisible. */
+  /** The footer face and the menu sketches trace their outline once when seen. */
   scrollDraw: true,
-  /** Sections fade in and settle downward; children staggered. */
+  /** Doodles reveal left to right (filled outlines) or draw their stroke, once at 30% in view. */
+  doodleDraw: true,
+  /** Sections fade in and settle 16px downward, once on entry. */
   reveal: true,
-  /** Feature images unveil with a soft clip wipe + 1.04->1 settle. */
-  imageWipe: true,
-  /** One slow ghost ticker on the burgundy band; pauses on hover. */
-  marquee: true,
 
   // --- Micro / functional ---
   /** Hand-drawn wavy underline on body-copy links. */
   sketchyLinks: true,
-  /** One warm tone treatment on all photography. */
-  imageTone: true,
-  /** Hero CTA becomes the newsletter while ordering is inert. */
-  heroNewsletterCta: true,
-  /** Drag-to-scroll on the ingredient row. */
-  ingredientSlider: true,
   /** Transient corner notices (form confirmations). */
   toast: true,
-  /** Slim sticky bottom CTA bar on phones (thumb-reach newsletter jump). */
-  mobileCtaBar: true,
 } as const;
-

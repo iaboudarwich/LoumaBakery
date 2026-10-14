@@ -10,29 +10,29 @@ const roles = c.roles ?? [];
 ---
 
 <BaseLayout title="Careers" description={c.lede}>
-  <header class="page-head">
+  <header class="page-intro">
     <div class="container">
-      <p class="eyebrow">{c.eyebrow}</p>
-      <h1>{noOrphan(c.title ?? '')}</h1>
+      {c.eyebrow && <p class="label page-label">{c.eyebrow}</p>}
+      <h1 class="display">{noOrphan(c.title ?? '')}</h1>
       {c.lede && <p class="lede">{c.lede}</p>}
     </div>
   </header>
 
   {/* Intro */}
-  <section class="careers-intro" data-anim={f.reveal ? 'reveal' : undefined}>
+  <section class="section careers-intro" data-anim={f.reveal ? 'reveal' : undefined}>
     <div class="container narrow">
-      {c.body.map((p) => <p class="intro-p">{p}</p>)}
+      {c.body.map((p) => <p class="lead">{p}</p>)}
     </div>
   </section>
 
   {/* Roles */}
   {roles.length > 0 && (
-    <section class="roles cv-auto">
+    <section class="section block--white roles cv-auto">
       <div class="container">
-        <div class="sec-head"><p class="eyebrow">Open roles</p><h2>Where you'd fit</h2></div>
+        <div class="sec-head"><p class="label sec-label">Open roles</p><h2 class="h2">Where you'd fit</h2></div>
         <ul class="roles-list" role="list" data-anim={f.reveal ? 'reveal' : undefined} data-reveal-children>
-          {roles.map((r, i) => (
-            <li class={`role ${i === 0 ? 'role--feature' : ''}`}>
+          {roles.map((r) => (
+            <li class="role">
               <div class="role-head">
                 <h3 class="role-title">{r.title}</h3>
                 {r.type && <span class="role-type mono">{r.type}</span>}
@@ -47,9 +47,9 @@ const roles = c.roles ?? [];
   )}
 
   {/* Application form */}
-  <section class="apply cv-auto" id="apply" data-anim={f.reveal ? 'reveal' : undefined}>
+  <section class="section apply cv-auto" id="apply" data-anim={f.reveal ? 'reveal' : undefined}>
     <div class="container narrow">
-      <div class="sec-head"><p class="eyebrow">Apply</p><h2>Tell us about you</h2></div>
+      <div class="sec-head"><p class="label sec-label">Apply</p><h2 class="h2">Tell us about you</h2></div>
       <form
         name="careers"
         method="POST"
@@ -81,32 +81,25 @@ const roles = c.roles ?? [];
 </BaseLayout>
 
 <style>
-  .narrow { max-width: 760px; }
-  .careers-intro { padding-block: var(--space-8); }
-  .intro-p { font-size: clamp(18px, 1.6vw, 21px); color: var(--body); }
-  .intro-p + .intro-p { margin-top: var(--space-4); }
-
-  .roles { padding-block: var(--space-7) var(--space-9); }
+  /* Global system (tokens.css): container, --section-y rhythm, --fs-* scale. */
+  .page-label { color: var(--burgundy); margin-bottom: var(--space-5); }
+  .sec-head { margin-bottom: var(--block-gap); }
+  .sec-label { color: var(--burgundy); margin-bottom: var(--space-2); }
+  .narrow { max-width: calc(var(--container) * 2 / 3); }
+  .careers-intro .lead { max-width: 34em; }
   .roles-list { display: flex; flex-direction: column; gap: var(--space-4); }
   .role {
-    padding: var(--space-6);
+    padding: var(--block-gap);
     background: var(--butter);
-    border-radius: 0;
-    border: 1px solid var(--hairline);
-    transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
-  }
-  .role--feature {
-    background: linear-gradient(135deg, color-mix(in srgb, var(--peach) 22%, var(--butter)), var(--butter));
-    border-color: color-mix(in srgb, var(--peach) 45%, transparent);
+    border: 1px solid var(--hairline-strong);
   }
   .role-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
-  .role-title { font-size: clamp(22px, 2.4vw, 30px); }
-  .role-type { color: var(--burgundy); font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px); letter-spacing: 0.06em; text-transform: uppercase; }
-  .role-body { margin: var(--space-3) 0 var(--space-4); color: var(--body); max-width: 64ch; }
-  .role-apply { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--font-body); font-weight: 500; font-size: clamp(14px, calc(14px + (100vw - 1920px) * 0.003125), 16px); color: var(--burgundy); text-decoration: none; }
+  .role-title { font-size: var(--fs-lead); line-height: 1.2; color: var(--ink); }
+  .role-type { color: var(--burgundy); font-size: var(--fs-small); letter-spacing: 0.06em; text-transform: uppercase; }
+  .role-body { margin: var(--space-3) 0 var(--space-4); color: var(--body); }
+  .role-apply { display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; color: var(--burgundy); text-decoration: none; }
   @media (hover: hover) and (pointer: fine) {
-    .role-apply:hover { color: var(--burgundy); }
+    .role-apply:hover { text-decoration: underline; text-underline-offset: 0.2em; }
   }
-
-  .apply { padding-block: var(--space-8) var(--space-9); scroll-margin-top: calc(var(--nav-h) + 24px); }
+  .apply { scroll-margin-top: calc(var(--nav-h) + 24px); }
 </style>

@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css';
-import { getEntry } from 'astro:content';
 import { siteConfig, SITE_URL } from '../config/site';
 import { features } from '../config/features';
 import Nav from '../components/Nav.astro';
@@ -15,15 +14,12 @@ interface Props {
   image?: string;
   /** schema.org / OG type. */
   ogType?: 'website' | 'article';
-  /** Make the nav transparent over a hero (page provides its own hero bg). */
-  transparentNav?: boolean;
   /** Keep the page out of search indexes (internal pages). */
   noindex?: boolean;
   /** schema.org structured data (Bakery on home and visit), or none. Both values emit the same entity. */
   schema?: 'bakery' | 'localbusiness';
   /** Show the footer newsletter. Pages with their own signup (home) pass false. */
   footerNewsletter?: boolean;
-  /** Preload the hero headline face (home) so its late swap doesn't shift layout. */
 }
 
 const {
@@ -31,13 +27,11 @@ const {
   description = siteConfig.tagline,
   image = '/og-default.jpg', // center crop of the hero frame, now src/assets/img/croissant-grid.jpg (Kayla shoot)
   ogType = 'website',
-  transparentNav = false,
   noindex = false,
   schema,
   footerNewsletter = true,
 } = Astro.props;
 
-const newsletterCta = (await getEntry('copy', 'home'))?.data.newsletterCta ?? 'Get the newsletter';
 const pageTitle = title ? `${title} · ${siteConfig.name}` : `${siteConfig.name} · ${siteConfig.tagline}`;
 const canonical = new URL(Astro.url.pathname, SITE_URL).href;
 const ogImage = new URL(image, SITE_URL).href;
@@ -103,7 +97,6 @@ const jsonLd =
   lang="en"
   class={[
     'sys-slab',
-    features.imageTone && 'img-tone',
     features.sketchyLinks && 'links-sketch',
   ].filter(Boolean).join(' ')}
 >
@@ -148,9 +141,9 @@ const jsonLd =
          Escape `<` so a value containing </script> can't break out. -->
     {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')} is:inline />}
 
-    {/* Pre-paint motion classes: set on <html> before first paint so reveal/
-        hero start hidden only when motion will actually run (no FOUC, no
-        stuck-hidden content under reduced-motion or when a flag is off). */}
+    {/* Pre-paint motion classes: set on <html> before first paint so reveals
+        and doodles start hidden only when motion will actually run (no FOUC,
+        no stuck-hidden content under reduced-motion or when a flag is off). */}
     <script is:inline define:vars={{ flags: features }}>
       (function () {
         var h = document.documentElement;
@@ -161,13 +154,18 @@ const jsonLd =
         }
         h.classList.add('motion');
         if (flags.reveal) h.classList.add('fx-reveal');
+        if (flags.doodleDraw) h.classList.add('fx-doodle');
       })();
     </script>
 
-    <!-- Critical nav/hero CSS, inlined to protect first paint. -->
+    <!-- Critical header CSS, inlined to protect first paint. One flat sticky
+         bar on butter on every page: 72px desktop, 60px on narrow screens. -->
     <style is:inline>
       :root {
         --nav-h: 72px;
+      }
+      @media (max-width: 47.99rem) {
+        :root { --nav-h: 60px; }
       }
       .skip-link {
         position: absolute;
@@ -184,48 +182,26 @@ const jsonLd =
         top: 1rem;
       }
       .site-nav {
-        position: fixed;
+        position: sticky;
         inset-block-start: 0;
-        inset-inline: 0;
         z-index: 1000;
         height: calc(var(--nav-h) + env(safe-area-inset-top, 0px));
         padding-top: env(safe-area-inset-top, 0px);
         display: flex;
         align-items: center;
-      }
-      @media (max-width: 768px) {
-        .site-nav { --nav-h: 56px; }
-      }
-      .site-nav[data-transparent='true']:not([data-scrolled='true']) {
-        background: transparent;
-      }
-      .site-nav[data-scrolled='true'],
-      .site-nav:not([data-transparent='true']) {
-        background: color-mix(in srgb, var(--butter, #FBF5D4) 78%, transparent);
-        -webkit-backdrop-filter: saturate(140%) blur(12px);
-        backdrop-filter: saturate(140%) blur(12px);
-        box-shadow: 0 1px 0 color-mix(in srgb, var(--ink, #1D1D1B) 8%, transparent);
-      }
-      /* Reserve nav height on non-hero pages so content isn't hidden. */
-      body:not([data-hero='true']) {
-        padding-top: calc(var(--nav-h) + env(safe-area-inset-top, 0px));
+        background: var(--butter, #FBF5D4);
+        border-bottom: 1px solid color-mix(in srgb, var(--ink, #1D1D1B) 12%, transparent);
       }
     </style>
   </head>
 
-  <body data-hero={transparentNav ? 'true' : 'false'} class={features.mobileCtaBar ? 'has-cta-bar' : undefined}>
+  <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <Nav transparent={transparentNav} />
+    <Nav />
     <main id="main">
       <slot />
     </main>
     <Footer newsletter={footerNewsletter} />
-
-    {features.mobileCtaBar && (
-      <div class="mobile-cta-bar" data-cta-bar>
-        <a class="btn mobile-cta-link" href="#newsletter">{newsletterCta}</a>
-      </div>
-    )}
 
     <script>
       import '../scripts/motion.ts';

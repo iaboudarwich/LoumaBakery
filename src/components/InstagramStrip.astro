@@ -21,7 +21,7 @@ const { instagram, instagramHandle } = siteConfig.links;
       {tiles.map((t) => (
         <li>
           <a class="ig-tile" href={instagram} target="_blank" rel="noopener">
-            <Img src={t.photo!} alt={t.alt} class="ig-img" sizes="(max-width: 600px) 33vw, 200px" widths={[200, 400]} />
+            <Img src={t.photo!} alt={t.alt} class="ig-img" sizes="(max-width: 40rem) 50vw, (max-width: 64rem) 33vw, 230px" widths={[240, 480, 720]} />
           </a>
         </li>
       ))}
@@ -31,18 +31,19 @@ const { instagram, instagramHandle } = siteConfig.links;
 </div>
 
 <style>
+  /* Six squares in one row on wide screens, 3x2 at tablet widths, 2x3 on
+     phones. Photos render as shot (square crop via the slot's aspect ratio). */
   .ig-tiles {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: var(--space-2);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(8px, 1vw, 16px);
     margin: 0;
     padding: 0;
   }
+  @media (min-width: 40rem) { .ig-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 64rem) { .ig-tiles { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
   .ig-tile { display: block; }
-  /* Square crop: the picture carries the box, the img covers it (global .img-cover). */
   .ig-tile :global(.ig-img) { aspect-ratio: 1; }
-  .ig-handle { margin-top: var(--space-4); }
-  @media (max-width: 600px) {
-    .ig-tiles { grid-template-columns: repeat(3, 1fr); }
-  }
+  .ig-handle { margin-top: var(--block-gap); }
+  .ig-handle a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; }
 </style>

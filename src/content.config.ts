@@ -48,7 +48,7 @@ const copy = defineCollection({
       // Initiative, Menu
       intro: paragraphs,
       sections: z.array(titledSection).optional(),
-      pillars: z.array(z.string()).optional(),
+      pillars: z.array(z.object({ name: z.string(), icon: z.string() })).optional(), // icon: a file in src/assets/brand/doodles
       allergenNote: z.string().optional(),
       // Shop
       status: z.string().optional(),

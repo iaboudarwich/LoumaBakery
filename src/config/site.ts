@@ -9,6 +9,11 @@
  */
 import settings from '../data/settings.json';
 
+// "Get directions": a plain Google Maps search link built from the address
+// in settings.json (no embed). Spaces become "+", commas stay readable.
+const mapsQuery = `${settings.address.street}, ${settings.address.city}, ${settings.address.state} ${settings.address.zip}`;
+const directionsUrl = `https://maps.google.com/?q=${encodeURIComponent(mapsQuery).replace(/%20/g, '+').replace(/%2C/g, ',')}`;
+
 export const siteConfig = {
   /** Production URL. Currently the Netlify subdomain; swap when the real domain lands. */
   url: 'https://loumabakeryy.netlify.app',
@@ -23,6 +28,8 @@ export const siteConfig = {
   ordersEmail: settings.ordersEmail,
   address: settings.address,
   hours: settings.hours,
+  /** Plain Google Maps link to the address (built from settings.json). */
+  directionsUrl,
   links: {
     /** Kept for later; rendered nowhere for now. */
     uberEats: settings.links.uberEats,

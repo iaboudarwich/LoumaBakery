@@ -1,187 +1,175 @@
 ---
 import { getEntry } from 'astro:content';
+import { getImage } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { siteConfig } from '../config/site';
 import { features as f } from '../config/features';
 import Img from '../components/Img.astro';
-import Sketch from '../components/Sketch.astro';
+import Doodle from '../components/Doodle.astro';
 import InstagramStrip from '../components/InstagramStrip.astro';
-import { Wordmark, WORDMARK_ART } from '../lib/brand';
 import { resolveImage as pick } from '../lib/images';
-import images from '../data/images.json';
 
-// No placeholder fallbacks: a missing or unresolved photo renders no image.
-const heroPhoto = pick(images.hero);
-// Hero AVIF must stay <=150KB at every phone size (CLAUDE.md). A 430px @3x
-// phone picks the 1600w variant, so quality is tuned against that file.
-const HERO_QUALITY = 45;
-
-// --- All content pulled from collections / config. No hardcoded copy. ---
+// Every word comes from copy.json ("home"), every photo and its alt text from
+// images.json, the address and hours from settings.json.
 const home = (await getEntry('copy', 'home'))!.data;
+const images = (await getEntry('images', 'images'))!.data;
+const heroPhoto = pick(images.hero);
+const g = images.homeGallery.map((p) => ({ photo: pick(p.image), alt: p.alt }));
+const { address, hours, directionsUrl } = siteConfig;
+
+// Hero, art-directed. Wide screens get the landscape frame. Narrow screens
+// show a 72svh-tall slot, a portrait crop of the same frame, so they get that
+// crop (5:8, centred, the crop object-fit: cover would make anyway) instead
+// of a 3000px landscape file. Keeps the phone LCP AVIF <=150KB (CLAUDE.md);
+// quality is tuned against the file a 390px DPR-3 phone picks.
+const HERO_QUALITY = 45;
+const NARROW = '(max-width: 47.99rem)';
+const variants = async (widths: number[], ratio: number | undefined, format: 'avif' | 'webp') =>
+  heroPhoto
+    ? (await Promise.all(widths.map((w) => getImage({ src: heroPhoto, width: w, ...(ratio ? { height: Math.round(w / ratio), fit: 'cover' as const, position: 'center' } : {}), format, quality: HERO_QUALITY }))))
+        .map((img, i) => `${img.src} ${widths[i]}w`).join(', ')
+    : '';
+const WIDE_W = [1200, 1600, 2000, 2400, 3000];
+const NARROW_W = [600, 900, 1200];
+const hero = heroPhoto && {
+  narrowAvif: await variants(NARROW_W, 5 / 8, 'avif'),
+  narrowWebp: await variants(NARROW_W, 5 / 8, 'webp'),
+  wideAvif: await variants(WIDE_W, undefined, 'avif'),
+  wideWebp: await variants(WIDE_W, undefined, 'webp'),
+  fallback: await getImage({ src: heroPhoto, width: 1600, format: 'jpeg', quality: 70 }),
+};
+
+const reveal = f.reveal ? 'reveal' : undefined;
 ---
 
-<BaseLayout transparentNav schema="bakery" description={home.tagline}>
-  <section class="hero-media slab-hero">
-    {heroPhoto && <Img src={heroPhoto} alt={images.heroAlt} class="hero-bg" anim={f.kenBurns ? 'ken-burns' : undefined} priority quality={HERO_QUALITY} sizes="100vw" />}
-    {/* Video-ready: set siteConfig.links.heroVideo to autoplay over the photo
-        poster. PLACEHOLDER: empty until real footage lands (src/config/site.ts). */}
-    {siteConfig.links.heroVideo && (
-      <video class="hero-video" data-hero-video={siteConfig.links.heroVideo} autoplay muted loop playsinline aria-hidden="true">
-        <source src={siteConfig.links.heroVideo} />
-      </video>
-    )}
-    <div class="hero-media-scrim" aria-hidden="true"></div>
-    <div class="container hero-media-inner">
-      <div class="hero-media-content">
-        <h1 class="hero-wordmark">
-          <span class="visually-hidden">{siteConfig.name}</span>
-          <Wordmark class="hero-wordmark-art" viewBox={WORDMARK_ART} aria-hidden="true" />
-        </h1>
-        {home.tagline && <p class="hero-media-lede">{home.tagline}</p>}
-        {f.heroNewsletterCta && home.newsletterCta && (
-          <a class="btn btn--cream hero-media-cta" href="#newsletter">{home.newsletterCta}</a>
-        )}
-      </div>
+<BaseLayout schema="bakery" description={home.tagline}>
+  {/* 1. Hero: the photo alone, edge to edge. No text, no overlay. */}
+  {hero && (
+    <section class="home-hero">
+      <picture class="hero-photo">
+        <source media={NARROW} type="image/avif" srcset={hero.narrowAvif} sizes="100vw" />
+        <source media={NARROW} type="image/webp" srcset={hero.narrowWebp} sizes="100vw" />
+        <source type="image/avif" srcset={hero.wideAvif} sizes="100vw" />
+        <source type="image/webp" srcset={hero.wideWebp} sizes="100vw" />
+        <img src={hero.fallback.src} width={hero.fallback.attributes.width} height={hero.fallback.attributes.height} alt={images.heroAlt} class="img-cover" loading="eager" decoding="auto" fetchpriority="high" />
+      </picture>
+    </section>
+  )}
+
+  {/* 2. Tagline band: the baguette mark over the tagline. */}
+  <section class="section tagline-band">
+    <div class="container tagline-inner" data-anim={reveal}>
+      <Doodle name="baguette" size={140} color="red" animate={f.doodleDraw} class="tagline-mark" />
+      <h1 class="display tagline">{home.tagline}</h1>
     </div>
   </section>
 
-  <section class="band">
-    <div class="container" data-anim={f.reveal ? 'reveal' : undefined} data-reveal-children>
-      <div class="slab-body">{home.body.map((p) => <p>{p}</p>)}</div>
-      <div class="slab-sketch" aria-hidden="true"><Sketch name="baguette" width={150} height={54} color="var(--burgundy)" draw={f.scrollDraw} /></div>
-    </div>
-    <div class="container slab-find" data-anim={f.reveal ? 'reveal' : undefined}>
-      <div class="findus-info">
-        <p class="eyebrow">Find us</p>
-        <address class="findus-address">
-          <p class="mono">{siteConfig.address.street}<br />{siteConfig.address.city}, {siteConfig.address.state} {siteConfig.address.zip}</p>
-          <ul class="findus-hours" role="list">
-            {siteConfig.hours.map((h) => (
-              <li>
-                <span class="mono">{h.days}</span>
-                <span class="mono findus-hours-time">{h.close ? `${h.open}-${h.close}` : h.open}</span>
-              </li>
-            ))}
-          </ul>
-        </address>
-      </div>
+  {/* 3. Photo pair: portrait 5 columns, landscape 7, top-aligned. */}
+  <section class="section">
+    <div class="container grid-12">
+      {g[0]?.photo && <Img src={g[0].photo} alt={g[0].alt} class="ph ph--portrait" style="--span: 5" sizes="(max-width: 47.99rem) 100vw, min(40vw, 560px)" />}
+      {g[1]?.photo && <Img src={g[1].photo} alt={g[1].alt} class="ph ph--landscape" style="--span: 7" sizes="(max-width: 47.99rem) 100vw, min(57vw, 800px)" />}
     </div>
   </section>
 
-  <section class="band">
+  {/* 4. Body: the two paragraphs in a centred column. */}
+  <section class="section">
+    <div class="container" data-anim={reveal}>
+      <div class="home-body">{home.body.map((p) => <p class="lead">{p}</p>)}</div>
+    </div>
+  </section>
+
+  {/* 5. Photo row: two equal portraits. */}
+  <section class="section">
+    <div class="container grid-12">
+      {g[2]?.photo && <Img src={g[2].photo} alt={g[2].alt} class="ph ph--portrait" style="--span: 6" sizes="(max-width: 47.99rem) 100vw, min(48vw, 680px)" />}
+      {g[3]?.photo && <Img src={g[3].photo} alt={g[3].alt} class="ph ph--portrait" style="--span: 6" sizes="(max-width: 47.99rem) 100vw, min(48vw, 680px)" />}
+    </div>
+  </section>
+
+  {/* 6. Visit band: burgundy, butter text. Address left, hours right. */}
+  <section class="section block--burgundy visit-band" aria-labelledby="visit-band-h">
+    <div class="container grid-12" data-anim={reveal}>
+      <div class="visit-where" style="--span: 7">
+        <Doodle name="sun" size={72} color="butter" animate={f.doodleDraw} class="visit-sun" />
+        <h2 id="visit-band-h" class="visually-hidden">Visit</h2>
+        <address class="visit-address">{address.street}<br />{address.city}, {address.state} {address.zip}</address>
+      </div>
+      <ul class="visit-hours" role="list" style="--start: 9; --span: 4">
+        {hours.map((h) => (
+          <li>
+            <span>{h.days}</span>
+            <span>{h.close ? `${h.open}–${h.close}` : h.open}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="visit-directions"><a href={directionsUrl} target="_blank" rel="noopener">Get directions</a></p>
+    </div>
+  </section>
+
+  {/* 7. Photo row: landscape 8 columns, portrait 4. */}
+  <section class="section">
+    <div class="container grid-12">
+      {g[4]?.photo && <Img src={g[4].photo} alt={g[4].alt} class="ph ph--landscape" style="--span: 8" sizes="(max-width: 47.99rem) 100vw, min(65vw, 900px)" />}
+      {g[5]?.photo && <Img src={g[5].photo} alt={g[5].alt} class="ph ph--portrait" style="--span: 4" sizes="(max-width: 47.99rem) 100vw, min(32vw, 440px)" />}
+    </div>
+  </section>
+
+  {/* 8. Instagram strip. */}
+  <section class="section" aria-labelledby="ig-h">
     <div class="container">
-      {home.instagramTitle && <h2>{home.instagramTitle}</h2>}
-      <div class="slab-ig"><InstagramStrip /></div>
+      {home.instagramTitle && <h2 id="ig-h" class="h2 ig-title">{home.instagramTitle}</h2>}
+      <InstagramStrip />
     </div>
   </section>
-  {/* Footer (with the newsletter, target of #newsletter) comes from BaseLayout. */}
+  {/* 9. Footer (with the newsletter, target of #newsletter) comes from BaseLayout. */}
 </BaseLayout>
 
 <style>
-  /* The homepage rides on ONE background tone (butter, the page default):
-     the hero photo and the footer are the only dark moments. Sections
-     separate by rhythm (consistent vertical padding), not colour. */
-
-  /* --- Slab home --- */
-  .slab-body { margin-top: var(--space-5); }
-  .slab-body p + p { margin-top: var(--space-3); }
-  .slab-sketch { margin-top: var(--space-5); }
-  .slab-find { margin-top: clamp(3rem, 6vw, 5rem); }
-  .slab-ig { margin-top: var(--space-5); }
-
-  /* ============================ 1 · HERO (media, full-bleed) ===== */
-  .hero-media {
-    position: relative;
-    background: var(--ink); /* flat ground; keeps the copy legible if no photo is set */
-    min-height: 100vh; /* fallback */
-    min-height: 100svh;
-    display: flex;
-    align-items: flex-end;
-    overflow: hidden;
-  }
-  /* Dark scrim, stronger toward bottom-left where the content sits. */
-  .hero-media-scrim {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    background:
-      linear-gradient(to top right, color-mix(in srgb, var(--ink) 88%, transparent), color-mix(in srgb, var(--ink) 44%, transparent) 46%, color-mix(in srgb, var(--ink) 8%, transparent) 80%),
-      linear-gradient(0deg, color-mix(in srgb, var(--ink) 64%, transparent), transparent 46%);
-  }
-  .hero-media-inner {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    padding-top: calc(var(--nav-h) + var(--space-6));
-    padding-bottom: max(clamp(2.5rem, 7vw, 5.5rem), calc(env(safe-area-inset-bottom) + 1.5rem));
-  }
-  .hero-media-content { max-width: clamp(320px, 60vw, 680px); color: var(--butter); }
-  .hero-media .hero-media-eyebrow { color: color-mix(in srgb, var(--butter) 86%, transparent); }
-  .hero-media-lede {
-    margin-top: var(--space-4);
-    color: color-mix(in srgb, var(--butter) 92%, transparent);
-    font-size: clamp(17px, 1.4vw, 20px);
-    max-width: 46ch;
-    text-shadow: 0 1px 16px color-mix(in srgb, var(--ink) 45%, transparent);
-  }
-  .hero-media-cta { margin-top: var(--space-6); }
-  /* The drawn wordmark is the headline: butter on the dark panel, sized like
-     the old hero statement's line. :global because the svg is a child's. */
-  .hero-wordmark { line-height: 1; }
-  .hero-wordmark :global(.hero-wordmark-art) {
+  /* 1. Hero: full-bleed, the photo exactly as shot. */
+  .home-hero { line-height: 0; }
+  .hero-photo {
     display: block;
-    width: min(100%, 520px);
-    height: auto;
+    width: 100%;
+    height: min(88svh, 960px);
+  }
+  @media (max-width: 47.99rem) {
+    .hero-photo { height: 72vh; height: 72svh; }
+  }
+
+  /* 2. Tagline band. */
+  .tagline-inner { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--block-gap); }
+  .tagline-inner :global(.tagline-mark) { width: clamp(96px, 10vw, 140px); }
+  .tagline { max-width: 16ch; }
+
+  /* 4. Body copy: a centred column, max 34em, text set left for reading. */
+  .home-body { max-width: 34em; margin-inline: auto; }
+  .home-body .lead { max-width: none; }
+
+  /* 6. Visit band. */
+  .visit-band :global(.visit-sun) { margin-bottom: var(--block-gap); }
+  .visit-address {
+    font-style: normal;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--fs-h2);
+    line-height: 1.1;
     color: var(--butter);
   }
-  /* While the phone CTA bar is shown (<=768px), the hero ends above it so the
-     bar never covers the hero's own CTA. Phones <=430px keep their shorter
-     78svh hero (below); short landscape hides the bar and restores 100svh. */
-  @media (max-width: 768px) {
-    :global(body.has-cta-bar) .hero-media {
-      min-height: calc(100vh - 64px - env(safe-area-inset-bottom, 0px)); /* fallback */
-      min-height: calc(100svh - 64px - env(safe-area-inset-bottom, 0px));
-    }
-  }
-  /* Desktop: the hero content gets more width. */
-  @media (min-width: 861px) {
-    /* html.sys-slab prefix: must outrank the global slab content cap (720px). */
-    :global(html.sys-slab) .hero-media-content { max-width: clamp(320px, 60vw, 820px); }
-  }
-  /* Short landscape screens (phones on their side): size the hero by the
-     available height so eyebrow, headline, lede and CTA all fit between the
-     nav and the bottom edge. Portrait and desktop are untouched. */
-  @media (orientation: landscape) and (max-height: 500px) {
-    .hero-media-inner {
-      padding-top: calc(var(--nav-h) + clamp(0.5rem, 3svh, 1.5rem));
-      padding-bottom: max(clamp(0.75rem, 4svh, 1.5rem), calc(env(safe-area-inset-bottom) + 0.75rem));
-    }
-    :global(html.sys-slab) .hero-media-content { max-width: min(680px, 78vw); }
-    .hero-media-lede { margin-top: clamp(0.5rem, 2.5svh, 1rem); }
-    .hero-media-cta { margin-top: clamp(0.625rem, 3svh, 1.5rem); }
-    :global(body.has-cta-bar) .hero-media { min-height: 100vh; min-height: 100svh; } /* bar hidden here */
-  }
-  @media (max-width: 430px) {
-    .hero-media,
-    :global(body.has-cta-bar) .hero-media { min-height: 78svh; }
+  .visit-hours { margin: 0; padding: 0; align-self: end; display: grid; gap: var(--space-2); font-size: var(--fs-lead); }
+  .visit-hours li { display: flex; justify-content: space-between; gap: var(--space-4); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .visit-directions { grid-column: 1 / -1; }
+  .visit-directions a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-weight: 500;
+    color: var(--butter);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
   }
 
-  /* ========================= HERO video (optional, over the photo) ===== */
-  .hero-video { display: none; }
-  .hero-video:not([data-hero-video=""]) {
-    display: block;
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* ================================ FIND US ===== */
-  .findus-address { font-style: normal; line-height: 1.8; }
-  .findus-hours { margin: var(--space-4) 0; font-size: clamp(14px, calc(14px + (100vw - 1920px) * 0.003125), 16px); max-width: 360px; }
-  .findus-hours li { display: flex; justify-content: space-between; gap: var(--space-3); padding: 2px 0; }
-  .findus-hours-time { color: var(--muted); }
-
+  /* 8. Instagram. */
+  .ig-title { margin-bottom: var(--block-gap); }
 </style>

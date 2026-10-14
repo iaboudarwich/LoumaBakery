@@ -3,40 +3,50 @@ import { getEntry } from 'astro:content';
 import { noOrphan } from '../lib/typography';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { features as f } from '../config/features';
+import Doodle from '../components/Doodle.astro';
 
-// The Louma Initiative (was /mission; /mission 301-redirects here). No photos.
+// The Louma Initiative (was /mission; /mission 301-redirects here). No photos,
+// by the owner's choice. Every word and each pillar's drawing come from
+// copy.json ("initiative"; CMS: Page text).
 const c = (await getEntry('copy', 'initiative'))!.data;
 const sections = c.sections ?? [];
 const pillars = c.pillars ?? [];
+const reveal = f.reveal ? 'reveal' : undefined;
 ---
 
 <BaseLayout title={c.title} description={c.intro[0]}>
-  <header class="page-head">
+  <header class="page-intro">
     <div class="container">
-      <h1>{noOrphan(c.title ?? '')}</h1>
+      <h1 class="display">{noOrphan(c.title ?? '')}</h1>
+      <div class="intro" data-anim={reveal}>
+        {c.intro.map((p) => <p class="lead">{p}</p>)}
+      </div>
     </div>
   </header>
 
-  <section class="initiative-intro" data-anim={f.reveal ? 'reveal' : undefined}>
-    <div class="container narrow">
-      {c.intro.map((p) => <p class="statement-p">{p}</p>)}
-    </div>
-  </section>
-
-  {sections.map((s) => (
-    <section class="initiative-section" data-anim={f.reveal ? 'reveal' : undefined}>
-      <div class="container narrow">
-        <h2>{s.title}</h2>
-        {s.paragraphs.map((p) => <p>{p}</p>)}
+  {sections.length > 0 && (
+    <section class="section">
+      <div class="container">
+        {sections.map((s) => (
+          <div class="grid-12 text-row" data-anim={reveal}>
+            <div class="text-row-title"><h2 class="h2">{s.title}</h2></div>
+            <div class="text-row-body">{s.paragraphs.map((p) => <p>{p}</p>)}</div>
+          </div>
+        ))}
       </div>
     </section>
-  ))}
+  )}
 
   {pillars.length > 0 && (
-    <section class="initiative-section">
-      <div class="container narrow">
-        <ul class="pillars" role="list">
-          {pillars.map((p) => <li>{p}</li>)}
+    <section class="section block--fairy" aria-label="The four pillars">
+      <div class="container">
+        <ul class="pillars" role="list" data-anim={reveal} data-reveal-children>
+          {pillars.map((p) => (
+            <li class="pillar">
+              <Doodle name={p.icon} size={72} color="red" animate={f.doodleDraw} />
+              <h2 class="pillar-name">{p.name}</h2>
+            </li>
+          ))}
         </ul>
       </div>
     </section>
@@ -44,13 +54,30 @@ const pillars = c.pillars ?? [];
 </BaseLayout>
 
 <style>
-  .narrow { max-width: 720px; }
-  .initiative-intro { padding-block: var(--space-8); }
-  .statement-p { font-size: clamp(20px, 2vw, 26px); font-family: var(--font-display); font-weight: 500; color: var(--ink); line-height: 1.4; }
-  .statement-p + .statement-p { margin-top: var(--space-4); }
+  .intro { margin-top: var(--block-gap); max-width: 34em; }
+  .intro .lead { max-width: none; }
 
-  .initiative-section { padding-block: var(--space-6); }
-  .initiative-section h2 { margin-bottom: var(--space-3); }
-  .pillars { margin: 0; padding: 0; }
-  .pillars li + li { margin-top: var(--space-2); }
+  /* Four equal columns, 2x2 on narrow screens. */
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--block-gap);
+    margin: 0;
+    padding: 0;
+  }
+  @media (max-width: 47.99rem) {
+    .pillars { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: calc(var(--block-gap) * 1.5); }
+  }
+  .pillar { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4); }
+  /* Every drawing fits the same 72px box, so the four names line up. */
+  .pillar :global(.doodle) { width: 72px; height: 72px; }
+  .pillar :global(.doodle svg) { width: 100%; height: 100%; }
+  .pillar-name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--fs-h2);
+    line-height: 1.08;
+    color: var(--burgundy);
+    overflow-wrap: break-word;
+  }
 </style>

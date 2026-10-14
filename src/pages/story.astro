@@ -3,59 +3,106 @@ import { getEntry } from 'astro:content';
 import { noOrphan } from '../lib/typography';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { features as f } from '../config/features';
-import Sketch from '../components/Sketch.astro';
+import Img from '../components/Img.astro';
+import Doodle from '../components/Doodle.astro';
+import { resolveImage } from '../lib/images';
+import Signature from '../assets/brand/signature-milla.svg';
 
+// Words: copy.json ("story") for the title, story.json for the letter and the
+// sections (CMS: "Our Story"). Photos: images.json `story` (CMS: "Photos").
 const c = (await getEntry('copy', 'story'))!.data;
-// The letter and the sections live in src/data/story.json (CMS: "Our Story").
 const { letter, sections } = (await getEntry('story', 'story'))!.data;
+const images = (await getEntry('images', 'images'))!.data;
+const photos = images.story.map((p) => ({ photo: resolveImage(p.image), alt: p.alt }));
+
+// A small drawing beside each section title, by position (the sections keep
+// their drawing if the owner edits a title). The first section has none.
+const sectionDoodles = [undefined, 'palm', 'bread-slice', 'herb', 'hearts'];
+// Photos sit after a section, by position: the collage after the first
+// ("Named after our sister"), the flowers after the fourth ("Ingredients we
+// care about").
+const photoAfter: Record<number, number> = { 0: 0, 3: 1 };
+const reveal = f.reveal ? 'reveal' : undefined;
 ---
 
 <BaseLayout title={c.title}>
-  <header class="page-head story-head">
+  <header class="page-intro">
     <div class="container">
-      <h1>{noOrphan(c.title ?? '')}</h1>
-      <Sketch name="toast" width={92} height={107} class="head-toast" color="var(--burgundy)" draw={f.scrollDraw} />
+      <h1 class="display">{noOrphan(c.title ?? '')}</h1>
     </div>
   </header>
 
-  {/* The letter. The signature is text for now; a signature image comes later. */}
-  <section class="story-intro" data-anim={f.reveal ? 'reveal' : undefined}>
-    <div class="container narrow">
-      {letter.paragraphs.map((p) => <p class="story-p">{p}</p>)}
-      <p class="story-p story-signature">{letter.signature}</p>
+  {/* The letter: a butter card on a white band, set like the printed letter. */}
+  <section class="section block--white letter-band">
+    <div class="container">
+      <article class="letter" data-anim={reveal}>
+        <Doodle name="sun" size={64} color="red" animate={f.doodleDraw} class="letter-sun" />
+        {letter.paragraphs.map((p) => <p class="letter-p">{p}</p>)}
+        <Signature class="letter-signature" role="img" aria-label={letter.signature} />
+        <Doodle name="moon-stars" size={64} color="red" animate={f.doodleDraw} class="letter-moon" />
+      </article>
     </div>
   </section>
 
-  {sections.map((s) => (
-    <section class="story-section" data-anim={f.reveal ? 'reveal' : undefined}>
-      <div class="container narrow">
-        <h2>{s.title}</h2>
-        {s.paragraphs.map((p) => <p>{p}</p>)}
-      </div>
-    </section>
-  ))}
+  {/* The sections: title 4 columns, copy 7; photos after the first and fourth. */}
+  <section class="section">
+    <div class="container">
+      {sections.map((s, i) => (
+        <>
+          <div class="grid-12 text-row" data-anim={reveal}>
+            <div class="text-row-title">
+              {sectionDoodles[i] && <Doodle name={sectionDoodles[i]!} size={56} color="red" animate={f.doodleDraw} />}
+              <h2 class="h2">{s.title}</h2>
+            </div>
+            <div class="text-row-body">{s.paragraphs.map((p) => <p>{p}</p>)}</div>
+          </div>
+          {photoAfter[i] !== undefined && photos[photoAfter[i]]?.photo && (
+            <div class="grid-12 story-photo">
+              <Img src={photos[photoAfter[i]].photo!} alt={photos[photoAfter[i]].alt} class="ph ph--portrait" style="--start: 3; --span: 8" sizes="(max-width: 47.99rem) 100vw, min(64vw, 900px)" />
+            </div>
+          )}
+        </>
+      ))}
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-  .narrow { max-width: 720px; }
-  .story-head { position: relative; overflow: hidden; }
-  .story-head .container { position: relative; }
-  /* :global: the class lands on the Sketch CHILD component's svg, which a
-     page-scoped selector cannot reach. */
-  .story-head :global(.head-toast) {
-    position: absolute;
-    inset-inline-end: 0;
-    inset-block-end: 0;
-    width: clamp(64px, 7vw, 92px);
+  /* The letter card: butter on white, max 680px, centred. */
+  .letter {
+    position: relative;
+    max-width: 680px;
+    margin-inline: auto;
+    padding: clamp(32px, 6vw, 72px);
+    background: var(--butter);
+  }
+  .letter-p {
+    font-size: clamp(19px, 1.45vw, 21px);
+    line-height: 1.6;
+    color: var(--burgundy);
+    max-width: none;
+  }
+  .letter-p + .letter-p { margin-top: 1em; }
+  /* Sun top right, moon and stars bottom left: inside the card's padding. */
+  .letter :global(.letter-sun) {
+    display: block;
+    width: clamp(44px, 5vw, 64px);
+    margin: 0 0 var(--space-4) auto;
+  }
+  .letter :global(.letter-signature) {
+    display: block;
+    width: 140px;
     height: auto;
+    margin: var(--block-gap) 0 0 auto;
+    color: var(--red);
   }
-  @media (max-width: 680px) {
-    .story-head :global(.head-toast) { position: static; margin-top: var(--space-4); width: 72px; }
+  .letter :global(.letter-moon) {
+    display: block;
+    width: clamp(44px, 5vw, 64px);
+    margin-top: var(--space-4);
   }
-  .story-intro { padding-block: var(--space-7); }
-  .story-p { font-size: clamp(18px, 1.6vw, 21px); color: var(--body); }
-  .story-p + .story-p { margin-top: var(--space-4); }
 
-  .story-section { padding-block: var(--space-6); }
-  .story-section h2 { margin-bottom: var(--space-3); }
+  .story-photo { margin-top: var(--section-y); }
+  .story-photo + .text-row,
+  .story-photo + :global(.text-row) { margin-top: var(--section-y); }
 </style>

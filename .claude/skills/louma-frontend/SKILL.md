@@ -11,18 +11,17 @@ description: Frontend design discipline for the Louma site. Flatness, square sha
 - Ghost buttons default: 1.5px --burgundy outline rectangle, transparent fill, ~14x28px padding, Owners 500. Max ONE filled CTA per page (on a burgundy card it inverts to butter with burgundy text). Disabled = dashed ghost that reads intentional.
 - Colour: only the eight brand tokens (tokens.css). Red is primary, but red text must be 24px+ (or bold 18.66px+) because red on butter is 3.86:1; small text is ink or burgundy, links burgundy.
 - Type: Owners only, four faces (Narrow 700 headings h1-h3, Narrow 500 subheads and labels, 400 body, 500 emphasis/buttons/data). Never request italics or other weights; font-synthesis is off.
-- Controlled asymmetry: 55/45 or 60/40 splits, never 50/50; one collage moment per page max; grids never leave orphan rows.
+- Layout system (tokens.css): --container 1440px, --gutter, --section-y, --block-gap, the --fs-* type scale, and a 12-column grid (.grid-12 with --start/--span). Full-width colour blocks: burgundy, white, fairy. Photos straight, object-fit cover in a fixed aspect per slot, never filtered, overlaid or animated. See CLAUDE.md.
 - Long body text max-width ~640px. Statements may slightly bleed their container.
 - Astro gotcha: page-scoped styles neither reach child components nor beat their specificity; use :global(html.sys-slab) prefixes for slab overrides.
 - Hero is a thesis: lead with the most characteristic thing (the morning bake, the face), not a generic big-number template.
 - Precision over accessories: spacing, type and detail matter more than more effects. Remove one accessory before shipping.
 
 ## Motion (the COMPLETE whitelist; timings locked)
-- Sketch draw-on-scroll: one-shot ~1.1s ease-out cubic-bezier(0.22,1,0.36,1), 80ms subpath stagger; the master marks are filled outlines, so the outline traces in and then the fill settles back; a watchdog guarantees a mark on screen is never left invisible.
-- Entrances: fade + settle DOWNWARD (start 16-24px ABOVE final position) or fade in place; 500-700ms, same bezier; one designed entrance per section; children staggered 60-100ms; once, at ~30% in view (IntersectionObserver). NEVER rise bottom-to-top.
-- Image reveals: soft clip-path inset wipe + scale 1.04->1, 800ms. IO must observe the UNCLIPPED parent (Chromium factors clip-path into intersection geometry).
-- Hero media only: ken-burns scale 1->1.05, ~28s alternate, desktop only.
-- ONE marquee: outline-only ghost Owners Narrow (stroke, no fill) on the burgundy band, slow linear, pause on hover, static under reduced-motion.
+- Doodle reveal (Doodle.astro): one-shot 900ms, same bezier, at 30% in view; filled outlines (every master) reveal left to right via clip-path, stroked art draws via pathLength; observe the UNCLIPPED wrapper; watchdog so nothing on screen stays hidden.
+- Sketch draw-on-scroll (footer face, menu sketches): one-shot ~1.1s, 80ms subpath stagger; the outline traces in, then the fill settles back.
+- Entrances: fade + settle 16px DOWNWARD or fade in place; 500ms; children staggered 80ms; once, at ~30% in view. NEVER rise bottom-to-top.
+- Photos never animate (no wipe, zoom, ken-burns, parallax, tilt). No marquee.
 - Micro: sketchy underline on link hover, button press scale ~0.98, brand-color focus ring.
 - Nothing else. New effects require removing one and updating this list.
 - All effects: flag-gated in features.ts + listed on /review; reduced-motion shows composed final states immediately; heavy motion off on mobile.
@@ -38,12 +37,12 @@ Responsive to ~360px. Visible :focus-visible outlines. Keyboard operable. Meanin
 - Inputs >=16px computed (iOS zoom); inputmode/autocomplete set; never suppress user zoom; html.kb-open hides fixed bars while a field is focused.
 - Tap targets >=44px; -webkit-tap-highlight-color transparent + touch-action manipulation on controls.
 - NO live SVG filters anywhere: sketches render the *-baked.svg files (equal to the masters; scripts/bake-sketches.mjs copies them through); max 2 simultaneous draws, will-change on animating strokes.
-- Nav: always-visible slim bar on <=768px (56px + safe-area); hide-on-scroll desktop-only, 8px delta.
+- Nav: always-visible sticky bar (60px + safe-area below 48rem, 72px above); no hide-on-scroll.
 - Reveals: one shared IO, fail-safe (hidden states only under JS-set classes; JS off = everything visible).
 - Hero image <=150KB on mobile (AVIF, eager, fetchpriority=high). Fonts: the four Owners woff2 subsets only, owners-400 and owners-narrow-700 preloaded.
 - theme-color AND body background both butter #FBF5D4 (Safari tints from either).
-- Map iframe: tap-to-load facade on touch, lazy auto-load on desktop.
-- mobileCtaBar flag: sticky bottom newsletter bar on phones (parks at footer, hides with keyboard).
+- Map: no iframe; the hand-drawn map SVG plus a plain "Get directions" link.
+- No sticky bottom bar on phones.
 
 ## CSS hygiene
 Watch selector specificity so section/element rules don't cancel paddings/margins. Prefer tokens over literal values. Keep critical nav/hero CSS inlined in the base head (BaseLayout) to protect first paint.

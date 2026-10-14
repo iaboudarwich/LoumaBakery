@@ -180,7 +180,7 @@ collections:
               - { name: instagramTitle, label: "Instagram heading", widget: string, hint: "Above the row of Instagram photos, e.g. Follow along" }
               - { name: newsletterTitle, label: "Newsletter title", widget: string, hint: "Also shown in the footer." }
               - { name: newsletterBody, label: "Newsletter line", widget: string }
-              - { name: newsletterCta, label: "Newsletter button", widget: string, hint: "Label on the home and phone bottom bar buttons, e.g. Get the newsletter" }
+              - { name: newsletterCta, label: "Newsletter button", widget: string, hint: "Not shown on the site at the moment (the home hero and the phone bottom bar no longer have this button)." }
           # ---- Story page ----
           - name: story
             label: "Our Story page"
@@ -204,7 +204,14 @@ collections:
                 fields:
                   - { name: title, label: "Section title", widget: string }
                   - { name: paragraphs, label: "Paragraphs", widget: list, field: { name: text, label: "Paragraph", widget: text } }
-              - { name: pillars, label: "The four pillars", widget: list, field: { name: text, label: "Pillar", widget: string }, hint: "One short name each, e.g. Employment" }
+              - name: pillars
+                label: "The four pillars"
+                label_singular: "Pillar"
+                widget: list
+                summary: "{{fields.name}}"
+                fields:
+                  - { name: name, label: "Pillar", widget: string, hint: "One short name, e.g. Employment" }
+                  - { name: icon, label: "Drawing", widget: select, options: ["baguette-small-2.svg", "baguette-small.svg", "bear.svg", "bird.svg", "bouquet.svg", "bread-slice.svg", "bubble-oui-oui.svg", "cherries.svg", "cup-ooo-la-la.svg", "face.svg", "flower-cluster.svg", "flower.svg", "hearts.svg", "herb.svg", "ingredients.svg", "kite.svg", "live-laugh-louma.svg", "louma-smiley.svg", "moon-stars.svg", "palm.svg", "star-kite-2.svg", "star-kite.svg", "sun-small.svg", "sun.svg", "watermelon.svg", "waves-birds.svg"], hint: "The brand drawing shown above the name, in red." }
           # ---- Menu page ----
           - name: menu
             label: "Menu page"

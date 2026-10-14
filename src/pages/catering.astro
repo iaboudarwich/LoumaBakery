@@ -13,17 +13,17 @@ const today = new Date().toISOString().slice(0, 10);
 ---
 
 <BaseLayout title="Catering" description={c.lede}>
-  <header class="page-head">
+  <header class="page-intro">
     <div class="container">
-      <p class="eyebrow">{c.eyebrow}</p>
-      <h1>{noOrphan(c.title ?? '')}</h1>
+      {c.eyebrow && <p class="label page-label">{c.eyebrow}</p>}
+      <h1 class="display">{noOrphan(c.title ?? '')}</h1>
       {c.lede && <p class="lede">{c.lede}</p>}
     </div>
   </header>
 
   {/* Process */}
   {steps.length > 0 && (
-    <section class="process">
+    <section class="section process">
       <div class="container">
         <ol class="process-grid" data-anim={f.reveal ? 'reveal' : undefined} data-reveal-children>
           {steps.map((s) => (
@@ -41,9 +41,9 @@ const today = new Date().toISOString().slice(0, 10);
 
   {/* Tiers */}
   {tiers.length > 0 && (
-    <section class="tiers cv-auto">
+    <section class="section block--white tiers cv-auto">
       <div class="container">
-        <div class="sec-head"><p class="eyebrow">Options</p><h2>Pick a starting point</h2></div>
+        <div class="sec-head"><p class="label sec-label">Options</p><h2 class="h2">Pick a starting point</h2></div>
         <ul class="tiers-grid" role="list" data-anim={f.reveal ? 'reveal' : undefined} data-reveal-children>
           {tiers.map((t) => (
             <li class="tier">
@@ -61,10 +61,10 @@ const today = new Date().toISOString().slice(0, 10);
   )}
 
   {/* Inquiry form */}
-  <section class="inquiry cv-auto" data-anim={f.reveal ? 'reveal' : undefined}>
+  <section class="section inquiry cv-auto" data-anim={f.reveal ? 'reveal' : undefined}>
     <div class="container narrow">
       <div class="sec-head">
-        <p class="eyebrow">Start here</p><h2>Catering inquiry</h2>
+        <p class="label sec-label">Start here</p><h2 class="h2">Catering inquiry</h2>
         {c.body.map((para) => <p>{para}</p>)}
       </div>
       <form
@@ -92,38 +92,34 @@ const today = new Date().toISOString().slice(0, 10);
 </BaseLayout>
 
 <style>
-  .narrow { max-width: 760px; }
-  .process { padding-block: var(--space-8); }
-  .process-grid { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
-  .step-title { margin-bottom: var(--space-2); font-size: clamp(26px, calc(26px + (100vw - 1920px) * 0.005469), 29.5px); }
+  /* Global system (tokens.css): container, --section-y rhythm, --fs-* scale. */
+  .page-label { color: var(--burgundy); margin-bottom: var(--space-5); }
+  .sec-head { margin-bottom: var(--block-gap); }
+  .sec-label { color: var(--burgundy); margin-bottom: var(--space-2); }
+  .narrow { max-width: calc(var(--container) * 2 / 3); }
+  .process-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--block-gap); }
+  .step-title { margin-bottom: var(--space-2); font-size: var(--fs-lead); line-height: 1.2; color: var(--ink); }
   .step::before { content: ''; display: block; width: 40px; height: 2px; background: var(--burgundy); margin-bottom: var(--space-4); }
-
-  .tiers { padding-block: var(--space-8) var(--space-9); background: var(--butter); }
-  .tiers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); }
+  .tiers-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--block-gap); }
   .tier {
     position: relative;
-    padding: var(--space-6);
+    padding: calc(var(--block-gap) + var(--space-4)) var(--block-gap) var(--block-gap);
     background: var(--butter);
-    border: 1px solid var(--hairline);
-    border-radius: 0;
-    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--hairline-strong);
   }
   .tier-note {
-    position: absolute; top: -10px; left: var(--space-5);
+    position: absolute; top: -10px; left: var(--block-gap);
     background: var(--peach); color: var(--ink);
-    font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px); letter-spacing: 0.1em; text-transform: uppercase;
-    padding: 0.25rem 0.6rem; border-radius: 0;
+    font-size: var(--fs-small); letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
   }
-  .tier-name { font-size: clamp(26px, calc(26px + (100vw - 1920px) * 0.005469), 29.5px); }
-  .tier-price { color: var(--burgundy); font-size: clamp(18px, calc(18px + (100vw - 1920px) * 0.003906), 20.5px); margin: var(--space-2) 0 var(--space-4); }
-  .tier-items { display: flex; flex-direction: column; gap: var(--space-2); color: var(--body); font-size: clamp(15px, calc(15px + (100vw - 1920px) * 0.003125), 17px); }
+  .tier-name { font-size: var(--fs-lead); line-height: 1.2; color: var(--ink); }
+  .tier-price { color: var(--burgundy); font-size: var(--fs-body); margin: var(--space-2) 0 var(--space-4); }
+  .tier-items { display: flex; flex-direction: column; gap: var(--space-2); color: var(--body); }
   .tier-items li { padding-left: 1.2em; position: relative; }
   .tier-items li::before { content: '·'; position: absolute; left: 0; color: var(--burgundy); }
-
-  .inquiry { padding-block: var(--space-9); }
-  .inquiry .sec-head > h2 + p { margin-top: var(--space-2); }
-
-  @media (max-width: 820px) {
+  .inquiry .sec-head > h2 + p { margin-top: var(--space-3); }
+  @media (max-width: 47.99rem) {
     .process-grid, .tiers-grid { grid-template-columns: 1fr; }
   }
 </style>

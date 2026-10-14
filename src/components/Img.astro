@@ -5,7 +5,8 @@ import type { ImageMetadata } from 'astro';
 /**
  * Responsive image wrapper. Emits AVIF + WebP via <picture>, with width/height
  * baked from the source (no layout shift). Below-the-fold by default (lazy);
- * pass `priority` for the LCP hero (eager + high fetch priority).
+ * pass `priority` for the LCP hero (eager + high fetch priority). Photos render
+ * exactly as shot: no filter, no overlay, never animated.
  *
  * The layout class goes on the <picture> (which carries the aspect-ratio box);
  * the <img> always covers it.
@@ -17,12 +18,12 @@ interface Props {
   widths?: number[];
   priority?: boolean;
   class?: string;
-  /** Motion hook placed on the <picture> (e.g. 'ken-burns'). */
-  anim?: string;
+  /** Inline style on the <picture>, e.g. grid placement (`--span: 5`). */
+  style?: string;
   /** Encoder quality (1-100). Omit for the service default. */
   quality?: number;
 }
-const { src, alt, sizes = '100vw', widths, priority = false, class: className, anim, quality } = Astro.props;
+const { src, alt, sizes = '100vw', widths, priority = false, class: className, style, quality } = Astro.props;
 
 // Read dimensions from the metadata `clone`: touching `src.width` directly marks
 // the full-size original as referenced, and Astro then copies it into dist even
@@ -33,7 +34,7 @@ const useWidths = Array.from(new Set(candidate.filter((w) => w <= srcWidth).conc
   (a, b) => a - b,
 );
 const pictureAttributes: Record<string, unknown> = { class: `limg ${className ?? ''}`.trim() };
-if (anim) pictureAttributes['data-anim'] = anim;
+if (style) pictureAttributes.style = style;
 ---
 
 <Picture

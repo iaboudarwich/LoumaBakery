@@ -35,10 +35,10 @@
       }
     ],
     "pillars": [
-      "Employment",
-      "Research",
-      "Education",
-      "Community outreach"
+      { "name": "Employment", "icon": "baguette-small.svg" },
+      { "name": "Research", "icon": "star-kite.svg" },
+      { "name": "Education", "icon": "kite.svg" },
+      { "name": "Community outreach", "icon": "hearts.svg" }
     ]
   },
   "menu": {

@@ -2,19 +2,16 @@
  * Louma motion engine. Target feel: a printed menu.
  *
  * The COMPLETE effect list (everything else was removed on purpose):
- *  - scrollDraw: sketches draw themselves once when seen (never left invisible)
- *  - reveal: fade + settle DOWNWARD (or fade in place), staggered children
- *  - imageWipe: soft clip-path unveil + 1.04->1 settle on feature images
- *  - kenBurns: slow drift on the HERO media only
- *  - marquee: one slow ghost ticker, pauses on hover
+ *  - scrollDraw: the footer face and menu sketches trace their outline once
+ *  - doodleDraw: doodles reveal left to right (filled) or draw their stroke
+ *  - reveal: fade + settle 16px DOWNWARD (or fade in place), staggered children
  *  - toast: transient notices (functional UI)
- *  - ingredientSlider: drag-to-scroll (functional, not decorative)
+ * Photos never animate (no zoom, wipe, parallax or tilt).
  *
  * Every effect: flag-gated (features.ts, overridable on /review), one-shot at
- * ~30% in view via IntersectionObserver, suppressed under reduced-motion
- * (final state shown immediately), heavy motion off on mobile.
+ * ~30% in view, suppressed under reduced-motion (final state shown at once).
  */
-import { animate } from 'motion';
+import { animate, inView } from 'motion';
 import { features } from '../config/features';
 
 type Cleanup = () => void;
@@ -30,9 +27,7 @@ const stopEffect = (name: string) => {
   cleanups.set(name, []);
 };
 
-const mql = (q: string) => window.matchMedia(q);
-const reduced = () => mql('(prefers-reduced-motion: reduce)').matches;
-const mobile = () => mql('(max-width: 760px)').matches;
+const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 declare global {
   interface Window {
@@ -53,14 +48,8 @@ const flagOn = (name: string): boolean => {
   if (ov && name in ov) return !!ov[name];
   return !!(features as Record<string, boolean>)[name];
 };
-// Heavier scroll-linked work stays off phones.
-const MOBILE_OFF = new Set(['kenBurns']);
-const available = (name: string): boolean => {
-  if (reduced()) return false;
-  if (MOBILE_OFF.has(name) && mobile()) return false;
-  return true;
-};
-const enabled = (name: string) => flagOn(name) && available(name);
+const available = (): boolean => !reduced();
+const enabled = (name: string) => flagOn(name) && available();
 
 const $ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) =>
   Array.from(root.querySelectorAll<T>(sel));
@@ -70,14 +59,6 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 /* ============================================================ EFFECTS === */
 
 const builders: Record<string, () => void> = {
-  // --- Hero media drift (hero only, very slow) ---
-  kenBurns() {
-    $('.hero-media [data-anim="ken-burns"]').forEach((el) => {
-      const ctrl = animate(el, { scale: [1, 1.05] }, { duration: 28, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' });
-      add('kenBurns', () => { ctrl.stop(); (el as HTMLElement).style.transform = ''; });
-    });
-  },
-
   // --- Sketch draw when seen (one-shot; never left invisible) ---
   scrollDraw() {
     $('[data-anim="scroll-draw"]').forEach((svg) => {
@@ -112,7 +93,7 @@ const builders: Record<string, () => void> = {
       const inPlace = el.getAttribute('data-reveal') === 'fade';
       const targets = (staggered ? Array.from(el.children) : [el]) as HTMLElement[];
       if (staggered) (el as HTMLElement).style.opacity = '1';
-      targets.forEach((t) => { t.style.opacity = '0'; if (!inPlace) t.style.transform = 'translateY(-20px)'; });
+      targets.forEach((t) => { t.style.opacity = '0'; if (!inPlace) t.style.transform = 'translateY(-16px)'; });
       prep.set(el, targets);
     });
     const io = new IntersectionObserver((entries) => {
@@ -130,7 +111,7 @@ const builders: Record<string, () => void> = {
           animate(
             t,
             { opacity: 1, ...(inPlace ? {} : { transform: 'translateY(0px)' }) },
-            { duration: 0.6, delay: targets.length > 1 ? i * 0.08 : 0, ease: EASE },
+            { duration: 0.5, delay: targets.length > 1 ? i * 0.08 : 0, ease: EASE },
           );
         });
       });
@@ -142,83 +123,47 @@ const builders: Record<string, () => void> = {
     });
   },
 
-  // --- Image unveil: soft clip wipe + 1.04->1 settle. IO watches the
-  //     UNCLIPPED parent (Chromium factors clip-path into intersection). ---
-  imageWipe() {
-    $<HTMLElement>('[data-anim="wipe"]').forEach((pic) => {
-      const img = pic.querySelector<HTMLElement>('img');
-      const r = pic.getBoundingClientRect();
-      if (r.top < window.innerHeight) return; // above-fold: never hide
-      pic.style.clipPath = 'inset(0 0 100% 0)';
-      if (img) img.style.transform = 'scale(1.04)';
-      let ran = false;
-      const play = () => {
-        if (ran) return;
-        ran = true;
-        io.disconnect();
-        clearTimeout(safety);
-        animate(pic, { clipPath: ['inset(0 0 100% 0)', 'inset(0 0 0% 0)'] }, { duration: 0.8, ease: EASE })
-          .finished.then(() => { pic.style.clipPath = ''; });
-        if (img) animate(img, { transform: ['scale(1.04)', 'scale(1)'] }, { duration: 0.9, ease: EASE }).finished.then(() => { img.style.transform = ''; });
+  // --- Doodles (Doodle.astro): one-shot when 30% of the drawing is in view,
+  //     900ms. Filled outlines reveal left to right with a clip-path; stroked
+  //     art draws via pathLength. inView watches the unclipped wrapper
+  //     (Chromium factors clip-path into intersection geometry). A watchdog
+  //     shows any doodle that is on screen but never reported in view. ---
+  doodleDraw() {
+    $<SVGSVGElement>('[data-doodle]').forEach((svg) => {
+      const mode = svg.getAttribute('data-doodle');
+      const wrap = svg.parentElement ?? svg;
+      const strokes = mode === 'stroke'
+        ? $<SVGGeometryElement>('path, line, polyline, circle, ellipse, rect', svg)
+        : [];
+      let done = false;
+      const finish = () => {
+        svg.style.clipPath = 'inset(0 0% 0 0)';
+        strokes.forEach((p) => { p.style.strokeDashoffset = '0'; });
       };
-      const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) play(); }, { threshold: 0.2 });
-      io.observe(pic.parentElement ?? pic);
+      const play = () => {
+        if (done) return;
+        done = true;
+        stop();
+        clearTimeout(safety);
+        if (mode === 'stroke') {
+          strokes.forEach((p) => {
+            animate(p, { strokeDashoffset: [1, 0] }, { duration: 0.9, ease: EASE }).finished.then(() => { p.style.strokeDashoffset = '0'; });
+          });
+        } else {
+          animate(svg, { clipPath: ['inset(0 100% 0 0)', 'inset(0 0% 0 0)'] }, { duration: 0.9, ease: EASE })
+            .finished.then(finish);
+        }
+      };
+      const stop = inView(wrap, () => { play(); }, { amount: 0.3 });
       let safety = 0;
       const watchdog = () => {
-        if (ran) return;
-        const rr = (pic.parentElement ?? pic).getBoundingClientRect();
-        if (rr.bottom > 0 && rr.top < window.innerHeight) play();
-        else safety = window.setTimeout(watchdog, 2000);
+        if (done) return;
+        const r = wrap.getBoundingClientRect();
+        if (r.bottom > 0 && r.top < window.innerHeight && r.width > 0) play();
+        else safety = window.setTimeout(watchdog, 2500);
       };
-      safety = window.setTimeout(watchdog, 2000);
-      add('imageWipe', () => { io.disconnect(); clearTimeout(safety); pic.style.clipPath = ''; if (img) img.style.transform = ''; });
-    });
-  },
-
-  // --- Marquee: slow linear loop, pauses on hover ---
-  marquee() {
-    $('[data-anim="marquee"]').forEach((wrap) => {
-      const track = wrap.querySelector<HTMLElement>('.marquee-track');
-      if (!track) return;
-      const originals = Array.from(track.children);
-      originals.forEach((n) => track.appendChild(n.cloneNode(true)));
-      const ctrl = animate(track, { transform: ['translateX(0%)', 'translateX(-50%)'] }, { duration: 30, repeat: Infinity, ease: 'linear' });
-      // Pause-on-hover is a hover-device behavior only (no sticky pause on tap).
-      const hoverFine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-      const pause = () => ctrl.pause();
-      const play = () => ctrl.play();
-      if (hoverFine) {
-        wrap.addEventListener('mouseenter', pause);
-        wrap.addEventListener('mouseleave', play);
-      }
-      add('marquee', () => {
-        ctrl.stop();
-        wrap.removeEventListener('mouseenter', pause);
-        wrap.removeEventListener('mouseleave', play);
-        track.style.transform = '';
-        Array.from(track.children).slice(originals.length).forEach((n) => n.remove());
-      });
-    });
-  },
-
-  // --- Ingredient slider (drag to scroll; functional) ---
-  ingredientSlider() {
-    $('[data-anim="ingredient-slider"] .ing-track, [data-anim="ingredient-slider"].ing-track').forEach((track) => {
-      let down = false, startX = 0, startScroll = 0;
-      const onDown = (e: PointerEvent) => { down = true; startX = e.clientX; startScroll = track.scrollLeft; track.classList.add('is-dragging'); track.setPointerCapture(e.pointerId); };
-      const onMove = (e: PointerEvent) => { if (!down) return; track.scrollLeft = startScroll - (e.clientX - startX); };
-      const onUp = (e: PointerEvent) => { down = false; track.classList.remove('is-dragging'); try { track.releasePointerCapture(e.pointerId); } catch { /* */ } };
-      track.addEventListener('pointerdown', onDown);
-      track.addEventListener('pointermove', onMove);
-      track.addEventListener('pointerup', onUp);
-      track.addEventListener('pointercancel', onUp);
-      add('ingredientSlider', () => {
-        track.removeEventListener('pointerdown', onDown);
-        track.removeEventListener('pointermove', onMove);
-        track.removeEventListener('pointerup', onUp);
-        track.removeEventListener('pointercancel', onUp);
-        track.classList.remove('is-dragging');
-      });
+      safety = window.setTimeout(watchdog, 2500);
+      add('doodleDraw', () => { stop(); clearTimeout(safety); finish(); });
     });
   },
 
@@ -338,12 +283,9 @@ function toast(msg: string, opts: { tone?: 'default' | 'good' } = {}) {
 /* ============================================================ DRIVER ==== */
 const NAMES = Object.keys(builders);
 const META: Record<string, string> = {
-  kenBurns: 'Slow drift on the hero photo (desktop).',
-  scrollDraw: 'Sketches draw themselves once when seen.',
+  scrollDraw: 'The footer face and menu sketches trace their outline once.',
+  doodleDraw: 'Doodles reveal left to right once when seen.',
   reveal: 'Sections fade in and settle downward, children staggered.',
-  imageWipe: 'Feature images unveil with a soft wipe.',
-  marquee: 'One slow ghost ticker; pauses on hover.',
-  ingredientSlider: 'Drag the ingredient row to scroll it.',
   toast: 'Transient corner notices.',
 };
 
@@ -369,7 +311,7 @@ window.LoumaFX = {
   names: NAMES,
   meta: META,
   isOn: (n) => flagOn(n),
-  isAvailable: (n) => available(n),
+  isAvailable: () => available(),
   setEnabled,
   toast,
 };

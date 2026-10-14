@@ -31,13 +31,21 @@
   --font-display: "Owners Narrow", sans-serif;
   --font-body: "Owners", sans-serif;
 
-  /* --- Fluid type scale --- */
-  --t-hero: clamp(40px, 5.2vw, 76px);
+  /* --- Global type scale (all Owners). Page titles and the home tagline use
+     --fs-display; section headings --fs-h2; intros --fs-lead; body --fs-body;
+     labels --fs-small. --- */
+  --fs-display: clamp(40px, 6.5vw, 96px);  /* Owners Narrow 700 */
+  --fs-h2: clamp(28px, 3.6vw, 48px);       /* Owners Narrow 700 */
+  --fs-lead: clamp(20px, 1.8vw, 26px);     /* Owners 400 */
+  --fs-body: clamp(16px, 1.15vw, 18px);    /* Owners 400, line-height 1.6 */
+  --fs-small: 14px;                        /* Owners 500, labels */
+
+  /* --- Legacy fluid scale: still read by /menu, /shop and the footer until
+     their own phase moves them onto the scale above. --- */
   --t-h1: clamp(36px, 4.6vw, 64px);
   --t-h2: clamp(32px, 4vw, 56px);
   --t-h3: clamp(24px, 2.6vw, 34px);
   --t-h4: clamp(20px, 2vw, 26px);
-  --t-body: clamp(16px, 1.15vw, 18px);
   --t-eyebrow: clamp(12px, calc(12px + (100vw - 1920px) * 0.002344), 13.5px);        /* eyebrow stamp: 12px by spec (the 13px floor's one exception) */
 
   /* --- Line heights --- */
@@ -59,10 +67,12 @@
   --space-8: 4rem;
   --space-9: 6rem;
 
-  /* --- Layout --- */
-  --measure: 68ch;          /* readable line length */
-  --container: clamp(1200px, 62.5vw, 1680px); /* 1200px up to 1920px, then grows so large screens don't look empty */
-  --gutter: clamp(1.25rem, 5vw, 4rem);
+  /* --- Layout: one container, one gutter, one rhythm for every page --- */
+  --measure: 62ch;          /* readable line length (body copy) */
+  --container: 1440px;      /* every section aligns to the same left and right edge */
+  --gutter: clamp(16px, 4vw, 48px);
+  --section-y: clamp(64px, 9vw, 144px);   /* vertical padding of a section/band */
+  --block-gap: clamp(24px, 3vw, 48px);    /* gap between blocks inside a section */
 
   /* --- Radii --- */
   --radius-sm: 0;
@@ -73,10 +83,6 @@
   /* --- Hairlines (one border color everywhere) --- */
   --hairline: color-mix(in srgb, var(--ink) 8%, transparent);
   --hairline-strong: color-mix(in srgb, var(--ink) 16%, transparent);
-
-  /* --- Shadows (built from ink; the flat rule in global.css cancels them on the site) --- */
-  --shadow-sm: 0 1px 2px color-mix(in srgb, var(--ink) 6%, transparent), 0 2px 6px color-mix(in srgb, var(--ink) 5%, transparent);
-  --shadow-lg: 0 10px 30px color-mix(in srgb, var(--ink) 10%, transparent), 0 24px 60px color-mix(in srgb, var(--ink) 9%, transparent);
 
   /* --- Motion --- */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);

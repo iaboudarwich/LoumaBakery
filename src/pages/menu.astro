@@ -149,11 +149,11 @@ const addOns = menuData.addOns;
     align-items: center;
     min-height: 44px;
     padding: 0 1.1rem;
-    border-radius: var(--radius-pill);
+    border-radius: 0;
     background: var(--white);
     color: var(--body);
-    font-family: var(--font-mono);
-    font-weight: 400; /* DM Mono ships 400/500 only: never ask for a light it doesn't have */
+    font-family: var(--font-body);
+    font-weight: 500;
     font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px);
     text-decoration: none;
     white-space: nowrap;
@@ -184,7 +184,7 @@ const addOns = menuData.addOns;
     border: 0;
     background: var(--butter);
     color: var(--burgundy);
-    font-family: var(--font-mono);
+    font-family: var(--font-body); font-weight: 500;
     font-size: clamp(18px, calc(18px + (100vw - 1920px) * 0.003906), 20.5px);
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
@@ -202,7 +202,7 @@ const addOns = menuData.addOns;
   .addon {
     padding: 0.35rem 0.8rem;
     border: 1px solid var(--hairline-strong);
-    border-radius: var(--radius-pill);
+    border-radius: 0;
     font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px);
     color: var(--body);
   }
@@ -226,7 +226,7 @@ const addOns = menuData.addOns;
   .row-head { display: flex; align-items: baseline; gap: var(--space-3); min-height: 44px; padding-block: 2px; }
   /* line-height: inherit so the <h3> keeps body leading instead of the tighter
      global heading rule. */
-  .row-name { text-wrap: balance; line-height: inherit; font-family: var(--font-display); font-weight: 500; font-size: clamp(22px, calc(22px + (100vw - 1920px) * 0.004687), 25px); color: var(--ink); display: inline-block; }
+  .row-name { text-wrap: balance; line-height: inherit; font-family: var(--font-display); font-weight: 700; font-size: clamp(22px, calc(22px + (100vw - 1920px) * 0.004687), 25px); color: var(--ink); display: inline-block; }
   .row-dots { flex: 1; border-bottom: 1px dotted color-mix(in srgb, var(--ink) 28%, transparent); transform: translateY(-4px); }
   .row-price { color: var(--burgundy); font-size: clamp(16px, calc(16px + (100vw - 1920px) * 0.003125), 18px); }
   .row-desc { margin-top: var(--space-2); color: var(--muted); max-width: 60ch; }
@@ -242,7 +242,7 @@ const addOns = menuData.addOns;
     width: var(--thumb);
     height: var(--thumb);
     margin-block: calc(var(--space-3) * -1);
-    border-radius: var(--radius-lg);
+    border-radius: 0;
     overflow: hidden;
   }
 
@@ -250,7 +250,7 @@ const addOns = menuData.addOns;
     margin-top: var(--space-8);
     padding: var(--space-5);
     background: var(--white);
-    border-radius: var(--radius-lg);
+    border-radius: 0;
     max-width: 70ch;
   }
   .allergen p:last-child { margin-top: var(--space-2); color: var(--body); }
@@ -259,7 +259,7 @@ const addOns = menuData.addOns;
   /* 720px measure up to 1920px, then it grows with the container. */
   :global(html.sys-slab) .menu-cat,
   :global(html.sys-slab) .menu-addons { max-width: clamp(720px, calc(720px + (100vw - 1920px) * 0.375), 960px); }
-  :global(html.sys-slab) .row-name { font-size: clamp(26px, 2.8vw, 34px); font-weight: 400; }
+  :global(html.sys-slab) .row-name { font-size: clamp(26px, 2.8vw, 34px); font-weight: 700; }
 
   /* Hand-drawn baguette tucked into the header corner. */
   .menu-head { position: relative; overflow: hidden; }

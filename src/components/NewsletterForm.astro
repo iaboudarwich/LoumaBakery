@@ -54,7 +54,7 @@ const formClass = variant === 'footer' ? 'foot-news-form' : 'news-form';
     padding: 0 0.9rem;
     font-size: clamp(16px, calc(16px + (100vw - 1920px) * 0.003125), 18px); /* iOS zooms on focus below 16px */
     border: 1px solid color-mix(in srgb, var(--butter) 30%, transparent);
-    border-radius: var(--radius-md);
+    border-radius: 0;
     background: var(--ink); /* opaque dark fill so the light text reads */
     color: var(--butter);
   }
@@ -65,5 +65,20 @@ const formClass = variant === 'footer' ? 'foot-news-form' : 'news-form';
   @media (max-width: 520px) {
     .news-row,
     .foot-news-row { flex-direction: column; }
+  }
+  /* On the burgundy newsletter card (home) the filled burgundy CTA vanished into
+     the card, so there it inverts: butter fill, burgundy text (7.56:1). Same
+     size and position. The footer variant sits on ink and keeps the default. */
+  :global(html.sys-slab) .news-form .btn-coral {
+    background: var(--butter);
+    border-color: var(--butter);
+    color: var(--burgundy);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    :global(html.sys-slab) .news-form .btn-coral:hover {
+      background: var(--white);
+      border-color: var(--white);
+      color: var(--burgundy);
+    }
   }
 </style>

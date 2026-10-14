@@ -22,13 +22,14 @@
   /* --- Semantic aliases --- */
   --bg: var(--butter);
   --link: var(--burgundy);
-  --link-hover: var(--red);
+  --link-hover: var(--burgundy);   /* red text on butter is only 3.86:1; burgundy is 7.56:1 */
 
   /* --- Type stacks --- */
-  --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
-  --font-sc: "Cormorant SC", "Cormorant Garamond", Georgia, serif;
-  --font-body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  /* Owners superfamily (src/styles/fonts.css). Display: Narrow 700 for h1-h3,
+     Narrow 500 for h4-h6, eyebrows and labels. Body: 400, with 500 for
+     emphasis, buttons and data (hours, prices, form fields). */
+  --font-display: "Owners Narrow", sans-serif;
+  --font-body: "Owners", sans-serif;
 
   /* --- Fluid type scale --- */
   --t-hero: clamp(40px, 5.2vw, 76px);
@@ -37,7 +38,7 @@
   --t-h3: clamp(24px, 2.6vw, 34px);
   --t-h4: clamp(20px, 2vw, 26px);
   --t-body: clamp(16px, 1.15vw, 18px);
-  --t-eyebrow: clamp(12px, calc(12px + (100vw - 1920px) * 0.002344), 13.5px);        /* DM Mono stamp: 12px by spec (the 13px floor's one exception) */
+  --t-eyebrow: clamp(12px, calc(12px + (100vw - 1920px) * 0.002344), 13.5px);        /* eyebrow stamp: 12px by spec (the 13px floor's one exception) */
 
   /* --- Line heights --- */
   --lh-tight: 1.05;
@@ -64,10 +65,10 @@
   --gutter: clamp(1.25rem, 5vw, 4rem);
 
   /* --- Radii --- */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
-  --radius-pill: 999px;
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-pill: 0;   /* square corners everywhere: nothing on the site is rounded */
 
   /* --- Hairlines (one border color everywhere) --- */
   --hairline: color-mix(in srgb, var(--ink) 8%, transparent);

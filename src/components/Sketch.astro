@@ -1,18 +1,18 @@
 ---
-// Baked variants: the roughen filter is flattened into the geometry at build
-// time (scripts/bake-sketches.mjs), so no live SVG filter runs anywhere.
+// Baked variants (scripts/bake-sketches.mjs). The masters carry no roughen, so
+// these equal the master art; no live SVG filter runs anywhere.
 import baguetteRaw from '../assets/brand/baguette-baked.svg?raw';
 import toastRaw from '../assets/brand/toast-baked.svg?raw';
 
 /**
- * Hand-drawn sketch ornament (baguette / toast). Renders the committed brand
- * SVG, splitting its single path into one <path> per subpath so the draw-on
- * effect can stagger them like a hand sketching. The baked roughen filter
- * (feTurbulence + feDisplacementMap) and stroke widths come straight from the
- * source file — never overridden here. Recolors via CSS `color` (currentColor).
+ * Hand-drawn sketch ornament (baguette / toast), from the designer's master art
+ * (src/assets/brand, see its README). The masters are FILLED outlines, so the
+ * mark renders the way FaceDraw does: a filled path at rest, plus one thin
+ * outline stroke per subpath that the scroll-draw effect traces in before the
+ * fill settles back. Recolors via `color` (currentColor).
  *
  * `draw` attaches the scroll-draw hook (gate it on the feature flag at the call
- * site). With motion off / reduced-motion the mark just shows static + filled-in.
+ * site). With motion off / reduced-motion the mark just shows filled.
  */
 const RAW: Record<string, string> = { baguette: baguetteRaw, toast: toastRaw };
 
@@ -25,7 +25,7 @@ interface Props {
   draw?: boolean;
   /** Accessible label; omit for a decorative mark (aria-hidden). */
   label?: string;
-  /** Stroke color (drives currentColor). Set here, not via parent — Astro
+  /** Mark color (drives currentColor). Set here, not via parent: Astro
       scoped styles don't reach this child component. */
   color?: string;
 }
@@ -34,12 +34,9 @@ const animHook = draw ? 'scroll-draw' : undefined;
 
 const raw = RAW[name];
 const viewBox = (raw.match(/viewBox="([^"]*)"/) || [])[1] ?? '0 0 100 100';
-const defs = (raw.match(/<defs>[\s\S]*?<\/defs>/) || [''])[0];
 const d = (raw.match(/\sd="([^"]*)"/) || [])[1] ?? '';
-const strokeWidth = (raw.match(/stroke-width="([^"]*)"/) || [])[1] ?? '3';
-const filterId = (raw.match(/filter id="([^"]*)"/) || [])[1];
-const filterRef = filterId ? `url(#${filterId})` : undefined;
-// One stroke per subpath so the draw can stagger.
+const fillRule = ((raw.match(/fill-rule="([^"]*)"/) || [])[1] ?? 'nonzero') as 'nonzero' | 'evenodd';
+// One outline stroke per subpath so the draw can stagger like a hand sketching.
 const subpaths = d.split(/(?=[Mm])/).map((s) => s.trim()).filter(Boolean);
 ---
 
@@ -51,17 +48,21 @@ const subpaths = d.split(/(?=[Mm])/).map((s) => s.trim()).filter(Boolean);
   role={label ? 'img' : undefined}
   aria-label={label || undefined}
   aria-hidden={label ? undefined : 'true'}
-  fill="none"
-  stroke="currentColor"
-  stroke-linecap="round"
-  stroke-linejoin="round"
   style={`color: ${color}`}
   data-anim={animHook}
 >
-  <Fragment set:html={defs} />
-  {subpaths.map((s) => <path d={s} stroke-width={strokeWidth} filter={filterRef} />)}
+  <path class="sk-fill" d={d} fill="currentColor" fill-rule={fillRule} />
+  <g class="sk-strokes" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    {subpaths.map((s) => <path d={s} />)}
+  </g>
 </svg>
 
 <style>
   .sketch { display: block; height: auto; overflow: visible; }
+  /* Rest: filled. While drawing (scrollDraw sets .is-drawing until the trace
+     finishes), the fill hides and the outline strokes trace in. */
+  .sk-fill { transition: opacity 0.25s var(--ease-out); }
+  .sk-strokes { opacity: 0; transition: opacity 0.32s var(--ease-out); }
+  .sketch.is-drawing .sk-fill { opacity: 0; }
+  .sketch.is-drawing .sk-strokes { opacity: 1; }
 </style>

@@ -9,11 +9,13 @@
  * `currentColor`, so set CSS `color` on the element (or any parent) to
  * recolor — e.g. `color: var(--butter)` for cream-on-dark.
  *
- * Roles (keep these stable if a designer later swaps the files):
- *  - Face     286×265  filled line-art · favicon / footer / 404 / ornament (static)
- *  - Wordmark 374×240  filled line-art · playful logo / footer lockup
- *  - Baguette 280×100  single-stroke   · scroll-draw sketch
- *  - Toast    200×232  single-stroke   · scroll-draw sketch
+ * The art is the designer's master (see src/assets/brand/README.md); the
+ * viewBox roles are stable, so markup sizes against them:
+ *  - Face     286×265  filled outline · footer / 404 / ornament
+ *  - Wordmark 374×240  filled outline · nav (cropped), footer lockup, 404
+ *  - Baguette 280×100  filled outline · scroll-draw sketch
+ *  - Toast    200×232  filled outline · scroll-draw sketch
+ * More drawings, one per file: src/assets/brand/doodles/.
  */
 export { default as Face } from "../assets/brand/face-baked.svg";
 export { default as Wordmark } from "../assets/brand/wordmark.svg";

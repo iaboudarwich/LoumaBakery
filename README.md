@@ -19,7 +19,7 @@ If you only read one other file, read `CLAUDE.md`. It is the design system and t
 | **Netlify** | Static hosting, deploy on push, and Netlify Forms (no backend needed for the three forms). |
 | **`astro:assets`** | Build-time AVIF/WebP at several widths from the source photos in the repo. |
 | **`motion`** | Small animation library behind the flag-gated effects in `src/scripts/motion.ts`. |
-| **Fontsource** | Self-hosted woff2 fonts (Cormorant Garamond, Cormorant SC, DM Sans, DM Mono), used weights only; nothing loads from Google. `fonts.css` declares every subset with `unicode-range`, so browsers fetch only the Latin files in practice. |
+| **Owners (Ohno Type Co)** | The brand typeface, self-hosted as four woff2 subsets in `public/fonts/` (Owners Narrow 700 and 500, Owners 400 and 500), declared in `src/styles/fonts.css`; nothing loads from a font CDN. Desktop-licensed: a webfont licence from Ohno Type Co is required before launch. |
 
 ## Run it locally
 
@@ -122,7 +122,7 @@ Three forms: `newsletter` (home page and footer; one component, `NewsletterForm.
 All in `CLAUDE.md` (the authoritative spec), in brief:
 
 * **Flat "editorial slab"**: no shadows, gradients or blur anywhere. A global `*, *::before, *::after { box-shadow/text-shadow/backdrop-filter: none !important }` rule in `global.css` enforces it over any component that still declares one.
-* Tokens in `src/styles/tokens.css`. Three radii only. One filled CTA per page. 13px type floor (the 12px stamp label is the one exception).
+* Tokens in `src/styles/tokens.css`: exactly the eight brand colours (red is primary; red text only at 24px+ because red on butter is 3.86:1). Square corners everywhere (all radii 0). One filled CTA per page. 13px type floor (the 12px stamp label is the one exception).
 * **`html.sys-slab`**: `BaseLayout` always puts this class on `<html>`; there is no other layout system any more. Where a selector in `global.css` (or a component's `:global(html.sys-slab)`) still carries the prefix, it's there for its **specificity**, which decides real conflicts with page-scoped styles. Removing a prefix can silently change rendering. Check computed styles before and after if you touch one.
 * Every effect is behind a flag in `src/config/features.ts`, respects `prefers-reduced-motion`, and is reviewable on `/review` in dev.
 
@@ -150,7 +150,7 @@ None of these are hidden. They're listed so you don't rediscover them.
 * 56 of the 60 menu items have no description line. Food items have no prices ("Ask at the counter for food prices"); drinks do.
 * No founder portrait exists. The Story page names Milla Ghandour in text only, and must never use a stand-in photo of someone else.
 * The phone number is a placeholder (`+1 (310) 000-0000`). `site.ts` suppresses it everywhere, including the JSON-LD, until a real one is entered.
-* The Uber Eats link is a placeholder, so the nav shows a dashed "Ordering soon" pill instead of an Order button.
+* The Uber Eats link is a placeholder, so the nav shows a dashed "Ordering soon" chip instead of an Order button.
 * The hero is a still photo; `siteConfig.links.heroVideo` is empty.
 
 **Other:**

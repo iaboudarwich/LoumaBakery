@@ -22,6 +22,7 @@ const { width, height, class: className, label, color = 'var(--red)' } = Astro.p
 
 const viewBox = (faceRaw.match(/viewBox="([^"]*)"/) || [])[1] ?? '0 0 286 265';
 const d = (faceRaw.match(/\sd="([^"]*)"/) || [])[1] ?? '';
+const fillRule = ((faceRaw.match(/fill-rule="([^"]*)"/) || [])[1] ?? 'nonzero') as 'nonzero' | 'evenodd';
 // One stroke per subpath so the draw can stagger like a hand sketching.
 const subpaths = d.split(/(?=[Mm])/).map((s) => s.trim()).filter(Boolean);
 // Deterministic, slightly varied stroke widths → pencil-drawn, not rigid.
@@ -39,7 +40,7 @@ const strokeWidth = (i: number) => (1.05 + ((i * 7) % 4) * 0.16).toFixed(2);
   style={`color: ${color}`}
   data-face-draw
 >
-  <path class="ff-fill" d={d} fill="currentColor" fill-rule="evenodd" />
+  <path class="ff-fill" d={d} fill="currentColor" fill-rule={fillRule} />
   <g class="ff-strokes" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     {subpaths.map((s, i) => <path d={s} stroke-width={strokeWidth(i)} />)}
   </g>

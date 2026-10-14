@@ -81,6 +81,14 @@ const builders: Record<string, () => void> = {
   // --- Sketch draw when seen (one-shot; never left invisible) ---
   scrollDraw() {
     $('[data-anim="scroll-draw"]').forEach((svg) => {
+      // Filled master art (Sketch): hidden until seen, the outline traces in,
+      // then the fill settles back (same path as the face marks below).
+      const outline = Array.from(svg.querySelectorAll<SVGPathElement>('.sk-strokes path'));
+      if (outline.length) {
+        if (!reduced()) svg.classList.add('is-drawing');
+        drawOnScroll(svg, outline, svg);
+        return;
+      }
       const strokes = Array.from(svg.querySelectorAll<SVGPathElement>('path'))
         .filter((p) => getComputedStyle(p).fill === 'none' || svg.getAttribute('fill') === 'none');
       if (strokes.length) drawOnScroll(svg, strokes);

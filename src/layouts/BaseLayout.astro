@@ -5,11 +5,8 @@ import { siteConfig, SITE_URL } from '../config/site';
 import { features } from '../config/features';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-// Self-hosted fonts (Fontsource, font-display: swap) — bundled and served from
-// our own origin so first paint isn't blocked on Google Fonts before the LCP.
+// Self-hosted Owners faces (font-display: swap), served from public/fonts.
 import '../styles/fonts.css';
-// Same file the 300-italic CSS above references (Vite dedupes to one URL).
-import heroFont from '@fontsource/cormorant-garamond/files/cormorant-garamond-latin-300-italic.woff2?url';
 
 interface Props {
   title?: string;
@@ -27,7 +24,6 @@ interface Props {
   /** Show the footer newsletter. Pages with their own signup (home) pass false. */
   footerNewsletter?: boolean;
   /** Preload the hero headline face (home) so its late swap doesn't shift layout. */
-  preloadHeroFont?: boolean;
 }
 
 const {
@@ -39,7 +35,6 @@ const {
   noindex = false,
   schema,
   footerNewsletter = true,
-  preloadHeroFont = false,
 } = Astro.props;
 
 const newsletterCta = (await getEntry('copy', 'home'))?.data.newsletterCta ?? 'Get the newsletter';
@@ -115,7 +110,8 @@ const jsonLd =
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    {preloadHeroFont && <link rel="preload" as="font" type="font/woff2" href={heroFont} crossorigin />}
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/owners-400.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/owners-narrow-700.woff2" crossorigin />
     <meta name="generator" content={Astro.generator} />
 
     <title>{pageTitle}</title>
@@ -146,7 +142,7 @@ const jsonLd =
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- Fonts are self-hosted via Fontsource (imported in the component script). -->
+    <!-- Fonts: four self-hosted Owners woff2 files (src/styles/fonts.css, public/fonts). -->
 
     <!-- schema.org structured data (home and visit: Bakery).
          Escape `<` so a value containing </script> can't break out. -->
@@ -181,7 +177,7 @@ const jsonLd =
         background: var(--burgundy, #A10017);
         color: var(--butter, #FBF5D4);
         padding: 0.6rem 1rem;
-        border-radius: 8px;
+        border-radius: 0;
         transition: top 160ms ease;
       }
       .skip-link:focus {

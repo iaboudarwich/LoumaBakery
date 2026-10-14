@@ -4,6 +4,11 @@
 //
 // The originals in src/assets/brand/*.svg are untouched (they are the brand
 // source). This writes *-baked.svg siblings that the components render.
+//
+// Since the marks became the designer's master art (docs/brand/master), the
+// sources carry no roughen filter: the hand-drawn line IS the drawing. A source
+// without filter params is copied through unchanged, so components keep
+// reading the *-baked.svg files and no live filter ever ships.
 // The displacement math is a direct port of the SVG 1.1 spec feTurbulence
 // reference implementation, so the baked line lands where the filter drew it.
 //
@@ -143,7 +148,13 @@ function bake(file, out, step = 2.0) {
   const seed = parseInt((svg.match(/seed="([^"]+)"/) || [])[1], 10);
   const scale = parseFloat((svg.match(/scale="([^"]+)"/) || [])[1]);
   const d = (svg.match(/\sd="([^"]*)"/) || [])[1];
-  if (!d || !bf) throw new Error(`${file}: missing filter params or path`);
+  if (!d) throw new Error(`${file}: missing path`);
+  if (!bf) {
+    // Master art: no roughen to bake. Ship the geometry exactly as drawn.
+    writeFileSync(join(BRAND, out), svg);
+    console.log(`${out}: master art, copied unchanged (no roughen filter)`);
+    return;
+  }
   const state = makeNoise(seed);
   const displace = ([x, y]) => {
     // feDisplacementMap: P' = P + scale * (XC(P) - 0.5, YC(P) - 0.5); XC=R(0), YC=G(1)

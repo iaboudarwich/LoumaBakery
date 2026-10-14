@@ -86,4 +86,6 @@ const products = shop.products.map((p) => ({ ...p, photo: p.image ? resolveImage
   .product + .product { margin-top: var(--space-6); }
   .product p { margin-top: var(--space-2); }
   .product :global(.product-img) { aspect-ratio: 1; max-width: 360px; margin-bottom: var(--space-4); }
+  /* Product shots are cutouts on transparency: show the whole object, never crop it. */
+  .product :global(.product-img img) { object-fit: contain; }
 </style>

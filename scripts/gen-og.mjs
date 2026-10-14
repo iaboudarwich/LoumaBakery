@@ -5,11 +5,11 @@
 import sharp from 'sharp';
 
 // GUARDED (2026-09): public/og-default.jpg is now a real photo, a 1200x630
-// center crop of src/assets/img/hero.jpg from the Kayla shoot. Running this
+// center crop of src/assets/img/croissant-grid.jpg (formerly hero.jpg) from the Kayla shoot. Running this
 // would overwrite it with the old generated brand card, so it refuses by default.
 if (!process.argv.includes('--force-brand-card')) {
   console.error(
-    'gen-og.mjs refused to run: public/og-default.jpg is a real photo now (a crop of hero.jpg).\n' +
+    'gen-og.mjs refused to run: public/og-default.jpg is a real photo now (a crop of croissant-grid.jpg).\n' +
       'It would be overwritten with the generated brand card. Pass --force-brand-card only if that is what you want.',
   );
   process.exit(1);

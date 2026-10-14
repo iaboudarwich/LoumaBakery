@@ -36,5 +36,5 @@ git diff src/data/menu.json   # review, then commit or discard
 
 ## Other scripts
 - `gen-icons.mjs` — favicons/app icons from the face mark.
-- `gen-og.mjs`: GUARDED, refuses to run. og-default.jpg is now a crop of hero.jpg; `--force-brand-card` restores the old generated card.
+- `gen-og.mjs`: GUARDED, refuses to run. og-default.jpg is now a crop of the hero frame (croissant-grid.jpg, formerly hero.jpg); `--force-brand-card` restores the old generated card.
 - `gen-admin-demo.mjs` — builds /admin-demo's config from /admin's (runs on prebuild).

@@ -1,10 +1,18 @@
 {
-  "hero": "hero.jpg",
-  "founder": "",
-  "story1": "lamination.jpg",
-  "story1Alt": "A baker in a Louma cap folding a block of laminated dough",
-  "story2": "kitchen-team.jpg",
-  "story2Alt": "Four bakers working at steel tables in the open kitchen",
-  "ig1": "zaatar-croissant.jpg",
-  "ig1Alt": "A twisted seeded knot pastry on pink Louma tissue paper"
+  "hero": "croissant-grid.jpg",
+  "heroAlt": "Rows of golden croissants packed side by side on a cooling rack, seen from above",
+  "homeGallery": [
+    { "image": "pain-au-chocolat.jpg", "alt": "Pain au chocolat cooling on a wire rack on a wooden counter" },
+    { "image": "counter-shelves.jpg", "alt": "The Louma counter: a pastry case in front of a tiled wall with shelves of bread and boxes" },
+    { "image": "baker-raspberries.jpg", "alt": "A baker in a red Louma apron setting fresh raspberries on tarts, with loose berries scattered on the tray" },
+    { "image": "interior-table.jpg", "alt": "Inside the bakery: a long wooden table and bench, a yellow-tiled coffee bar and a tall potted tree" },
+    { "image": "kitchen-team.jpg", "alt": "Four bakers in red aprons working at wooden tables in the open kitchen" },
+    { "image": "knot-pink-paper.jpg", "alt": "A seeded knotted pastry in hard sunlight on pink Louma tissue paper" }
+  ],
+  "story": [
+    { "image": "story-collage.jpg", "alt": "A collage of family keepsakes: a child in a chef's hat, two girls together, a child's drawing, and red Louma cards with the wordmark and the face" },
+    { "image": "story-flowers.jpg", "alt": "A tall autumn arrangement of leaves and yellow flowers in two ceramic jugs with small pumpkins, a team member in a Louma cap at the counter behind" }
+  ],
+  "storefront": "storefront-window.jpg",
+  "storefrontAlt": "The Louma Bakery logo and opening hours on the front window, with palm trees reflected in the glass"
 }

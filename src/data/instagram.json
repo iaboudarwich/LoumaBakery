@@ -1,28 +1,10 @@
 {
   "items": [
-    {
-      "image": "croissant-cut.jpg",
-      "alt": "Croissants on a wire rack, one torn open to show its layers"
-    },
-    {
-      "image": "pain-au-chocolat.jpg",
-      "alt": "Pain au chocolat on a wire rack in afternoon sun"
-    },
-    {
-      "image": "kaak-bread.jpg",
-      "alt": "A sesame-crusted kaak loaf hanging on a wooden peg"
-    },
-    {
-      "image": "latte.jpg",
-      "alt": "A barista in a Louma apron pouring steamed milk into a paper cup"
-    },
-    {
-      "image": "out-of-oven.jpg",
-      "alt": "Pain au chocolat and almond croissants cooling on a wire rack"
-    },
-    {
-      "image": "sourdough.jpg",
-      "alt": "A scored sourdough boule on an oak bread shelf"
-    }
+    { "image": "ig-1.jpg", "alt": "The pastry case: knotted pastries, swirl buns and loaf cakes on wooden stands" },
+    { "image": "ig-2.jpg", "alt": "Seeded knotted pastries in a paper pastry box" },
+    { "image": "ig-3.jpg", "alt": "A sheet tray of brioche buns topped with pearl sugar" },
+    { "image": "ig-4.jpg", "alt": "A Louma box of five madeleines dipped in white, chocolate and raspberry glazes" },
+    { "image": "ig-5.jpg", "alt": "Baguettes standing in a wooden rack against a patterned tile wall" },
+    { "image": "ig-6.jpg", "alt": "A raspberry tart on a white plate, scattered with lemon zest" }
   ]
 }

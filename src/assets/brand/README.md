@@ -49,6 +49,18 @@ with 2% padding, `fill="currentColor"`:
 They were split from the page SVGs by a script that groups subpaths by distance and by
 region; path data was never edited. None is used on the site yet.
 
+## Traced from the owner's material (not from the board)
+
+Two files are not the designer's: they were traced with potrace from material the owner
+supplied (see `src/assets/img/CREDITS.md`). Same conventions: tight viewBox,
+`fill="currentColor"`, no default colour.
+
+- `signature-milla.svg`: the handwritten "Milla" from the founder's letter.
+- `map-hand-drawn.svg`: the hand-drawn map of the bakery at Wilshire and Centinela, with
+  the "welcome to LOUMA BAKERY" lettering. Rendered in red on the Contact page. Traced
+  from the only copy (589x716, in the website brief); retrace from a higher-resolution
+  scan when the owner sends one (reference raster: `src/assets/img/unplaced/map-hand-drawn-source.png`).
+
 ## Recolouring
 
 Every file uses `currentColor`. The four marks default to Louma Red through

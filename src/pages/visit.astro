@@ -4,11 +4,16 @@ import { noOrphan } from '../lib/typography';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { siteConfig } from '../config/site';
 import { features as f } from '../config/features';
+import Img from '../components/Img.astro';
+import { resolveImage } from '../lib/images';
+import MapDrawing from '../assets/brand/map-hand-drawn.svg';
 
 // Contact page (route stays /visit). Everything below comes from settings.json.
 const c = (await getEntry('copy', 'visit'))!.data;
 const { address, hours, email, ordersEmail } = siteConfig;
 const { instagram, instagramHandle } = siteConfig.links;
+const photos = (await getEntry('images', 'images'))!.data;
+const storefront = resolveImage(photos.storefront);
 ---
 
 <BaseLayout title={c.title} schema="localbusiness">
@@ -47,8 +52,9 @@ const { instagram, instagramHandle } = siteConfig.links;
       </div>
 
       <div class="visit-map">
-        {/* MAP SLOT: the hand-drawn map image goes here in the photos phase.
-            Intentionally empty for now (the Google Maps embed was removed). */}
+        {/* The owner's hand-drawn map (src/assets/brand), inlined so it takes
+            the brand red through currentColor. */}
+        <MapDrawing class="map-drawing" role="img" aria-label="Hand-drawn map of Louma Bakery at Wilshire Blvd and Centinela Ave" />
         <a
           class="map-link mono"
           href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${address.street}, ${address.city}, ${address.state} ${address.zip}`)}`}
@@ -57,6 +63,7 @@ const { instagram, instagramHandle } = siteConfig.links;
         >
           Open in Google Maps ↗
         </a>
+        {storefront && <Img src={storefront} alt={photos.storefrontAlt} class="visit-storefront" sizes="(max-width: 820px) 100vw, 640px" />}
       </div>
     </div>
   </section>
@@ -99,6 +106,9 @@ const { instagram, instagramHandle } = siteConfig.links;
   @media (hover: hover) and (pointer: fine) {
     .map-link:hover { color: var(--burgundy); }
   }
+
+  .visit-map :global(.map-drawing) { display: block; width: 100%; max-width: 600px; height: auto; color: var(--red); }
+  .visit-map :global(.visit-storefront) { display: block; margin-top: var(--space-6); }
 
   @media (max-width: 820px) {
     .visit-grid { grid-template-columns: 1fr; }

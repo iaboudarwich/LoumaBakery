@@ -3,7 +3,7 @@ import type { ImageMetadata } from 'astro';
 // TODO(photo-ids): unplaced/seeded-knot-tissue.jpg and unplaced/seeded-knot-detail.jpg
 //   look like the coiled Za'atar Croissant (zaatar-croissant.jpg, confirmed by
 //   the case label in 20260904_LoumaBakery_0126) but are not confirmed themselves.
-// TODO(founder-portrait): no portrait of Milla yet; see src/pages/story.astro.
+// TODO(founder-portrait): no portrait of Milla yet (the Story page has no portrait slot).
 
 /**
  * Shared bakery-photo resolver. One eager glob of the image folder, reused by

@@ -22,7 +22,7 @@ const home = (await getEntry('copy', 'home'))!.data;
 
 <BaseLayout transparentNav schema="bakery" description={home.tagline}>
   <section class="hero-media slab-hero">
-    {heroPhoto && <Img src={heroPhoto} alt="" class="hero-bg" anim={f.kenBurns ? 'ken-burns' : undefined} priority quality={HERO_QUALITY} sizes="100vw" />}
+    {heroPhoto && <Img src={heroPhoto} alt={images.heroAlt} class="hero-bg" anim={f.kenBurns ? 'ken-burns' : undefined} priority quality={HERO_QUALITY} sizes="100vw" />}
     {/* Video-ready: set siteConfig.links.heroVideo to autoplay over the photo
         poster. PLACEHOLDER: empty until real footage lands (src/config/site.ts). */}
     {siteConfig.links.heroVideo && (

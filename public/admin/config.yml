@@ -85,8 +85,8 @@ collections:
 
   # ========================================================= IMAGES =========
   - name: images
-    label: "Images"
-    description: "The main photos used around the site. Click one to upload a replacement."
+    label: "Photos"
+    description: "The main photos around the site. Click one to upload a replacement, and describe what's in it."
     delete: false
     editor: { preview: false }
     files:
@@ -94,14 +94,30 @@ collections:
         label: "Site photos"
         file: "src/data/images.json"
         fields:
-          - { name: hero, label: "Home: hero photo", widget: image, choose_url: false, hint: "The big photo at the top of the home page. Landscape, at least 1600px wide, under 3MB." }
-          - { name: founder, label: "Story: founder portrait", widget: image, required: false, choose_url: false, hint: "Portrait photo on the Our Story page. At least 1200px tall, under 3MB." }
-          - { name: story1, label: "Story: photo 1", widget: image, choose_url: false, hint: "First story photo (also the big “01” block on the home page)." }
-          - { name: story1Alt, label: "Photo 1 description", widget: string, required: false, hint: "What photo 1 shows, for screen readers." }
-          - { name: story2, label: "Story: photo 2", widget: image, choose_url: false }
-          - { name: story2Alt, label: "Photo 2 description", widget: string, required: false, hint: "What the photo shows, for screen readers." }
-          - { name: ig1, label: "Home: accent photo", widget: image, choose_url: false, hint: "The small inset photo in the home story block." }
-          - { name: ig1Alt, label: "Accent photo description", widget: string, required: false, hint: "What the photo shows, for screen readers." }
+          - { name: hero, label: "Home: top photo", widget: image, choose_url: false, hint: "The big photo behind the headline at the top of the home page. Landscape, at least 2400px wide, under 3MB." }
+          - { name: heroAlt, label: "Top photo description", widget: string, hint: "What the photo shows, for screen readers. e.g. Rows of croissants on a cooling rack" }
+          - name: homeGallery
+            label: "Home: photo gallery"
+            label_singular: "Photo"
+            widget: list
+            max: 6
+            summary: "{{fields.alt}}"
+            hint: "Six photos for the gallery on the home page, in the order shown. Portrait or landscape, at least 1600px on the long side, under 3MB each."
+            fields:
+              - { name: image, label: "Photo", widget: image, choose_url: false }
+              - { name: alt, label: "Photo description", widget: string, hint: "What the photo shows, for screen readers." }
+          - name: story
+            label: "Our Story: photos"
+            label_singular: "Photo"
+            widget: list
+            max: 2
+            summary: "{{fields.alt}}"
+            hint: "Two photos for the Our Story page. Portrait works best, at least 1200px wide, under 3MB each."
+            fields:
+              - { name: image, label: "Photo", widget: image, choose_url: false }
+              - { name: alt, label: "Photo description", widget: string, hint: "What the photo shows, for screen readers." }
+          - { name: storefront, label: "Contact: storefront photo", widget: image, choose_url: false, hint: "Shown under the map on the Contact page. Portrait, at least 1200px wide, under 3MB." }
+          - { name: storefrontAlt, label: "Storefront photo description", widget: string, hint: "What the photo shows, for screen readers." }
 
   # ================================================== SITE SETTINGS =========
   - name: settings
@@ -340,7 +356,7 @@ collections:
               - { name: price, label: "Price", widget: string, required: false, hint: "e.g. $32" }
               - { name: description, label: "Description", widget: text, required: false, hint: "One short line." }
               - { name: size, label: "Size", widget: string, required: false, hint: "e.g. One size" }
-              - { name: image, label: "Photo", widget: image, required: false, choose_url: false, hint: "Square works best. At least 800px wide, under 3MB." }
+              - { name: image, label: "Photo", widget: image, required: false, choose_url: false, hint: "A cutout on a transparent background (PNG) works best; the whole photo is shown, never cropped. At least 800px wide, under 3MB." }
               - { name: alt, label: "Photo description", widget: string, required: false, hint: "What the photo shows, for screen readers." }
               - { name: link, label: "Buy link", widget: string, required: false, hint: "Leave empty and the button says “Coming soon”." }
 

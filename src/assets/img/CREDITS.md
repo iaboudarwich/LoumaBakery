@@ -1,50 +1,102 @@
 # Image credits
 
-All photos here are from Louma Bakery's own commissioned shoots, photographed
-by Kayla on 2026-08-30 and 2026-09-04. Processed from the originals (kept
-outside the repo): converted to sRGB, long edge 2400px (plain-croissant 1600px;
-crops are never upscaled), metadata stripped. The build makes the web sizes from these.
+Photos from Louma Bakery's own commissioned shoots (photographed by Kayla on
+2026-08-30 and 2026-09-04), phone photos from the owner's Dropbox (`IMG_` files
+and two undated exports), and two photos extracted from the owner's website
+brief (`website (1).pdf`). Originals are kept outside the repo.
 
-Photos in `unplaced/` are kept for the Visit, Mission, Careers and Catering
-pages but are NOT bundled: the glob in src/lib/images.ts only matches files
-directly in this folder. To use one, move it up a level and reference it.
+Processing (October 2026, Phase 4): EXIF orientation applied, converted to sRGB
+from the embedded profile (Adobe RGB or Display P3), long edge capped at 2400px
+(the hero at 3000px, plain-croissant at 1600px; never upscaled), JPEG quality 82,
+all metadata stripped (GPS included). Every file is 1.5 MB or less. Camera roll
+was corrected only where a wall, window, shelf or door frame was off by more
+than 0.5 degrees (rotation noted below); subjects placed at an angle on purpose
+were left alone. The build makes the web sizes from these.
 
-| File | Slot | Photographer | Shoot | Original |
-|------|------|--------------|-------|----------|
-| hero.jpg | Home hero; source of public/og-default.jpg | Kayla | 2026-08-30 | 20260830_LoumaBakery_0578 |
-| plain-croissant.jpg | Menu: Plain Croissant (second copy of the hero frame) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0578 |
-| kitchen-team.jpg | Home collage (story2) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0139 |
-| lamination.jpg | Home collage (story1) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0198 |
-| pain-au-chocolat.jpg | Menu: Pain au Chocolat | Kayla | 2026-08-30 | 20260830_LoumaBakery_0093 |
-| ham-cheese-croissant.jpg | Menu: Ham & Cheese Croissant (confirmed by the case label in 20260904_LoumaBakery_0126). Square crop of the seeded tray only, 1200x1200 | Kayla | 2026-08-30 | 20260830_LoumaBakery_0070 (crop x150 y0, 3150x3150) |
-| kaak-bread.jpg | Menu: Kaak Bread. Single top-middle loaf on the bread shelf, 210x210 (menu thumbnail only) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0126 (crop x2722 y1905, 210x210) |
-| baguette.jpg | Menu: Baguette | Kayla | 2026-08-30 | 20260830_LoumaBakery_0258 |
-| latte.jpg | Menu: Latte | Kayla | 2026-08-30 | 20260830_LoumaBakery_0190 |
-| zaatar-croissant.jpg | Menu: Za'atar Croissant; home collage (ig1). Confirmed by the case label in 20260904_LoumaBakery_0126 | Kayla | 2026-08-30 | 20260830_LoumaBakery_0281 |
-| unplaced/staff-at-case.jpg | Unplaced, not bundled (was the classic layout's story3) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0375 |
-| unplaced/seeded-knot-tissue.jpg | Unplaced, not bundled (item unconfirmed) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0278 |
-| unplaced/seeded-knot-detail.jpg | Unplaced, not bundled (item unconfirmed) | Kayla | 2026-08-30 | 20260830_LoumaBakery_0083 |
-| unplaced/coffee-unidentified.jpg | Unplaced, not bundled. Foreground cup with rosetta; drink type unconfirmed (latte, flat white or cappuccino), ask Milla | Kayla | 2026-08-30 | 20260830_LoumaBakery_0190 (crop x2250 y6740, 1500x1000) |
-| unplaced/viennoiserie-spread.jpg | Unplaced, not bundled | Kayla | 2026-08-30 | 20260830_LoumaBakery_0079 |
-| unplaced/madeleine-production.jpg | Unplaced, not bundled | Kayla | 2026-08-30 | 20260830_LoumaBakery_0300 |
-| unplaced/louma-cap.jpg | Unplaced, not bundled | Kayla | 2026-08-30 | 20260830_LoumaBakery_0340 |
-| raspberry-tart.jpg | Menu: Small Raspberry Tart | Kayla | 2026-09-04 | 20260904_LoumaBakery_0034 |
-| sourdough.jpg | Menu: Sourdough Bread (1012x1262 crop of one boule) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0041 |
-| unplaced/bread-wall.jpg | Unplaced, not bundled (shelf of mixed breads) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0041 |
-| madeleine-vanilla.jpg | Menu: Madeleine Vanilla (crop, white finish only) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0049 |
-| madeleine-chocolate.jpg | Menu: Madeleine Chocolate (crop, chocolate finish only, 1486x1800) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0049 |
-| madeleine-raspberry.jpg | Menu: Madeleine Raspberry (crop, raspberry finish only, 1380x1800) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0049 |
-| unplaced/madeleines.jpg | Unplaced, not bundled (tray of all three finishes) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0049 |
-| almond-croissant.jpg | Menu: Nutty Croissant | Kayla | 2026-09-04 | 20260904_LoumaBakery_0146 |
-| croissant-cut.jpg | Story chapter 01 | Kayla | 2026-09-04 | 20260904_LoumaBakery_0307 |
-| out-of-oven.jpg | Story chapter 02 | Kayla | 2026-09-04 | 20260904_LoumaBakery_0255 |
-| bakery-rack.jpg | Story chapter 03 | Kayla | 2026-09-04 | 20260904_LoumaBakery_0068 |
-| storefront.jpg | Story chapter 04 | Kayla | 2026-09-04 | 20260904_LoumaBakery_0084 |
-| unplaced/door-hours.jpg | Unplaced, not bundled | Kayla | 2026-09-04 | 20260904_LoumaBakery_0092 |
-| unplaced/interior-long.jpg | Unplaced, not bundled | Kayla | 2026-09-04 | 20260904_LoumaBakery_0437 |
-| unplaced/interior-dining.jpg | Unplaced, not bundled | Kayla | 2026-09-04 | 20260904_LoumaBakery_0023 |
-| unplaced/counter.jpg | Unplaced, not bundled | Kayla | 2026-09-04 | 20260904_LoumaBakery_0126 |
-| unplaced/back-of-house.jpg | Unplaced, not bundled | Kayla | 2026-09-04 | 20260904_LoumaBakery_0169 |
-| unplaced/dough-dividing.jpg | Unplaced, not bundled | Kayla | 2026-09-04 | 20260904_LoumaBakery_0198 |
-| unplaced/counter-florals.jpg | Unplaced, not bundled | Kayla | 2026-09-04 | 20260904_LoumaBakery_0150 |
-| unplaced/coffee-bar.jpg | Unplaced, not bundled (Display P3 export, full resolution) | Kayla | 2026-09-04 | 20260904_LoumaBakery_0438 |
+Photos in `unplaced/` are the library for later. They are NOT bundled: the glob
+in src/lib/images.ts only matches files directly in this folder. To use one,
+move it up a level and reference it.
+
+"Menu data" means the file is named in `src/data/menu.json`; the Menu page
+shows no photos at the moment.
+
+## Placed (src/assets/img/)
+
+| File | Used for | Source | Shoot |
+|------|----------|--------|-------|
+| croissant-grid.jpg | Home hero (`images.json` hero); source frame of public/og-default.jpg. Renamed from hero.jpg | 20260830_LoumaBakery_0578 | 2026-08-30 |
+| pain-au-chocolat.jpg | Home gallery 1; menu data (Pain au Chocolat) | 20260830_LoumaBakery_0093 | 2026-08-30 |
+| counter-shelves.jpg | Home gallery 2 | brief PDF, page 5 (counter, tile wall, bread shelves; 2048x1366, the only copy) | brief PDF |
+| baker-raspberries.jpg | Home gallery 3 | 20260904_LoumaBakery_0034 | 2026-09-04 |
+| interior-table.jpg | Home gallery 4 | IMG_1703 | phone |
+| kitchen-team.jpg | Home gallery 5. Rotated 1.0° clockwise (window mullions) | 20260830_LoumaBakery_0139 | 2026-08-30 |
+| knot-pink-paper.jpg | Home gallery 6 | 20260830_LoumaBakery_0281 | 2026-08-30 |
+| story-collage.jpg | Our Story photo 1 (registered, placed next phase) | eefec98f-5b8b-45f4-98dd-e80de5f5b7b0 (also on brief PDF page 8) | undated Dropbox export |
+| story-flowers.jpg | Our Story photo 2 (registered, placed next phase). Rotated 0.67° counter-clockwise (door frame, shelving) | brief PDF, page 8 (flowers on the counter; 1536x2048, the only copy) | brief PDF |
+| storefront-window.jpg | Contact page, under the map. Rotated 5.05° counter-clockwise (window frame). Renamed from unplaced/door-hours.jpg | 20260904_LoumaBakery_0092 | 2026-09-04 |
+| ig-1.jpg | Instagram strip tile 1 | IMG_0008 | phone |
+| ig-2.jpg | Instagram strip tile 2 | IMG_1827 4 | phone |
+| ig-3.jpg | Instagram strip tile 3 | IMG_9795 3 | phone |
+| ig-4.jpg | Instagram strip tile 4 | IMG_9855 2 | phone |
+| ig-5.jpg | Instagram strip tile 5 | 20260830_LoumaBakery_0258 | 2026-08-30 |
+| ig-6.jpg | Instagram strip tile 6 | IMG_0255 2 | phone |
+| shop-hat.png | Shop: Louma Hat. Cutout (rembg u2net, cast shadow dropped, edge eroded 3px and feathered 1px at source size), trimmed to the hat plus 4% padding, 1200x983 | 20260830_LoumaBakery_0340 | 2026-08-30 |
+| shop-hat.webp | WebP copy of shop-hat.png (the page renders the PNG through astro:assets) | 20260830_LoumaBakery_0340 | 2026-08-30 |
+| plain-croissant.jpg | Menu data (Plain Croissant). Second copy of the hero frame at 1600px | 20260830_LoumaBakery_0578 | 2026-08-30 |
+| raspberry-tart.jpg | Menu data (Small Raspberry Tart). Same frame as baker-raspberries.jpg | 20260904_LoumaBakery_0034 | 2026-09-04 |
+| zaatar-croissant.jpg | Menu data (Za'atar Croissant). Same frame as knot-pink-paper.jpg | 20260830_LoumaBakery_0281 | 2026-08-30 |
+| baguette.jpg | Menu data (Baguette). Same frame as ig-5.jpg | 20260830_LoumaBakery_0258 | 2026-08-30 |
+| latte.jpg | Menu data (Latte) | 20260830_LoumaBakery_0190 | 2026-08-30 |
+| ham-cheese-croissant.jpg | Menu data (Ham & Cheese Croissant). Square crop of the seeded tray, 1200x1200 (not reprocessed) | 20260830_LoumaBakery_0070 (crop x150 y0, 3150x3150) | 2026-08-30 |
+| kaak-bread.jpg | Menu data (Kaak Bread). One loaf, 210x210 (not reprocessed) | 20260904_LoumaBakery_0126 (crop x2722 y1905) | 2026-09-04 |
+| sourdough.jpg | Menu data (Sourdough Bread). 1012x1262 crop of one boule (not reprocessed) | 20260904_LoumaBakery_0041 | 2026-09-04 |
+| madeleine-vanilla.jpg | Menu data (Madeleine Vanilla). Crop (not reprocessed) | 20260904_LoumaBakery_0049 | 2026-09-04 |
+| madeleine-chocolate.jpg | Menu data (Madeleine Chocolate). Crop, 1486x1800 (not reprocessed) | 20260904_LoumaBakery_0049 | 2026-09-04 |
+| madeleine-raspberry.jpg | Menu data (Madeleine Raspberry). Crop, 1380x1800 (not reprocessed) | 20260904_LoumaBakery_0049 | 2026-09-04 |
+| almond-croissant.jpg | Menu data (Nutty Croissant) (not reprocessed) | 20260904_LoumaBakery_0146 | 2026-09-04 |
+| bakery-rack.jpg | Not used on the site (was Story chapter 03) | 20260904_LoumaBakery_0068 | 2026-09-04 |
+| lamination.jpg | Not used on the site (was the home collage, story1) (not reprocessed) | 20260830_LoumaBakery_0198 | 2026-08-30 |
+| croissant-cut.jpg | Not used on the site (was Story chapter 01) (not reprocessed) | 20260904_LoumaBakery_0307 | 2026-09-04 |
+| out-of-oven.jpg | Not used on the site (was Story chapter 02) (not reprocessed) | 20260904_LoumaBakery_0255 | 2026-09-04 |
+| storefront.jpg | Not used on the site (was Story chapter 04) (not reprocessed) | 20260904_LoumaBakery_0084 | 2026-09-04 |
+
+## Library (src/assets/img/unplaced/, not bundled)
+
+| File | Source | Shoot |
+|------|--------|-------|
+| unplaced/staff-at-case.jpg | 20260830_LoumaBakery_0375 | 2026-08-30 |
+| unplaced/bread-wall.jpg | 20260904_LoumaBakery_0041 (full frame, 2166x2400) | 2026-09-04 |
+| unplaced/croissants-cooling-racks.jpg | 6c8d1115-83e0-403e-b612-73627819e133 2 | undated Dropbox export |
+| unplaced/almond-croissants-tray.jpg | IMG_0018 | phone |
+| unplaced/croissants-yellow-paper.jpg | IMG_0061 2 | phone |
+| unplaced/sandwich-pink-paper.jpg | IMG_0125 | phone |
+| unplaced/swirl-buns-yellow-paper.jpg | IMG_0184 2 | phone |
+| unplaced/swirl-bun-torn.jpg | IMG_0235 2 | phone |
+| unplaced/sugar-bun-plate.jpg | IMG_0261 2 | phone |
+| unplaced/kaak-shelf.jpg | IMG_0278 2 | phone |
+| unplaced/pastry-tray-table.jpg | IMG_0292 2 | phone |
+| unplaced/bread-shelf-bagged.jpg | IMG_1207 3 | phone |
+| unplaced/swirl-buns-rack.jpg | IMG_2368 3 | phone |
+| unplaced/pastry-tray-overhead.jpg | IMG_2546 2 | phone |
+| unplaced/map-hand-drawn-source.png | brief PDF, page 14 (589x716, the only copy; reference for src/assets/brand/map-hand-drawn.svg) | brief PDF |
+| unplaced/seeded-knot-tissue.jpg | 20260830_LoumaBakery_0278 (not reprocessed) | 2026-08-30 |
+| unplaced/seeded-knot-detail.jpg | 20260830_LoumaBakery_0083 (not reprocessed) | 2026-08-30 |
+| unplaced/coffee-unidentified.jpg | 20260830_LoumaBakery_0190 (crop x2250 y6740, 1500x1000; drink type unconfirmed) (not reprocessed) | 2026-08-30 |
+| unplaced/viennoiserie-spread.jpg | 20260830_LoumaBakery_0079 (not reprocessed) | 2026-08-30 |
+| unplaced/madeleine-production.jpg | 20260830_LoumaBakery_0300 (not reprocessed) | 2026-08-30 |
+| unplaced/louma-cap.jpg | 20260830_LoumaBakery_0340 (the full hat photo; not reprocessed) | 2026-08-30 |
+| unplaced/madeleines.jpg | 20260904_LoumaBakery_0049 (not reprocessed) | 2026-09-04 |
+| unplaced/interior-long.jpg | 20260904_LoumaBakery_0437 (not reprocessed) | 2026-09-04 |
+| unplaced/interior-dining.jpg | 20260904_LoumaBakery_0023 (not reprocessed) | 2026-09-04 |
+| unplaced/counter.jpg | 20260904_LoumaBakery_0126 (not reprocessed) | 2026-09-04 |
+| unplaced/back-of-house.jpg | 20260904_LoumaBakery_0169 (not reprocessed) | 2026-09-04 |
+| unplaced/dough-dividing.jpg | 20260904_LoumaBakery_0198 (not reprocessed) | 2026-09-04 |
+| unplaced/counter-florals.jpg | 20260904_LoumaBakery_0150 (not reprocessed) | 2026-09-04 |
+| unplaced/coffee-bar.jpg | 20260904_LoumaBakery_0438 (Display P3 export, full resolution; not reprocessed) | 2026-09-04 |
+
+## Drawings made from owner material (src/assets/brand/)
+
+| File | Source |
+|------|--------|
+| signature-milla.svg | The handwritten "Milla" from `LOUMA FINAL FINAL (3) 2.PNG` (the letter), cropped at x1897 y3299 593x325, thresholded and traced with potrace |
+| map-hand-drawn.svg | The hand-drawn map, brief PDF page 14 (589x716), traced with potrace. Only a 589x716 copy exists; a higher-resolution scan should be requested from the owner |

@@ -2,6 +2,7 @@
 import { getEntry } from 'astro:content';
 import { noOrphan } from '../lib/typography';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { describe } from '../lib/seo';
 import { siteConfig } from '../config/site';
 import { features as f } from '../config/features';
 import Img from '../components/Img.astro';
@@ -19,7 +20,7 @@ const storefront = resolveImage(photos.storefront);
 const reveal = f.reveal ? 'reveal' : undefined;
 ---
 
-<BaseLayout title={c.title} schema="localbusiness">
+<BaseLayout title={c.title} schema="localbusiness" description={describe([c.title, `${address.street}, ${address.city}, ${address.state} ${address.zip}.`, ...hours.map((h) => `${h.days}: ${h.close ? `${h.open} to ${h.close}` : h.open}.`)])}>
   <header class="page-intro">
     <div class="container">
       <h1 class="display">{noOrphan(c.title ?? '')}</h1>

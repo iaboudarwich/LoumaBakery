@@ -2,6 +2,7 @@
 import { getEntry } from 'astro:content';
 import { getImage } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { describe } from '../lib/seo';
 import { siteConfig } from '../config/site';
 import { features as f } from '../config/features';
 import Img from '../components/Img.astro';
@@ -42,7 +43,7 @@ const hero = heroPhoto && {
 const reveal = f.reveal ? 'reveal' : undefined;
 ---
 
-<BaseLayout schema="bakery" description={home.tagline}>
+<BaseLayout schema="bakery" description={describe([home.tagline, ...home.body])}>
   {/* 1. Hero: the photo alone, edge to edge. No text, no overlay. */}
   {hero && (
     <section class="home-hero">

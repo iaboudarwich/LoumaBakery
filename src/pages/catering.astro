@@ -2,6 +2,7 @@
 import { getEntry } from 'astro:content';
 import { noOrphan } from '../lib/typography';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { describe } from '../lib/seo';
 import { features as f } from '../config/features';
 import { siteConfig } from '../config/site';
 
@@ -12,7 +13,7 @@ const tiers = c.tiers ?? [];
 const today = new Date().toISOString().slice(0, 10);
 ---
 
-<BaseLayout title="Catering" description={c.lede}>
+<BaseLayout title="Catering" description={describe([c.lede, ...c.body])}>
   <header class="page-intro">
     <div class="container">
       {c.eyebrow && <p class="label page-label">{c.eyebrow}</p>}

@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { getEntry } from 'astro:content';
 import { siteConfig, SITE_URL } from '../config/site';
 import { features } from '../config/features';
 import Nav from '../components/Nav.astro';
@@ -22,9 +23,13 @@ interface Props {
   footerNewsletter?: boolean;
 }
 
+// The owner's tagline (copy.json "home") is the site-wide default title and
+// description, and the Bakery description in structured data.
+const ownerTagline = (await getEntry('copy', 'home'))?.data.tagline ?? siteConfig.tagline;
+
 const {
   title,
-  description = siteConfig.tagline,
+  description = ownerTagline,
   image = '/og-default.jpg', // center crop of the hero frame, now src/assets/img/croissant-grid.jpg (Kayla shoot)
   ogType = 'website',
   noindex = false,
@@ -32,7 +37,7 @@ const {
   footerNewsletter = true,
 } = Astro.props;
 
-const pageTitle = title ? `${title} · ${siteConfig.name}` : `${siteConfig.name} · ${siteConfig.tagline}`;
+const pageTitle = title ? `${title} · ${siteConfig.name}` : `${siteConfig.name} · ${ownerTagline}`;
 const canonical = new URL(Astro.url.pathname, SITE_URL).href;
 const ogImage = new URL(image, SITE_URL).href;
 
@@ -80,7 +85,7 @@ const jsonLd =
         '@type': 'Bakery',
         '@id': `${SITE_URL}/#bakery`,
         name: siteConfig.name,
-        description: siteConfig.tagline,
+        description: ownerTagline,
         url: SITE_URL,
         email: siteConfig.email,
         image: ogImage,
@@ -128,6 +133,8 @@ const jsonLd =
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />

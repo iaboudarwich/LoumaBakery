@@ -2,6 +2,7 @@
 import { getEntry } from 'astro:content';
 import { noOrphan } from '../lib/typography';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { describe } from '../lib/seo';
 import { features as f } from '../config/features';
 import { siteConfig } from '../config/site';
 
@@ -9,7 +10,7 @@ const c = (await getEntry('copy', 'careers'))!.data;
 const roles = c.roles ?? [];
 ---
 
-<BaseLayout title="Careers" description={c.lede}>
+<BaseLayout title="Careers" description={describe([c.lede, ...c.body])}>
   <header class="page-intro">
     <div class="container">
       {c.eyebrow && <p class="label page-label">{c.eyebrow}</p>}

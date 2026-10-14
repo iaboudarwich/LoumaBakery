@@ -1,6 +1,7 @@
 ---
 import { getEntry, getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { describe } from '../lib/seo';
 import { features as f } from '../config/features';
 import Doodle from '../components/Doodle.astro';
 import { noOrphan } from '../lib/typography';
@@ -25,7 +26,7 @@ const DIET: Record<string, [string, string]> = {
 const reveal = f.reveal ? 'reveal' : undefined;
 ---
 
-<BaseLayout title={c.title} description={c.intro[0]}>
+<BaseLayout title={c.title} description={describe(c.intro)}>
   <header class="page-intro">
     <div class="container">
       <h1 class="display">{noOrphan(c.title ?? '')}</h1>

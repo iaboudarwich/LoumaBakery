@@ -2,6 +2,7 @@
 import { getEntry } from 'astro:content';
 import { noOrphan } from '../lib/typography';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { describe } from '../lib/seo';
 import { features as f } from '../config/features';
 import Img from '../components/Img.astro';
 import Doodle from '../components/Doodle.astro';
@@ -22,7 +23,7 @@ const blocks = [
 ].filter(Boolean) as { key: string; title: string; body: string; link: string; label: string; icon: string }[];
 ---
 
-<BaseLayout title={c.title}>
+<BaseLayout title={c.title} description={describe([c.preorder?.body, c.giftCards?.body])}>
   <header class="page-intro">
     <div class="container">
       <h1 class="display">{noOrphan(c.title ?? '')}</h1>

@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { Baguette } from '../lib/brand';
 import Doodle from '../components/Doodle.astro';
+import PenDraw from '../components/PenDraw.astro';
 
 // Internal effects review. Not linked from anywhere; noindex. Each effect has a
 // live on/off toggle that flips its flag for THIS view (window.__FX), so a
@@ -11,6 +12,7 @@ const effects: { name: string; desc: string; kind: string; scroll?: boolean; poi
   { name: 'scrollDraw', desc: 'The footer face traces its outline once.', kind: 'draw', scroll: true },
   { name: 'doodleDraw', desc: 'Doodles reveal left to right once when seen.', kind: 'doodle', scroll: true },
   { name: 'reveal', desc: 'Sections fade in and settle downward, staggered.', kind: 'reveal', scroll: true },
+  { name: 'penDraw', desc: 'The home hero baguette draws, holds, erases and repeats.', kind: 'pen' },
   { name: 'toast', desc: 'Transient corner notices.', kind: 'toast' },
 ];
 const names = effects.map((e) => e.name);
@@ -61,6 +63,7 @@ const names = effects.map((e) => e.name);
               {e.kind === 'draw' && <Baguette class="demo-sketch" width={200} height={71} aria-hidden="true" data-anim="scroll-draw" />}
               {e.kind === 'doodle' && <Doodle name="hearts" size={120} color="red" animate />}
               {e.kind === 'reveal' && <div class="demo-reveal" data-anim="reveal">Hello from the bakery.</div>}
+              {e.kind === 'pen' && <PenDraw size={200} color="red" animate={false} class="demo-pen" />}
               {e.kind === 'toast' && <button type="button" class="btn btn-ghost" data-demo-toast>Fire a toast</button>}
             </div>
           </li>
@@ -140,6 +143,15 @@ const names = effects.map((e) => e.name);
     document.querySelectorAll<HTMLInputElement>('[data-fx-toggle]').forEach((cb) => {
       const name = cb.getAttribute('data-fx-toggle')!;
       const labelEl = cb.parentElement?.querySelector<HTMLElement>('.switch-label');
+      // The pen loop is pure CSS: the toggle sets data-pen on the demo.
+      if (name === 'penDraw') {
+        cb.addEventListener('change', () => {
+          const pen = document.querySelector<SVGSVGElement>('.demo-pen');
+          if (cb.checked) pen?.setAttribute('data-pen', 'loop'); else pen?.removeAttribute('data-pen');
+          if (labelEl) labelEl.textContent = cb.checked ? 'On' : 'Off';
+        });
+        return;
+      }
       if (!fx.isAvailable(name)) {
         cb.disabled = true;
         cb.closest('.fx-tile')?.classList.add('is-unavailable');

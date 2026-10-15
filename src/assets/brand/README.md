@@ -12,7 +12,7 @@ All art is filled outline (each pen line is a closed shape), coloured with `curr
 | File | From | viewBox (role) | Used by |
 |---|---|---|---|
 | `wordmark.svg` | `01-wordmark.svg` | `0 0 374 240` | Nav brand link (cropped to the art), footer, 404 |
-| `baguette.svg` | `02-baguette-mark.svg` | `0 0 280 100` | `Doodle name="baguette"` (home, above the tagline) |
+| `baguette.svg` | `02-baguette-mark.svg` | `0 0 280 100` | `Doodle name="baguette"` (the home hero when `penDraw` is off) |
 | `face.svg` | `06-illustrations.svg`, the face | `0 0 286 265` | `FaceDraw` (footer, 404) |
 | `toast.svg` | `06-illustrations.svg`, the bread slice | `0 0 200 232` | not used at the moment (the `bread-slice` doodle is) |
 
@@ -35,6 +35,37 @@ stroke per subpath. When the scroll-draw effect runs, the fill hides, the outlin
 in, and the fill settles back. Every other drawing (the doodles and the baguette mark) is
 inlined by `Doodle.astro` and revealed left to right once, with a clip-path. With reduced motion, or motion off, the mark is simply
 filled. No live SVG filter runs anywhere.
+
+## The single-stroke baguette (`baguette-stroke.svg`)
+
+The one stroke asset, made at the owner's request (owner feedback round 1, October 2026)
+so the home hero baguette can draw itself like a pen. The master stays the filled
+`baguette.svg`; this file is its centreline, derived from `docs/brand/master/02-baguette-mark.svg`:
+
+1. Rasterized at 2000px across the art, thresholded, skeletonized (scikit-image) to a 1px
+   centreline. Line width measured from the distance transform: 54px at that scale,
+   12.66 master units, which is the `stroke-width`.
+2. Ordered as one closed cursive line, taking the smoothest continuation at each of the
+   three crossings (every turn under 23 degrees): from the left tip of the loaf along
+   the top, through heart 1, the arc, heart 2, the high arch, heart 3, round the right
+   end, along the bottom and back to the left tip. The skeleton splits each crossing
+   into two Y-junctions; those were merged and bridged straight through (68-92px at
+   2000px). Each heart's notch is a sharp V that the skeleton shows as a short spur
+   (17, 25 and 47px); the line goes out to the tip and back there, kept as a corner.
+3. Smoothed (Gaussian, 8px) and fitted with cubic Béziers (Schneider, 3px tolerance):
+   34 segments, one closed `<path>`, `fill="none"`, `stroke="currentColor"`, round caps
+   and joins, the stroke scales with the mark, tight viewBox `0 0 465.81 164.94`.
+4. Checked against the master: rendered at the same width the two shapes overlap with
+   IoU 0.96 and the same median line width (54px at 2000px). The centreline stays
+   within 0.75 master units (3.2px at 2000px) of the master's medial axis along the
+   line, within 1.05 units (4.5px) at the heart notches, and within 3.1 units (13px)
+   inside the three crossings, where the skeleton itself bends into two Y-junctions
+   and the medial axis is not a true centreline. Every sample lies inside the master's
+   ink.
+
+`PenDraw.astro` inlines it with `pathLength="1"` and loops a dash-offset animation
+(see CLAUDE.md, MOTION WHITELIST). Do not use it anywhere else. If the master baguette
+ever changes, this file has to be made again the same way.
 
 ## Doodles
 

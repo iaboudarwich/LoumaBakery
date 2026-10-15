@@ -7,6 +7,7 @@ import { siteConfig } from '../config/site';
 import { features as f } from '../config/features';
 import Img from '../components/Img.astro';
 import Doodle from '../components/Doodle.astro';
+import PenDraw from '../components/PenDraw.astro';
 import InstagramStrip from '../components/InstagramStrip.astro';
 import { resolveImage as pick } from '../lib/images';
 
@@ -59,9 +60,11 @@ const reveal = f.reveal ? 'reveal' : undefined;
   <section class="home-hero">
     <div class="container grid-12 hero-grid">
       <div class="hero-text">
-        {/* The baguette slot (the filled mark for now). */}
+        {/* The baguette: drawn on a pen loop (features.penDraw), else the filled mark. */}
         <div class="hero-mark-slot">
-          <Doodle name="baguette" size={140} color="red" animate={f.doodleDraw} class="hero-mark" />
+          {f.penDraw
+            ? <PenDraw size={140} color="red" class="hero-mark" />
+            : <Doodle name="baguette" size={140} color="red" animate={f.doodleDraw} class="hero-mark" />}
         </div>
         <h1 class="display hero-tagline">{home.tagline}</h1>
         <p class="label hero-meta">{heroMeta.map((part, i) => <>{i > 0 && ' · '}<span>{part}</span></>)}</p>

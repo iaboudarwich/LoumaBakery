@@ -11,6 +11,9 @@ export const features = {
   doodleDraw: true,
   /** Sections fade in and settle 16px downward, once on entry. */
   reveal: true,
+  /** The home hero baguette draws itself like a pen, erases along the same
+      line and repeats (PenDraw.astro). Off: the filled baguette mark. */
+  penDraw: true,
 
   // --- Micro / functional ---
   /** Hand-drawn wavy underline on body-copy links. */

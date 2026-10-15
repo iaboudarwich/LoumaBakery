@@ -68,6 +68,7 @@ Source of truth for the brand: docs/BRAND.md and docs/brand/ (the designer's boa
 - Sketch draw-on-scroll (flag scrollDraw; the footer face only): one-shot ~1.1s, 80ms subpath stagger; the outline traces in, then the fill settles back.
 - Entrances: fade + settle 16px DOWNWARD (start 16px ABOVE) or fade in place; 500ms, same bezier, children staggered 80ms, once at ~30% in view. NEVER rise bottom-to-top.
 - Photos never animate: no wipe, zoom, ken-burns, parallax or tilt. There is no marquee.
+- Pen baguette (PenDraw.astro, flag penDraw; the home hero only, by the owner's request): the single-stroke baguette (baguette-stroke.svg, pathLength 1) loops forever on one CSS @keyframes, 4.9s: draw 1.8s ease-in-out, hold 1.2s, erase 1.4s from the start point forward (the dash offset keeps moving the same way), pause 0.5s. An IntersectionObserver pauses it off screen. Reduced motion or no html.motion: the whole baguette, static. The only looping animation on the site.
 - Micro: sketchy link underline, button press scale, brand focus ring.
 - Reduced motion: everything visible immediately in final state.
 
@@ -80,7 +81,7 @@ Source of truth for the brand: docs/BRAND.md and docs/brand/ (the designer's boa
 ## STANDING RULES (never violate)
 - The Initiative page (/initiative) NEVER discloses statistics about team members' disabilities. No replacement stats of that nature.
 - Entrance animations never move content upward.
-- The drawings in src/assets/brand/ (the four marks and doodles/) are the designer's masters; never regenerate, redraw, trace or restyle them. Change them only from docs/brand/master.
+- The drawings in src/assets/brand/ (the four marks and doodles/) are the designer's masters; never regenerate, redraw, trace or restyle them. Change them only from docs/brand/master. One derived file, by the owner's request: baguette-stroke.svg, the master baguette's centreline as a single stroke (method in src/assets/brand/README.md). It is the only stroke asset and is used only by PenDraw in the home hero; every other baguette is the filled master.
 - Palette and fonts exactly as tokenized: the eight brand colours in src/styles/tokens.css, the Owners faces declared in src/styles/fonts.css (three in use).
 
 ## MOBILE / iOS RULES (locked)

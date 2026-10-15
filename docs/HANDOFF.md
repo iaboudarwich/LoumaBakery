@@ -10,7 +10,7 @@ The owner's brief for this version of the site: [docs/brief/2026-10-website-brie
 - [ ] **Netlify site.** The site is `loumabakeryy` (double "y"). Transfer it to a Netlify team the bakery owns: Site configuration → General → Transfer site. (The same Netlify account also has an older site called `loumabakery`, single "y", from a previous version. It is not this site; don't deploy to it, and delete it when the new domain is live.)
 - [ ] **Domain `loumabakery.com`.** Confirm who registered it and where (the registrar), and make sure the bakery controls that account. To point it at Netlify: in Netlify, Domain management → Add a domain → `loumabakery.com`; then at the registrar either switch the nameservers to the ones Netlify shows, or add the DNS records Netlify lists (an A record or ALIAS for the bare domain and a CNAME for `www`). Netlify issues the HTTPS certificate on its own. Then change the site address in `src/config/site.ts` (`siteConfig.url`), `public/robots.txt`, and `site_url` / `display_url` / `logo_url` at the top of `public/admin/config.yml`, and push to `main`.
 - [ ] **Email inboxes.** The site shows `contact@loumabakery.com` and `orders@loumabakery.com` (for larger orders). Both inboxes must exist and be read.
-- [ ] **Form notifications.** Newsletter signups, catering inquiries and job applications arrive in Netlify (Forms tab) but nobody is emailed yet. In Netlify: Site configuration → Notifications → Emails and webhooks → Form submission notifications → Add notification → Email notification. Add one per form: catering → `orders@loumabakery.com`, careers and newsletter → `contact@loumabakery.com` (or whoever should get them). Form detection is already on.
+- [ ] **Form notifications.** Newsletter signups, catering inquiries and job applications arrive in Netlify (Forms tab) but nobody is emailed yet. All three forms are hidden for now (section 4); set this up when one comes back. In Netlify: Site configuration → Notifications → Emails and webhooks → Form submission notifications → Add notification → Email notification. Add one per form: catering → `orders@loumabakery.com`, careers and newsletter → `contact@loumabakery.com` (or whoever should get them). Form detection is already on.
 - [ ] **Editor login (DecapBridge).** The editor at `/admin` logs in through DecapBridge, which is not set up yet, so nobody can log in today.
   1. Create an account at https://decapbridge.com and add a site for the GitHub repository (after the transfer above, use the new repository name).
   2. DecapBridge gives you a `backend:` block. In `public/admin/config.yml`, replace the whole existing `backend:` block with it (the comment above the block marks it). Keep `branch: main`.
@@ -25,17 +25,38 @@ The owner's brief for this version of the site: [docs/brief/2026-10-website-brie
 
 ## 3. Waiting on the owner
 
-- [ ] **Catering and Careers pages**: keep them, change them, or remove them?
-- [ ] **The newsletter**: keep the signup in the footer? If yes, decide where signups go (Netlify keeps them; export or connect a mailing service).
 - [ ] **Uber Eats**: if online ordering goes ahead, send the link. It goes in Site settings → Uber Eats order link, and the developer adds a button for it.
 - [ ] **A phone number**: no phone number is shown anywhere today, on purpose. Decide whether to show one.
 - [ ] **Square links** for pre-orders and gift cards: paste them into Shop in the editor when ready (see EDITING.md). The hat's buy link goes in the same place.
 - [ ] **The hand-drawn map**: the only copy is a small image from the brief. A higher-resolution scan or photo of the original drawing would let the map on the Contact page be traced again more cleanly.
 - [ ] **Photo names in the library**: confirm what is in three photos in `src/assets/img/unplaced/`: `swirl-buns-rack.jpg` and `swirl-buns-yellow-paper.jpg` (cardamom buns?), `sugar-bun-plate.jpg`, and `almond-croissants-tray.jpg` (almond croissants?).
 - [ ] **Menu descriptions**: only 4 of the 60 menu items have a one-line description. Add more in the editor if wanted.
-- [ ] **Catering tier prices** ("from $40", "from $120", "Let's talk") are saved in the editor but hidden, because the site shows no prices except in the shop. Decide whether to show them; showing them again is a small code change.
 
-## 4. Rolling back a bad deploy
+## 4. Hidden for now
+
+The owner switched these off in owner feedback round 1 (October 2026). Nothing is deleted: page files, forms, form scripts, data and editor fields all stay. Each has a one-line switch in `src/config/features.ts`.
+
+| Part | Switch | While `false` |
+|---|---|---|
+| Catering page (`/catering`) and its inquiry form | `cateringPage` | Not built; 301 to `/` (`netlify.toml` and `astro.config.mjs`); not in the sitemap; no footer link |
+| Careers page (`/careers`) and its application form | `careersPage` | Same as Catering |
+| Footer newsletter signup ("Hear from the bakery") | `newsletter` | The row and its form render on no page |
+
+**To turn one back on:**
+
+1. In `src/config/features.ts`, set the switch to `true`. `astro.config.mjs` (redirects, sitemap) and the footer read the same flags, so they follow by themselves.
+2. For Catering or Careers, also delete that page's `[[redirects]]` block under "Hidden for now" at the bottom of `netlify.toml`. Netlify reads that file, not the flags, and would keep sending visitors home.
+3. Run `npx astro check` and `npm run build`, then push to `main`.
+4. In Netlify, check the form shows under Forms after the deploy (form detection only sees forms that are on a built page), and add its email notification (section 1).
+5. Remove "(hidden on site for now)" from the matching labels in `public/admin/config.yml`.
+
+Questions for the owner while they are hidden:
+
+- [ ] **Catering and Careers pages**: bring them back as they are, change them, or remove them for good?
+- [ ] **The newsletter**: bring the signup back? If yes, decide where signups go (Netlify keeps them; export or connect a mailing service).
+- [ ] **Catering tier prices** ("from $40", "from $120", "Let's talk") are saved in the editor but not shown, because the site shows no prices except in the shop. If the Catering page comes back, decide whether to show them; that is a small code change.
+
+## 5. Rolling back a bad deploy
 
 If a change breaks the live site:
 
@@ -46,7 +67,7 @@ If a change breaks the live site:
 
 An editor change can also be undone in the editor by setting the field back and publishing again.
 
-## 5. Useful places
+## 6. Useful places
 
 | What | Where |
 |---|---|

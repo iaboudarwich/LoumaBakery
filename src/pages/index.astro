@@ -18,54 +18,65 @@ const heroPhoto = pick(images.hero);
 const g = images.homeGallery.map((p) => ({ photo: pick(p.image), alt: p.alt }));
 const { address, hours, directionsUrl } = siteConfig;
 
-// Hero, art-directed. Wide screens get the landscape frame. Narrow screens
-// show a 72svh-tall slot, a portrait crop of the same frame, so they get that
-// crop (5:8, centred, the crop object-fit: cover would make anyway) instead
-// of a 3000px landscape file. Keeps the phone LCP AVIF <=150KB (CLAUDE.md);
-// quality is tuned against the file a 390px DPR-3 phone picks.
+// Split hero: the photo fills the right 7 columns (a tall box on wide
+// screens, 4:5 on phones), so every size is a centred 4:5 crop of the frame,
+// the crop object-fit: cover would make anyway. Keeps the phone LCP AVIF
+// <=150KB (CLAUDE.md); quality is tuned against the file a 390px DPR-3 phone
+// picks (1200w).
 const HERO_QUALITY = 45;
-const NARROW = '(max-width: 47.99rem)';
-const variants = async (widths: number[], ratio: number | undefined, format: 'avif' | 'webp') =>
+const HERO_W = [600, 900, 1200, 1500, 1800];
+const HERO_RATIO = 4 / 5;
+const variants = async (format: 'avif' | 'webp') =>
   heroPhoto
-    ? (await Promise.all(widths.map((w) => getImage({ src: heroPhoto, width: w, ...(ratio ? { height: Math.round(w / ratio), fit: 'cover' as const, position: 'center' } : {}), format, quality: HERO_QUALITY }))))
-        .map((img, i) => `${img.src} ${widths[i]}w`).join(', ')
+    ? (await Promise.all(HERO_W.map((w) => getImage({ src: heroPhoto, width: w, height: Math.round(w / HERO_RATIO), fit: 'cover', position: 'center', format, quality: HERO_QUALITY }))))
+        .map((img, i) => `${img.src} ${HERO_W[i]}w`).join(', ')
     : '';
-const WIDE_W = [1200, 1600, 2000, 2400, 3000];
-const NARROW_W = [600, 900, 1200];
 const hero = heroPhoto && {
-  narrowAvif: await variants(NARROW_W, 5 / 8, 'avif'),
-  narrowWebp: await variants(NARROW_W, 5 / 8, 'webp'),
-  wideAvif: await variants(WIDE_W, undefined, 'avif'),
-  wideWebp: await variants(WIDE_W, undefined, 'webp'),
-  fallback: await getImage({ src: heroPhoto, width: 1600, format: 'jpeg', quality: 70 }),
+  avif: await variants('avif'),
+  webp: await variants('webp'),
+  fallback: await getImage({ src: heroPhoto, width: 1200, height: 1500, fit: 'cover', position: 'center', format: 'jpeg', quality: 70 }),
 };
+// The photo's rendered width: the full column on phones; on wide screens the
+// larger of the 7-column box and the 4:5 crop scaled to the box height.
+const HERO_SIZES = '(max-width: 47.99rem) 100vw, max(min(55vw, 790px), min(69vh, 688px))';
+
+// One line under the tagline, built from Site settings: the street and city,
+// then each open row of hours in short form ("Tue–Sun 7:30–2:30"). Each part
+// stays on one line; the line breaks only between parts.
+const shortDays = (d: string) => d.split(/\s*[–-]\s*/).map((x) => x.trim().slice(0, 3)).join('–');
+const shortTime = (t: string) => t.replace(/\s*(AM|PM)\s*$/i, '');
+const heroMeta = [
+  `${address.street}, ${address.city}`,
+  ...hours.filter((h) => h.close).map((h) => `${shortDays(h.days)} ${shortTime(h.open)}–${shortTime(h.close)}`),
+];
 
 const reveal = f.reveal ? 'reveal' : undefined;
 ---
 
 <BaseLayout schema="bakery" description={describe([home.tagline, ...home.body])}>
-  {/* 1. Hero: the photo alone, edge to edge. No text, no overlay. */}
-  {hero && (
-    <section class="home-hero">
-      <picture class="hero-photo">
-        <source media={NARROW} type="image/avif" srcset={hero.narrowAvif} sizes="100vw" />
-        <source media={NARROW} type="image/webp" srcset={hero.narrowWebp} sizes="100vw" />
-        <source type="image/avif" srcset={hero.wideAvif} sizes="100vw" />
-        <source type="image/webp" srcset={hero.wideWebp} sizes="100vw" />
-        <img src={hero.fallback.src} width={hero.fallback.attributes.width} height={hero.fallback.attributes.height} alt={images.heroAlt} class="img-cover" loading="eager" decoding="auto" fetchpriority="high" />
-      </picture>
-    </section>
-  )}
-
-  {/* 2. Tagline band: the baguette mark over the tagline. */}
-  <section class="section tagline-band">
-    <div class="container tagline-inner" data-anim={reveal}>
-      <Doodle name="baguette" size={140} color="red" animate={f.doodleDraw} class="tagline-mark" />
-      <h1 class="display tagline">{home.tagline}</h1>
+  {/* 1. Split hero: the baguette, the tagline and the address line left (5
+      columns), the photo right (7). Phones: the photo first, then the text. */}
+  <section class="home-hero">
+    <div class="container grid-12 hero-grid">
+      <div class="hero-text">
+        {/* The baguette slot (the filled mark for now). */}
+        <div class="hero-mark-slot">
+          <Doodle name="baguette" size={140} color="red" animate={f.doodleDraw} class="hero-mark" />
+        </div>
+        <h1 class="display hero-tagline">{home.tagline}</h1>
+        <p class="label hero-meta">{heroMeta.map((part, i) => <>{i > 0 && ' · '}<span>{part}</span></>)}</p>
+      </div>
+      {hero && (
+        <picture class="hero-photo">
+          <source type="image/avif" srcset={hero.avif} sizes={HERO_SIZES} />
+          <source type="image/webp" srcset={hero.webp} sizes={HERO_SIZES} />
+          <img src={hero.fallback.src} width={hero.fallback.attributes.width} height={hero.fallback.attributes.height} alt={images.heroAlt} class="img-cover" loading="eager" decoding="auto" fetchpriority="high" />
+        </picture>
+      )}
     </div>
   </section>
 
-  {/* 3. Photo pair: portrait 5 columns, landscape 7, top-aligned. */}
+  {/* 2. Photo pair: portrait 5 columns, landscape 7, top-aligned. */}
   <section class="section">
     <div class="container grid-12">
       {g[0]?.photo && <Img src={g[0].photo} alt={g[0].alt} class="ph ph--portrait" style="--span: 5" sizes="(max-width: 47.99rem) 100vw, min(40vw, 560px)" />}
@@ -73,14 +84,14 @@ const reveal = f.reveal ? 'reveal' : undefined;
     </div>
   </section>
 
-  {/* 4. Body: the two paragraphs in a centred column. */}
+  {/* 3. Body: the two paragraphs in a centred column. */}
   <section class="section">
     <div class="container" data-anim={reveal}>
       <div class="home-body">{home.body.map((p) => <p class="lead">{p}</p>)}</div>
     </div>
   </section>
 
-  {/* 5. Photo row: two equal portraits. */}
+  {/* 4. Photo row: two equal portraits. */}
   <section class="section">
     <div class="container grid-12">
       {g[2]?.photo && <Img src={g[2].photo} alt={g[2].alt} class="ph ph--portrait" style="--span: 6" sizes="(max-width: 47.99rem) 100vw, min(48vw, 680px)" />}
@@ -88,7 +99,7 @@ const reveal = f.reveal ? 'reveal' : undefined;
     </div>
   </section>
 
-  {/* 6. Visit band: burgundy, butter text. Address left, hours right. */}
+  {/* 5. Visit band: burgundy, butter text. Address left, hours right. */}
   <section class="section block--burgundy visit-band" aria-labelledby="visit-band-h">
     <div class="container grid-12" data-anim={reveal}>
       <div class="visit-where">
@@ -108,51 +119,56 @@ const reveal = f.reveal ? 'reveal' : undefined;
     </div>
   </section>
 
-  {/* 7. Photo row: landscape 8 columns, portrait 4. */}
-  <section class="section">
-    <div class="container grid-12">
-      {g[4]?.photo && <Img src={g[4].photo} alt={g[4].alt} class="ph ph--landscape" style="--span: 8" sizes="(max-width: 47.99rem) 100vw, min(65vw, 900px)" />}
-      {g[5]?.photo && <Img src={g[5].photo} alt={g[5].alt} class="ph ph--portrait" style="--span: 4" sizes="(max-width: 47.99rem) 100vw, min(32vw, 440px)" />}
-    </div>
-  </section>
-
-  {/* 8. Instagram strip. */}
+  {/* 6. Instagram strip. */}
   <section class="section" aria-labelledby="ig-h">
     <div class="container">
       {home.instagramTitle && <h2 id="ig-h" class="h2 ig-title">{home.instagramTitle}</h2>}
       <InstagramStrip />
     </div>
   </section>
-  {/* 9. Footer (with the newsletter, target of #newsletter) comes from BaseLayout. */}
+  {/* The footer comes from BaseLayout. */}
 </BaseLayout>
 
 <style>
-  /* 1. Hero: full-bleed, the photo exactly as shot. */
-  .home-hero { line-height: 0; }
+  /* 1. Split hero: min(86svh, 860px) tall on wide screens; the photo fills
+     its column's height, exactly as shot (object-fit: cover). */
+  .home-hero { padding-top: var(--block-gap); }
+  .hero-grid { align-items: stretch; }
+  .hero-text {
+    --span: 5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--block-gap);
+    padding-block: var(--block-gap);
+  }
+  .hero-text :global(.hero-mark) { width: clamp(96px, 10vw, 140px); }
+  .hero-meta { color: var(--burgundy); max-width: none; }
+  .hero-meta span { white-space: nowrap; }
   .hero-photo {
+    --start: 6;
+    --span: 7;
     display: block;
-    width: 100%;
-    height: min(88svh, 960px);
+    height: min(86vh, 860px);
+    height: min(86svh, 860px);
   }
+  /* Phones: the photo first at 4:5, then the text. */
   @media (max-width: 47.99rem) {
-    .hero-photo { height: 72vh; height: 72svh; }
+    .hero-photo { order: -1; height: auto; aspect-ratio: 4 / 5; }
+    .hero-text { padding-block: 0; gap: var(--space-5); }
   }
 
-  /* 2. Tagline band. */
-  .tagline-inner { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--block-gap); }
-  .tagline-inner :global(.tagline-mark) { width: clamp(96px, 10vw, 140px); }
-  .tagline { max-width: 16ch; }
-
-  /* 4. Body copy: a centred column, max 34em, text set left for reading. */
-  .home-body { max-width: 34em; margin-inline: auto; }
+  /* 3. Body copy: a centred column, max 44em, text set left for reading. */
+  .home-body { max-width: 44em; margin-inline: auto; }
   .home-body .lead { max-width: none; }
 
-  /* 6. Visit band. */
+  /* 5. Visit band. */
   .visit-band :global(.visit-sun) { margin-bottom: var(--block-gap); }
   .visit-address {
     font-style: normal;
     font-family: var(--font-display);
-    font-weight: 700;
+    font-weight: var(--display-weight);
+    letter-spacing: var(--display-track);
     font-size: var(--fs-h2);
     line-height: 1.1;
     color: var(--butter);
@@ -176,6 +192,6 @@ const reveal = f.reveal ? 'reveal' : undefined;
     text-underline-offset: 0.2em;
   }
 
-  /* 8. Instagram. */
+  /* 6. Instagram. */
   .ig-title { margin-bottom: var(--block-gap); }
 </style>

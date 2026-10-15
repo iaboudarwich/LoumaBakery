@@ -116,13 +116,15 @@ The website follows the brand book.
   `#ED2739`, Burgundy `#A10017`, Peach `#FF676C`, Tangerine `#FF8926`, Fairy `#DDEAC3`,
   Butter `#FBF5D4`, White `#FFFFFF`, and Ink `#1D1D1B` (the board's registration
   black) for text. Red is the primary colour, as on the board: the logo, the drawings,
-  the page titles and section headings. Red text is only used at 24px and up, because
-  red on Butter is 3.86:1; smaller text is Ink or Burgundy. Butter is the page;
-  Burgundy, Fairy and White are full-width colour blocks.
-- **Type**: Owners only, four styles served as web fonts: Owners Narrow Bold (titles
-  and headings), Owners Narrow Medium (small labels), Owners Regular (body) and Owners
-  Medium (emphasis, buttons, names, hours). A webfont licence is still needed; see
-  `docs/HANDOFF.md`.
+  the page titles, section headings and the header links. Red text is only used at
+  24px and up, or bold at 19px (the header links), because red on Butter is 3.86:1;
+  smaller text is Ink or Burgundy. Butter is the page; Burgundy, Fairy and White are
+  full-width colour blocks; the footer is Louma Red with white Owners Narrow Bold text
+  at 19px or more (white on red is 4.24:1, fine for large bold text only).
+- **Type**: Owners only, three styles in use as web fonts: Owners Medium for titles and
+  headings (regular width, slightly tightened) and for emphasis, buttons, names and
+  hours; Owners Regular for body; Owners Narrow Bold only in the header links and the
+  footer. A webfont licence is still needed; see `docs/HANDOFF.md`.
 - **Shapes**: square corners everywhere, no shadows, gradients or blur. (The board's
   colour tiles are rounded squares; the site keeps every corner square by the owner's
   choice.)

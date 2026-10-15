@@ -1,6 +1,7 @@
 ---
 import { getEntry } from 'astro:content';
 import { siteConfig } from '../config/site';
+import { features, hiddenRoutes } from '../config/features';
 import { Wordmark } from '../lib/brand';
 import FaceDraw from './FaceDraw.astro';
 import NewsletterForm from './NewsletterForm.astro';
@@ -9,12 +10,14 @@ interface Props {
   /** Show the footer newsletter. Pages with their own signup (home) pass false. */
   newsletter?: boolean;
 }
-const { newsletter = true } = Astro.props;
+// The signup also needs features.newsletter on (off for now).
+const newsletter = (Astro.props.newsletter ?? true) && features.newsletter;
 
 const { address, hours, links } = siteConfig;
 const year = new Date().getFullYear();
 const home = (await getEntry('copy', 'home'))?.data;
 
+// Pages switched off in features.ts (hiddenRoutes) are not linked.
 const explore = [
   { label: 'Our Story', href: '/story' },
   { label: 'The Louma Initiative', href: '/initiative' },
@@ -23,7 +26,7 @@ const explore = [
   { label: 'Catering', href: '/catering' },
   { label: 'Careers', href: '/careers' },
   { label: 'Contact', href: '/visit' },
-];
+].filter((l) => !hiddenRoutes.includes(l.href));
 ---
 
 <footer class="site-foot on-dark">
@@ -42,9 +45,8 @@ const explore = [
     <div class="foot-cols">
       <!-- Brand -->
       <div class="foot-col foot-brand">
-        <FaceDraw class="foot-face" width={104} height={96} color="var(--peach)" />
+        <FaceDraw class="foot-face" width={104} height={96} color="var(--white)" />
         <Wordmark class="foot-wordmark" width={180} height={116} aria-label={siteConfig.name} />
-        <p class="foot-tag">{siteConfig.tagline}.</p>
       </div>
 
       <!-- Visit -->
@@ -75,6 +77,7 @@ const explore = [
         <ul class="foot-links" role="list">
           {explore.map((l) => (<li><a href={l.href}>{l.label}</a></li>))}
           <li><a href={links.instagram} target="_blank" rel="noopener">Instagram</a></li>
+          {links.tiktok && <li><a href={links.tiktok} target="_blank" rel="noopener">TikTok</a></li>}
         </ul>
       </div>
     </div>
@@ -87,12 +90,21 @@ const explore = [
 </footer>
 
 <style>
+  /* Louma Red, every word white in Owners Narrow Bold at 19px or more. White
+     on red is 4.24:1, which passes AA only as large bold text, so nothing in
+     the footer is set smaller or lighter. Hairlines are white at 30%. */
   .site-foot {
-    background: var(--ink);
-    color: color-mix(in srgb, var(--butter) 78%, transparent);
+    --foot-line: color-mix(in srgb, var(--white) 30%, transparent);
+    background: var(--red);
+    color: var(--white);
+    font-family: var(--font-narrow);
+    font-weight: 700;
+    font-size: 19px;
+    line-height: 1.5;
     padding-block: var(--space-8) var(--space-6);
     margin-top: var(--space-8);
   }
+  .site-foot p { max-width: none; }
 
   .foot-newsletter:empty {
     display: none;
@@ -100,19 +112,11 @@ const explore = [
   .foot-newsletter:not(:empty) {
     padding-bottom: var(--space-7);
     margin-bottom: var(--space-7);
-    border-bottom: 1px solid color-mix(in srgb, var(--butter) 14%, transparent);
+    border-bottom: 1px solid var(--foot-line);
   }
   .foot-news { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4); }
-  .foot-news-h {
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-size: clamp(20px, 2.4vw, 28px);
-    color: var(--butter);
-  }
-  .foot-news-body {
-    margin-top: var(--space-2);
-    color: color-mix(in srgb, var(--butter) 78%, transparent);
-  }
+  .foot-news-h { font-size: clamp(20px, 2.4vw, 28px); }
+  .foot-news-body { margin-top: var(--space-2); }
   /* Newsletter form/input styling lives in NewsletterForm.astro (scoped to where it renders). */
 
   .foot-cols {
@@ -122,43 +126,27 @@ const explore = [
   }
 
   .foot-brand .foot-wordmark {
-    color: var(--butter);
+    color: var(--white);
     margin-top: var(--space-2);
     height: auto;
   }
-  .foot-tag {
-    margin-top: var(--space-4);
-    color: color-mix(in srgb, var(--butter) 72%, transparent);
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-size: clamp(20px, 2.2vw, 28px);
-    line-height: 1.25;
-    max-width: 18ch;
-  }
 
-  /* Column headers share the site-wide label language: mono tracked + a short
-     dash rule (coral on this ink surface). */
+  /* Column labels: the same white Narrow Bold as everything else here. */
   .foot-h {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.7em;
-    font-family: var(--font-body);
-    font-size: var(--t-eyebrow);
-    letter-spacing: var(--track-eyebrow);
-    text-transform: uppercase;
-    font-weight: 500;
-    color: color-mix(in srgb, var(--butter) 88%, transparent);
+    font-family: var(--font-narrow);
+    font-weight: 700;
+    font-size: 19px;
+    line-height: 1.5;
+    color: var(--white);
     margin-bottom: var(--space-4);
   }
 
   .foot-address {
     font-style: normal;
-    line-height: 1.7;
   }
   .foot-hours {
     margin: var(--space-3) 0;
     padding: 0;
-    font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px);
   }
   .foot-hours li {
     display: flex;
@@ -166,9 +154,8 @@ const explore = [
     gap: var(--space-3);
     padding: 2px 0;
   }
-  .foot-hours-time {
-    color: color-mix(in srgb, var(--butter) 62%, transparent);
-  }
+  /* The data voice keeps its tabular figures, in the footer's face. */
+  .site-foot .mono { font-family: inherit; font-weight: inherit; }
 
   .foot-links {
     margin: 0;
@@ -180,18 +167,18 @@ const explore = [
   .foot-links a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; } /* tap targets */
 
   .site-foot a {
-    color: color-mix(in srgb, var(--butter) 82%, transparent);
+    color: var(--white);
     text-decoration: none;
-    transition: color var(--dur-fast) var(--ease-out);
   }
+  /* Hover: an underline, never a colour change. */
   @media (hover: hover) and (pointer: fine) {
     .site-foot a:hover {
-      color: var(--peach);
       text-decoration: underline;
-      text-decoration-thickness: 1px;
+      text-decoration-thickness: 2px;
       text-underline-offset: 0.2em;
     }
   }
+  .site-foot :global(:focus-visible) { outline: 2px solid var(--white); outline-offset: 3px; }
 
   .foot-base {
     display: flex;
@@ -200,10 +187,10 @@ const explore = [
     flex-wrap: wrap;
     margin-top: var(--space-8);
     padding-top: var(--space-5);
-    border-top: 1px solid color-mix(in srgb, var(--butter) 14%, transparent);
-    font-size: clamp(13px, calc(13px + (100vw - 1920px) * 0.002344), 14.5px);
-    color: color-mix(in srgb, var(--butter) 55%, transparent);
+    border-top: 1px solid var(--foot-line);
   }
+  /* Two lines on one row: no paragraph gap above the second. */
+  .foot-base p + p { margin-top: 0; }
 
   @media (max-width: 760px) {
     .foot-cols {

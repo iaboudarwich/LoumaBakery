@@ -6,6 +6,11 @@ import { describe } from '../lib/seo';
 import { features as f } from '../config/features';
 import { siteConfig } from '../config/site';
 
+// Hidden for now: while features.careersPage is false the route belongs to the
+// redirect in astro.config.mjs (so this never runs in a build); the guard
+// covers anything that renders the page anyway.
+if (!f.careersPage) return Astro.redirect('/', 301);
+
 const c = (await getEntry('copy', 'careers'))!.data;
 const roles = c.roles ?? [];
 ---

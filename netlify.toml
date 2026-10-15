@@ -57,3 +57,20 @@
   to = "/initiative"
   status = 301
   force = true
+
+# ----------------------------------------------------------------------------
+# Hidden for now (src/config/features.ts: cateringPage, careersPage). While a
+# page is switched off its address goes home. When a page is switched back on,
+# delete its block here too, or Netlify keeps sending visitors home.
+# ----------------------------------------------------------------------------
+[[redirects]]
+  from = "/catering"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/careers"
+  to = "/"
+  status = 301
+  force = true

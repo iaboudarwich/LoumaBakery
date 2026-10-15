@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { SITE_URL } from './src/config/site.ts';
+import { hiddenRoutes } from './src/config/features.ts';
 
 // https://astro.build/config
 /**
@@ -21,8 +22,17 @@ const devOnlyReview = {
 
 export default defineConfig({
   site: SITE_URL,
-  // /mission became /initiative. Netlify serves the real 301 (netlify.toml);
-  // this makes the old URL work in `astro dev` and preview too.
-  redirects: { '/mission': '/initiative' },
-  integrations: [sitemap(), devOnlyReview],
+  // /mission became /initiative, and pages switched off in
+  // src/config/features.ts go home. Netlify serves the real 301s
+  // (netlify.toml); these make the old URLs work in `astro dev` and preview
+  // too. A redirect takes the route, so a hidden page is never built.
+  redirects: {
+    '/mission': '/initiative',
+    ...Object.fromEntries(hiddenRoutes.map((r) => [r, '/'])),
+  },
+  integrations: [
+    // Hidden pages stay out of the sitemap.
+    sitemap({ filter: (page) => !hiddenRoutes.some((r) => new URL(page).pathname.replace(/\/$/, '') === r) }),
+    devOnlyReview,
+  ],
 });

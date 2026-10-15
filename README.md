@@ -1,6 +1,6 @@
 # Louma Bakery website
 
-The website of Louma Bakery, a sister-run neighborhood bakery at 3223 Wilshire Blvd in Santa Monica. It has eight public pages and a 404 page. The owner and staff edit the words, photos, menu, hours and shop links themselves through a web editor (the CMS); a developer is only needed for layout or code changes.
+The website of Louma Bakery, a sister-run neighborhood bakery at 3223 Wilshire Blvd in Santa Monica. It has six public pages, two more that are hidden for now (Catering and Careers), and a 404 page. The owner and staff edit the words, photos, menu, hours and shop links themselves through a web editor (the CMS); a developer is only needed for layout or code changes.
 
 - Live site: https://loumabakeryy.netlify.app (note the double "y"; the real domain is not connected yet).
 - Handoff checklist (accounts, licences, open items): [`docs/HANDOFF.md`](docs/HANDOFF.md)
@@ -35,18 +35,20 @@ npx astro check    # type check: should report 0 errors
 
 ## Pages
 
-The top menu shows Our Story, The Louma Initiative, Menu and Shop; the logo goes home. Catering, Careers and Contact are linked from the footer.
+The top menu shows Our Story, The Louma Initiative, Menu and Shop; the logo goes home. Contact is linked from the footer, with Catering and Careers when they are switched on.
+
+**Hidden for now.** `src/config/features.ts` has three one-line switches, all `false` today: `cateringPage`, `careersPage` and `newsletter`. A hidden page is not built, 301-redirects to `/` (`netlify.toml` and `astro.config.mjs`), is left out of the sitemap and loses its footer link; with `newsletter` off the footer signup renders nowhere. The files, forms, data and editor fields all stay. How to switch one back on: `docs/HANDOFF.md`, section 4.
 
 | Address | File | What feeds it |
 |---|---|---|
-| `/` | `src/pages/index.astro` | `copy.json` → home, `images.json` (hero and gallery), `instagram.json`, `settings.json` (address, hours) |
+| `/` | `src/pages/index.astro` | `copy.json` → home, `images.json` (hero and the four gallery photos), `instagram.json`, `settings.json` (address, hours). Opens with a split hero: tagline left, photo right (photo first on phones). |
 | `/story` | `src/pages/story.astro` | `copy.json` → story (title), `story.json` (the letter and five sections), `images.json` → story |
 | `/initiative` | `src/pages/initiative.astro` | `copy.json` → initiative (text and the four pillars) |
 | `/menu` | `src/pages/menu.astro` | `copy.json` → menu, `menu.json` |
 | `/shop` | `src/pages/shop.astro` | `copy.json` → shop, `shop.json` |
-| `/visit` (shown as "Contact") | `src/pages/visit.astro` | `copy.json` → visit (title), `settings.json`, `images.json` → storefront, the hand-drawn map |
-| `/catering` | `src/pages/catering.astro` | `copy.json` → catering, plus the catering form |
-| `/careers` | `src/pages/careers.astro` | `copy.json` → careers, plus the job application form |
+| `/visit` (shown as "Contact") | `src/pages/visit.astro` | `copy.json` → visit (title), `settings.json` (address, hours, emails, Instagram, TikTok), the hand-drawn map |
+| `/catering` (hidden for now) | `src/pages/catering.astro` | `copy.json` → catering, plus the catering form. Redirects to `/` while `cateringPage` is off. |
+| `/careers` (hidden for now) | `src/pages/careers.astro` | `copy.json` → careers, plus the job application form. Redirects to `/` while `careersPage` is off. |
 | any unknown address | `src/pages/404.astro` | `copy.json` → notFound |
 | `/mission` | (none) | Redirects permanently to `/initiative` (in `netlify.toml`, and in `astro.config.mjs` for local runs). |
 | `/admin` | `public/admin/` | The editor. Not indexed by search engines. |
@@ -62,9 +64,9 @@ Everything editable lives in `src/data/`, one CMS collection per file:
 | `story.json` | The founder's letter (paragraphs and signature) and the Our Story sections | Our Story |
 | `menu.json` | Menu categories (name, order, drawing), items (name, description, dietary tags) and the add-ons list. No prices. | Menu |
 | `shop.json` | The pre-order and gift card links, and the products (name, price, description, size, photo, buy link). An empty link shows "Coming soon". | Shop |
-| `images.json` | Which photo goes in which slot (home hero, home gallery, Our Story photos, Contact storefront), each with its description | Photos |
+| `images.json` | Which photo goes in which slot (home hero, the four home gallery photos, the two Our Story photos), each with its description | Photos |
 | `instagram.json` | The six photos in the home page Instagram strip | Instagram strip |
-| `settings.json` | The two email addresses, address, opening hours, Instagram link and handle, and an Uber Eats link that is saved but not shown | Site settings |
+| `settings.json` | The two email addresses, address, opening hours, Instagram and TikTok links and handles, and an Uber Eats link that is saved but not shown | Site settings |
 
 The editor's setup, field by field, is `public/admin/config.yml`. If you add a field to a JSON file, add it to `config.yml` and to the schema in `src/content.config.ts` too, or editors won't see it (and the page-text schema is strict, so an unknown field fails the build).
 
@@ -89,14 +91,15 @@ The menu can also be filled from a Google Sheet once one is published: `scripts/
 
 ## Forms
 
-The newsletter (in the footer of every page), the catering inquiry and the job application are Netlify Forms. Each form has a hidden `form-name` field and a hidden spam trap; `src/scripts/forms.ts` sends them without leaving the page and shows the thank-you message. Submissions appear in Netlify under Forms. Email alerts are not set up yet; see the handoff checklist.
+The newsletter (in the footer of every page), the catering inquiry and the job application are Netlify Forms. All three are hidden for now (see "Pages"), so no form is on the live site until one is switched back on. Each form has a hidden `form-name` field and a hidden spam trap; `src/scripts/forms.ts` sends them without leaving the page and shows the thank-you message. Submissions appear in Netlify under Forms. Email alerts are not set up yet; see the handoff checklist.
 
 ## Brand rules, in short
 
 Full reference: [`docs/BRAND.md`](docs/BRAND.md). The detailed rules for code are in `CLAUDE.md`.
 
-- **Eight colours only**: Louma Red `#ED2739` (the main colour), Burgundy `#A10017`, Peach `#FF676C`, Tangerine `#FF8926`, Fairy `#DDEAC3`, Butter `#FBF5D4` (the page background), White and Ink `#1D1D1B`. Red text only at 24px and up; smaller text is ink or burgundy.
-- **One typeface**, Owners, in four styles.
+- **Eight colours only**: Louma Red `#ED2739` (the main colour), Burgundy `#A10017`, Peach `#FF676C`, Tangerine `#FF8926`, Fairy `#DDEAC3`, Butter `#FBF5D4` (the page background), White and Ink `#1D1D1B`. Red text only at 24px and up, or bold at 19px and up (the header links); smaller text is ink or burgundy.
+- **One typeface**, Owners: Owners 500 for titles and headings, Owners 400 for body, and Owners Narrow Bold only in the header nav and the footer.
+- **The footer is Louma Red** with every word white in Owners Narrow Bold at 19px or more (white on red passes contrast only as large bold text).
 - **Square corners** everywhere. No shadows, gradients or blur.
 - **Photos straight** and shown as taken: no filters, no text over them, no animation.
 - **Only the designer's drawings** (plus the owner's traced signature and map).

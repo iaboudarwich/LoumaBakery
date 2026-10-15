@@ -25,7 +25,7 @@ interface Props {
 
 // The owner's tagline (copy.json "home") is the site-wide default title and
 // description, and the Bakery description in structured data.
-const ownerTagline = (await getEntry('copy', 'home'))?.data.tagline ?? siteConfig.tagline;
+const ownerTagline = (await getEntry('copy', 'home'))?.data.tagline ?? siteConfig.name;
 
 const {
   title,
@@ -93,7 +93,7 @@ const jsonLd =
         address: postalAddress,
         openingHoursSpecification: openingHours,
         hasMenu: new URL('/menu/', SITE_URL).href,
-        sameAs: [siteConfig.links.instagram],
+        sameAs: [siteConfig.links.instagram, siteConfig.links.tiktok].filter(Boolean),
       }
     : null;
 ---
@@ -109,6 +109,7 @@ const jsonLd =
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <link rel="preload" as="font" type="font/woff2" href="/fonts/owners-400.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/owners-500.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="/fonts/owners-narrow-700.woff2" crossorigin />
     <meta name="generator" content={Astro.generator} />
 

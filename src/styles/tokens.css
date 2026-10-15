@@ -26,32 +26,30 @@
   --link-hover: var(--burgundy);   /* red text on butter is only 3.86:1; burgundy is 7.56:1 */
 
   /* --- Type stacks --- */
-  /* Owners superfamily (src/styles/fonts.css). Display: Narrow 700 for h1-h3,
-     Narrow 500 for h4-h6, eyebrows and labels. Body: 400, with 500 for
-     emphasis, buttons and data (hours, prices, form fields). */
-  --font-display: "Owners Narrow", sans-serif;
+  /* Owners superfamily (src/styles/fonts.css). Display: Owners 500 (regular
+     width) for every title and heading. Narrow: Owners Narrow 700, for the
+     header nav and the footer only. Body: Owners 400, with 500 for emphasis,
+     buttons and data (hours, form fields). */
+  --font-display: "Owners", sans-serif;
+  --font-narrow: "Owners Narrow", sans-serif;
   --font-body: "Owners", sans-serif;
+  --display-weight: 500;
+  --display-track: -0.015em;
+  --display-lh: 1.05;
 
   /* --- Global type scale (all Owners). Page titles and the home tagline use
      --fs-display; section headings --fs-h2; intros --fs-lead; body --fs-body;
      labels --fs-small. --- */
-  --fs-display: clamp(40px, 6.5vw, 96px);  /* Owners Narrow 700 */
-  --fs-h2: clamp(28px, 3.6vw, 48px);       /* Owners Narrow 700 */
+  --fs-display: clamp(36px, 4.6vw, 64px);  /* Owners 500 */
+  --fs-h2: clamp(24px, 2.6vw, 36px);       /* Owners 500 */
   --fs-lead: clamp(20px, 1.8vw, 26px);     /* Owners 400 */
   --fs-body: clamp(16px, 1.15vw, 18px);    /* Owners 400, line-height 1.6 */
   --fs-item: clamp(19px, 1.4vw, 20px);     /* Owners 500: menu item and product names, prices */
   --fs-small: 14px;                        /* Owners 500, labels */
 
-  /* --- Footer stamp size (the footer keeps its own label scale) --- */
-  --t-eyebrow: clamp(12px, calc(12px + (100vw - 1920px) * 0.002344), 13.5px);        /* eyebrow stamp: 12px by spec (the 13px floor's one exception) */
-
   /* --- Line heights --- */
-  --lh-tight: 1.05;
   --lh-snug: 1.2;
   --lh-body: 1.6;
-
-  /* --- Tracking --- */
-  --track-eyebrow: 0.24em;
 
   /* --- Spacing scale (rem) --- */
   --space-2: 0.5rem;

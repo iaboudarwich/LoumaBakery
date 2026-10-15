@@ -5,18 +5,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { describe } from '../lib/seo';
 import { siteConfig } from '../config/site';
 import { features as f } from '../config/features';
-import Img from '../components/Img.astro';
-import { resolveImage } from '../lib/images';
 import MapDrawing from '../assets/brand/map-hand-drawn.svg';
 
 // Contact page (route stays /visit). Title from copy.json ("visit"); address,
-// hours, emails and Instagram from settings.json; the storefront photo from
-// images.json.
+// hours, emails, Instagram and TikTok from settings.json.
 const c = (await getEntry('copy', 'visit'))!.data;
 const { address, hours, email, ordersEmail, directionsUrl } = siteConfig;
-const { instagram, instagramHandle } = siteConfig.links;
-const photos = (await getEntry('images', 'images'))!.data;
-const storefront = resolveImage(photos.storefront);
+const { instagram, instagramHandle, tiktok, tiktokHandle } = siteConfig.links;
 const reveal = f.reveal ? 'reveal' : undefined;
 ---
 
@@ -52,7 +47,8 @@ const reveal = f.reveal ? 'reveal' : undefined;
           <ul class="contact-list" role="list">
             <li><a href={`mailto:${email}`}>{email}</a></li>
             <li><a href={`mailto:${ordersEmail}`}>{ordersEmail}</a> for larger orders</li>
-            <li><a href={instagram} target="_blank" rel="noopener">{instagramHandle}</a></li>
+            <li><a href={instagram} target="_blank" rel="noopener" aria-label={`${instagramHandle} on Instagram`}>{instagramHandle}</a></li>
+            {tiktok && <li><a href={tiktok} target="_blank" rel="noopener" aria-label={`${tiktokHandle || 'TikTok'} on TikTok`}>{tiktokHandle || 'TikTok'}</a></li>}
             <li><a href={directionsUrl} target="_blank" rel="noopener">Get directions</a></li>
           </ul>
         </div>
@@ -62,14 +58,6 @@ const reveal = f.reveal ? 'reveal' : undefined;
       </div>
     </div>
   </section>
-
-  {storefront && (
-    <section class="section">
-      <div class="container grid-12">
-        <Img src={storefront} alt={photos.storefrontAlt} class="ph ph--portrait" style="--start: 3; --span: 8" sizes="(max-width: 47.99rem) 100vw, min(64vw, 900px)" />
-      </div>
-    </section>
-  )}
 </BaseLayout>
 
 <style>
@@ -79,7 +67,8 @@ const reveal = f.reveal ? 'reveal' : undefined;
   .contact-address {
     font-style: normal;
     font-family: var(--font-display);
-    font-weight: 700;
+    font-weight: var(--display-weight);
+    letter-spacing: var(--display-track);
     font-size: var(--fs-h2);
     line-height: 1.1;
   }

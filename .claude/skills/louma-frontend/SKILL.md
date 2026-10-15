@@ -10,7 +10,7 @@ description: Frontend design discipline for the Louma site. Flatness, square sha
 - Shape language: square. Every radius is 0 (the --radius-* tokens are 0): buttons, tags, chips, inputs, cards, photos, the nav. Never add a border-radius.
 - Ghost buttons default: 1.5px --burgundy outline rectangle, transparent fill, ~14x28px padding, Owners 500. Max ONE filled CTA per page (on a burgundy card it inverts to butter with burgundy text). Disabled = dashed ghost that reads intentional.
 - Colour: only the eight brand tokens (tokens.css). Red is primary, but red text must be 24px+ (or bold 18.66px+) because red on butter is 3.86:1; small text is ink or burgundy, links burgundy.
-- Type: Owners only, four faces (Narrow 700 headings h1-h3, Narrow 500 subheads and labels, 400 body, 500 emphasis/buttons/data). Never request italics or other weights; font-synthesis is off.
+- Type: Owners only, three faces in use (Owners 500 for titles, headings, emphasis, buttons and data; 400 body; Narrow 700 only in the header nav and the red footer). Never request italics or other weights; font-synthesis is off.
 - Layout system (tokens.css): --container 1440px, --gutter, --section-y, --block-gap, the --fs-* type scale, and a 12-column grid (.grid-12 with --start/--span). Full-width colour blocks: burgundy, white, fairy. Photos straight, object-fit cover in a fixed aspect per slot, never filtered, overlaid or animated. See CLAUDE.md.
 - Long body text max-width ~640px. Statements may slightly bleed their container.
 - Astro gotcha: page-scoped styles neither reach child components nor beat their specificity; use :global(html.sys-slab) prefixes for slab overrides.
@@ -39,7 +39,7 @@ Responsive to ~360px. Visible :focus-visible outlines. Keyboard operable. Meanin
 - NO live SVG filters anywhere: sketches render the *-baked.svg files (equal to the masters; scripts/bake-sketches.mjs copies them through); max 2 simultaneous draws, will-change on animating strokes.
 - Nav: always-visible sticky bar (60px + safe-area below 48rem, 72px above); no hide-on-scroll.
 - Reveals: one shared IO, fail-safe (hidden states only under JS-set classes; JS off = everything visible).
-- Hero image <=150KB on mobile (AVIF, eager, fetchpriority=high). Fonts: the four Owners woff2 subsets only, owners-400 and owners-narrow-700 preloaded.
+- Hero image <=150KB on mobile (AVIF, eager, fetchpriority=high). Fonts: the four Owners woff2 subsets only, owners-400, owners-500 and owners-narrow-700 preloaded.
 - theme-color AND body background both butter #FBF5D4 (Safari tints from either).
 - Map: no iframe; the hand-drawn map SVG plus a plain "Get directions" link.
 - No sticky bottom bar on phones.

@@ -24,14 +24,14 @@ Every change is saved with its full history, so nothing is ever lost for good. I
 
 | To change | Go to |
 |---|---|
-| The line under the big photo ("A sister-run neighborhood bakery in Santa Monica") | Page text → All pages → Home page → **Tagline** |
+| The big line beside the top photo ("A sister-run neighborhood bakery in Santa Monica") | Page text → All pages → Home page → **Tagline** |
+| The small address and hours line under it | Site settings (see "Hours, address and emails"). It updates by itself. |
 | The two introduction paragraphs | Page text → All pages → Home page → **Paragraphs** |
 | The heading above the Instagram photos | Page text → All pages → Home page → **Instagram heading** |
-| The newsletter heading and line (shown in the footer of every page) | Page text → All pages → Home page → **Newsletter title** and **Newsletter line** |
-| The big photo at the top | Photos → Site photos → **Home: top photo** (see "Swapping a photo") |
-| The six photos further down the page | Photos → Site photos → **Home: photo gallery** |
+| The photo at the top, beside the tagline | Photos → Site photos → **Home: top photo** (see "Swapping a photo") |
+| The four photos further down the page | Photos → Site photos → **Home: photo gallery** |
 | The Instagram photos | Instagram strip (see "The Instagram strip") |
-| The address and hours in the red band | Site settings (see "Hours, address and emails") |
+| The address and hours in the dark red band | Site settings (see "Hours, address and emails") |
 
 ### Our Story
 
@@ -73,12 +73,13 @@ This page has no photos, by the owner's choice. Never add numbers about team mem
 | To change | Go to |
 |---|---|
 | The title ("Come say hi") | Page text → All pages → Contact page → **Headline** |
-| Address, hours, emails, Instagram | Site settings (see "Hours, address and emails") |
-| The storefront photo | Photos → Site photos → **Contact: storefront photo** |
+| Address, hours, emails, Instagram, TikTok | Site settings (see "Hours, address and emails") |
 
 The hand-drawn map and the "Get directions" link update themselves from the address. A new map drawing needs the person who looks after the website.
 
-### Catering and Careers
+### Catering and Careers (hidden on site for now)
+
+These two pages are switched off for now (see "Hidden for now" below). Their words stay in the editor, marked "(hidden on site for now)", and can be edited ahead of time; nothing shows until the pages are switched back on.
 
 | To change | Go to |
 |---|---|
@@ -135,11 +136,10 @@ Go to **Photos → Site photos**, click the photo you want to replace, and uploa
 
 | Slot | Shape | Minimum size |
 |---|---|---|
-| Home: top photo | Landscape (wider than tall) | 2400 pixels wide |
-| Home: photo gallery, 1st, 3rd, 4th, 6th | Portrait (taller than wide) | 1600 pixels on the long side |
-| Home: photo gallery, 2nd and 5th | Landscape | 1600 pixels on the long side |
+| Home: top photo | Any shape: it is cropped to a tall frame (4:5 on phones), so keep the subject near the middle | 2400 pixels on the long side |
+| Home: photo gallery, 1st, 3rd and 4th | Portrait (taller than wide) | 1600 pixels on the long side |
+| Home: photo gallery, 2nd | Landscape (wider than tall) | 1600 pixels on the long side |
 | Our Story: photos | Portrait | 1200 pixels wide |
-| Contact: storefront photo | Portrait | 1200 pixels wide |
 | Instagram strip | Square works best | 600 pixels wide |
 
 - Keep each photo under 3 MB. The website makes the small, fast versions itself.
@@ -154,12 +154,27 @@ Go to **Instagram strip**. There are up to six photos. Click a photo to replace 
 
 Go to **Site settings → Settings**.
 
-- **Opening hours**: one row for each group of days, for example "Tuesday – Sunday", "7:30 AM", "2:30 PM". For a closed day, type `Closed` in **Opens** and leave **Closes** empty. Hours show on the home page, the Contact page, the footer and in search results.
+- **Opening hours**: one row for each group of days, for example "Tuesday – Sunday", "7:30 AM", "2:30 PM". For a closed day, type `Closed` in **Opens** and leave **Closes** empty. Hours show on the home page (in short form under the tagline, for example "Tue–Sun 7:30–2:30", and in the dark red band), the Contact page, the footer and in search results. Write the days as full day names so the short form comes out right.
 - **Address**: street, city, state and ZIP. The map link updates by itself.
 - **Email address**: the main contact email.
 - **Email for larger orders**: shown with "for larger orders".
 - **Instagram link** and **Instagram handle** (for example `@loumabakery`).
+- **TikTok link** and **TikTok handle**: the link is in the footer, the handle on the Contact page. Empty the link to hide TikTok everywhere.
 - **Uber Eats order link**: saved for later; it isn't shown anywhere yet.
+
+## Hidden for now
+
+Three parts of the site are switched off by the owner's choice. Nothing was deleted: the pages, the forms and their words in the editor all stay, and each comes back with a one-line change by the person who looks after the website.
+
+| Part | While hidden | Switch |
+|---|---|---|
+| The Catering page and its inquiry form | `/catering` goes to the home page; no footer link; not in search engines | `cateringPage` |
+| The Careers page and its job application form | `/careers` goes to the home page; no footer link; not in search engines | `careersPage` |
+| The newsletter signup in the footer ("Hear from the bakery") | Not shown on any page | `newsletter` |
+
+The newsletter's heading and line stay editable under Page text → All pages → Home page → **Newsletter title** and **Newsletter line** (both marked "hidden on site for now").
+
+**To turn one back on** (the person who looks after the website): in `src/config/features.ts`, change the switch from `false` to `true`. For Catering or Careers, also delete that page's `[[redirects]]` block under "Hidden for now" at the bottom of `netlify.toml`. Push to `main`; the page, its footer link, its form and its sitemap entry come back with the next deploy. Then set up the form's email alert (see `docs/HANDOFF.md`).
 
 ## Things that need the person who looks after the website
 
@@ -171,3 +186,4 @@ These can't be changed in the editor:
 - The drawings, the hand-drawn map, colours, fonts and layout.
 - Adding a new page, and the web address (domain).
 - Email alerts for form replies, and inviting another editor (see `docs/HANDOFF.md`).
+- Switching the hidden pages and the newsletter back on (see "Hidden for now").

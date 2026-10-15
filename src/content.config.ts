@@ -96,9 +96,9 @@ const shop = defineCollection({
   }),
 });
 
-// Site photos (CMS: "Images"). Filenames in src/assets/img; every photo has
-// its alt text beside it. homeGallery and story are registered for the next
-// layout phase; hero and storefront render today.
+// Site photos (CMS: "Photos"). Filenames in src/assets/img; every photo has
+// its alt text beside it. hero: the home split hero; homeGallery: the four
+// home photos; story: the two Our Story photos.
 const photo = z.object({ image: z.string(), alt: z.string() });
 const images = defineCollection({
   loader: file('src/data/images.json', { parser: (text) => [{ id: 'images', ...JSON.parse(text) }] }),
@@ -107,8 +107,6 @@ const images = defineCollection({
     heroAlt: z.string(),
     homeGallery: z.array(photo),
     story: z.array(photo),
-    storefront: z.string(),
-    storefrontAlt: z.string(),
   }),
 });
 

@@ -91,7 +91,7 @@ const isActive = (href: string) => path === href;
   /* :global because the svg is the Wordmark child's. */
   .brand :global(.brand-mark) {
     display: block;
-    height: clamp(28px, 2.2vw, 32px);
+    height: clamp(34px, 2.8vw, 40px);
     width: auto;
     color: inherit;
   }
@@ -106,37 +106,35 @@ const isActive = (href: string) => path === href;
     display: inline-flex;
     align-items: center;
     min-height: 44px;
-    font-family: var(--font-body);
-    font-weight: 500;
-    font-size: 15px;
-    color: var(--ink);
+    /* Owners Narrow Bold 19px: large text, so red on butter (3.86:1) passes AA. */
+    font-family: var(--font-narrow);
+    font-weight: 700;
+    font-size: 19px;
+    color: var(--red);
     text-decoration: none;
     position: relative;
+    transition: color var(--dur-fast) var(--ease-out);
   }
   @media (pointer: coarse) {
     .nav-links a { min-width: 44px; justify-content: center; }
   }
-  /* Active page: a 2px red rule under the link. Hover/focus: the same rule in
-     ink draws in from the start edge. */
+  /* Active page: a 2px red rule under the link. Hover: the link turns
+     burgundy (the rule keeps its colour). */
   .nav-links a::after {
     content: '';
     position: absolute;
     inset-inline: 0;
     bottom: 6px;
     height: 2px;
-    background: var(--ink);
+    background: var(--red);
     transform: scaleX(0);
     transform-origin: 0 50%;
     transition: transform var(--dur) var(--ease-out);
   }
   @media (hover: hover) and (pointer: fine) {
-    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-links a:hover { color: var(--burgundy); }
   }
-  .nav-links a:focus-visible::after { transform: scaleX(1); }
-  .nav-links a[aria-current='page']::after {
-    background: var(--red);
-    transform: scaleX(1);
-  }
+  .nav-links a[aria-current='page']::after { transform: scaleX(1); }
   @media (prefers-reduced-motion: reduce) {
     .nav-links a::after { transition: none; }
   }

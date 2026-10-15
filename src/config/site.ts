@@ -3,7 +3,7 @@
  * and external links. Never hardcode any of this in markup — read from here.
  *
  * The editor-facing fields (the two emails, address, hours, and the
- * Instagram / Uber Eats links) live in src/data/settings.json so the CMS
+ * Instagram / TikTok / Uber Eats links) live in src/data/settings.json so the CMS
  * ("Site settings") can edit them. Technical/derived values stay here.
  * The bakery lists no phone number on purpose.
  */
@@ -19,8 +19,6 @@ export const siteConfig = {
   url: 'https://loumabakeryy.netlify.app',
 
   name: 'Louma Bakery',
-  /** Short brand line for <title> suffix and meta description fallback. */
-  tagline: 'A neighborhood bakery on Wilshire',
 
   // --- Editor-managed (from settings.json via the CMS) ---
   email: settings.email,
@@ -35,6 +33,8 @@ export const siteConfig = {
     uberEats: settings.links.uberEats,
     instagram: settings.links.instagram,
     instagramHandle: settings.links.instagramHandle,
+    tiktok: settings.links.tiktok,
+    tiktokHandle: settings.links.tiktokHandle,
   },
 
   /** Form confirmation / error copy, in the brand voice. Single source. */

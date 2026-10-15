@@ -29,11 +29,9 @@ shows no photos at the moment.
 | counter-shelves.jpg | Home gallery 2 | brief PDF, page 5 (counter, tile wall, bread shelves; 2048x1366, the only copy) | brief PDF |
 | baker-raspberries.jpg | Home gallery 3; menu data (Small Raspberry Tart) | 20260904_LoumaBakery_0034 | 2026-09-04 |
 | interior-table.jpg | Home gallery 4 | IMG_1703 | phone |
-| kitchen-team.jpg | Home gallery 5. Rotated 1.0° clockwise (window mullions) | 20260830_LoumaBakery_0139 | 2026-08-30 |
-| knot-pink-paper.jpg | Home gallery 6; menu data (Za'atar Croissant) | 20260830_LoumaBakery_0281 | 2026-08-30 |
-| story-collage.jpg | Our Story photo 1 (registered, placed next phase) | eefec98f-5b8b-45f4-98dd-e80de5f5b7b0 (also on brief PDF page 8) | undated Dropbox export |
-| story-flowers.jpg | Our Story photo 2 (registered, placed next phase). Rotated 0.67° counter-clockwise (door frame, shelving) | brief PDF, page 8 (flowers on the counter; 1536x2048, the only copy) | brief PDF |
-| storefront-window.jpg | Contact page, under the map. Rotated 5.05° counter-clockwise (window frame). Renamed from unplaced/door-hours.jpg | 20260904_LoumaBakery_0092 | 2026-09-04 |
+| knot-pink-paper.jpg | Menu data (Za'atar Croissant). Was home gallery 6 until owner round 1 | 20260830_LoumaBakery_0281 | 2026-08-30 |
+| story-collage.jpg | Our Story photo 1 | eefec98f-5b8b-45f4-98dd-e80de5f5b7b0 (also on brief PDF page 8) | undated Dropbox export |
+| story-flowers.jpg | Our Story photo 2. Rotated 0.67° counter-clockwise (door frame, shelving) | brief PDF, page 8 (flowers on the counter; 1536x2048, the only copy) | brief PDF |
 | ig-1.jpg | Instagram strip tile 1 | IMG_0008 | phone |
 | ig-2.jpg | Instagram strip tile 2 | IMG_1827 4 | phone |
 | ig-3.jpg | Instagram strip tile 3 | IMG_9795 3 | phone |
@@ -77,6 +75,8 @@ shows no photos at the moment.
 | unplaced/map-hand-drawn-source.png | brief PDF, page 14 (589x716, the only copy; reference for src/assets/brand/map-hand-drawn.svg) | brief PDF |
 | unplaced/seeded-knot-tissue.jpg | 20260830_LoumaBakery_0278 (not reprocessed) | 2026-08-30 |
 | unplaced/seeded-knot-detail.jpg | 20260830_LoumaBakery_0083 (not reprocessed) | 2026-08-30 |
+| unplaced/kitchen-team.jpg | 20260830_LoumaBakery_0139. Rotated 1.0° clockwise (window mullions). Was home gallery 5 until owner round 1 | 2026-08-30 |
+| unplaced/storefront-window.jpg | 20260904_LoumaBakery_0092. Rotated 5.05° counter-clockwise (window frame). Was the Contact page photo until owner round 1 | 2026-09-04 |
 | unplaced/coffee-unidentified.jpg | 20260830_LoumaBakery_0190 (crop x2250 y6740, 1500x1000; drink type unconfirmed) (not reprocessed) | 2026-08-30 |
 | unplaced/viennoiserie-spread.jpg | 20260830_LoumaBakery_0079 (not reprocessed) | 2026-08-30 |
 | unplaced/madeleine-production.jpg | 20260830_LoumaBakery_0300 (not reprocessed) | 2026-08-30 |

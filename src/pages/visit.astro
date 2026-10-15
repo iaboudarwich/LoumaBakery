@@ -8,9 +8,9 @@ import { features as f } from '../config/features';
 import MapDrawing from '../assets/brand/map-hand-drawn.svg';
 
 // Contact page (route stays /visit). Title from copy.json ("visit"); address,
-// hours, emails, Instagram and TikTok from settings.json.
+// hours, the parking note, emails, Instagram and TikTok from settings.json.
 const c = (await getEntry('copy', 'visit'))!.data;
-const { address, hours, email, ordersEmail, directionsUrl } = siteConfig;
+const { address, hours, parkingNote, email, ordersEmail, directionsUrl } = siteConfig;
 const { instagram, instagramHandle, tiktok, tiktokHandle } = siteConfig.links;
 const reveal = f.reveal ? 'reveal' : undefined;
 ---
@@ -41,6 +41,7 @@ const reveal = f.reveal ? 'reveal' : undefined;
               </li>
             ))}
           </ul>
+          {parkingNote && <p class="contact-parking">{parkingNote}</p>}
         </div>
         <div class="info-block">
           <h2 class="info-label label">Contact</h2>
@@ -65,7 +66,9 @@ const reveal = f.reveal ? 'reveal' : undefined;
   .contact-grid { align-items: start; }
   .info-block + .info-block { margin-top: var(--block-gap); }
   .info-label { color: var(--butter); margin-bottom: var(--space-2); }
-  .contact-address {
+  /* The parking note under the hours is set like the address lines. */
+  .contact-address,
+  .contact-parking {
     font-style: normal;
     font-family: var(--font-display);
     font-weight: var(--display-weight);
@@ -73,6 +76,7 @@ const reveal = f.reveal ? 'reveal' : undefined;
     font-size: var(--fs-h2);
     line-height: 1.1;
   }
+  .contact-parking { margin-top: var(--space-4); max-width: none; }
   .contact-list { margin: 0; padding: 0; display: grid; gap: var(--space-2); }
   .contact-list a {
     color: var(--butter);

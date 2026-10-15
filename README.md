@@ -35,7 +35,7 @@ npx astro check    # type check: should report 0 errors
 
 ## Pages
 
-The top menu shows Our Story, The Louma Initiative, Menu and Shop; the logo goes home. Contact is linked from the footer, with Catering and Careers when they are switched on.
+The top menu shows Home, Our Story, The Louma Initiative, Menu and Shop; the logo also goes home. The footer lists the same pages plus Contact (and Catering and Careers when they are switched on).
 
 **Hidden for now.** `src/config/features.ts` has three one-line switches, all `false` today: `cateringPage`, `careersPage` and `newsletter`. A hidden page is not built, 301-redirects to `/` (`netlify.toml` and `astro.config.mjs`), is left out of the sitemap and loses its footer link; with `newsletter` off the footer signup renders nowhere. The files, forms, data and editor fields all stay. How to switch one back on: `docs/HANDOFF.md`, section 4.
 
@@ -98,8 +98,8 @@ The newsletter (in the footer of every page), the catering inquiry and the job a
 Full reference: [`docs/BRAND.md`](docs/BRAND.md). The detailed rules for code are in `CLAUDE.md`.
 
 - **Eight colours only**: Louma Red `#ED2739` (the main colour), Burgundy `#A10017`, Peach `#FF676C`, Tangerine `#FF8926`, Fairy `#DDEAC3`, Butter `#FBF5D4` (the page background), White and Ink `#1D1D1B`. Red text only at 24px and up, or bold at 19px and up (the header links); smaller text is ink or burgundy.
-- **One typeface**, Owners: Owners 500 for titles and headings, Owners 400 for body, and Owners Narrow Bold only in the header nav and the footer.
-- **The footer is Louma Red** with every word white in Owners Narrow Bold at 19px or more (white on red passes contrast only as large bold text).
+- **One typeface**, Owners: Owners 500 for titles and headings, Owners 400 for body, and Owners Narrow Bold only in the header nav.
+- **The footer is burgundy** with every word in butter, in the site's normal type (butter on burgundy is 7.56:1), kept compact.
 - **Square corners** everywhere. No shadows, gradients or blur.
 - **Photos straight** and shown as taken: no filters, no text over them, no animation.
 - **Only the designer's drawings** (plus the owner's traced signature and map). One derived file: `src/assets/brand/baguette-stroke.svg`, the baguette as a single pen line, which draws, erases and repeats in the home hero (`PenDraw.astro`, switch `penDraw` in `features.ts`). It is the only stroke drawing; how it was made is in `src/assets/brand/README.md`.

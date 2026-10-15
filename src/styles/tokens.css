@@ -28,7 +28,7 @@
   /* --- Type stacks --- */
   /* Owners superfamily (src/styles/fonts.css). Display: Owners 500 (regular
      width) for every title and heading. Narrow: Owners Narrow 700, for the
-     header nav and the footer only. Body: Owners 400, with 500 for emphasis,
+     header nav only (bar and mobile sheet). Body: Owners 400, with 500 for emphasis,
      buttons and data (hours, form fields). */
   --font-display: "Owners", sans-serif;
   --font-narrow: "Owners Narrow", sans-serif;

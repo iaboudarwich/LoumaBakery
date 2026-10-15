@@ -26,11 +26,10 @@ Every change is saved with its full history, so nothing is ever lost for good. I
 |---|---|
 | The big line beside the top photo ("A sister-run neighborhood bakery in Santa Monica") | Page text → All pages → Home page → **Tagline** |
 | The baguette drawing above it, which draws itself, rubs itself out and starts again | Not in the editor (see "Things that need the person who looks after the website") |
-| The small address and hours line under it | Site settings (see "Hours, address and emails"). It updates by itself. |
 | The two introduction paragraphs | Page text → All pages → Home page → **Paragraphs** |
 | The heading above the Instagram photos | Page text → All pages → Home page → **Instagram heading** |
 | The photo at the top, beside the tagline | Photos → Site photos → **Home: top photo** (see "Swapping a photo") |
-| The four photos further down the page | Photos → Site photos → **Home: photo gallery** |
+| The four photos further down the page | Photos → Site photos → **Home: photo gallery**. The first two sit side by side as wide photos; the other two as tall photos. |
 | The Instagram photos | Instagram strip (see "The Instagram strip") |
 | The address and hours in the dark red band | Site settings (see "Hours, address and emails") |
 
@@ -74,7 +73,7 @@ This page has no photos, by the owner's choice. Never add numbers about team mem
 | To change | Go to |
 |---|---|
 | The title ("Come say hi") | Page text → All pages → Contact page → **Headline** |
-| Address, hours, emails, Instagram, TikTok | Site settings (see "Hours, address and emails") |
+| Address, hours, the parking note, emails, Instagram, TikTok | Site settings (see "Hours, address and emails") |
 
 The hand-drawn map and the "Get directions" link update themselves from the address. A new map drawing needs the person who looks after the website.
 
@@ -138,11 +137,12 @@ Go to **Photos → Site photos**, click the photo you want to replace, and uploa
 | Slot | Shape | Minimum size |
 |---|---|---|
 | Home: top photo | Any shape: it is cropped to a tall frame (4:5 on phones), so keep the subject near the middle | 2400 pixels on the long side |
-| Home: photo gallery, 1st, 3rd and 4th | Portrait (taller than wide) | 1600 pixels on the long side |
-| Home: photo gallery, 2nd | Landscape (wider than tall) | 1600 pixels on the long side |
+| Home: photo gallery, 1st and 2nd | Cropped to a wide frame (3:2), side by side; 4:5 on phones | 1600 pixels on the long side |
+| Home: photo gallery, 3rd and 4th | Portrait (taller than wide) | 1600 pixels on the long side |
 | Our Story: photos | Portrait | 1200 pixels wide |
 | Instagram strip | Square works best | 600 pixels wide |
 
+- **Crop focus** (home gallery and Our Story photos): when a slot crops a photo, this picks which part stays in view. **Centre** suits most photos; pick **Top**, **Upper middle**, **Just above centre**, **Lower middle**, **Bottom**, **Left** or **Right** when the subject sits off-centre. Then check the page after publishing. (The first home gallery photo, the pain au chocolat, uses **Just above centre** so the pastries fill the frame.)
 - Keep each photo under 3 MB. The website makes the small, fast versions itself.
 - Use photos that are straight and not tilted. The website shows them exactly as taken, cropped to fit the slot's shape.
 - **Every photo needs a description**: one plain sentence about what is actually in the photo, like "Pain au chocolat cooling on a wire rack on a wooden counter". People who can't see the photo hear this sentence.
@@ -155,12 +155,15 @@ Go to **Instagram strip**. There are up to six photos. Click a photo to replace 
 
 Go to **Site settings → Settings**.
 
-- **Opening hours**: one row for each group of days, for example "Tuesday – Sunday", "7:30 AM", "2:30 PM". For a closed day, type `Closed` in **Opens** and leave **Closes** empty. Hours show on the home page (in short form under the tagline, for example "Tue–Sun 7:30–2:30", and in the dark red band), the Contact page, the footer and in search results. Write the days as full day names so the short form comes out right.
+- **Opening hours**: one row for each group of days, for example "Tuesday – Sunday", "7:30 AM", "2:30 PM". For a closed day, type `Closed` in **Opens** and leave **Closes** empty. Hours show on the home page (in the dark red band), the Contact page, the footer and in search results.
 - **Address**: street, city, state and ZIP. The map link updates by itself.
+- **Parking note**: one line shown on the Contact page under the hours (today: "Parking available in the underground lot on Centinela."). Leave it empty to hide it.
 - **Email address**: the main contact email.
 - **Email for larger orders**: shown with "for larger orders".
 - **Instagram link** and **Instagram handle** (for example `@loumabakery`). The Contact page shows the handle as "@loumabakery on Instagram".
-- **TikTok link** and **TikTok handle**: the link is in the footer; the Contact page shows the handle as "@loumabakery on TikTok". Empty the link to hide TikTok everywhere.
+- **TikTok link** and **TikTok handle**: the Contact page shows the handle as "@loumabakery on TikTok". Empty the link to hide TikTok everywhere.
+
+The footer at the bottom of every page shows the address, hours and both emails from here, then "Instagram" and "TikTok" as plain links (the handles are on the Contact page).
 - **Uber Eats order link**: saved for later; it isn't shown anywhere yet.
 
 ## Hidden for now
@@ -181,7 +184,7 @@ The newsletter's heading and line stay editable under Page text → All pages �
 
 These can't be changed in the editor:
 
-- The page names in the top menu and the footer, and the footer's own text.
+- The page names in the top menu and the footer, and the footer's own text and layout (a dark red band: the face and wordmark, then Visit with the address, hours, emails, Instagram and TikTok, then the page links).
 - The words on the forms (field names, buttons, the thank-you messages).
 - A few small headings, for example "Pick a starting point", "Catering inquiry", "Where you'd fit", "Tell us about you", and Address, Hours and Contact on the Contact page.
 - The drawings, the hand-drawn map, colours, fonts and layout.

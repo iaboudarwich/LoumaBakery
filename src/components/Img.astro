@@ -22,8 +22,11 @@ interface Props {
   style?: string;
   /** Encoder quality (1-100). Omit for the service default. */
   quality?: number;
+  /** Which part of the photo to keep when the slot crops it: a CSS
+      object-position value ("center", "top", "50% 45%"). Default center. */
+  focus?: string;
 }
-const { src, alt, sizes = '100vw', widths, priority = false, class: className, style, quality } = Astro.props;
+const { src, alt, sizes = '100vw', widths, priority = false, class: className, style, quality, focus } = Astro.props;
 
 // Read dimensions from the metadata `clone`: touching `src.width` directly marks
 // the full-size original as referenced, and Astro then copies it into dist even
@@ -48,5 +51,6 @@ if (style) pictureAttributes.style = style;
   decoding={priority ? 'auto' : 'async'}
   fetchpriority={priority ? 'high' : 'auto'}
   class="img-cover"
+  style={focus && focus !== 'center' ? `object-position: ${focus}` : undefined}
   pictureAttributes={pictureAttributes}
 />

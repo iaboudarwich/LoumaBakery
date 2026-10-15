@@ -119,12 +119,11 @@ The website follows the brand book.
   the page titles, section headings and the header links. Red text is only used at
   24px and up, or bold at 19px (the header links), because red on Butter is 3.86:1;
   smaller text is Ink or Burgundy. Butter is the page; Burgundy, Fairy and White are
-  full-width colour blocks; the footer is Louma Red with white Owners Narrow Bold text
-  at 19px or more (white on red is 4.24:1, fine for large bold text only).
+  full-width colour blocks; the footer is burgundy with butter text in Owners Regular and Medium
+  (7.56:1, fine at any size).
 - **Type**: Owners only, three styles in use as web fonts: Owners Medium for titles and
   headings (regular width, slightly tightened) and for emphasis, buttons, names and
-  hours; Owners Regular for body; Owners Narrow Bold only in the header links and the
-  footer. A webfont licence is still needed; see `docs/HANDOFF.md`.
+  hours; Owners Regular for body; Owners Narrow Bold only in the header links. A webfont licence is still needed; see `docs/HANDOFF.md`.
 - **Shapes**: square corners everywhere, no shadows, gradients or blur. (The board's
   colour tiles are rounded squares; the site keeps every corner square by the owner's
   choice.)

@@ -2,7 +2,7 @@
  * Louma motion engine. Target feel: a printed menu.
  *
  * The COMPLETE effect list (everything else was removed on purpose):
- *  - scrollDraw: the footer face traces its outline once
+ *  - scrollDraw: the 404 page's face traces its outline once
  *  - doodleDraw: doodles reveal left to right (filled) or draw their stroke
  *  - reveal: fade + settle 16px DOWNWARD (or fade in place), staggered children
  *  - toast: transient notices (functional UI)
@@ -279,7 +279,7 @@ function toast(msg: string, opts: { tone?: 'default' | 'good' } = {}) {
 /* ============================================================ DRIVER ==== */
 const NAMES = Object.keys(builders);
 const META: Record<string, string> = {
-  scrollDraw: 'The footer face traces its outline once.',
+  scrollDraw: 'The 404 page face traces its outline once.',
   doodleDraw: 'Doodles reveal left to right once when seen.',
   reveal: 'Sections fade in and settle downward, children staggered.',
   toast: 'Transient corner notices.',

@@ -98,8 +98,14 @@ const shop = defineCollection({
 
 // Site photos (CMS: "Photos"). Filenames in src/assets/img; every photo has
 // its alt text beside it. hero: the home split hero; homeGallery: the four
-// home photos; story: the two Our Story photos.
-const photo = z.object({ image: z.string(), alt: z.string() });
+// home photos; story: the two Our Story photos. `focus` is the part of the
+// photo kept when its slot crops it (CSS object-position): a keyword, or
+// "x% y%". Empty or missing = center.
+const focus = z
+  .string()
+  .regex(/^(|center|top|bottom|left|right|\d{1,3}% \d{1,3}%)$/, 'center, top, bottom, left, right, or "x% y%"')
+  .optional();
+const photo = z.object({ image: z.string(), alt: z.string(), focus });
 const images = defineCollection({
   loader: file('src/data/images.json', { parser: (text) => [{ id: 'images', ...JSON.parse(text) }] }),
   schema: z.object({

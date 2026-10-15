@@ -50,11 +50,21 @@ const formClass = 'foot-news-form';
     font-size: clamp(16px, calc(16px + (100vw - 1920px) * 0.003125), 18px); /* iOS zooms on focus below 16px */
     border: 1px solid var(--white);
     border-radius: 0;
-    background: var(--white); /* the footer is Louma Red: a white field, ink text */
+    background: var(--white); /* the footer is burgundy: a white field, ink text */
     color: var(--ink);
   }
   .foot-news-row input::placeholder {
     color: var(--muted);
+  }
+  /* The global filled button is burgundy, the footer's own colour: here it
+     turns butter with burgundy text. */
+  :global(html.sys-slab) .foot-news-row .btn-coral {
+    background: var(--butter);
+    border-color: var(--butter);
+    color: var(--burgundy);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    :global(html.sys-slab) .foot-news-row .btn-coral:hover { background: var(--ink); border-color: var(--ink); color: var(--butter); }
   }
   @media (max-width: 520px) {
     .foot-news-row { flex-direction: column; }

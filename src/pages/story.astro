@@ -14,7 +14,7 @@ import Signature from '../assets/brand/signature-milla.svg';
 const c = (await getEntry('copy', 'story'))!.data;
 const { letter, sections } = (await getEntry('story', 'story'))!.data;
 const images = (await getEntry('images', 'images'))!.data;
-const photos = images.story.map((p) => ({ photo: resolveImage(p.image), alt: p.alt }));
+const photos = images.story.map((p) => ({ photo: resolveImage(p.image), alt: p.alt, focus: p.focus }));
 
 // A small drawing beside each section title, by position (the sections keep
 // their drawing if the owner edits a title). The first section has none.
@@ -23,6 +23,18 @@ const sectionDoodles = [undefined, 'palm', 'bread-slice', 'herb', 'hearts'];
 // ("Named after our sister"), the flowers after the fourth ("Ingredients we
 // care about").
 const photoAfter: Record<number, number> = { 0: 0, 3: 1 };
+// The page as a run of sections: text rows, then a photo section wherever a
+// photo follows, like the home page's photo sections (same grid gap, same
+// section spacing).
+type Row = (typeof sections)[number] & { i: number };
+const runs: ({ rows: Row[] } | { photo: (typeof photos)[number] })[] = [];
+sections.forEach((s, i) => {
+  const last = runs[runs.length - 1];
+  if (last && 'rows' in last) last.rows.push({ ...s, i });
+  else runs.push({ rows: [{ ...s, i }] });
+  const ph = photoAfter[i] !== undefined ? photos[photoAfter[i]] : undefined;
+  if (ph?.photo) runs.push({ photo: ph });
+});
 const reveal = f.reveal ? 'reveal' : undefined;
 ---
 
@@ -45,27 +57,31 @@ const reveal = f.reveal ? 'reveal' : undefined;
     </div>
   </section>
 
-  {/* The sections: title 4 columns, copy 7; photos after the first and fourth. */}
-  <section class="section">
-    <div class="container">
-      {sections.map((s, i) => (
-        <>
-          <div class="grid-12 text-row" data-anim={reveal}>
-            <div class="text-row-title">
-              {sectionDoodles[i] && <Doodle name={sectionDoodles[i]!} size={56} color="red" animate={f.doodleDraw} />}
-              <h2 class="h2">{s.title}</h2>
+  {/* The sections: title 4 columns, copy 7; photos after the first and
+      fourth, each in its own section. */}
+  {runs.map((run) =>
+    'rows' in run ? (
+      <section class="section">
+        <div class="container">
+          {run.rows.map((s) => (
+            <div class="grid-12 text-row" data-anim={reveal}>
+              <div class="text-row-title">
+                {sectionDoodles[s.i] && <Doodle name={sectionDoodles[s.i]!} size={56} color="red" animate={f.doodleDraw} />}
+                <h2 class="h2">{s.title}</h2>
+              </div>
+              <div class="text-row-body">{s.paragraphs.map((p) => <p>{p}</p>)}</div>
             </div>
-            <div class="text-row-body">{s.paragraphs.map((p) => <p>{p}</p>)}</div>
-          </div>
-          {photoAfter[i] !== undefined && photos[photoAfter[i]]?.photo && (
-            <div class="grid-12 story-photo">
-              <Img src={photos[photoAfter[i]].photo!} alt={photos[photoAfter[i]].alt} class="ph ph--portrait" style="--start: 3; --span: 8" sizes="(max-width: 47.99rem) 100vw, min(64vw, 900px)" />
-            </div>
-          )}
-        </>
-      ))}
-    </div>
-  </section>
+          ))}
+        </div>
+      </section>
+    ) : (
+      <section class="section">
+        <div class="container grid-12">
+          <Img src={run.photo.photo!} alt={run.photo.alt} focus={run.photo.focus} class="ph ph--portrait" style="--start: 3; --span: 8" sizes="(max-width: 47.99rem) 100vw, min(64vw, 900px)" />
+        </div>
+      </section>
+    ),
+  )}
 </BaseLayout>
 
 <style>
@@ -102,8 +118,4 @@ const reveal = f.reveal ? 'reveal' : undefined;
     width: clamp(44px, 5vw, 64px);
     margin-top: var(--space-4);
   }
-
-  .story-photo { margin-top: var(--section-y); }
-  .story-photo + .text-row,
-  .story-photo + :global(.text-row) { margin-top: var(--section-y); }
 </style>

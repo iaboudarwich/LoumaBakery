@@ -5,7 +5,7 @@
  */
 export const features = {
   // --- Motion (the complete whitelist; see src/scripts/motion.ts) ---
-  /** The footer face traces its outline once when seen. */
+  /** The 404 page's face traces its outline once when seen (the footer face is static). */
   scrollDraw: true,
   /** Doodles reveal left to right (filled outlines) or draw their stroke, once at 30% in view. */
   doodleDraw: true,

@@ -10,7 +10,7 @@ description: Frontend design discipline for the Louma site. Flatness, square sha
 - Shape language: square. Every radius is 0 (the --radius-* tokens are 0): buttons, tags, chips, inputs, cards, photos, the nav. Never add a border-radius.
 - Ghost buttons default: 1.5px --burgundy outline rectangle, transparent fill, ~14x28px padding, Owners 500. Max ONE filled CTA per page (on a burgundy card it inverts to butter with burgundy text). Disabled = dashed ghost that reads intentional.
 - Colour: only the eight brand tokens (tokens.css). Red is primary, but red text must be 24px+ (or bold 18.66px+) because red on butter is 3.86:1; small text is ink or burgundy, links burgundy.
-- Type: Owners only, three faces in use (Owners 500 for titles, headings, emphasis, buttons and data; 400 body; Narrow 700 only in the header nav and the red footer). Never request italics or other weights; font-synthesis is off.
+- Type: Owners only, three faces in use (Owners 500 for titles, headings, emphasis, buttons and data; 400 body; Narrow 700 only in the header nav). The footer is burgundy with butter text in normal type (400 body, 500 small uppercase heading). Never request italics or other weights; font-synthesis is off.
 - Layout system (tokens.css): --container 1440px, --gutter, --section-y, --block-gap, the --fs-* type scale, and a 12-column grid (.grid-12 with --start/--span). Full-width colour blocks: burgundy, white, fairy. Photos straight, object-fit cover in a fixed aspect per slot, never filtered, overlaid or animated. See CLAUDE.md.
 - Long body text max-width ~640px. Statements may slightly bleed their container.
 - Astro gotcha: page-scoped styles neither reach child components nor beat their specificity; use :global(html.sys-slab) prefixes for slab overrides.
@@ -19,7 +19,7 @@ description: Frontend design discipline for the Louma site. Flatness, square sha
 
 ## Motion (the COMPLETE whitelist; timings locked)
 - Doodle reveal (Doodle.astro): one-shot 900ms, same bezier, at 30% in view; filled outlines (every master) reveal left to right via clip-path, stroked art draws via pathLength; observe the UNCLIPPED wrapper; watchdog so nothing on screen stays hidden.
-- Sketch draw-on-scroll (the footer face): one-shot ~1.1s, 80ms subpath stagger; the outline traces in, then the fill settles back.
+- Sketch draw-on-scroll (the 404 page's face; the footer face is static): one-shot ~1.1s, 80ms subpath stagger; the outline traces in, then the fill settles back.
 - Entrances: fade + settle 16px DOWNWARD or fade in place; 500ms; children staggered 80ms; once, at ~30% in view. NEVER rise bottom-to-top.
 - Photos never animate (no wipe, zoom, ken-burns, parallax, tilt). No marquee.
 - Micro: sketchy underline on link hover, button press scale ~0.98, brand-color focus ring.

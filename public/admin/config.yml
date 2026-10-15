@@ -103,10 +103,25 @@ collections:
             widget: list
             max: 4
             summary: "{{fields.alt}}"
-            hint: "Four photos further down the home page, in the order shown: 1st, 3rd and 4th portrait, 2nd landscape. At least 1600px on the long side, under 3MB each."
+            hint: "Four photos further down the home page, in the order shown: the 1st and 2nd side by side as wide (3:2) photos, the 3rd and 4th as tall (4:5) photos. On phones every photo shows 4:5. At least 1600px on the long side, under 3MB each."
             fields:
               - { name: image, label: "Photo", widget: image, choose_url: false }
               - { name: alt, label: "Photo description", widget: string, hint: "What the photo shows, for screen readers." }
+              - name: focus
+                label: "Crop focus"
+                widget: select
+                required: false
+                default: "center"
+                hint: "Which part of the photo to keep when it is cropped. Centre suits most photos."
+                options:
+                  - { label: "Centre", value: "center" }
+                  - { label: "Top", value: "top" }
+                  - { label: "Upper middle", value: "50% 30%" }
+                  - { label: "Just above centre", value: "50% 45%" }
+                  - { label: "Lower middle", value: "50% 70%" }
+                  - { label: "Bottom", value: "bottom" }
+                  - { label: "Left", value: "left" }
+                  - { label: "Right", value: "right" }
           - name: story
             label: "Our Story: photos"
             label_singular: "Photo"
@@ -117,11 +132,26 @@ collections:
             fields:
               - { name: image, label: "Photo", widget: image, choose_url: false }
               - { name: alt, label: "Photo description", widget: string, hint: "What the photo shows, for screen readers." }
+              - name: focus
+                label: "Crop focus"
+                widget: select
+                required: false
+                default: "center"
+                hint: "Which part of the photo to keep when it is cropped. Centre suits most photos."
+                options:
+                  - { label: "Centre", value: "center" }
+                  - { label: "Top", value: "top" }
+                  - { label: "Upper middle", value: "50% 30%" }
+                  - { label: "Just above centre", value: "50% 45%" }
+                  - { label: "Lower middle", value: "50% 70%" }
+                  - { label: "Bottom", value: "bottom" }
+                  - { label: "Left", value: "left" }
+                  - { label: "Right", value: "right" }
 
   # ================================================== SITE SETTINGS =========
   - name: settings
     label: "Site settings"
-    description: "Hours, address, the two email addresses, and your Instagram / TikTok / Uber Eats links."
+    description: "Hours, address, the parking note, the two email addresses, and your Instagram / TikTok / Uber Eats links."
     delete: false
     editor: { preview: false }
     files:
@@ -148,6 +178,7 @@ collections:
               - { name: days, label: "Days", widget: string, hint: "e.g. Tuesday – Sunday, or a single day like Monday" }
               - { name: open, label: "Opens", widget: string, hint: "e.g. 7:00 AM  (or “Closed”)" }
               - { name: close, label: "Closes", widget: string, required: false, hint: "e.g. 2:30 PM  (leave empty if closed)" }
+          - { name: parkingNote, label: "Parking note", widget: string, required: false, hint: "Shown on the Contact page under the hours. Leave empty to hide." }
           - name: links
             label: "Links"
             widget: object

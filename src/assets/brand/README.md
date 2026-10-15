@@ -11,15 +11,15 @@ All art is filled outline (each pen line is a closed shape), coloured with `curr
 
 | File | From | viewBox (role) | Used by |
 |---|---|---|---|
-| `wordmark.svg` | `01-wordmark.svg` | `0 0 374 240` | Nav brand link (cropped to the art), footer, 404 |
+| `wordmark.svg` | `01-wordmark.svg` | `0 0 374 240` | Nav brand link and footer (both cropped to the art), 404 |
 | `baguette.svg` | `02-baguette-mark.svg` | `0 0 280 100` | `Doodle name="baguette"` (the home hero when `penDraw` is off) |
-| `face.svg` | `06-illustrations.svg`, the face | `0 0 286 265` | `FaceDraw` (footer, 404) |
+| `face.svg` | `06-illustrations.svg`, the face | `0 0 286 265` | Footer (static, the master itself); `FaceDraw` on the 404 page |
 
 Each viewBox is the mark's long-standing role box, so every `width`/`height` in the markup
 stays valid. The art is fitted inside it (2% padding, centred, aspect kept) by a uniform
 scale and offset of the master coordinates; the drawing itself is unchanged. Where the
 art's proportions differ from the role box (the wordmark and the face are wider)
-it sits centred with space around it. The nav brand link passes a tight
+it sits centred with space around it. The nav brand link and the footer pass a tight
 viewBox (`7.5 53.8 359 132.4`) so the wordmark fills the bar's height.
 
 ## The `-baked` siblings

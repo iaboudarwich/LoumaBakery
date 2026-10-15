@@ -5,9 +5,10 @@ import MobilePanel from './MobilePanel.astro';
 // bar's height; the file itself keeps its 374x240 role box.
 import { Wordmark, WORDMARK_ART } from '../lib/brand';
 
-// Main nav: single source for the bar and the mobile panel. The wordmark is the
-// Home link. Catering, Careers and Contact live in the footer, not here.
+// Main nav: single source for the bar and the mobile panel. Home is the first
+// link (the wordmark also goes home). Contact lives in the footer, not here.
 const links = [
+  { label: 'Home', href: '/' },
   { label: 'Our Story', href: '/story' },
   { label: 'The Louma Initiative', href: '/initiative' },
   { label: 'Menu', href: '/menu' },
@@ -19,7 +20,7 @@ const isActive = (href: string) => path === href;
 ---
 
 {/* One flat row on butter, sticky on every page (base styles are inlined in
-    BaseLayout for first paint): red wordmark left, four links right. */}
+    BaseLayout for first paint): red wordmark left, five links right. */}
 <nav class="site-nav" aria-label="Primary">
   <div class="container nav-inner">
     <a href="/" class="brand" aria-label={`${siteConfig.name} home`}><Wordmark class="brand-mark" viewBox={WORDMARK_ART} aria-hidden="true" /></a>
@@ -167,7 +168,7 @@ const isActive = (href: string) => path === href;
     transform: translateY(-4px) rotate(-45deg);
   }
 
-  /* The four links fit on one row down to ~860px; below that, the menu. */
+  /* The five links fit on one row down to ~860px; below that, the menu. */
   @media (max-width: 53.75rem) {
     .nav-links { display: none; }
     .nav-toggle { display: flex; }

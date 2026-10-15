@@ -2,8 +2,8 @@
 import { getEntry } from 'astro:content';
 import { siteConfig } from '../config/site';
 import { features, hiddenRoutes } from '../config/features';
-import { Wordmark } from '../lib/brand';
-import FaceDraw from './FaceDraw.astro';
+import { Wordmark, WORDMARK_ART } from '../lib/brand';
+import Face from '../assets/brand/face.svg';
 import NewsletterForm from './NewsletterForm.astro';
 
 interface Props {
@@ -17,8 +17,10 @@ const { address, hours, links } = siteConfig;
 const year = new Date().getFullYear();
 const home = (await getEntry('copy', 'home'))?.data;
 
-// Pages switched off in features.ts (hiddenRoutes) are not linked.
-const explore = [
+// The page links, in the header's order plus Contact. Pages switched off in
+// features.ts (hiddenRoutes) are not linked.
+const pages = [
+  { label: 'Home', href: '/' },
   { label: 'Our Story', href: '/story' },
   { label: 'The Louma Initiative', href: '/initiative' },
   { label: 'Menu', href: '/menu' },
@@ -43,156 +45,150 @@ const explore = [
     )}
 
     <div class="foot-cols">
-      <!-- Brand -->
-      <div class="foot-col foot-brand">
-        <FaceDraw class="foot-face" width={104} height={96} color="var(--white)" />
-        <Wordmark class="foot-wordmark" width={180} height={116} aria-label={siteConfig.name} />
+      <!-- Brand: the face above the wordmark, static. -->
+      <div class="foot-brand">
+        <Face class="foot-face" width={56} height={52} aria-hidden="true" />
+        <Wordmark class="foot-wordmark" viewBox={WORDMARK_ART} width={120} height={44} aria-label={siteConfig.name} />
       </div>
 
-      <!-- Visit -->
-      <div class="foot-col">
+      <!-- Visit: address, hours, the two emails, then Instagram and TikTok. -->
+      <div class="foot-visit">
         <h2 class="foot-h">Visit</h2>
         <address class="foot-address">
-          <p>{address.street}<br />{address.city}, {address.state} {address.zip}</p>
+          <p>{address.street}, {address.city}, {address.state} {address.zip}</p>
           <ul class="foot-hours" role="list">
-            {
-              hours.map((h) => (
-                <li>
-                  <span class="mono">{h.days}</span>
-                  <span class="mono foot-hours-time">{h.close ? `${h.open}–${h.close}` : h.open}</span>
-                </li>
-              ))
-            }
+            {hours.map((h) => (
+              <li>
+                <span>{h.days}</span>
+                <span>{h.close ? `${h.open}–${h.close}` : h.open}</span>
+              </li>
+            ))}
           </ul>
-          <p class="foot-contact">
-            <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a><br />
-            <a href={`mailto:${siteConfig.ordersEmail}`}>{siteConfig.ordersEmail}</a> for larger orders
-          </p>
+          <ul class="foot-list" role="list">
+            <li><a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a></li>
+            <li><a href={`mailto:${siteConfig.ordersEmail}`}>{siteConfig.ordersEmail}</a> for larger orders</li>
+          </ul>
+          <ul class="foot-list foot-social" role="list">
+            <li><a href={links.instagram} target="_blank" rel="noopener">Instagram</a></li>
+            {links.tiktok && <li><a href={links.tiktok} target="_blank" rel="noopener">TikTok</a></li>}
+          </ul>
         </address>
       </div>
 
-      <!-- Explore -->
-      <div class="foot-col">
-        <h2 class="foot-h">Explore</h2>
-        <ul class="foot-links" role="list">
-          {explore.map((l) => (<li><a href={l.href}>{l.label}</a></li>))}
-          <li><a href={links.instagram} target="_blank" rel="noopener">Instagram</a></li>
-          {links.tiktok && <li><a href={links.tiktok} target="_blank" rel="noopener">TikTok</a></li>}
+      <!-- Pages: no heading. -->
+      <nav class="foot-pages" aria-label="Footer">
+        <ul class="foot-list" role="list">
+          {pages.map((l) => (<li><a href={l.href}>{l.label}</a></li>))}
         </ul>
-      </div>
+      </nav>
     </div>
 
     <div class="foot-base">
-      <p class="mono">© {year} {siteConfig.name}.</p>
-      <p class="mono">Wilshire · Santa Monica</p>
+      <p>© {year} {siteConfig.name}.</p>
+      <p>Wilshire · Santa Monica</p>
     </div>
   </div>
 </footer>
 
 <style>
-  /* Louma Red, every word white in Owners Narrow Bold at 19px or more. White
-     on red is 4.24:1, which passes AA only as large bold text, so nothing in
-     the footer is set smaller or lighter. Hairlines are white at 30%. */
+  /* Burgundy band, everything in butter (7.56:1, AA at any size), set in the
+     site's normal type: Owners 400 body, Owners 500 small caps-style labels.
+     Compact: short padding, line-height 1.4, no empty rows. */
   .site-foot {
-    --foot-line: color-mix(in srgb, var(--white) 30%, transparent);
-    background: var(--red);
-    color: var(--white);
-    font-family: var(--font-narrow);
-    font-weight: 700;
-    font-size: 19px;
-    line-height: 1.5;
-    padding-block: var(--space-8) var(--space-6);
+    --foot-line: color-mix(in srgb, var(--butter) 30%, transparent);
+    background: var(--burgundy);
+    color: var(--butter);
+    font-size: var(--fs-body);
+    line-height: 1.4;
+    padding-block: var(--space-6) var(--space-4);
     margin-top: var(--space-8);
   }
   .site-foot p { max-width: none; }
+  .site-foot p + p { margin-top: 0; }
 
   .foot-newsletter {
-    padding-bottom: var(--space-7);
-    margin-bottom: var(--space-7);
+    padding-bottom: var(--space-5);
+    margin-bottom: var(--space-5);
     border-bottom: 1px solid var(--foot-line);
   }
   .foot-news { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4); }
-  .foot-news-h { font-size: clamp(20px, 2.4vw, 28px); }
-  .foot-news-body { margin-top: var(--space-2); }
+  .foot-news-h { font-weight: 500; font-size: var(--fs-lead); }
   /* Newsletter form/input styling lives in NewsletterForm.astro (scoped to where it renders). */
 
   .foot-cols {
     display: grid;
-    grid-template-columns: 1.4fr 1fr 1fr;
-    gap: var(--space-7);
+    grid-template-columns: 1fr 1.6fr 1fr;
+    gap: var(--space-5) var(--block-gap);
   }
 
-  .foot-brand .foot-wordmark {
-    color: var(--white);
-    margin-top: var(--space-2);
-    height: auto;
-  }
+  /* The marks are Astro SVG components rendered here: :global reaches their
+     root <svg>. The face is static (no draw, no reveal). */
+  .foot-brand { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+  .foot-brand :global(.foot-face) { display: block; width: 56px; height: auto; color: var(--butter); }
+  .foot-brand :global(.foot-wordmark) { display: block; width: 120px; height: auto; color: var(--butter); }
 
-  /* Column labels: the same white Narrow Bold as everything else here. */
   .foot-h {
-    font-family: var(--font-narrow);
-    font-weight: 700;
-    font-size: 19px;
-    line-height: 1.5;
-    color: var(--white);
-    margin-bottom: var(--space-4);
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: var(--fs-small);
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--butter);
+    margin-bottom: var(--space-2);
   }
 
-  .foot-address {
-    font-style: normal;
-  }
+  .foot-address { font-style: normal; display: grid; gap: var(--space-2); }
+  .foot-hours,
+  .foot-list { margin: 0; padding: 0; }
   .foot-hours {
-    margin: var(--space-3) 0;
-    padding: 0;
+    display: grid;
+    grid-template-columns: max-content max-content;
+    column-gap: var(--space-4);
+    font-variant-numeric: tabular-nums;
   }
-  .foot-hours li {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--space-3);
-    padding: 2px 0;
-  }
-  /* The data voice keeps its tabular figures, in the footer's face. */
-  .site-foot .mono { font-family: inherit; font-weight: inherit; }
-
-  .foot-links {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-  .foot-links a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; } /* tap targets */
+  .foot-hours li { display: contents; }
+  .foot-hours span { white-space: nowrap; }
+  .foot-social { display: flex; flex-wrap: wrap; column-gap: var(--space-5); }
 
   .site-foot a {
-    color: var(--white);
+    color: var(--butter);
     text-decoration: none;
+  }
+  /* Every footer link at least 24px tall (WCAG 2.5.8). */
+  .foot-list a { display: inline-block; padding-block: 2px; }
+  /* Touch: 44px tap targets; the text after a link stays on its line. */
+  @media (pointer: coarse) {
+    .foot-list li { display: flex; flex-wrap: wrap; align-items: center; column-gap: 0.3em; }
+    .foot-list a { display: inline-flex; align-items: center; min-height: 44px; }
   }
   /* Hover: an underline, never a colour change. */
   @media (hover: hover) and (pointer: fine) {
     .site-foot a:hover {
       text-decoration: underline;
-      text-decoration-thickness: 2px;
+      text-decoration-thickness: 1px;
       text-underline-offset: 0.2em;
     }
   }
-  .site-foot :global(:focus-visible) { outline: 2px solid var(--white); outline-offset: 3px; }
+  .site-foot :global(:focus-visible) { outline: 2px solid var(--butter); outline-offset: 3px; }
 
+  /* © and the place line: butter at 80% (5.1:1 on burgundy; 70% would be 4.1:1). */
   .foot-base {
     display: flex;
     justify-content: space-between;
-    gap: var(--space-4);
+    gap: 0 var(--space-4);
     flex-wrap: wrap;
-    margin-top: var(--space-8);
-    padding-top: var(--space-5);
+    margin-top: var(--space-5);
+    padding-top: var(--space-3);
     border-top: 1px solid var(--foot-line);
+    color: color-mix(in srgb, var(--butter) 80%, var(--burgundy));
   }
-  /* Two lines on one row: no paragraph gap above the second. */
-  .foot-base p + p { margin-top: 0; }
 
-  @media (max-width: 760px) {
-    .foot-cols {
-      grid-template-columns: 1fr;
-      gap: var(--space-6);
-    }
+  /* Phones: one column in the same order; the brand marks side by side, the
+     page links in two columns. */
+  @media (max-width: 47.99rem) {
+    .foot-cols { grid-template-columns: 1fr; }
+    .foot-brand { flex-direction: row; align-items: center; }
+    .foot-pages .foot-list { display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--space-4); }
   }
 </style>

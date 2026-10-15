@@ -99,7 +99,7 @@ h3 {
   text-wrap: balance;
 }
 /* Headings are Owners 500 (the display face). The footer's column labels
-   set their own Narrow Bold in Footer.astro. */
+   set their own small uppercase label style in Footer.astro. */
 h1,
 h2,
 h3 { font-weight: var(--display-weight); letter-spacing: var(--display-track); }
@@ -340,8 +340,8 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
   color: var(--burgundy);
 }
 .form-msg--error { color: var(--red); font-size: clamp(15px, calc(15px + (100vw - 1920px) * 0.003125), 17px); }
-/* The footer is Louma Red: both messages white (Narrow Bold 19px from the footer). */
-.site-foot :is(.form-msg--success, .form-msg--error) { color: var(--white); font-family: var(--font-narrow); font-weight: 700; font-size: 19px; }
+/* The footer is burgundy: both messages butter. */
+.site-foot :is(.form-msg--success, .form-msg--error) { color: var(--butter); }
 
 /* ===================================================== Motion scaffolding
    Hidden initial states apply ONLY when the matching html class is present
@@ -434,11 +434,10 @@ html.sys-slab .foot-news-row input {
   html.kb-open .site-nav { visibility: hidden; }
 }
 
-/* Footer + inline links: comfortable 44px touch targets on touch devices. */
+/* Contact links: comfortable 44px touch targets on touch devices (the
+   footer sets its own in Footer.astro). */
 @media (pointer: coarse) {
-  .foot-links a,
-  .contact-list a,
-  .foot-contact a {
+  .contact-list a {
     display: inline-flex;
     align-items: center;
     min-height: 44px;

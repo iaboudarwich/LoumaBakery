@@ -6,6 +6,7 @@
     { "days": "Tuesday – Sunday", "open": "7:30 AM", "close": "2:30 PM" },
     { "days": "Monday", "open": "Closed", "close": "" }
   ],
+  "parkingNote": "Parking available in the underground lot on Centinela.",
   "links": {
     "instagram": "https://www.instagram.com/loumabakery/",
     "instagramHandle": "@loumabakery",

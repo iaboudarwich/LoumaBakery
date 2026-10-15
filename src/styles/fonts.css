@@ -3,7 +3,7 @@
  *   Owners 500         titles and headings (the display face), emphasis,
  *                      labels, buttons, data (hours, form fields)
  *   Owners 400         body
- *   Owners Narrow 700  the header nav and the footer only
+ *   Owners Narrow 700  the header nav (bar and mobile sheet) only
  * woff2 subsets in public/fonts/: Basic Latin, Latin-1 Supplement, General
  * Punctuation and the four simple arrows, made with pyftsubset from the
  * desktop TTFs. Web use needs a webfont licence from Ohno Type Co before launch.

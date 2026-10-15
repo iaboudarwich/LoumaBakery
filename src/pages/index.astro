@@ -16,7 +16,7 @@ import { resolveImage as pick } from '../lib/images';
 const home = (await getEntry('copy', 'home'))!.data;
 const images = (await getEntry('images', 'images'))!.data;
 const heroPhoto = pick(images.hero);
-const g = images.homeGallery.map((p) => ({ photo: pick(p.image), alt: p.alt }));
+const g = images.homeGallery.map((p) => ({ photo: pick(p.image), alt: p.alt, focus: p.focus }));
 const { address, hours, directionsUrl } = siteConfig;
 
 // Split hero: the photo fills the right 7 columns (a tall box on wide
@@ -42,22 +42,13 @@ const hero = heroPhoto && {
 // crop scaled to the box height.
 const HERO_SIZES = '(max-width: 47.99rem) 100vw, (max-width: 64rem) 57vw, max(min(55vw, 790px), min(69vh, 688px))';
 
-// One line under the tagline, built from Site settings: the street and city,
-// then each open row of hours in short form ("Tue–Sun 7:30–2:30"). Each part
-// stays on one line; the line breaks only between parts.
-const shortDays = (d: string) => d.split(/\s*[–-]\s*/).map((x) => x.trim().slice(0, 3)).join('–');
-const shortTime = (t: string) => t.replace(/\s*(AM|PM)\s*$/i, '');
-const heroMeta = [
-  `${address.street}, ${address.city}`,
-  ...hours.filter((h) => h.close).map((h) => `${shortDays(h.days)} ${shortTime(h.open)}–${shortTime(h.close)}`),
-];
-
 const reveal = f.reveal ? 'reveal' : undefined;
 ---
 
 <BaseLayout schema="bakery" description={describe([home.tagline, ...home.body])}>
-  {/* 1. Split hero: the baguette, the tagline and the address line left (5
-      columns), the photo right (7). Phones: the photo first, then the text. */}
+  {/* 1. Split hero: the baguette and the tagline left (5 columns), the photo
+      right (7). Phones: the photo first, then the text. The address and hours
+      are in the visit band further down. */}
   <section class="home-hero">
     <div class="container grid-12 hero-grid">
       <div class="hero-text">
@@ -68,7 +59,6 @@ const reveal = f.reveal ? 'reveal' : undefined;
             : <Doodle name="baguette" size={140} color="red" animate={f.doodleDraw} class="hero-mark" />}
         </div>
         <h1 class="display hero-tagline">{home.tagline}</h1>
-        <p class="label hero-meta">{heroMeta.map((part, i) => <>{i > 0 && ' · '}<span>{part}</span></>)}</p>
       </div>
       {hero && (
         <picture class="hero-photo">
@@ -80,11 +70,12 @@ const reveal = f.reveal ? 'reveal' : undefined;
     </div>
   </section>
 
-  {/* 2. Photo pair: portrait 5 columns, landscape 7, top-aligned. */}
+  {/* 2. Photo pair: two equal 3:2 landscapes, 6 columns each (4:5 stacked
+      on phones). Each photo's `focus` picks the part kept by the crop. */}
   <section class="section">
-    <div class="container grid-12">
-      {g[0]?.photo && <Img src={g[0].photo} alt={g[0].alt} class="ph ph--portrait" style="--span: 5" sizes="(max-width: 47.99rem) 100vw, min(40vw, 560px)" />}
-      {g[1]?.photo && <Img src={g[1].photo} alt={g[1].alt} class="ph ph--landscape" style="--span: 7" sizes="(max-width: 47.99rem) 100vw, min(57vw, 800px)" />}
+    <div class="container grid-12 photo-pair">
+      {g[0]?.photo && <Img src={g[0].photo} alt={g[0].alt} focus={g[0].focus} class="ph ph--landscape" style="--span: 6" sizes="(max-width: 47.99rem) 100vw, min(48vw, 680px)" />}
+      {g[1]?.photo && <Img src={g[1].photo} alt={g[1].alt} focus={g[1].focus} class="ph ph--landscape" style="--span: 6" sizes="(max-width: 47.99rem) 100vw, min(48vw, 680px)" />}
     </div>
   </section>
 
@@ -98,8 +89,8 @@ const reveal = f.reveal ? 'reveal' : undefined;
   {/* 4. Photo row: two equal portraits. */}
   <section class="section">
     <div class="container grid-12">
-      {g[2]?.photo && <Img src={g[2].photo} alt={g[2].alt} class="ph ph--portrait" style="--span: 6" sizes="(max-width: 47.99rem) 100vw, min(48vw, 680px)" />}
-      {g[3]?.photo && <Img src={g[3].photo} alt={g[3].alt} class="ph ph--portrait" style="--span: 6" sizes="(max-width: 47.99rem) 100vw, min(48vw, 680px)" />}
+      {g[2]?.photo && <Img src={g[2].photo} alt={g[2].alt} focus={g[2].focus} class="ph ph--portrait" style="--span: 6" sizes="(max-width: 47.99rem) 100vw, min(48vw, 680px)" />}
+      {g[3]?.photo && <Img src={g[3].photo} alt={g[3].alt} focus={g[3].focus} class="ph ph--portrait" style="--span: 6" sizes="(max-width: 47.99rem) 100vw, min(48vw, 680px)" />}
     </div>
   </section>
 
@@ -147,8 +138,6 @@ const reveal = f.reveal ? 'reveal' : undefined;
     padding-block: var(--block-gap);
   }
   .hero-text :global(.hero-mark) { width: clamp(96px, 10vw, 140px); }
-  .hero-meta { color: var(--burgundy); max-width: none; }
-  .hero-meta span { white-space: nowrap; }
   .hero-photo {
     --start: 6;
     --span: 7;
@@ -165,6 +154,11 @@ const reveal = f.reveal ? 'reveal' : undefined;
   @media (max-width: 47.99rem) {
     .hero-photo { order: -1; height: auto; aspect-ratio: 4 / 5; }
     .hero-text { padding-block: 0; gap: var(--space-5); }
+  }
+
+  /* 2. Photo pair: phones stack them at 4:5. */
+  @media (max-width: 47.99rem) {
+    .photo-pair :global(.ph) { aspect-ratio: 4 / 5; }
   }
 
   /* 3. Body copy: a centred column, max 44em, text set left for reading. */

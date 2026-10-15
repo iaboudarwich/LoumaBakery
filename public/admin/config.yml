@@ -153,9 +153,9 @@ collections:
             widget: object
             fields:
               - { name: instagram, label: "Instagram link", widget: string, hint: "Paste your Instagram profile link here." }
-              - { name: instagramHandle, label: "Instagram handle", widget: string, hint: "Shown on the page, e.g. @loumabakery" }
+              - { name: instagramHandle, label: "Instagram handle", widget: string, hint: "e.g. @loumabakery. The Contact page shows it as “@loumabakery on Instagram”." }
               - { name: tiktok, label: "TikTok link", widget: string, required: false, hint: "Paste your TikTok profile link here. Leave empty to hide TikTok everywhere." }
-              - { name: tiktokHandle, label: "TikTok handle", widget: string, required: false, hint: "Shown on the Contact page, e.g. @loumabakery" }
+              - { name: tiktokHandle, label: "TikTok handle", widget: string, required: false, hint: "e.g. @loumabakery. The Contact page shows it as “@loumabakery on TikTok”." }
               - { name: uberEats, label: "Uber Eats order link", widget: string, hint: "Saved for later. It isn't shown anywhere on the site right now." }
 
 

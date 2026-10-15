@@ -47,8 +47,9 @@ const reveal = f.reveal ? 'reveal' : undefined;
           <ul class="contact-list" role="list">
             <li><a href={`mailto:${email}`}>{email}</a></li>
             <li><a href={`mailto:${ordersEmail}`}>{ordersEmail}</a> for larger orders</li>
-            <li><a href={instagram} target="_blank" rel="noopener" aria-label={`${instagramHandle} on Instagram`}>{instagramHandle}</a></li>
-            {tiktok && <li><a href={tiktok} target="_blank" rel="noopener" aria-label={`${tiktokHandle || 'TikTok'} on TikTok`}>{tiktokHandle || 'TikTok'}</a></li>}
+            {/* Both handles are @loumabakery, so each names its platform. */}
+            <li><a href={instagram} target="_blank" rel="noopener">{instagramHandle ? `${instagramHandle} on Instagram` : 'Instagram'}</a></li>
+            {tiktok && <li><a href={tiktok} target="_blank" rel="noopener">{tiktokHandle ? `${tiktokHandle} on TikTok` : 'TikTok'}</a></li>}
             <li><a href={directionsUrl} target="_blank" rel="noopener">Get directions</a></li>
           </ul>
         </div>

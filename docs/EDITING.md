@@ -159,8 +159,8 @@ Go to **Site settings → Settings**.
 - **Address**: street, city, state and ZIP. The map link updates by itself.
 - **Email address**: the main contact email.
 - **Email for larger orders**: shown with "for larger orders".
-- **Instagram link** and **Instagram handle** (for example `@loumabakery`).
-- **TikTok link** and **TikTok handle**: the link is in the footer, the handle on the Contact page. Empty the link to hide TikTok everywhere.
+- **Instagram link** and **Instagram handle** (for example `@loumabakery`). The Contact page shows the handle as "@loumabakery on Instagram".
+- **TikTok link** and **TikTok handle**: the link is in the footer; the Contact page shows the handle as "@loumabakery on TikTok". Empty the link to hide TikTok everywhere.
 - **Uber Eats order link**: saved for later; it isn't shown anywhere yet.
 
 ## Hidden for now

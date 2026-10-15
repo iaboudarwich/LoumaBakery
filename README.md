@@ -18,8 +18,8 @@ The website of Louma Bakery, a sister-run neighborhood bakery at 3223 Wilshire B
 | **JSON files in `src/data/`** | Every word, photo choice, menu item and setting. Checked against schemas in `src/content.config.ts` on every build, so bad data fails the build instead of reaching the site. |
 | **Decap CMS** in `public/admin/` | The web editor. Saving in it commits the changed JSON file to GitHub, which triggers a deploy. Login goes through **DecapBridge** (email and password, no GitHub account needed). |
 | **Netlify** | Hosting, automatic deploys, and Netlify Forms for the three forms (newsletter, catering, careers). |
-| **`motion`** | The small animation library behind the drawing reveals and section fade-ins (`src/scripts/motion.ts`). |
-| **Owners** (Ohno Type Co) | The only typeface, four files in `public/fonts/`. A webfont licence is still needed; see the handoff checklist. |
+| **`motion`** | The small animation library behind the drawing reveals and section fade-ins (`src/scripts/motion.ts`). The home hero's pen baguette loop is plain CSS (`src/components/PenDraw.astro`). |
+| **Owners** (Ohno Type Co) | The only typeface, three files in `public/fonts/` (Owners Regular, Owners Medium, Owners Narrow Bold). A webfont licence is still needed; see the handoff checklist. |
 
 ## Run it locally
 
@@ -102,6 +102,6 @@ Full reference: [`docs/BRAND.md`](docs/BRAND.md). The detailed rules for code ar
 - **The footer is Louma Red** with every word white in Owners Narrow Bold at 19px or more (white on red passes contrast only as large bold text).
 - **Square corners** everywhere. No shadows, gradients or blur.
 - **Photos straight** and shown as taken: no filters, no text over them, no animation.
-- **Only the designer's drawings** (plus the owner's traced signature and map).
+- **Only the designer's drawings** (plus the owner's traced signature and map). One derived file: `src/assets/brand/baguette-stroke.svg`, the baguette as a single pen line, which draws, erases and repeats in the home hero (`PenDraw.astro`, switch `penDraw` in `features.ts`). It is the only stroke drawing; how it was made is in `src/assets/brand/README.md`.
 - **The owner's words appear exactly as written.** Don't rewrite them.
 - No prices on the site except the products in the shop.

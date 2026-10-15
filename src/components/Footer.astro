@@ -29,7 +29,7 @@ const explore = [
 ].filter((l) => !hiddenRoutes.includes(l.href));
 ---
 
-<footer class="site-foot on-dark">
+<footer class="site-foot">
   <div class="container foot-inner">
     <!-- Newsletter: on every page's footer except those with their own signup. -->
     {newsletter && (
@@ -106,10 +106,7 @@ const explore = [
   }
   .site-foot p { max-width: none; }
 
-  .foot-newsletter:empty {
-    display: none;
-  }
-  .foot-newsletter:not(:empty) {
+  .foot-newsletter {
     padding-bottom: var(--space-7);
     margin-bottom: var(--space-7);
     border-bottom: 1px solid var(--foot-line);

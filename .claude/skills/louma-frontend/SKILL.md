@@ -39,7 +39,7 @@ Responsive to ~360px. Visible :focus-visible outlines. Keyboard operable. Meanin
 - NO live SVG filters anywhere: sketches render the *-baked.svg files (equal to the masters; scripts/bake-sketches.mjs copies them through); max 2 simultaneous draws, will-change on animating strokes.
 - Nav: always-visible sticky bar (60px + safe-area below 48rem, 72px above); no hide-on-scroll.
 - Reveals: one shared IO, fail-safe (hidden states only under JS-set classes; JS off = everything visible).
-- Hero image <=150KB on mobile (AVIF, eager, fetchpriority=high). Fonts: the four Owners woff2 subsets only, owners-400, owners-500 and owners-narrow-700 preloaded.
+- Hero image <=150KB on mobile (AVIF, eager, fetchpriority=high). Fonts: the three Owners woff2 subsets only (owners-400, owners-500, owners-narrow-700), all three preloaded.
 - theme-color AND body background both butter #FBF5D4 (Safari tints from either).
 - Map: no iframe; the hand-drawn map SVG plus a plain "Get directions" link.
 - No sticky bottom bar on phones.

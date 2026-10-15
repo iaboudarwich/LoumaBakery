@@ -176,6 +176,5 @@ function bake(file, out, step = 2.0) {
 }
 
 bake('baguette.svg', 'baguette-baked.svg', 2.0);
-bake('toast.svg', 'toast-baked.svg', 2.0);
 // The face renders small (<=104px), so coarser sampling is invisible there.
 bake('face.svg', 'face-baked.svg', 3.2);

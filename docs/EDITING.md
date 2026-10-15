@@ -25,6 +25,7 @@ Every change is saved with its full history, so nothing is ever lost for good. I
 | To change | Go to |
 |---|---|
 | The big line beside the top photo ("A sister-run neighborhood bakery in Santa Monica") | Page text → All pages → Home page → **Tagline** |
+| The baguette drawing above it, which draws itself, rubs itself out and starts again | Not in the editor (see "Things that need the person who looks after the website") |
 | The small address and hours line under it | Site settings (see "Hours, address and emails"). It updates by itself. |
 | The two introduction paragraphs | Page text → All pages → Home page → **Paragraphs** |
 | The heading above the Instagram photos | Page text → All pages → Home page → **Instagram heading** |

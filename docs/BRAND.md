@@ -131,6 +131,12 @@ The website follows the brand book.
 - **Drawings**: only the designer's master art, in `src/assets/brand/`: the wordmark,
   the baguette mark, the face, the bread slice, and the 26 doodles cut from the board.
   They are used as small red accents and reveal once as you scroll.
+- **The pen baguette.** At the owner's request the home hero's baguette draws itself
+  like a pen, rubs itself out along the same line and starts again. The master is a
+  filled outline, so `src/assets/brand/baguette-stroke.svg` was made from it: its
+  centreline as one continuous stroke at the master's line weight, checked against the
+  master (method in `src/assets/brand/README.md`). It is the only stroke drawing and is
+  used only there; every other baguette on the site is the filled master.
 - **Two drawings come from the owner, not the board.** Both were traced from the
   owner's own material and are kept beside the masters in `src/assets/brand/`:
   - `signature-milla.svg`: Milla's handwritten signature, from the printed founder's

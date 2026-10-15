@@ -37,9 +37,10 @@ const hero = heroPhoto && {
   webp: await variants('webp'),
   fallback: await getImage({ src: heroPhoto, width: 1200, height: 1500, fit: 'cover', position: 'center', format: 'jpeg', quality: 70 }),
 };
-// The photo's rendered width: the full column on phones; on wide screens the
-// larger of the 7-column box and the 4:5 crop scaled to the box height.
-const HERO_SIZES = '(max-width: 47.99rem) 100vw, max(min(55vw, 790px), min(69vh, 688px))';
+// The photo's rendered width: the full column on phones; about 57vw in the
+// tablet 3/4 box; on wide screens the larger of the 7-column box and the 4:5
+// crop scaled to the box height.
+const HERO_SIZES = '(max-width: 47.99rem) 100vw, (max-width: 64rem) 57vw, max(min(55vw, 790px), min(69vh, 688px))';
 
 // One line under the tagline, built from Site settings: the street and city,
 // then each open row of hours in short form ("Tue–Sun 7:30–2:30"). Each part
@@ -154,6 +155,11 @@ const reveal = f.reveal ? 'reveal' : undefined;
     display: block;
     height: min(86vh, 860px);
     height: min(86svh, 860px);
+  }
+  /* Tablets (48rem to 64rem): the column is too narrow for the full height,
+     so the photo takes a 3/4 box and sets the row's height. */
+  @media (min-width: 48rem) and (max-width: 64rem) {
+    .hero-photo { height: auto; aspect-ratio: 3 / 4; }
   }
   /* Phones: the photo first at 4:5, then the text. */
   @media (max-width: 47.99rem) {

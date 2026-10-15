@@ -44,20 +44,14 @@ body {
   font-synthesis: none;
 }
 
-/* Emphasis is Owners 500, the heavier body face. */
-strong,
-b { font-weight: 500; }
-
 img,
 picture,
-svg,
-video {
+svg {
   display: block;
   max-width: 100%;
 }
 
-img,
-video {
+img {
   height: auto;
 }
 
@@ -98,10 +92,7 @@ button {
 /* ---------------------------------------------------------- Typography */
 h1,
 h2,
-h3,
-h4,
-h5,
-h6 {
+h3 {
   font-family: var(--font-display);
   color: var(--ink);
   line-height: var(--lh-snug);
@@ -118,9 +109,6 @@ h3 { font-weight: var(--display-weight); letter-spacing: var(--display-track); }
 h1 { font-size: var(--fs-display); line-height: var(--display-lh); }
 h2 { font-size: var(--fs-h2); }
 h3 { font-size: var(--fs-lead); }
-h4,
-h5,
-h6 { font-weight: 500; }
 
 p {
   max-width: var(--measure);
@@ -269,15 +257,6 @@ html.sys-slab .btn-coral {
 @media (hover: hover) and (pointer: fine) {
   html.sys-slab .btn-primary:hover,
   html.sys-slab .btn-coral:hover { background: var(--ink); border-color: var(--ink); color: var(--butter); }
-}
-/* Ghost on dark bands/footer, the mobile CTA bar, and over the hero photo. */
-html.sys-slab :is(.on-dark, .site-foot) .btn:not(.btn-primary):not(.btn-coral) {
-  border-color: var(--butter);
-  color: var(--butter);
-  background: transparent;
-}
-@media (hover: hover) and (pointer: fine) {
-  html.sys-slab :is(.on-dark, .site-foot) .btn:not(.btn-primary):not(.btn-coral):hover { background: color-mix(in srgb, var(--butter) 14%, transparent); color: var(--butter); }
 }
 /* Inert "Ordering soon" (until a real Order link exists): an intentional
    dashed ghost, never a greyed-out dead control. */

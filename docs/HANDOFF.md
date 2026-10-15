@@ -20,7 +20,7 @@ The owner's brief for this version of the site: [docs/brief/2026-10-website-brie
 
 ## 2. Licensing
 
-- [ ] **The Owners typeface.** Owners is a commercial font by Ohno Type Co (ohnotype.co). The site currently uses the bakery's desktop font files, converted for the web. Desktop licences don't cover websites, so **buy a webfont licence before the public launch**. The site uses four styles: Owners Regular (400), Owners Medium (500), Owners Narrow Medium (500) and Owners Narrow Bold (700). If Ohno supplies new webfont files, replace the four files in `public/fonts/` with the same names.
+- [ ] **The Owners typeface.** Owners is a commercial font by Ohno Type Co (ohnotype.co). The site currently uses the bakery's desktop font files, converted for the web. Desktop licences don't cover websites, so **buy a webfont licence before the public launch**. The site uses three styles: Owners Regular (400), Owners Medium (500) and Owners Narrow Bold (700). If Ohno supplies new webfont files, replace the three files in `public/fonts/` with the same names.
 - [ ] **Photos.** All photos come from the bakery's own shoots and the owner's files (see `src/assets/img/CREDITS.md`). Confirm the photographer's agreement covers web use.
 
 ## 3. Waiting on the owner
@@ -77,4 +77,5 @@ An editor change can also be undone in the editor by setting the field back and 
 | Editor login and collaborators | DecapBridge (once set up) |
 | Photo credits | `src/assets/img/CREDITS.md` |
 | Brand reference and the designer's master files | `docs/BRAND.md`, `docs/brand/` |
+| The home hero's pen-drawn baguette: its stroke file, how it was made, and its on/off switch | `src/assets/brand/README.md`, `src/components/PenDraw.astro`, `penDraw` in `src/config/features.ts` |
 | Menu from a Google Sheet (not switched on) | `scripts/README.md` |

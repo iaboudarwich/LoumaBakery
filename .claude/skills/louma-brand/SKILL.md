@@ -33,7 +33,7 @@ Square everywhere. Every radius is 0: buttons, chips, inputs, cards, photos, the
 All art in src/assets/brand/ is the designer's master, filled outline in currentColor (see the README there). Never redraw, trace, restyle or regenerate it; change it only from docs/brand/master.
 - wordmark.svg: hand-lettered LOUMA with BAKERY beneath. The nav brand link and the footer lockup.
 - face.svg: the scribble-hair face with closed eyes, the emotional centre. Footer and 404 ornament; draws its outline on scroll, then settles filled.
-- baguette.svg: one loaf with three heart scores, the icon. toast.svg: the bread slice with a heart. Both trace their outline once on scroll-in, then fill.
+- baguette.svg: one loaf with three heart scores, the icon (filled). baguette-stroke.svg: its centreline as one stroke, made for the home hero's pen loop (PenDraw) and used nowhere else. The bread slice with a heart is the `bread-slice` doodle (the separate toast mark was removed, unused).
 - doodles/: 26 single drawings from the board: ingredients, face, bread-slice, herb, palm, flower, kite, baguette-small, baguette-small-2, bubble-oui-oui, cup-ooo-la-la, waves-birds, bird, hearts, louma-smiley, cherries, flower-cluster, sun, sun-small, bear, bouquet, watermelon, live-laugh-louma, moon-stars, star-kite, star-kite-2.
 Use only these drawings. Hearts are the recurring motif across the set. Keep drawings small accents (<=160px desktop, <=120px mobile), never oversized set pieces. Red or burgundy line art on butter; butter on dark.
 

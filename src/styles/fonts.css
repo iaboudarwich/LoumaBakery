@@ -1,11 +1,9 @@
 /*
- * Owners (MCKL / Ohno Type Co), the brand typeface. Three faces in use:
+ * Owners (MCKL / Ohno Type Co), the brand typeface. Three faces:
  *   Owners 500         titles and headings (the display face), emphasis,
  *                      labels, buttons, data (hours, form fields)
  *   Owners 400         body
  *   Owners Narrow 700  the header nav and the footer only
- * public/fonts/owners-narrow-500.woff2 (the old footer stamps) is no longer
- * declared; the file stays for now with the other three.
  * woff2 subsets in public/fonts/: Basic Latin, Latin-1 Supplement, General
  * Punctuation and the four simple arrows, made with pyftsubset from the
  * desktop TTFs. Web use needs a webfont licence from Ohno Type Co before launch.

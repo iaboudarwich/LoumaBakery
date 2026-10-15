@@ -7,26 +7,25 @@ the board.
 
 All art is filled outline (each pen line is a closed shape), coloured with `currentColor`.
 
-## The four marks
+## The marks
 
 | File | From | viewBox (role) | Used by |
 |---|---|---|---|
 | `wordmark.svg` | `01-wordmark.svg` | `0 0 374 240` | Nav brand link (cropped to the art), footer, 404 |
 | `baguette.svg` | `02-baguette-mark.svg` | `0 0 280 100` | `Doodle name="baguette"` (the home hero when `penDraw` is off) |
 | `face.svg` | `06-illustrations.svg`, the face | `0 0 286 265` | `FaceDraw` (footer, 404) |
-| `toast.svg` | `06-illustrations.svg`, the bread slice | `0 0 200 232` | not used at the moment (the `bread-slice` doodle is) |
 
 Each viewBox is the mark's long-standing role box, so every `width`/`height` in the markup
 stays valid. The art is fitted inside it (2% padding, centred, aspect kept) by a uniform
 scale and offset of the master coordinates; the drawing itself is unchanged. Where the
-art's proportions differ from the role box (the wordmark is wider, the face wider, the
-slice narrower) it sits centred with space around it. The nav brand link passes a tight
+art's proportions differ from the role box (the wordmark and the face are wider)
+it sits centred with space around it. The nav brand link passes a tight
 viewBox (`7.5 53.8 359 132.4`) so the wordmark fills the bar's height.
 
 ## The `-baked` siblings
 
 `face-baked.svg` is what `FaceDraw` renders (`baguette-baked.svg` is used by the dev-only
-/review page; `toast-baked.svg` by nothing at the moment). `scripts/bake-sketches.mjs` used to bake a pencil "roughen" filter into the traced
+/review page). `scripts/bake-sketches.mjs` used to bake a pencil "roughen" filter into the traced
 placeholders. The masters are already hand-drawn and carry no filter, so the script copies
 them through unchanged: the baked files equal the masters. Re-run it after replacing a mark.
 
@@ -97,7 +96,7 @@ supplied (see `src/assets/img/CREDITS.md`). Same conventions: tight viewBox,
 
 ## Recolouring
 
-Every file uses `currentColor`. The four marks default to Louma Red through
+Every file uses `currentColor`. The three marks default to Louma Red through
 `color="#ED2739"` on the root; the doodles have no default and take the surrounding text
 colour.
 - Inlined (Astro SVG component or `?raw`): set CSS `color` on the svg or a parent, e.g.

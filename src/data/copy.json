@@ -32,12 +32,6 @@
           "Louma Bakery is owned by The Louma Initiative, a registered 501(c)(3) nonprofit. The Initiative supports people with intellectual and developmental differences through four pillars: employment, research, education, and community outreach. The bakery is the employment pillar in action, and all of its profits go directly back to the Initiative. Every coffee and croissant helps fund the rest of that work."
         ]
       }
-    ],
-    "pillars": [
-      { "name": "Employment", "icon": "baguette-small.svg" },
-      { "name": "Research", "icon": "star-kite.svg" },
-      { "name": "Education", "icon": "kite.svg" },
-      { "name": "Community outreach", "icon": "hearts.svg" }
     ]
   },
   "menu": {

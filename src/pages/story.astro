@@ -19,10 +19,9 @@ const photos = images.story.map((p) => ({ photo: resolveImage(p.image), alt: p.a
 // A small drawing beside each section title, by position (the sections keep
 // their drawing if the owner edits a title). The first section has none.
 const sectionDoodles = [undefined, 'palm', 'bread-slice', 'herb', 'hearts'];
-// Photos sit after a section, by position: the collage after the first
-// ("Named after our sister"), the flowers after the fourth ("Ingredients we
-// care about").
-const photoAfter: Record<number, number> = { 0: 0, 3: 1 };
+// The photo sits after a section, by position: the collage after the first
+// ("Named after our sister").
+const photoAfter: Record<number, number> = { 0: 0 };
 // The page as a run of sections: text rows, then a photo section wherever a
 // photo follows, like the home page's photo sections (same grid gap, same
 // section spacing).
@@ -39,14 +38,14 @@ const reveal = f.reveal ? 'reveal' : undefined;
 ---
 
 <BaseLayout title={c.title} description={describe(letter.paragraphs)}>
-  <header class="page-intro">
+  <header class="page-intro story-intro">
     <div class="container">
       <h1 class="display">{noOrphan(c.title ?? '')}</h1>
     </div>
   </header>
 
-  {/* The letter: a butter card on a white band, set like the printed letter. */}
-  <section class="section block--white letter-band">
+  {/* The letter: straight on the page, one --block-gap under the title. */}
+  <section class="section letter-band">
     <div class="container">
       <article class="letter" data-anim={reveal}>
         <Doodle name="sun" size={64} color="red" animate={f.doodleDraw} class="letter-sun" />
@@ -57,8 +56,8 @@ const reveal = f.reveal ? 'reveal' : undefined;
     </div>
   </section>
 
-  {/* The sections: title 4 columns, copy 7; photos after the first and
-      fourth, each in its own section. */}
+  {/* The sections: title 4 columns, copy 7; the collage after the first,
+      in its own section. */}
   {runs.map((run) =>
     'rows' in run ? (
       <section class="section">
@@ -77,7 +76,7 @@ const reveal = f.reveal ? 'reveal' : undefined;
     ) : (
       <section class="section">
         <div class="container grid-12">
-          <Img src={run.photo.photo!} alt={run.photo.alt} focus={run.photo.focus} class="ph ph--portrait" style="--start: 3; --span: 8" sizes="(max-width: 47.99rem) 100vw, min(64vw, 900px)" />
+          <Img src={run.photo.photo!} alt={run.photo.alt} focus={run.photo.focus} class="ph ph--portrait" style="--start: 4; --span: 6" sizes="(max-width: 47.99rem) 100vw, min(48vw, 680px)" />
         </div>
       </section>
     ),
@@ -85,13 +84,14 @@ const reveal = f.reveal ? 'reveal' : undefined;
 </BaseLayout>
 
 <style>
-  /* The letter card: butter on white, max 680px, centred. */
+  /* The title sits one --block-gap above the letter. */
+  .story-intro { padding-bottom: var(--block-gap); }
+  .letter-band { padding-top: 0; }
+  /* The letter sits on the page itself (no card): max 680px, centred. */
   .letter {
     position: relative;
     max-width: 680px;
     margin-inline: auto;
-    padding: clamp(32px, 6vw, 72px);
-    background: var(--butter);
   }
   .letter-p {
     font-size: clamp(19px, 1.45vw, 21px);
@@ -100,7 +100,8 @@ const reveal = f.reveal ? 'reveal' : undefined;
     max-width: none;
   }
   .letter-p + .letter-p { margin-top: 1em; }
-  /* Sun top right, moon and stars bottom left: inside the card's padding. */
+  /* Sun top right, signature right, moon and stars bottom left, all in the
+     letter's own column. */
   .letter :global(.letter-sun) {
     display: block;
     width: clamp(44px, 5vw, 64px);

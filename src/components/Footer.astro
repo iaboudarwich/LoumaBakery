@@ -65,8 +65,8 @@ const pages = [
             ))}
           </ul>
           <ul class="foot-list" role="list">
-            <li><a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a></li>
-            <li><a href={`mailto:${siteConfig.ordersEmail}`}>{siteConfig.ordersEmail}</a> for larger orders</li>
+            <li><a class="foot-email" href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a></li>
+            <li><a class="foot-email" href={`mailto:${siteConfig.ordersEmail}`}>{siteConfig.ordersEmail}</a> for larger orders</li>
           </ul>
           <ul class="foot-list foot-social" role="list">
             <li><a href={links.instagram} target="_blank" rel="noopener">Instagram</a></li>
@@ -151,10 +151,18 @@ const pages = [
   .foot-hours span { white-space: nowrap; }
   .foot-social { display: flex; flex-wrap: wrap; column-gap: var(--space-5); }
 
+  /* Underlines: one plain solid line everywhere in the footer, same
+     thickness and offset. The two emails are always underlined; every other
+     link underlines on hover and keyboard focus only. Never a colour change. */
   .site-foot a {
     color: var(--butter);
-    text-decoration: none;
+    text-decoration-line: none;
+    text-decoration-style: solid;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
   }
+  .site-foot a.foot-email,
+  .site-foot a:focus-visible { text-decoration-line: underline; }
   /* Every footer link at least 24px tall (WCAG 2.5.8). */
   .foot-list a { display: inline-block; padding-block: 2px; }
   /* Touch: 44px tap targets; the text after a link stays on its line. */
@@ -162,13 +170,8 @@ const pages = [
     .foot-list li { display: flex; flex-wrap: wrap; align-items: center; column-gap: 0.3em; }
     .foot-list a { display: inline-flex; align-items: center; min-height: 44px; }
   }
-  /* Hover: an underline, never a colour change. */
   @media (hover: hover) and (pointer: fine) {
-    .site-foot a:hover {
-      text-decoration: underline;
-      text-decoration-thickness: 1px;
-      text-underline-offset: 0.2em;
-    }
+    .site-foot a:hover { text-decoration-line: underline; }
   }
   .site-foot :global(:focus-visible) { outline: 2px solid var(--butter); outline-offset: 3px; }
 

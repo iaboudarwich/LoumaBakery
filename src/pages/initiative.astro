@@ -4,14 +4,12 @@ import { noOrphan } from '../lib/typography';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { describe } from '../lib/seo';
 import { features as f } from '../config/features';
-import Doodle from '../components/Doodle.astro';
 
 // The Louma Initiative (was /mission; /mission 301-redirects here). No photos,
-// by the owner's choice. Every word and each pillar's drawing come from
-// copy.json ("initiative"; CMS: Page text).
+// by the owner's choice. Every word comes from copy.json ("initiative"; CMS:
+// Page text).
 const c = (await getEntry('copy', 'initiative'))!.data;
 const sections = c.sections ?? [];
-const pillars = c.pillars ?? [];
 const reveal = f.reveal ? 'reveal' : undefined;
 ---
 
@@ -37,48 +35,9 @@ const reveal = f.reveal ? 'reveal' : undefined;
       </div>
     </section>
   )}
-
-  {pillars.length > 0 && (
-    <section class="section block--fairy" aria-label="The four pillars">
-      <div class="container">
-        <ul class="pillars" role="list" data-anim={reveal} data-reveal-children>
-          {pillars.map((p) => (
-            <li class="pillar">
-              <Doodle name={p.icon} size={72} color="red" animate={f.doodleDraw} box />
-              <h2 class="pillar-name">{p.name}</h2>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  )}
 </BaseLayout>
 
 <style>
   .intro { margin-top: var(--block-gap); max-width: 34em; }
   .intro .lead { max-width: none; }
-
-  /* Four equal columns, 2x2 on narrow screens. */
-  .pillars {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: var(--block-gap);
-    margin: 0;
-    padding: 0;
-  }
-  @media (max-width: 47.99rem) {
-    .pillars { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: calc(var(--block-gap) * 1.5); }
-  }
-  .pillar { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4); }
-  /* Every drawing sits in the same 72px box, bottom-aligned (Doodle `box`),
-     so the four names start on one line at every width. */
-  .pillar-name {
-    font-family: var(--font-display);
-    font-weight: var(--display-weight);
-    letter-spacing: var(--display-track);
-    font-size: var(--fs-h2);
-    line-height: 1.08;
-    color: var(--burgundy);
-    overflow-wrap: break-word;
-  }
 </style>

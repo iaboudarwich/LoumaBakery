@@ -129,24 +129,6 @@ p + p {
   font-variant-numeric: tabular-nums;
 }
 
-/* ---- Sketchy link underline (sketchyLinks flag → html.links-sketch) ----
-   Body-copy links get a hand-drawn wavy underline that deepens on hover
-   (currentColor, so it adapts to context). Always visible (a11y); nav/buttons
-   excluded. Native text-decoration → no layout shift, reduced-motion safe. */
-.links-sketch :is(p, address, figcaption) a:not(.btn) {
-  text-decoration-line: underline;
-  text-decoration-style: wavy;
-  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 0.2em;
-  transition: text-decoration-color var(--dur) var(--ease-out);
-}
-@media (hover: hover) {
-  .links-sketch :is(p, address, figcaption) a:not(.btn):hover {
-    text-decoration-color: currentColor;
-  }
-}
-
 /* --------------------------------------------------------------- Links */
 a {
   color: var(--link);
@@ -498,12 +480,20 @@ html.sys-slab .foot-news-row input {
   color: var(--red);
   text-wrap: balance;
 }
-.lead {
+/* Body text (owner round 3): no ink body copy. Every page body paragraph is
+   burgundy at the lead size, like the home intro: .lead, the Catering and
+   Careers .lede, and the paragraphs of a two-column text row (the Our Story
+   and Initiative sections). Defined once, here. The header, footer, menu
+   items, shop products, labels and form fields keep their own type. */
+.lead,
+.page-intro .lede,
+.text-row-body p {
   font-size: var(--fs-lead);
   line-height: 1.45;
   color: var(--burgundy);
 }
-.lead + .lead { margin-top: var(--block-gap); }
+.lead + .lead,
+.text-row-body p + p { margin-top: var(--block-gap); }
 .label {
   font-family: var(--font-body);
   font-weight: 500;
@@ -515,9 +505,6 @@ html.sys-slab .foot-news-row input {
 .page-intro { padding-block: var(--section-y) calc(var(--section-y) / 2); }
 .page-intro .lede {
   margin-top: var(--block-gap);
-  font-size: var(--fs-lead);
-  line-height: 1.45;
-  color: var(--burgundy);
   max-width: 34em;
 }
 
@@ -575,5 +562,4 @@ html.sys-slab .button[aria-disabled="true"] {
 .text-row + .text-row { margin-top: var(--section-y); }
 .text-row-title { --span: 4; display: flex; align-items: flex-start; gap: var(--space-4); }
 .text-row-title > .doodle { flex: none; margin-top: 0.1em; }
-.text-row-body { --start: 6; --span: 7; color: var(--ink); }
-.text-row-body p + p { margin-top: var(--space-4); }
+.text-row-body { --start: 6; --span: 7; }

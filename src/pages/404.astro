@@ -16,7 +16,7 @@ const c = (await getEntry('copy', 'notFound'))!.data;
       </div>
       <p class="label nf-label">{c.eyebrow}</p>
       <h1 class="display nf-title">{c.title}</h1>
-      {c.lede && <p class="nf-lede">{c.lede}</p>}
+      {c.lede && <p class="lead nf-lede">{c.lede}</p>}
       {c.cta && <a class="btn btn-primary nf-cta" href={c.cta.href}>{c.cta.label}</a>}
     </div>
   </section>
@@ -38,6 +38,6 @@ const c = (await getEntry('copy', 'notFound'))!.data;
   .nf-wordmark { color: var(--burgundy); height: auto; }
   .nf-label { color: var(--burgundy); }
   .nf-title { margin-top: var(--space-5); }
-  .nf-lede { margin-top: var(--block-gap); font-size: var(--fs-lead); color: var(--burgundy); max-width: 34em; }
+  .nf-lede { margin-top: var(--block-gap); max-width: 34em; }
   .nf-cta { margin-top: var(--block-gap); }
 </style>

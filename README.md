@@ -43,7 +43,7 @@ The top menu shows Home, Our Story, The Louma Initiative, Menu and Shop; the log
 |---|---|---|
 | `/` | `src/pages/index.astro` | `copy.json` → home, `images.json` (hero and the four gallery photos), `instagram.json`, `settings.json` (address, hours). Opens with a split hero: tagline left, photo right (photo first on phones). |
 | `/story` | `src/pages/story.astro` | `copy.json` → story (title), `story.json` (the letter and five sections), `images.json` → story |
-| `/initiative` | `src/pages/initiative.astro` | `copy.json` → initiative (text and the four pillars) |
+| `/initiative` | `src/pages/initiative.astro` | `copy.json` → initiative (title, intro and sections) |
 | `/menu` | `src/pages/menu.astro` | `copy.json` → menu, `menu.json` |
 | `/shop` | `src/pages/shop.astro` | `copy.json` → shop, `shop.json` |
 | `/visit` (shown as "Contact") | `src/pages/visit.astro` | `copy.json` → visit (title), `settings.json` (address, hours, emails, Instagram, TikTok), the hand-drawn map |
@@ -60,7 +60,7 @@ Everything editable lives in `src/data/`, one CMS collection per file:
 
 | File | What it controls | In the editor |
 |---|---|---|
-| `copy.json` | The words on every page, grouped by page (home, story, initiative, menu, shop, visit, catering, careers, notFound), including each Initiative pillar's drawing | Page text |
+| `copy.json` | The words on every page, grouped by page (home, story, initiative, menu, shop, visit, catering, careers, notFound) | Page text |
 | `story.json` | The founder's letter (paragraphs and signature) and the Our Story sections | Our Story |
 | `menu.json` | Menu categories (name, order, drawing), items (name, description, dietary tags) and the add-ons list. No prices. | Menu |
 | `shop.json` | The pre-order and gift card links, and the products (name, price, description, size, photo, buy link). An empty link shows "Coming soon". | Shop |

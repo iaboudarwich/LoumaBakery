@@ -11,6 +11,8 @@ description: Frontend design discipline for the Louma site. Flatness, square sha
 - Ghost buttons default: 1.5px --burgundy outline rectangle, transparent fill, ~14x28px padding, Owners 500. Max ONE filled CTA per page (on a burgundy card it inverts to butter with burgundy text). Disabled = dashed ghost that reads intentional.
 - Colour: only the eight brand tokens (tokens.css). Red is primary, but red text must be 24px+ (or bold 18.66px+) because red on butter is 3.86:1; small text is ink or burgundy, links burgundy.
 - Type: Owners only, three faces in use (Owners 500 for titles, headings, emphasis, buttons and data; 400 body; Narrow 700 only in the header nav). The footer is burgundy with butter text in normal type (400 body, 500 small uppercase heading). Never request italics or other weights; font-synthesis is off.
+- Body text (owner round 3): no ink body copy. Every page body paragraph is burgundy at --fs-lead (line-height 1.45, paragraphs --block-gap apart), like the home intro. One shared rule in global.css: `.lead`, `.page-intro .lede` and `.text-row-body p` (the Our Story and Initiative sections). Applies to /, /story, /initiative, /visit and the 404. Not to the header, footer, menu items and notes, shop products, labels or form fields.
+- Our Story: the whole page is butter. The letter sits on the page (no card, no white band), max 680px centred, one --block-gap under the title; sun top right, signature right, moon bottom left. One photo (the collage), 6 columns centred.
 - Layout system (tokens.css): --container 1440px, --gutter, --section-y, --block-gap, the --fs-* type scale, and a 12-column grid (.grid-12 with --start/--span). Full-width colour blocks: burgundy, white, fairy. Photos straight, object-fit cover in a fixed aspect per slot, never filtered, overlaid or animated. See CLAUDE.md.
 - Long body text max-width ~640px. Statements may slightly bleed their container.
 - Astro gotcha: page-scoped styles neither reach child components nor beat their specificity; use :global(html.sys-slab) prefixes for slab overrides.
@@ -22,7 +24,7 @@ description: Frontend design discipline for the Louma site. Flatness, square sha
 - Sketch draw-on-scroll (the 404 page's face; the footer face is static): one-shot ~1.1s, 80ms subpath stagger; the outline traces in, then the fill settles back.
 - Entrances: fade + settle 16px DOWNWARD or fade in place; 500ms; children staggered 80ms; once, at ~30% in view. NEVER rise bottom-to-top.
 - Photos never animate (no wipe, zoom, ken-burns, parallax, tilt). No marquee.
-- Micro: sketchy underline on link hover, button press scale ~0.98, brand-color focus ring.
+- Micro: button press scale ~0.98, brand-color focus ring. Underlines are plain solid lines everywhere (no wavy or dotted). In the footer all links share one line, 1px, offset 0.2em: the two emails are always underlined; Instagram, TikTok and the page links underline on hover and keyboard focus only.
 - Nothing else. New effects require removing one and updating this list.
 - All effects: flag-gated in features.ts + listed on /review; reduced-motion shows composed final states immediately; heavy motion off on mobile.
 

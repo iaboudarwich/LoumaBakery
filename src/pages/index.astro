@@ -161,8 +161,10 @@ const reveal = f.reveal ? 'reveal' : undefined;
     .photo-pair :global(.ph) { aspect-ratio: 4 / 5; }
   }
 
-  /* 3. Body copy: a centred column, max 44em, text set left for reading. */
-  .home-body { max-width: 44em; margin-inline: auto; }
+  /* 3. Body copy: a centred column, text set left for reading. 48em (of the
+     body size) runs the first paragraph to four lines at the lead size from
+     1024 to 1920 (owner round 3). */
+  .home-body { max-width: 48em; margin-inline: auto; }
   .home-body .lead { max-width: none; }
 
   /* 5. Visit band. */

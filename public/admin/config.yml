@@ -118,6 +118,7 @@ collections:
                   - { label: "Top", value: "top" }
                   - { label: "Upper middle", value: "50% 30%" }
                   - { label: "Just above centre", value: "50% 45%" }
+                  - { label: "Just below centre", value: "50% 60%" }
                   - { label: "Lower middle", value: "50% 70%" }
                   - { label: "Bottom", value: "bottom" }
                   - { label: "Left", value: "left" }
@@ -126,9 +127,9 @@ collections:
             label: "Our Story: photos"
             label_singular: "Photo"
             widget: list
-            max: 2
+            max: 1
             summary: "{{fields.alt}}"
-            hint: "Two photos for the Our Story page. Portrait works best, at least 1200px wide, under 3MB each."
+            hint: "One photo for the Our Story page, shown after the first section. Portrait works best, at least 1200px wide, under 3MB."
             fields:
               - { name: image, label: "Photo", widget: image, choose_url: false }
               - { name: alt, label: "Photo description", widget: string, hint: "What the photo shows, for screen readers." }
@@ -143,6 +144,7 @@ collections:
                   - { label: "Top", value: "top" }
                   - { label: "Upper middle", value: "50% 30%" }
                   - { label: "Just above centre", value: "50% 45%" }
+                  - { label: "Just below centre", value: "50% 60%" }
                   - { label: "Lower middle", value: "50% 70%" }
                   - { label: "Bottom", value: "bottom" }
                   - { label: "Left", value: "left" }
@@ -235,14 +237,6 @@ collections:
                 fields:
                   - { name: title, label: "Section title", widget: string }
                   - { name: paragraphs, label: "Paragraphs", widget: list, field: { name: text, label: "Paragraph", widget: text } }
-              - name: pillars
-                label: "The four pillars"
-                label_singular: "Pillar"
-                widget: list
-                summary: "{{fields.name}}"
-                fields:
-                  - { name: name, label: "Pillar", widget: string, hint: "One short name, e.g. Employment" }
-                  - { name: icon, label: "Drawing", widget: select, options: ["baguette-small-2.svg", "baguette-small.svg", "bear.svg", "bird.svg", "bouquet.svg", "bread-slice.svg", "bubble-oui-oui.svg", "cherries.svg", "cup-ooo-la-la.svg", "face.svg", "flower-cluster.svg", "flower.svg", "hearts.svg", "herb.svg", "ingredients.svg", "kite.svg", "live-laugh-louma.svg", "louma-smiley.svg", "moon-stars.svg", "palm.svg", "star-kite-2.svg", "star-kite.svg", "sun-small.svg", "sun.svg", "watermelon.svg", "waves-birds.svg"], hint: "The brand drawing shown above the name, in red." }
           # ---- Menu page ----
           - name: menu
             label: "Menu page"

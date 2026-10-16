@@ -16,8 +16,6 @@ export const features = {
   penDraw: true,
 
   // --- Micro / functional ---
-  /** Hand-drawn wavy underline on body-copy links. */
-  sketchyLinks: true,
   /** Transient corner notices (form confirmations). */
   toast: true,
 

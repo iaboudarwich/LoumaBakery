@@ -79,7 +79,7 @@ with 2% padding, `fill="currentColor"`:
 
 They were split from the page SVGs by a script that groups subpaths by distance and by
 region; path data was never edited. The site uses them through `Doodle.astro` as small
-red accents: on the home page, Our Story, the Initiative pillars, the menu category
+red accents: on the home page, Our Story, the menu category
 headings and the shop.
 
 ## Traced from the owner's material (not from the board)

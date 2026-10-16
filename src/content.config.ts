@@ -48,7 +48,6 @@ const copy = defineCollection({
       // Initiative, Menu
       intro: paragraphs,
       sections: z.array(titledSection).optional(),
-      pillars: z.array(z.object({ name: z.string(), icon: z.string() })).optional(), // icon: a file in src/assets/brand/doodles
       allergenNote: z.string().optional(),
       // Shop
       status: z.string().optional(),
@@ -98,7 +97,7 @@ const shop = defineCollection({
 
 // Site photos (CMS: "Photos"). Filenames in src/assets/img; every photo has
 // its alt text beside it. hero: the home split hero; homeGallery: the four
-// home photos; story: the two Our Story photos. `focus` is the part of the
+// home photos; story: the Our Story photo (one). `focus` is the part of the
 // photo kept when its slot crops it (CSS object-position): a keyword, or
 // "x% y%". Empty or missing = center.
 const focus = z

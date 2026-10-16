@@ -30,8 +30,7 @@ shows no photos at the moment.
 | baker-raspberries.jpg | Home gallery 3; menu data (Small Raspberry Tart) | 20260904_LoumaBakery_0034 | 2026-09-04 |
 | interior-table.jpg | Home gallery 4 | IMG_1703 | phone |
 | knot-pink-paper.jpg | Menu data (Za'atar Croissant). Was home gallery 6 until owner round 1 | 20260830_LoumaBakery_0281 | 2026-08-30 |
-| story-collage.jpg | Our Story photo 1 | eefec98f-5b8b-45f4-98dd-e80de5f5b7b0 (also on brief PDF page 8) | undated Dropbox export |
-| story-flowers.jpg | Our Story photo 2. Rotated 0.67° counter-clockwise (door frame, shelving) | brief PDF, page 8 (flowers on the counter; 1536x2048, the only copy) | brief PDF |
+| story-collage.jpg | Our Story photo. Owner round 3: the cream margin baked into the export was trimmed off (crop x209 y283, 1473x1869 from 1878x2400) | eefec98f-5b8b-45f4-98dd-e80de5f5b7b0 (also on brief PDF page 8) | undated Dropbox export |
 | ig-1.jpg | Instagram strip tile 1 | IMG_0008 | phone |
 | ig-2.jpg | Instagram strip tile 2 | IMG_1827 4 | phone |
 | ig-3.jpg | Instagram strip tile 3 | IMG_9795 3 | phone |
@@ -78,6 +77,7 @@ shows no photos at the moment.
 | unplaced/kitchen-team.jpg | 20260830_LoumaBakery_0139. Rotated 1.0° clockwise (window mullions). Was home gallery 5 until owner round 1 | 2026-08-30 |
 | unplaced/storefront-window.jpg | 20260904_LoumaBakery_0092. Rotated 5.05° counter-clockwise (window frame). Was the Contact page photo until owner round 1 | 2026-09-04 |
 | unplaced/coffee-unidentified.jpg | 20260830_LoumaBakery_0190 (crop x2250 y6740, 1500x1000; drink type unconfirmed) (not reprocessed) | 2026-08-30 |
+| unplaced/story-flowers.jpg | brief PDF, page 8 (flowers on the counter; 1536x2048, the only copy). Rotated 0.67° counter-clockwise (door frame, shelving). Was Our Story photo 2 until owner round 3 | brief PDF |
 | unplaced/viennoiserie-spread.jpg | 20260830_LoumaBakery_0079 (not reprocessed) | 2026-08-30 |
 | unplaced/madeleine-production.jpg | 20260830_LoumaBakery_0300 (not reprocessed) | 2026-08-30 |
 | unplaced/louma-cap.jpg | 20260830_LoumaBakery_0340 (the full hat photo; not reprocessed) | 2026-08-30 |

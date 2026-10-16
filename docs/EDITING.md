@@ -40,7 +40,7 @@ Every change is saved with its full history, so nothing is ever lost for good. I
 | The page title | Page text → All pages → Our Story page → **Headline** |
 | The letter | Our Story → **The letter** → **Paragraphs**. Each box is one paragraph. **Signed** is the name read out to screen readers for the handwritten signature. |
 | The five sections (title and paragraphs) | Our Story → **Sections**. Open a section to change its title or paragraphs; drag the two short lines at the top of a section to reorder it. |
-| The two photos | Photos → Site photos → **Our Story: photos**. The first shows after the first section, the second after the fourth. |
+| The photo (the family collage) | Photos → Site photos → **Our Story: photos**. One photo, shown after the first section. |
 
 ### The Louma Initiative
 
@@ -48,7 +48,6 @@ Every change is saved with its full history, so nothing is ever lost for good. I
 |---|---|
 | The title and the opening paragraphs | Page text → All pages → The Louma Initiative page → **Headline** and **Introduction** |
 | "Opening doors" and "Built to last" | Page text → All pages → The Louma Initiative page → **Sections** |
-| The four pillars and their drawings | Page text → All pages → The Louma Initiative page → **The four pillars**. Each pillar has a **Pillar** name and a **Drawing** picked from the list of brand drawings. |
 
 This page has no photos, by the owner's choice. Never add numbers about team members' disabilities to this page. This is a firm rule for the bakery.
 
@@ -139,17 +138,17 @@ Go to **Photos → Site photos**, click the photo you want to replace, and uploa
 | Home: top photo | Any shape: it is cropped to a tall frame (4:5 on phones), so keep the subject near the middle | 2400 pixels on the long side |
 | Home: photo gallery, 1st and 2nd | Cropped to a wide frame (3:2), side by side; 4:5 on phones | 1600 pixels on the long side |
 | Home: photo gallery, 3rd and 4th | Portrait (taller than wide) | 1600 pixels on the long side |
-| Our Story: photos | Portrait | 1200 pixels wide |
+| Our Story: photo | Portrait, with no border or margin around it (the page is the background) | 1200 pixels wide |
 | Instagram strip | Square works best | 600 pixels wide |
 
-- **Crop focus** (home gallery and Our Story photos): when a slot crops a photo, this picks which part stays in view. **Centre** suits most photos; pick **Top**, **Upper middle**, **Just above centre**, **Lower middle**, **Bottom**, **Left** or **Right** when the subject sits off-centre. Then check the page after publishing. (The first home gallery photo, the pain au chocolat, uses **Just above centre** so the pastries fill the frame.)
+- **Crop focus** (home gallery and Our Story photos): when a slot crops a photo, this picks which part stays in view. **Centre** suits most photos; pick **Top**, **Upper middle**, **Just above centre**, **Just below centre**, **Lower middle**, **Bottom**, **Left** or **Right** when the subject sits off-centre. Then check the page after publishing. (The first home gallery photo, the pain au chocolat, uses **Just below centre** so the front pastry shows whole, chocolate end and all. If you swap that photo, check the front pastry is not cut off at the bottom; move the focus down if it is.)
 - Keep each photo under 3 MB. The website makes the small, fast versions itself.
 - Use photos that are straight and not tilted. The website shows them exactly as taken, cropped to fit the slot's shape.
 - **Every photo needs a description**: one plain sentence about what is actually in the photo, like "Pain au chocolat cooling on a wire rack on a wooden counter". People who can't see the photo hear this sentence.
 
 ## The Instagram strip
 
-Go to **Instagram strip**. There are up to six photos. Click a photo to replace it, and update its **Photo description**. Every tile links to the bakery's Instagram page. A tile without a photo is skipped.
+Go to **Instagram strip**. There are up to six photos, shown as big squares (three across on computers, two across on phones). Click a photo to replace it, and update its **Photo description**. Every tile links to the bakery's Instagram page. A tile without a photo is skipped.
 
 ## Hours, address and emails
 

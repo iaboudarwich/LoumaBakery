@@ -91,23 +91,21 @@ const builders: Record<string, () => void> = {
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
         // ~30% in view: 30% of the element, OR 30% of the viewport for
-        // sections taller than the screen (a long menu category can't show
-        // 30% of itself on a phone until the user has already scrolled past).
+        // sections taller than the screen (a long section can't show 30% of
+        // itself on a phone until the user has already scrolled past).
         const rootH = e.rootBounds?.height ?? window.innerHeight;
         if (!e.isIntersecting || (e.intersectionRatio < 0.3 && e.intersectionRect.height < rootH * 0.3)) return;
         io.unobserve(e.target); // one-shot
         const el = e.target;
         const inPlace = el.getAttribute('data-reveal') === 'fade';
         const targets = prep.get(el) ?? [];
-        // Stagger: 80ms by default; data-reveal-stagger (ms) and
-        // data-reveal-cap (items) tune it, e.g. the menu's 40ms capped at 8.
-        const step = Number(el.getAttribute('data-reveal-stagger') ?? 80) / 1000;
-        const cap = Number(el.getAttribute('data-reveal-cap') ?? Infinity);
+        // Children stagger 80ms.
+        const step = 0.08;
         targets.forEach((t, i) => {
           animate(
             t,
             { opacity: 1, ...(inPlace ? {} : { transform: 'translateY(0px)' }) },
-            { duration: 0.5, delay: targets.length > 1 ? Math.min(i, cap) * step : 0, ease: EASE },
+            { duration: 0.5, delay: targets.length > 1 ? i * step : 0, ease: EASE },
           );
         });
       });

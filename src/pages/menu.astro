@@ -3,26 +3,13 @@ import { getEntry, getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { describe } from '../lib/seo';
 import { features as f } from '../config/features';
-import Doodle from '../components/Doodle.astro';
 import { noOrphan } from '../lib/typography';
-import menuData from '../data/menu.json';
 
-// Words: copy.json ("menu"); items, drawings and add-ons: menu.json (CMS:
-// "Menu"). No prices and no photos, by the owner's choice: items keep
-// `image`/`alt` in the data for later, but nothing here renders them.
+// Words: copy.json ("menu"); categories, items and their notes: menu.json
+// (CMS: "Menu"). No prices, photos or drawings, by the owner's choice. One
+// calm stacked column, like a printed menu.
 const c = (await getEntry('copy', 'menu'))!.data;
 const menu = (await getCollection('menu')).sort((a, b) => a.data.order - b.data.order);
-// Add-ons have no Zod collection; they are read straight from the JSON and
-// shown after the category named in `afterCategory`.
-const addOns = menuData.addOns;
-
-// Dietary tags: a short visible label plus the full word for screen readers.
-const DIET: Record<string, [string, string]> = {
-  vegan: ['VG', 'vegan'],
-  vegetarian: ['V', 'vegetarian'],
-  gf: ['GF', 'gluten-free'],
-  'nut-free': ['NF', 'nut-free'],
-};
 const reveal = f.reveal ? 'reveal' : undefined;
 ---
 
@@ -33,55 +20,32 @@ const reveal = f.reveal ? 'reveal' : undefined;
       <div class="menu-intro" data-anim={reveal}>
         {c.intro.map((p) => <p class="lead">{p}</p>)}
       </div>
+      {/* Category links: one plain row that wraps; each jumps to its section. */}
+      <nav class="menu-jump" aria-label="Menu categories">
+        <ul role="list">
+          {menu.map((cat) => <li><a href={`#menu-${cat.id}`}>{cat.data.title}</a></li>)}
+        </ul>
+      </nav>
     </div>
   </header>
 
-  {/* Category jump bar: plain anchors, sticky under the header. The scroll
-      spy below only adds aria-current. */}
-  <nav class="jumpbar" aria-label="Menu categories">
-    <ul class="jump-track" role="list">
-      {menu.map((cat) => (
-        <li><a class="jump-link" href={`#menu-${cat.id}`} data-spy={`menu-${cat.id}`}>{cat.data.title}</a></li>
-      ))}
-    </ul>
-  </nav>
-
-  <div class="menu-body">
+  <div class="container menu-body">
     {menu.map((cat) => (
       <section class="menu-cat" id={`menu-${cat.id}`} aria-labelledby={`h-${cat.id}`}>
-        <div class="container">
-          <div class="cat-head">
-            {cat.data.icon && <Doodle name={cat.data.icon} size={64} color="red" animate={f.doodleDraw} box />}
-            <h2 class="h2" id={`h-${cat.id}`}>{cat.data.title}</h2>
-          </div>
-          <ul class="items" role="list" data-anim={reveal} data-reveal-children data-reveal-stagger="40" data-reveal-cap="8">
-            {cat.data.items.map((item) => (
-              <li class="item">
-                <h3 class="item-name">
-                  {item.name}
-                  {item.tags.map((t) => DIET[t] ? (
-                    <span class="diet"><span aria-hidden="true">{DIET[t][0]}</span><span class="visually-hidden">{DIET[t][1]}</span></span>
-                  ) : null)}
-                </h3>
-                {item.description && <p class="item-desc">{item.description}</p>}
-              </li>
-            ))}
-          </ul>
-          {addOns && cat.id === addOns.afterCategory && addOns.items.length > 0 && (
-            <div class="addons">
-              <h3 class="label addons-label">{addOns.title}</h3>
-              <p class="addons-list">{addOns.items.map((a) => a.name).join(' · ')}</p>
-            </div>
-          )}
-        </div>
+        <h2 class="h2" id={`h-${cat.id}`} data-anim={reveal}>{cat.data.title}</h2>
+        <ul class="items" role="list">
+          {cat.data.items.map((item) => (
+            <li class="item">
+              <span class="item-name">{item.name}</span>
+              {item.note && <span class="item-note">{item.note}</span>}
+            </li>
+          ))}
+        </ul>
+        {cat.data.notes.map((n) => <p class="cat-note">{n}</p>)}
       </section>
     ))}
 
-    {c.allergenNote && (
-      <div class="container">
-        <p class="allergen">{c.allergenNote}</p>
-      </div>
-    )}
+    {c.allergenNote && <p class="allergen">{c.allergenNote}</p>}
   </div>
 </BaseLayout>
 
@@ -89,181 +53,69 @@ const reveal = f.reveal ? 'reveal' : undefined;
   .menu-intro { margin-top: var(--block-gap); max-width: 34em; }
   .menu-intro .lead { max-width: none; }
 
-  /* --- Jump bar: one row of text links under the header --- */
-  .jumpbar {
-    --jump-h: 48px;
-    position: sticky;
-    top: calc(var(--nav-h) + env(safe-area-inset-top, 0px));
-    z-index: 900;
-    background: var(--butter);
-    border-bottom: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
-  }
-  .jump-track {
+  /* Category links under the intro: not sticky, wraps on phones. */
+  .menu-jump { margin-top: var(--block-gap); }
+  .menu-jump ul {
     display: flex;
-    gap: var(--block-gap);
-    max-width: var(--container);
-    height: var(--jump-h);
-    margin: 0 auto;
-    padding-block: 0;
-    padding-inline: max(var(--gutter), env(safe-area-inset-left)) max(var(--gutter), env(safe-area-inset-right));
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
-  }
-  .jump-track::-webkit-scrollbar { display: none; }
-  .jump-track li { flex: none; }
-  .jump-link {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    height: 100%;
-    min-height: 44px;
-    font-family: var(--font-body);
-    font-weight: 500;
-    font-size: var(--fs-small);
-    color: var(--ink);
-    text-decoration: none;
-    white-space: nowrap;
-  }
-  /* Active: the header's 2px red rule. */
-  .jump-link::after {
-    content: '';
-    position: absolute;
-    inset-inline: 0;
-    bottom: 10px;
-    height: 2px;
-    background: var(--red);
-    transform: scaleX(0);
-    transform-origin: 0 50%;
-    transition: transform var(--dur) var(--ease-out);
-  }
-  .jump-link[aria-current='true']::after { transform: scaleX(1); }
-  @media (hover: hover) and (pointer: fine) {
-    .jump-link:hover::after { transform: scaleX(1); background: var(--ink); }
-    .jump-link[aria-current='true']:hover::after { background: var(--red); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .jump-link::after { transition: none; }
-  }
-
-  /* --- Categories --- */
-  .menu-body { padding-top: calc(var(--section-y) / 2); }
-  .menu-cat {
-    padding-bottom: var(--section-y);
-    /* An anchor jump lands the heading one block-gap below both sticky bars. */
-    scroll-margin-top: calc(var(--nav-h) + 48px + env(safe-area-inset-top, 0px) + var(--block-gap));
-  }
-  .cat-head { display: flex; align-items: flex-end; gap: var(--space-4); margin-bottom: var(--block-gap); }
-
-  /* Items: two columns, one below 48rem. No leaders, no rules, no photos. */
-  .items {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: var(--block-gap);
-    row-gap: var(--block-gap);
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
     margin: 0;
     padding: 0;
   }
-  @media (max-width: 47.99rem) {
-    .items { grid-template-columns: 1fr; }
-  }
-  .item-name {
-    font-family: var(--font-body);
+  .menu-jump a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     font-weight: 500;
-    font-size: var(--fs-item);
-    line-height: 1.3;
-    color: var(--ink);
-    text-wrap: balance;
-  }
-  .diet {
-    margin-inline-start: 0.6em;
-    font-size: var(--fs-small);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
     color: var(--burgundy);
-    white-space: nowrap;
-  }
-  .item-desc {
-    margin-top: var(--space-2);
-    color: var(--ink-80);
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
   }
 
-  /* Add-ons: one line of names under a small label. */
-  .addons { margin-top: var(--section-y); }
-  .addons-label { color: var(--burgundy); margin-bottom: var(--space-2); }
-  .addons-list { color: var(--ink); }
+  /* One column, about 40em, left-aligned with the intro. Categories sit a
+     little closer than page sections: 3/4 of --section-y. */
+  .menu-body {
+    --menu-gap: calc(var(--section-y) * 0.75);
+    padding-block: calc(var(--section-y) / 2) var(--section-y);
+  }
+  .menu-cat {
+    max-width: 40em;
+    /* An anchor jump lands the heading one block-gap under the header. */
+    scroll-margin-top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + var(--block-gap));
+  }
+  .menu-cat + .menu-cat { margin-top: var(--menu-gap); }
+  .menu-cat .h2 { margin-bottom: var(--space-5); }
+
+  /* Items: one per line, Owners 400 at --fs-item (19-20px), burgundy. A note
+     sits right under its name, small, burgundy at 80% (5.6:1 on butter). */
+  .items { margin: 0; padding: 0; display: grid; gap: var(--space-3); }
+  .item-name,
+  .item-note { display: block; }
+  .item-name {
+    font-size: var(--fs-item);
+    line-height: 1.4;
+    color: var(--burgundy);
+  }
+  .item-note {
+    margin-top: 2px;
+    font-size: var(--fs-small);
+    line-height: 1.4;
+    color: color-mix(in srgb, var(--burgundy) 80%, var(--butter));
+  }
+  .cat-note {
+    font-size: var(--fs-small);
+    line-height: 1.4;
+    color: var(--burgundy);
+  }
+  .items + .cat-note { margin-top: var(--space-5); }
+  .cat-note + .cat-note { margin-top: var(--space-2); }
 
   .allergen {
-    padding-bottom: var(--section-y);
+    margin-top: var(--menu-gap);
+    max-width: 40em;
     font-size: var(--fs-small);
-    color: var(--ink);
+    color: var(--burgundy);
   }
 </style>
-
-<script>
-  // Scroll spy. The active category is the last section whose top has crossed
-  // the line just under the two sticky bars (header + jump bar), the line an
-  // anchor jump lands a heading on. One IntersectionObserver watches a 1px band
-  // at that line, so it fires exactly when a section edge crosses it; each
-  // firing re-reads which section tops are above the line. This keeps a short
-  // category (Savory, two items) active once its heading reaches the bars,
-  // instead of the next tall one.
-  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('.jump-link[data-spy]'));
-  // Also watched (never made active): the intro above and the allergen note
-  // below, so leaving the categories in either direction re-checks too.
-  const edges = Array.from(document.querySelectorAll<HTMLElement>('main .page-intro, main .allergen'));
-  const sections = links.map((l) => document.getElementById(l.dataset.spy!)).filter(Boolean) as HTMLElement[];
-  const track = document.querySelector<HTMLElement>('.jump-track');
-  const bar = document.querySelector<HTMLElement>('.jumpbar');
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-  let current = '';
-  const setActive = (id: string) => {
-    if (id === current) return;
-    current = id;
-    links.forEach((l) => {
-      if (l.dataset.spy === id) l.setAttribute('aria-current', 'true');
-      else l.removeAttribute('aria-current');
-    });
-    // Keep the active link in view inside the bar's own row (never scrolls the page).
-    const active = links.find((l) => l.dataset.spy === id);
-    if (track && active && track.scrollWidth > track.clientWidth) {
-      const left = active.offsetLeft - (track.clientWidth - active.offsetWidth) / 2;
-      track.scrollTo({ left: Math.max(0, left), behavior: reduce.matches ? 'auto' : 'smooth' });
-    }
-  };
-
-  const lineY = () => {
-    const gap = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--block-gap')) || 0;
-    // --block-gap is a clamp(); resolve it through a section's scroll-margin.
-    const sm = sections[0] ? parseFloat(getComputedStyle(sections[0]).scrollMarginTop) : 0;
-    return Math.round((sm || (bar?.getBoundingClientRect().bottom ?? 0) + gap) + 2);
-  };
-  const pick = () => {
-    const y = lineY();
-    let id = '';
-    for (const s of sections) if (s.getBoundingClientRect().top <= y) id = s.id;
-    if (id) setActive(id);
-    else if (current) {
-      current = '';
-      links.forEach((l) => l.removeAttribute('aria-current'));
-      track?.scrollTo({ left: 0, behavior: reduce.matches ? 'auto' : 'smooth' });
-    }
-  };
-
-  let io: IntersectionObserver | null = null;
-  const observe = () => {
-    io?.disconnect();
-    const y = lineY();
-    io = new IntersectionObserver(pick, { rootMargin: `-${y}px 0px -${Math.max(0, window.innerHeight - y - 1)}px 0px`, threshold: 0 });
-    [...sections, ...edges].forEach((s) => io!.observe(s));
-    pick();
-  };
-  if ('IntersectionObserver' in window && sections.length) {
-    observe();
-    let t = 0;
-    window.addEventListener('resize', () => { clearTimeout(t); t = window.setTimeout(observe, 150); }, { passive: true });
-    // A tap on a link marks it at once; the observer confirms when the jump lands.
-    links.forEach((l) => l.addEventListener('click', () => setActive(l.dataset.spy!)));
-  }
-</script>

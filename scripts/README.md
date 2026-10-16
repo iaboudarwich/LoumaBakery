@@ -1,38 +1,35 @@
 # Scripts
 
-## sync-menu.mjs — menu from a Google Sheet (NOT ACTIVE YET)
+## sync-menu.mjs — menu from a Google Sheet (GUARDED, OFF)
 
-The menu can sync daily from a Google Sheet tab published as CSV. Until the
-sheet is published and the variable below is set, the site keeps using the
-menu in `src/data/menu.json` (editable in the CMS) and the workflow exits
-quietly.
+Since October 2026 the menu is maintained in the CMS (`src/data/menu.json`,
+Menu → Menu items), in the owner's fall 2026 shape: categories with `items`
+(`name`, optional `note`) and optional `notes`. The Google Sheet this script
+reads is the old costing sheet: out of date, and in the old shape (prices,
+descriptions, tags, the old eight categories). A run would overwrite the
+owner's menu, so the script **refuses to run** and prints:
 
-### Sheet format
-One tab, first row is the header: `Name | Price | Description | Category | Tags | Image | Active`
+    Menu is maintained in the CMS since Oct 2026; the sheet is out of date. See docs/EDITING.md.
 
-- **Name**: required.
-- **Price**: optional, `$4.50` or `4.50`. Checked, but never written: the site shows no prices.
-- **Category**: must be exactly one of Viennoiserie, Bread, Pastry, Savory, Coffee, Matcha, Tea, Fridge & Bottled.
-- **Tags**: optional, comma-separated (e.g. `vegan, gf`).
-- **Active**: exactly `Active` or `Inactive`. Only Active items appear.
+unless it is given `--force`. The code is kept. Before ever using it again,
+bring the sheet up to date and change the script to write the new shape and
+categories. The GitHub workflow (`.github/workflows/sync-menu.yml`) still only
+runs the script when the `SHEET_CSV_URL` repo variable is set, which it is not;
+if it were set, the run would fail loudly on the guard instead of writing.
 
-Validation is strict: one bad row and the sync writes nothing, with a plain
-list of which rows failed and why.
-
-### To activate
-1. In Google Sheets: File → Share → Publish to web → select the menu tab →
-   CSV → copy the link.
-2. In GitHub: repo Settings → Secrets and variables → Actions → **Variables**
-   → add `SHEET_CSV_URL` with that link.
-3. Run the "Sync menu from Google Sheet" workflow from the Actions tab
-   (it also runs daily on its own).
-4. Check the menu page after the Netlify deploy finishes.
-
-### Local dry-run
+Old usage, for reference (only after the changes above):
 ```bash
-SHEET_CSV_URL="https://docs.google.com/.../pub?output=csv" node scripts/sync-menu.mjs
+SHEET_CSV_URL="https://docs.google.com/.../pub?output=csv" node scripts/sync-menu.mjs --force
 git diff src/data/menu.json   # review, then commit or discard
 ```
+
+## check-menu.mjs — menu against the owner's list
+
+`node scripts/check-menu.mjs` compares `src/data/menu.json` item by item with a
+verbatim copy of the owner's fall 2026 menu (brief
+`docs/brief/2026-10-15-round3.md`, E.14) and prints every difference. Once the
+owner edits the menu in the CMS, differences are expected: it is a check of the
+round 3 import, not a rule.
 
 ## Other scripts
 - `gen-icons.mjs` — favicons/app icons from the face mark.

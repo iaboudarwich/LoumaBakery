@@ -25,12 +25,13 @@ The owner's brief for this version of the site: [docs/brief/2026-10-website-brie
 
 ## 3. Waiting on the owner
 
+- [ ] **The menu stays in the editor.** Since October 2026 the menu is edited in the CMS (Menu → Menu items). The old Google Sheet sync (`scripts/sync-menu.mjs`, GitHub workflow "Sync menu from Google Sheet") reads the out-of-date costing sheet, so the script now refuses to run unless it is given `--force`, and the workflow only runs if the `SHEET_CSV_URL` variable is set (it is not). Do not set that variable or use `--force` unless the sheet is first brought up to date and the script is changed to write the new menu shape (item `note`, category `notes`); otherwise it would replace the owner's menu.
+
 - [ ] **Uber Eats**: if online ordering goes ahead, send the link. It goes in Site settings → Uber Eats order link, and the developer adds a button for it.
 - [ ] **A phone number**: no phone number is shown anywhere today, on purpose. Decide whether to show one.
 - [ ] **Square links** for pre-orders and gift cards: paste them into Shop in the editor when ready (see EDITING.md). The hat's buy link goes in the same place.
 - [ ] **The hand-drawn map**: the only copy is a small image from the brief. A higher-resolution scan or photo of the original drawing would let the map on the Contact page be traced again more cleanly.
 - [ ] **Photo names in the library**: confirm what is in three photos in `src/assets/img/unplaced/`: `swirl-buns-rack.jpg` and `swirl-buns-yellow-paper.jpg` (cardamom buns?), `sugar-bun-plate.jpg`, and `almond-croissants-tray.jpg` (almond croissants?).
-- [ ] **Menu descriptions**: only 4 of the 60 menu items have a one-line description. Add more in the editor if wanted.
 
 ## 4. Hidden for now
 
@@ -78,4 +79,4 @@ An editor change can also be undone in the editor by setting the field back and 
 | Photo credits | `src/assets/img/CREDITS.md` |
 | Brand reference and the designer's master files | `docs/BRAND.md`, `docs/brand/` |
 | The home hero's pen-drawn baguette: its stroke file, how it was made, and its on/off switch | `src/assets/brand/README.md`, `src/components/PenDraw.astro`, `penDraw` in `src/config/features.ts` |
-| Menu from a Google Sheet (not switched on) | `scripts/README.md` |
+| Menu from a Google Sheet (switched off and guarded: the script refuses to run without `--force`) | `scripts/README.md` |

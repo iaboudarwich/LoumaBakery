@@ -17,16 +17,13 @@ const menu = defineCollection({
   schema: z.object({
     title: z.string(),
     order: z.number().default(0),
-    icon: z.string().default(''), // a drawing in src/assets/brand/doodles beside the heading
     items: z.array(
       z.object({
         name: z.string(),
-        description: z.string().default(''),
-        tags: z.array(z.string()).default([]),
-        image: z.string().optional(), // filename in src/assets/img (not shown on /menu)
-        alt: z.string().optional(), // describes the photo; falls back to the item name
+        note: z.string().nullish().transform((v) => v ?? ''), // one short line under the name; empty = none
       }),
     ),
+    notes: z.array(z.string()).nullish().transform((v) => v ?? []), // short lines after the items (the editor may save null)
   }),
 });
 

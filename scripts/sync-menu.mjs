@@ -1,5 +1,6 @@
 // Sync the menu from a Google Sheet tab published as CSV.
-// NOT ACTIVE until the SHEET_CSV_URL env/repo variable is set (see scripts/README.md).
+// NOT ACTIVE: guarded (refuses without --force, see below) and needs the
+// SHEET_CSV_URL env/repo variable (see scripts/README.md).
 //
 // Contract: validate EVERYTHING before writing ANYTHING. Any bad row aborts the
 // whole run (non-zero exit, clear per-row reasons, menu.json untouched).
@@ -39,6 +40,16 @@ const Row = z.object({
   image: z.string().trim().default(''),
   active: z.string().trim().refine((v) => v === 'Active' || v === 'Inactive', 'Active must be exactly "Active" or "Inactive"'),
 });
+
+// Guard (October 2026): the menu is now edited in the CMS, and the costing
+// sheet this reads is out of date, with a different shape (no notes, old
+// categories). A run would overwrite the owner's menu, so the script refuses
+// unless --force is passed. The code below is kept for if the sheet is ever
+// brought up to date (it would then need the new menu.json shape).
+if (!process.argv.includes('--force')) {
+  console.error("Menu is maintained in the CMS since Oct 2026; the sheet is out of date. See docs/EDITING.md.");
+  process.exit(1);
+}
 
 const url = process.env.SHEET_CSV_URL;
 if (!url) {

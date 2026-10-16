@@ -1,427 +1,145 @@
 {
   "categories": [
     {
-      "id": "viennoiserie",
-      "title": "Viennoiserie",
+      "id": "pastries",
+      "title": "Pastries",
       "order": 1,
-      "icon": "bubble-oui-oui.svg",
       "items": [
-        {
-          "name": "Plain Croissant",
-          "description": "",
-          "tags": [],
-          "image": "croissant-grid.jpg",
-          "alt": "Rows of croissants lined up on a cooling rack"
-        },
-        {
-          "name": "Pain au Chocolat",
-          "description": "Dark chocolate batons folded into three-day laminated layers.",
-          "tags": [],
-          "image": "pain-au-chocolat.jpg",
-          "alt": "Pain au chocolat on a wire rack in afternoon sun"
-        },
-        {
-          "name": "Ham & Cheese Croissant",
-          "description": "",
-          "tags": [],
-          "image": "ham-cheese-croissant.jpg",
-          "alt": "Seed-topped ham and cheese croissants on a wire rack"
-        },
-        {
-          "name": "Zaatar Croissant",
-          "description": "",
-          "tags": [],
-          "image": "knot-pink-paper.jpg",
-          "alt": "A coiled, seeded za'atar croissant on pink Louma paper"
-        },
-        {
-          "name": "Nutty Croissant",
-          "description": "",
-          "tags": [],
-          "image": "almond-croissant.jpg",
-          "alt": "Croissants topped with sliced almonds and powdered sugar on a lined tray"
-        },
-        {
-          "name": "Pistachio Croissant",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Yeasted Cinnamon Bun",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Cardamom Bun",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Orange Blossom Brioche",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Chocolate Babka",
-          "description": "",
-          "tags": []
-        }
-      ]
+        { "name": "Croissant" },
+        { "name": "Pain au Chocolat" },
+        { "name": "Ham and Cheese Croissant" },
+        { "name": "Za'atar Croissant" },
+        { "name": "Nutty Croissant", "note": "Almond and pecan" },
+        { "name": "Maritozzo" },
+        { "name": "Orange Blossom Brioche Bun" },
+        { "name": "Cinnamon Bun" }
+      ],
+      "notes": []
     },
     {
       "id": "bread",
-      "title": "Bread",
+      "title": "Bread Selection",
       "order": 2,
-      "icon": "baguette-small.svg",
       "items": [
-        {
-          "name": "Sourdough Bread",
-          "description": "",
-          "tags": [],
-          "image": "sourdough.jpg",
-          "alt": "A scored sourdough boule on an oak bread shelf"
-        },
-        {
-          "name": "Baguette",
-          "description": "",
-          "tags": [],
-          "image": "ig-5.jpg",
-          "alt": "Baguettes standing upright on an oak bread shelf"
-        },
-        {
-          "name": "Focaccia",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Kaak Bread",
-          "description": "",
-          "tags": [],
-          "image": "kaak-bread.jpg",
-          "alt": "A sesame-crusted kaak loaf hanging on a wooden peg"
-        },
-        {
-          "name": "Danish Rye Bread",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Tin Loaf (Sandwich Bread)",
-          "description": "",
-          "tags": []
-        }
-      ]
+        { "name": "Sourdough" },
+        { "name": "Danish Rye" },
+        { "name": "Baguette" },
+        { "name": "Focaccia" },
+        { "name": "Kaak Bread" },
+        { "name": "Specialty Loaf", "note": "Ask about today's inclusions" }
+      ],
+      "notes": ["Made with USDA Certified Organic Flour"]
     },
     {
-      "id": "pastry",
-      "title": "Pastry",
+      "id": "sweets",
+      "title": "Sweets",
       "order": 3,
-      "icon": "cherries.svg",
       "items": [
-        {
-          "name": "Chocolate Chip Cookie",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Madeleine Vanilla",
-          "description": "",
-          "tags": [],
-          "image": "madeleine-vanilla.jpg",
-          "alt": "White-glazed vanilla madeleines on parchment"
-        },
-        {
-          "name": "Madeleine Chocolate",
-          "description": "",
-          "tags": [],
-          "image": "madeleine-chocolate.jpg",
-          "alt": "Madeleines dipped in dark chocolate on parchment"
-        },
-        {
-          "name": "Madeleine Raspberry",
-          "description": "",
-          "tags": [],
-          "image": "madeleine-raspberry.jpg",
-          "alt": "Raspberry-glazed madeleines on a lined sheet tray"
-        },
-        {
-          "name": "Lemon Cake",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Matcha Cake with Raspberry",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Banana Bread with Chocolate",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Financier Framboise",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Small Raspberry Tart",
-          "description": "",
-          "tags": [],
-          "image": "baker-raspberries.jpg",
-          "alt": "A baker setting fresh raspberries into tart shells"
-        },
-        {
-          "name": "Big Raspberry Tart",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Basque Cheesecake",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Tiramisu (to-go)",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Sable Cacao",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Sable Vanille Citron",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Sable Coco",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Sable Matcha",
-          "description": "",
-          "tags": []
-        }
-      ]
+        { "name": "Madeleines", "note": "Dark chocolate, vanilla white chocolate, monthly flavor" },
+        { "name": "Chocolate Chip Cookie" },
+        { "name": "Berry Financier", "note": "Gluten free" },
+        { "name": "Lemon and Yuzu Cake" },
+        { "name": "Banana Bread with Chocolate" },
+        { "name": "Basque Cheesecake", "note": "Gluten free" },
+        { "name": "Tiramisu" }
+      ],
+      "notes": []
     },
     {
-      "id": "savory",
-      "title": "Savory",
+      "id": "lunch",
+      "title": "All Day Lunch",
       "order": 4,
-      "icon": "herb.svg",
       "items": [
-        {
-          "name": "Quiche Lorraine",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Quiche Spinach & Feta",
-          "description": "",
-          "tags": []
-        }
-      ]
+        { "name": "Quiche Lorraine or Veggie" },
+        { "name": "Kaak Labneh Sandwich" },
+        { "name": "Turkey Pesto Focaccia Sandwich" },
+        { "name": "Egg Salad Sandwich" },
+        { "name": "Baguette Jambon Beurre" },
+        { "name": "Carrot Farro Avocado Salad" },
+        { "name": "Niçoise Salad" }
+      ],
+      "notes": []
+    },
+    {
+      "id": "shelf",
+      "title": "From the Shelf",
+      "order": 5,
+      "items": [
+        { "name": "Granola", "note": "House-made and naturally sweetened" },
+        { "name": "Labneh Dip" }
+      ],
+      "notes": []
     },
     {
       "id": "coffee",
       "title": "Coffee",
-      "order": 5,
-      "icon": "cup-ooo-la-la.svg",
+      "order": 6,
       "items": [
-        {
-          "name": "Drip Coffee",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Iced Coffee",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Espresso",
-          "description": "Marine Layer dark roast, pulled single or double.",
-          "tags": []
-        },
-        {
-          "name": "Americano",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Macchiato",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Cortado",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Cappuccino",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Flat White",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Latte",
-          "description": "",
-          "tags": [],
-          "image": "latte.jpg",
-          "alt": "A barista in a Louma apron pouring steamed milk into a paper cup"
-        },
-        {
-          "name": "Vanilla Latte",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Mocha",
-          "description": "",
-          "tags": []
-        }
-      ]
+        { "name": "Drip Coffee" },
+        { "name": "Cold Brew" },
+        { "name": "Espresso" },
+        { "name": "Cortado" },
+        { "name": "Flat White" },
+        { "name": "Cappuccino" },
+        { "name": "Latte" },
+        { "name": "Americano" },
+        { "name": "Vanilla Latte" },
+        { "name": "Mocha" },
+        { "name": "Hot Chocolate" }
+      ],
+      "notes": ["Decaf available for any drink"]
     },
     {
       "id": "matcha",
       "title": "Matcha",
-      "order": 6,
-      "icon": "flower.svg",
+      "order": 7,
       "items": [
-        {
-          "name": "Matcha Latte",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Matcha with Water",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Matcha Coconut Water",
-          "description": "",
-          "tags": []
-        }
-      ]
+        { "name": "Matcha Latte" },
+        { "name": "Matcha with Water" },
+        { "name": "Matcha Coconut Water" },
+        { "name": "Hojicha Latte" }
+      ],
+      "notes": []
     },
     {
       "id": "tea",
       "title": "Tea",
-      "order": 7,
-      "icon": "sun-small.svg",
+      "order": 8,
       "items": [
-        {
-          "name": "Chamomile",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Mint Tea",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Green Tea",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Herbal Tea",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Chai Latte",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Black Tea",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Hojicha Latte",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Hot Chocolate",
-          "description": "",
-          "tags": []
-        }
-      ]
+        { "name": "Chamomile" },
+        { "name": "Peppermint Tea" },
+        { "name": "Green Tea" },
+        { "name": "Black Tea" },
+        { "name": "Chai Latte" },
+        { "name": "Arnold Palmer" }
+      ],
+      "notes": []
     },
     {
-      "id": "fridge",
-      "title": "Fridge & Bottled",
-      "order": 8,
-      "icon": "watermelon.svg",
+      "id": "specialty",
+      "title": "Specialty Drinks",
+      "order": 9,
       "items": [
-        {
-          "name": "Arnold Palmer",
-          "description": "House-brewed tea cut with fresh-squeezed lemon.",
-          "tags": []
-        },
-        {
-          "name": "Orange Blossom Lemonade",
-          "description": "Orange blossom water, fresh lemon, Loonen sparkling.",
-          "tags": []
-        },
-        {
-          "name": "Loonen Sparkling Water",
-          "description": "",
-          "tags": []
-        },
-        {
-          "name": "Loonen Still Water",
-          "description": "",
-          "tags": []
-        }
-      ]
+        { "name": "Rose Matcha Latte" },
+        { "name": "Rose Latte" },
+        { "name": "Louma-nade", "note": "House-made lemonade with orange blossom water" }
+      ],
+      "notes": []
+    },
+    {
+      "id": "add-ons",
+      "title": "Add-ons",
+      "order": 10,
+      "items": [
+        { "name": "Extra Shot" },
+        { "name": "Cold Foam" },
+        { "name": "House-made Vanilla Syrup" },
+        { "name": "Honey" },
+        { "name": "Oat Milk" },
+        { "name": "Almond Milk" },
+        { "name": "Pistachio Milk" }
+      ],
+      "notes": ["Milk alternatives available for all drinks", "Ask us about our seasonal drinks!"]
     }
-  ],
-  "addOns": {
-    "title": "Add-ons",
-    "afterCategory": "fridge",
-    "items": [
-      {
-        "name": "Decaf"
-      },
-      {
-        "name": "Extra shot"
-      },
-      {
-        "name": "Cold foam"
-      },
-      {
-        "name": "Vanilla syrup"
-      },
-      {
-        "name": "Date syrup"
-      },
-      {
-        "name": "Honey"
-      },
-      {
-        "name": "Oat milk"
-      },
-      {
-        "name": "Almond milk"
-      },
-      {
-        "name": "Pistachio milk"
-      }
-    ]
-  }
+  ]
 }

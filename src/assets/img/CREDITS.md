@@ -17,35 +17,23 @@ Photos in `unplaced/` are the library for later. They are NOT bundled: the glob
 in src/lib/images.ts only matches files directly in this folder. To use one,
 move it up a level and reference it.
 
-"Menu data" means the file is named in `src/data/menu.json`; the Menu page
-shows no photos at the moment.
-
 ## Placed (src/assets/img/)
 
 | File | Used for | Source | Shoot |
 |------|----------|--------|-------|
-| croissant-grid.jpg | Home hero (`images.json` hero); source frame of public/og-default.jpg; menu data (Plain Croissant). Renamed from hero.jpg | 20260830_LoumaBakery_0578 | 2026-08-30 |
-| pain-au-chocolat.jpg | Home gallery 1; menu data (Pain au Chocolat) | 20260830_LoumaBakery_0093 | 2026-08-30 |
+| croissant-grid.jpg | Home hero (`images.json` hero); source frame of public/og-default.jpg. Renamed from hero.jpg | 20260830_LoumaBakery_0578 | 2026-08-30 |
+| pain-au-chocolat.jpg | Home gallery 1 | 20260830_LoumaBakery_0093 | 2026-08-30 |
 | counter-shelves.jpg | Home gallery 2 | brief PDF, page 5 (counter, tile wall, bread shelves; 2048x1366, the only copy) | brief PDF |
-| baker-raspberries.jpg | Home gallery 3; menu data (Small Raspberry Tart) | 20260904_LoumaBakery_0034 | 2026-09-04 |
+| baker-raspberries.jpg | Home gallery 3 | 20260904_LoumaBakery_0034 | 2026-09-04 |
 | interior-table.jpg | Home gallery 4 | IMG_1703 | phone |
-| knot-pink-paper.jpg | Menu data (Za'atar Croissant). Was home gallery 6 until owner round 1 | 20260830_LoumaBakery_0281 | 2026-08-30 |
 | story-collage.jpg | Our Story photo. Owner round 3: the cream margin baked into the export was trimmed off (crop x209 y283, 1473x1869 from 1878x2400) | eefec98f-5b8b-45f4-98dd-e80de5f5b7b0 (also on brief PDF page 8) | undated Dropbox export |
 | ig-1.jpg | Instagram strip tile 1 | IMG_0008 | phone |
 | ig-2.jpg | Instagram strip tile 2 | IMG_1827 4 | phone |
 | ig-3.jpg | Instagram strip tile 3 | IMG_9795 3 | phone |
 | ig-4.jpg | Instagram strip tile 4 | IMG_9855 2 | phone |
-| ig-5.jpg | Instagram strip tile 5; menu data (Baguette) | 20260830_LoumaBakery_0258 | 2026-08-30 |
+| ig-5.jpg | Instagram strip tile 5 | 20260830_LoumaBakery_0258 | 2026-08-30 |
 | ig-6.jpg | Instagram strip tile 6 | IMG_0255 2 | phone |
 | shop-hat.png | Shop: Louma Hat. Cutout (rembg u2net, cast shadow dropped, edge eroded 3px and feathered 1px at source size), trimmed to the hat plus 4% padding, 1200x983 | 20260830_LoumaBakery_0340 | 2026-08-30 |
-| latte.jpg | Menu data (Latte) | 20260830_LoumaBakery_0190 | 2026-08-30 |
-| ham-cheese-croissant.jpg | Menu data (Ham & Cheese Croissant). Square crop of the seeded tray, 1200x1200 (not reprocessed) | 20260830_LoumaBakery_0070 (crop x150 y0, 3150x3150) | 2026-08-30 |
-| kaak-bread.jpg | Menu data (Kaak Bread). One loaf, 210x210 (not reprocessed) | 20260904_LoumaBakery_0126 (crop x2722 y1905) | 2026-09-04 |
-| sourdough.jpg | Menu data (Sourdough Bread). 1012x1262 crop of one boule (not reprocessed) | 20260904_LoumaBakery_0041 | 2026-09-04 |
-| madeleine-vanilla.jpg | Menu data (Madeleine Vanilla). Crop (not reprocessed) | 20260904_LoumaBakery_0049 | 2026-09-04 |
-| madeleine-chocolate.jpg | Menu data (Madeleine Chocolate). Crop, 1486x1800 (not reprocessed) | 20260904_LoumaBakery_0049 | 2026-09-04 |
-| madeleine-raspberry.jpg | Menu data (Madeleine Raspberry). Crop, 1380x1800 (not reprocessed) | 20260904_LoumaBakery_0049 | 2026-09-04 |
-| almond-croissant.jpg | Menu data (Nutty Croissant) (not reprocessed) | 20260904_LoumaBakery_0146 | 2026-09-04 |
 
 ## Library (src/assets/img/unplaced/, not bundled)
 
@@ -89,6 +77,15 @@ shows no photos at the moment.
 | unplaced/dough-dividing.jpg | 20260904_LoumaBakery_0198 (not reprocessed) | 2026-09-04 |
 | unplaced/counter-florals.jpg | 20260904_LoumaBakery_0150 (not reprocessed) | 2026-09-04 |
 | unplaced/coffee-bar.jpg | 20260904_LoumaBakery_0438 (Display P3 export, full resolution; not reprocessed) | 2026-09-04 |
+| unplaced/knot-pink-paper.jpg | 20260830_LoumaBakery_0281. Was home gallery 6 until owner round 1. Was menu data (Za'atar Croissant) until owner round 3 (the menu no longer keeps photos) | 2026-08-30 |
+| unplaced/latte.jpg | 20260830_LoumaBakery_0190. Was menu data (Latte) until owner round 3 (the menu no longer keeps photos) | 2026-08-30 |
+| unplaced/ham-cheese-croissant.jpg | 20260830_LoumaBakery_0070 (crop x150 y0, 3150x3150). Square crop of the seeded tray, 1200x1200 (not reprocessed). Was menu data (Ham & Cheese Croissant) until owner round 3 (the menu no longer keeps photos) | 2026-08-30 |
+| unplaced/kaak-bread.jpg | 20260904_LoumaBakery_0126 (crop x2722 y1905). One loaf, 210x210 (not reprocessed). Was menu data (Kaak Bread) until owner round 3 (the menu no longer keeps photos) | 2026-09-04 |
+| unplaced/sourdough.jpg | 20260904_LoumaBakery_0041. 1012x1262 crop of one boule (not reprocessed). Was menu data (Sourdough Bread) until owner round 3 (the menu no longer keeps photos) | 2026-09-04 |
+| unplaced/madeleine-vanilla.jpg | 20260904_LoumaBakery_0049. Crop (not reprocessed). Was menu data (Madeleine Vanilla) until owner round 3 (the menu no longer keeps photos) | 2026-09-04 |
+| unplaced/madeleine-chocolate.jpg | 20260904_LoumaBakery_0049. Crop, 1486x1800 (not reprocessed). Was menu data (Madeleine Chocolate) until owner round 3 (the menu no longer keeps photos) | 2026-09-04 |
+| unplaced/madeleine-raspberry.jpg | 20260904_LoumaBakery_0049. Crop, 1380x1800 (not reprocessed). Was menu data (Madeleine Raspberry) until owner round 3 (the menu no longer keeps photos) | 2026-09-04 |
+| unplaced/almond-croissant.jpg | 20260904_LoumaBakery_0146 (not reprocessed). Was menu data (Nutty Croissant) until owner round 3 (the menu no longer keeps photos) | 2026-09-04 |
 
 ## Drawings made from owner material (src/assets/brand/)
 

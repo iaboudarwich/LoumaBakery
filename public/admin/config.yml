@@ -40,7 +40,7 @@ collections:
   # =========================================================== MENU =========
   - name: menu
     label: "Menu"
-    description: "Your menu, by category. Each item has a name, a description, and dietary tags. Prices aren't shown on the site."
+    description: "Your menu, by category. Each item has a name and an optional short note. Prices aren't shown on the site."
     delete: false
     editor: { preview: false }
     files:
@@ -55,34 +55,24 @@ collections:
             widget: list
             summary: "{{fields.title}}"
             fields:
-              - { name: id, label: "Internal ID", widget: string, hint: "A short code the site uses. Leave it as it is." }
-              - { name: title, label: "Category name", widget: string, hint: "e.g. Viennoiserie, Bread, Coffee" }
-              - { name: order, label: "Show order", widget: number, value_type: int, default: 1, hint: "1 shows first, then 2, 3…" }
-              - { name: icon, label: "Drawing", widget: select, required: false, options: ["baguette-small-2.svg", "baguette-small.svg", "bear.svg", "bird.svg", "bouquet.svg", "bread-slice.svg", "bubble-oui-oui.svg", "cherries.svg", "cup-ooo-la-la.svg", "face.svg", "flower-cluster.svg", "flower.svg", "hearts.svg", "herb.svg", "ingredients.svg", "kite.svg", "live-laugh-louma.svg", "louma-smiley.svg", "moon-stars.svg", "palm.svg", "star-kite-2.svg", "star-kite.svg", "sun-small.svg", "sun.svg", "watermelon.svg", "waves-birds.svg"], hint: "The brand drawing shown beside the category heading, in red." }
+              - { name: id, label: "Internal ID", widget: string, hint: "A short code the site uses for the link to this category. Leave it as it is; for a new category, one plain word, e.g. soups." }
+              - { name: title, label: "Category name", widget: string, hint: "e.g. Pastries, Coffee, Add-ons" }
+              - { name: order, label: "Show order", widget: number, value_type: int, default: 1, hint: "1 shows first, then 2, 3 and so on." }
               - name: items
                 label: "Items"
                 label_singular: "Item"
                 widget: list
                 summary: "{{fields.name}}"
                 fields:
-                  - { name: name, label: "Name", widget: string, required: true, hint: "e.g. Butter Croissant" }
-                  - { name: description, label: "Description", widget: text, required: false, hint: "One short line about the item." }
-                  - { name: tags, label: "Dietary tags", widget: select, multiple: true, required: false, options: ["vegan", "vegetarian", "gf", "nut-free"], hint: "Pick any that apply." }
-                  - { name: image, label: "Photo", widget: image, required: false, choose_url: false, hint: "Kept on file. Photos aren't shown on the Menu page right now. At least 1200px wide, under 3MB." }
-                  - { name: alt, label: "Photo description", widget: string, required: false, hint: "What the photo shows, for screen readers. e.g. Croissants cooling on a sheet tray" }
-          - name: addOns
-            label: "Add-ons"
-            widget: object
-            fields:
-              - { name: title, label: "Heading", widget: string }
-              - { name: afterCategory, label: "Show after category", widget: string, hint: "The Internal ID of the category this list follows, e.g. fridge" }
-              - name: items
-                label: "Add-ons"
-                label_singular: "Add-on"
+                  - { name: name, label: "Name", widget: string, required: true, hint: "e.g. Croissant" }
+                  - { name: note, label: "Note", widget: string, required: false, hint: "Optional. One short line shown under the name in smaller text, e.g. Gluten free. Leave empty for none." }
+              - name: notes
+                label: "Category notes"
+                label_singular: "Note"
                 widget: list
-                summary: "{{fields.name}}"
-                fields:
-                  - { name: name, label: "Name", widget: string, hint: "e.g. Oat milk" }
+                required: false
+                field: { name: note, label: "Note", widget: string }
+                hint: "Optional. Short lines shown after the items, e.g. Decaf available for any drink."
 
   # ========================================================= IMAGES =========
   - name: images

@@ -56,7 +56,7 @@ This page has no photos, by the owner's choice. Never add numbers about team mem
 | To change | Go to |
 |---|---|
 | The title, the four introduction paragraphs and the allergen note | Page text → All pages → Menu page |
-| Menu items, categories and add-ons | Menu → Menu items (see "Editing the menu") |
+| Menu items, their notes, categories and category notes (Add-ons is a category like the others) | Menu → Menu items (see "Editing the menu") |
 
 ### Shop
 
@@ -93,20 +93,18 @@ Page text → All pages → "Page not found" page: the label, headline, line and
 
 ## Editing the menu
 
-Go to **Menu → Menu items**. The menu is a list of categories, and each category has a list of items.
+Go to **Menu → Menu items**. The menu is a list of categories (Pastries, Bread Selection, Sweets and so on, ending with Add-ons), and each category has a list of items. The Menu page shows them in one calm column: the category name, the items one per line, then the category's notes. No prices, photos or drawings.
 
-- **Change an item**: open the category, open the item, change its **Name** or **Description**. Descriptions work best as one short line.
-- **Dietary tags**: open the item and pick from **Dietary tags** (vegan, vegetarian, gf, nut-free). They show after the item's name as small labels (VG, V, GF, NF).
+- **Change an item**: open the category, open the item, change its **Name**.
+- **An item's note**: the optional **Note** under an item's name shows in smaller text right below it, for example "Gluten free" or "Almond and pecan". Leave it empty for none.
+- **Category notes**: the optional **Category notes** list at the bottom of a category shows short lines after its items, for example "Decaf available for any drink". Add one with **Add note**; remove one with its **X**.
 - **Add an item**: open the category and click **Add item** at the top of its Items list.
 - **Remove an item**: click the **X** on that item.
 - **Reorder items**: drag an item by the two short lines at its top.
-- **A category's drawing**: open the category and pick a **Drawing**. It shows beside the category heading.
 - **Category order**: change **Show order** (1 shows first, then 2, 3 and so on).
-- **Add-ons** (extra shot, oat milk and so on): **Add-ons** at the bottom. **Show after category** is the Internal ID of the category the list follows (for example `fridge`).
-- Leave **Internal ID** as it is; the website uses it behind the scenes.
-- Items keep a **Photo** and **Photo description**, but the Menu page doesn't show photos at the moment.
+- **A new category**: click **Add category**, give it a **Category name**, a **Show order** and an **Internal ID** (one plain word, for example `soups`; it is used for the link to that category at the top of the page). Leave the Internal ID of existing categories as it is.
 
-**The menu and the Google Sheet.** The menu can be set up to update itself every morning from a Google Sheet. This is not switched on. If it is switched on later, the sheet becomes the source of the menu items, and item changes made in the editor are replaced by the sheet the next morning (category drawings and photo descriptions are kept).
+**The menu and the Google Sheet.** The menu used to be planned to update itself from a Google Sheet (the bakery's costing sheet). Since October 2026 the menu is kept in the editor, and that sheet is out of date, so the sync is switched off on purpose: the script refuses to run and would otherwise replace the menu with the old one. Edit the menu here. (For the person who looks after the website: see `scripts/README.md`.)
 
 ## Shop links and products
 

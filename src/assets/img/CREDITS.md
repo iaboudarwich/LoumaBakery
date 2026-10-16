@@ -34,6 +34,8 @@ move it up a level and reference it.
 | ig-5.jpg | Instagram strip tile 5 | 20260830_LoumaBakery_0258 | 2026-08-30 |
 | ig-6.jpg | Instagram strip tile 6 | IMG_0255 2 | phone |
 | shop-hat.png | Shop: Louma Hat. Cutout (rembg u2net, cast shadow dropped, edge eroded 3px and feathered 1px at source size), trimmed to the hat plus 4% padding, 1200x983 | 20260830_LoumaBakery_0340 | 2026-08-30 |
+| shop-berry-tart.jpg | Shop: Berry Tart. Square crop centred on the tart (x0 y196, 1200x1200 of 1200x1600), straight, colour untouched, q82, metadata stripped | berry-tart-overhead.jpg | owner, WhatsApp, 2026-10-15 |
+| shop-basque-cheesecake.jpg | Shop: Basque Cheesecake. Square crop centred on the cake, below the cling-film box and bottle (x150 y470, 900x900 of 1200x1600; kept at 900px, not upscaled), straight, colour untouched, q82, metadata stripped | cheesecake.jpg | owner, WhatsApp, 2026-10-15 |
 
 ## Library (src/assets/img/unplaced/, not bundled)
 
@@ -86,6 +88,7 @@ move it up a level and reference it.
 | unplaced/madeleine-chocolate.jpg | 20260904_LoumaBakery_0049. Crop, 1486x1800 (not reprocessed). Was menu data (Madeleine Chocolate) until owner round 3 (the menu no longer keeps photos) | 2026-09-04 |
 | unplaced/madeleine-raspberry.jpg | 20260904_LoumaBakery_0049. Crop, 1380x1800 (not reprocessed). Was menu data (Madeleine Raspberry) until owner round 3 (the menu no longer keeps photos) | 2026-09-04 |
 | unplaced/almond-croissant.jpg | 20260904_LoumaBakery_0146 (not reprocessed). Was menu data (Nutty Croissant) until owner round 3 (the menu no longer keeps photos) | 2026-09-04 |
+| unplaced/berry-tart-angle.jpg | berry-tart-angle.jpg (the berry tart at an angle, mini tarts behind; 1200x1600 as sent, metadata stripped, not re-encoded) | owner, WhatsApp, 2026-10-15 |
 
 ## Drawings made from owner material (src/assets/brand/)
 

@@ -46,11 +46,8 @@ const copy = defineCollection({
       intro: paragraphs,
       sections: z.array(titledSection).optional(),
       allergenNote: z.string().optional(),
-      // Shop
+      // Shop: the "Coming soon" words for a product with no link
       status: z.string().optional(),
-      preorder: z.object({ title: z.string(), body: z.string().default('') }).optional(),
-      giftCards: z.object({ title: z.string(), body: z.string().default('') }).optional(),
-      merch: z.object({ title: z.string() }).optional(),
       // Catering, Careers, 404 (unchanged pages)
       eyebrow: z.string().optional(),
       lede: z.string().optional(),
@@ -73,20 +70,24 @@ const story = defineCollection({
   }),
 });
 
+// Shop: the intro line, then the products in the order shown (the hat first).
+// The editor may save an empty optional field as null; each one falls back to
+// its empty default.
+const text = z.string().nullish().transform((v) => v ?? '');
 const shop = defineCollection({
   loader: file('src/data/shop.json', { parser: (text) => [{ id: 'shop', ...JSON.parse(text) }] }),
   schema: z.object({
-    preorderLink: z.string().default(''),
-    giftCardLink: z.string().default(''),
+    intro: text,
     products: z.array(
       z.object({
         name: z.string(),
-        price: z.string().default(''),
-        description: z.string().default(''),
-        size: z.string().default(''),
-        image: z.string().default(''), // filename in src/assets/img; empty = no image slot
-        alt: z.string().default(''),
-        link: z.string().default(''), // empty = disabled "Coming soon"
+        price: text, // empty = no price shown
+        note: text,
+        image: text, // filename in src/assets/img; empty = no photo
+        alt: text,
+        link: text, // empty = not a link, "Coming soon"
+        fit: z.enum(['cover', 'contain']).nullish().transform((v) => v ?? 'cover'), // cover fills the square; contain = a cutout on butter
+        kind: z.enum(['product', 'giftcard']).nullish().transform((v) => v ?? 'product'), // giftcard: the burgundy wordmark tile
       }),
     ),
   }),

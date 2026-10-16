@@ -243,24 +243,7 @@ collections:
             collapsed: true
             fields:
               - { name: title, label: "Headline", widget: string }
-              - { name: status, label: "“Not open yet” text", widget: string, hint: "Shown under the headline and on any button that has no link yet, e.g. Coming soon" }
-              - name: preorder
-                label: "Pre-orders"
-                widget: object
-                fields:
-                  - { name: title, label: "Heading", widget: string }
-                  - { name: body, label: "Text", widget: text, required: false }
-              - name: giftCards
-                label: "Gift cards"
-                widget: object
-                fields:
-                  - { name: title, label: "Heading", widget: string }
-                  - { name: body, label: "Text", widget: text, required: false }
-              - name: merch
-                label: "Merch"
-                widget: object
-                fields:
-                  - { name: title, label: "Heading", widget: string, hint: "The products themselves are under “Shop” in the left menu." }
+              - { name: status, label: "“Not open yet” text", widget: string, hint: "Shown under any product that has no link yet, e.g. Coming soon. The products are under “Shop” in the left menu." }
           # ---- Visit page ----
           - name: visit
             label: "Contact page"
@@ -358,7 +341,7 @@ collections:
   # =========================================================== SHOP =========
   - name: shop
     label: "Shop"
-    description: "Links for pre-orders and gift cards, and the merch you sell."
+    description: "The Shop page: the line at the top and the products, in the order shown."
     delete: false
     editor: { preview: false }
     files:
@@ -366,21 +349,38 @@ collections:
         label: "Shop"
         file: "src/data/shop.json"
         fields:
-          - { name: preorderLink, label: "Pre-order link", widget: string, required: false, hint: "Leave empty and the button says “Coming soon”." }
-          - { name: giftCardLink, label: "Gift card link", widget: string, required: false, hint: "Leave empty and the button says “Coming soon”." }
+          - { name: intro, label: "Intro line", widget: text, required: false, hint: "The line under the Shop title, e.g. about pre-orders and notice." }
           - name: products
-            label: "Merch"
+            label: "Products"
             label_singular: "Product"
             widget: list
-            summary: "{{fields.name}} · {{fields.price}}"
+            summary: "{{fields.name}}"
+            hint: "Shown in this order; drag to reorder."
             fields:
               - { name: name, label: "Name", widget: string, hint: "e.g. Louma Hat" }
-              - { name: price, label: "Price", widget: string, required: false, hint: "e.g. $32" }
-              - { name: description, label: "Description", widget: text, required: false, hint: "One short line." }
-              - { name: size, label: "Size", widget: string, required: false, hint: "e.g. One size" }
-              - { name: image, label: "Photo", widget: image, required: false, choose_url: false, hint: "A cutout on a transparent background (PNG) works best; the whole photo is shown, never cropped. At least 800px wide, under 3MB." }
+              - { name: price, label: "Price", widget: string, required: false, hint: "e.g. $32. Leave price empty to hide it." }
+              - { name: note, label: "Note", widget: string, required: false, hint: "One short line under the name, e.g. Gluten free. Pre-order, 48 hours notice" }
+              - { name: image, label: "Photo", widget: image, required: false, choose_url: false, hint: "Shown square. At least 800px wide, under 3MB. A gift card needs no photo." }
               - { name: alt, label: "Photo description", widget: string, required: false, hint: "What the photo shows, for screen readers." }
-              - { name: link, label: "Buy link", widget: string, required: false, hint: "Leave empty and the button says “Coming soon”." }
+              - { name: link, label: "Link", widget: string, required: false, hint: "Your Square (or other shop) page for this product. Leave link empty to show Coming soon." }
+              - name: fit
+                label: "Photo fit"
+                widget: select
+                required: false
+                default: "cover"
+                options:
+                  - { label: "Fill the square (photos)", value: "cover" }
+                  - { label: "Whole object on the page colour (cutouts)", value: "contain" }
+                hint: "Fill suits photos; whole object suits a cutout on a transparent background, like the hat."
+              - name: kind
+                label: "Type"
+                widget: select
+                required: false
+                default: "product"
+                options:
+                  - { label: "Product", value: "product" }
+                  - { label: "Gift card", value: "giftcard" }
+                hint: "Gift card shows a dark red square with the Louma wordmark instead of a photo."
 
   # ================================================ INSTAGRAM STRIP =========
   - name: instagram

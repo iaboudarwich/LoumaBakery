@@ -508,14 +508,12 @@ html.sys-slab .foot-news-row input {
   max-width: 34em;
 }
 
-/* Buttons (the layout system's set; Shop, Catering, Careers).
-   Primary: solid burgundy, butter text, 48px tall, Owners 500 16px; hover red.
-   Disabled ("Coming soon"): a <span aria-disabled="true">, never a link, so it
-   is not focusable; 1px burgundy border, burgundy text at 70%. Square, flat.
-   Prefixed with html.sys-slab so they win over the legacy .btn rules above;
-   .btn.btn-primary (the catering/careers submit and the 404 CTA, whose markup
-   stays as it is) takes the same primary look. The footer's .btn-coral does not. */
-html.sys-slab :is(.button, .btn.btn-primary) {
+/* The primary button (.btn.btn-primary: the catering/careers submit and the
+   404 CTA, whose markup stays as it is): solid burgundy, butter text, 48px
+   tall, Owners 500 16px; hover red. Square, flat. Prefixed with html.sys-slab
+   so it wins over the legacy .btn rules above. The footer's .btn-coral keeps
+   its own look. (The Shop's .button set went with the round 3 product grid.) */
+html.sys-slab .btn.btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -533,15 +531,9 @@ html.sys-slab :is(.button, .btn.btn-primary) {
   transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
 }
 @media (hover: hover) and (pointer: fine) {
-  html.sys-slab :is(.button, .btn.btn-primary):hover { background: var(--red); border-color: var(--red); color: var(--butter); }
+  html.sys-slab .btn.btn-primary:hover { background: var(--red); border-color: var(--red); color: var(--butter); }
 }
-html.sys-slab :is(.button, .btn.btn-primary):focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
-html.sys-slab .button[aria-disabled="true"] {
-  background: transparent;
-  border-color: var(--burgundy);
-  color: color-mix(in srgb, var(--burgundy) 70%, var(--butter));
-  cursor: not-allowed;
-}
+html.sys-slab .btn.btn-primary:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
 
 /* Opening hours: a two-column grid; a day range or a time range never wraps.
    Each <li> holds two <span>s (days, times). */

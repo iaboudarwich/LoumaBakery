@@ -5,121 +5,133 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { describe } from '../lib/seo';
 import { features as f } from '../config/features';
 import Img from '../components/Img.astro';
-import Doodle from '../components/Doodle.astro';
+import { Wordmark, WORDMARK_ART } from '../lib/brand';
 import { resolveImage } from '../lib/images';
 
-// Words: copy.json ("shop"). Links and products: shop.json (CMS: "Shop").
-// A block whose link is empty shows the disabled "Coming soon" state (the
-// words come from copy.shop.status); a set link opens in a new tab.
+// Words: copy.json ("shop": the title and the "Coming soon" words). The intro
+// line and the products, in the order shown: shop.json (CMS: "Shop"). A plain
+// grid of product cards, no boxes. A product with a link is one link (new
+// tab); without one it shows "Coming soon" and is not a link.
 const c = (await getEntry('copy', 'shop'))!.data;
 const shop = (await getEntry('shop', 'shop'))!.data;
 const soon = c.status ?? '';
 const products = shop.products.map((p) => ({ ...p, photo: p.image ? resolveImage(p.image) : undefined }));
 const reveal = f.reveal ? 'reveal' : undefined;
-
-const blocks = [
-  c.preorder && { key: 'preorder', title: c.preorder.title, body: c.preorder.body, link: shop.preorderLink, label: 'Pre-order', icon: 'baguette-small-2' },
-  c.giftCards && { key: 'gift', title: c.giftCards.title, body: c.giftCards.body, link: shop.giftCardLink, label: 'Buy a gift card', icon: 'hearts' },
-].filter(Boolean) as { key: string; title: string; body: string; link: string; label: string; icon: string }[];
+const SIZES = '(max-width: 39.99rem) 100vw, (max-width: 63.99rem) 50vw, min(33vw, 440px)';
 ---
 
-<BaseLayout title={c.title} description={describe([c.preorder?.body, c.giftCards?.body])}>
+<BaseLayout title={c.title} description={describe([shop.intro])}>
   <header class="page-intro">
     <div class="container">
       <h1 class="display">{noOrphan(c.title ?? '')}</h1>
-      {soon && <p class="label shop-status">{soon}</p>}
+      {shop.intro && <p class="lead shop-intro">{shop.intro}</p>}
     </div>
   </header>
 
-  {blocks.map((b) => (
-    <section class="section shop-block" aria-labelledby={`h-${b.key}`}>
-      <div class="container" data-anim={reveal}>
-        <div class="block-head">
-          <Doodle name={b.icon} size={56} color="red" animate={f.doodleDraw} box />
-          <h2 class="h2" id={`h-${b.key}`}>{b.title}</h2>
-        </div>
-        {b.body && <p class="lead block-body">{b.body}</p>}
-        <p class="block-action">
-          {b.link
-            ? <a class="button" href={b.link} target="_blank" rel="noopener">{b.label}<span class="visually-hidden"> (opens in a new tab)</span></a>
-            : <span class="button" aria-disabled="true">{soon}</span>}
-        </p>
-      </div>
-    </section>
-  ))}
-
-  {c.merch && (
-    <section class="section shop-block" aria-labelledby="h-merch">
-      <div class="container">
-        <div class="block-head">
-          <Doodle name="louma-smiley" size={56} color="red" animate={f.doodleDraw} box />
-          <h2 class="h2" id="h-merch">{c.merch.title}</h2>
-        </div>
-        <ul class="products" role="list" data-anim={reveal} data-reveal-children>
-          {products.map((p) => (
-            <li class={`product ${p.link ? 'product--linked' : ''}`.trim()}>
-              {p.photo && <Img src={p.photo} alt={p.alt || p.name} class="ph ph--square product-img" sizes="(max-width: 40rem) 100vw, (max-width: 64rem) 50vw, 440px" widths={[480, 720, 960]} />}
-              <h3 class="product-name">{p.name}</h3>
-              {p.price && <p class="product-price">{p.price}</p>}
-              {p.description && <p class="product-desc">{p.description}</p>}
-              {p.size && <p class="label product-size">{p.size}</p>}
-              <p class="block-action">
+  <section class="section shop-grid" aria-label="Products">
+    <div class="container">
+      <ul class="products" role="list" data-anim={reveal} data-reveal-children>
+        {products.map((p) => {
+          const Tag = p.link ? 'a' : 'div';
+          const linkAttrs = p.link ? { href: p.link, target: '_blank', rel: 'noopener' } : {};
+          return (
+            <li>
+              <Tag class:list={['card', p.link && 'card--linked']} {...linkAttrs}>
+                <div class:list={['tile', `tile--${p.kind === 'giftcard' ? 'giftcard' : p.fit}`]}>
+                  {p.kind === 'giftcard' ? (
+                    <div class="giftcard" aria-hidden="true">
+                      <Wordmark class="giftcard-mark" viewBox={WORDMARK_ART} width={180} height={66} />
+                      <span class="giftcard-label">Gift card</span>
+                    </div>
+                  ) : p.photo ? (
+                    <Img src={p.photo} alt={p.alt || p.name} class="tile-img" sizes={SIZES} widths={[480, 720, 960]} />
+                  ) : null}
+                </div>
+                <h2 class="card-name">{p.name}</h2>
+                {p.price && <p class="card-price">{p.price}</p>}
+                {p.note && <p class="card-note">{p.note}</p>}
                 {p.link
-                  ? <a class="button" href={p.link} target="_blank" rel="noopener">Buy<span class="visually-hidden"> {p.name} (opens in a new tab)</span></a>
-                  : <span class="button" aria-disabled="true">{soon}</span>}
-              </p>
+                  ? <span class="visually-hidden"> (opens in a new tab)</span>
+                  : soon && <p class="label card-status">{soon}</p>}
+              </Tag>
             </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  )}
+          );
+        })}
+      </ul>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-  .shop-status {
-    margin-top: var(--space-5);
-    color: var(--burgundy);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-  .block-head { display: flex; align-items: flex-end; gap: var(--space-4); }
-  .block-body { margin-top: var(--block-gap); max-width: 34em; }
-  .block-action { margin-top: var(--block-gap); }
+  .shop-intro { margin-top: var(--block-gap); max-width: 34em; }
+  .shop-grid { padding-top: 0; }
 
-  /* Merch: 3 columns, 2 on tablets, 1 on phones. */
+  /* 3 columns from 64rem, 2 from 40rem, 1 below. */
   .products {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--section-y) var(--block-gap);
-    margin: var(--block-gap) 0 0;
+    gap: var(--block-gap);
+    margin: 0;
     padding: 0;
   }
   @media (min-width: 40rem) { .products { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (min-width: 64rem) { .products { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 
-  /* The cutout floats on the page: no box, border or tile colour. A square
-     slot, the whole object shown (contain), with generous padding. */
-  .product :global(.product-img) { padding: var(--block-gap); }
-  .product :global(.product-img img) { object-fit: contain; }
-  .product-name,
-  .product-price {
+  .card { display: block; color: var(--burgundy); text-decoration: none; }
+
+  /* The square tile: a photo fills it (cover); a cutout sits whole on the
+     page colour with padding (contain); the gift card is a burgundy square
+     with the butter wordmark. No border, no box, no shadow. */
+  .tile { aspect-ratio: 1; overflow: hidden; }
+  .tile :global(.tile-img) { display: block; width: 100%; height: 100%; }
+  .tile--contain :global(.tile-img) { padding: var(--block-gap); }
+  .tile--contain :global(.tile-img img) { object-fit: contain; }
+  .tile--giftcard { background: var(--burgundy); }
+  .giftcard {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    color: var(--butter);
+  }
+  .giftcard :global(.giftcard-mark) { width: 45%; height: auto; color: var(--butter); }
+  .giftcard-label { font-weight: 500; font-size: var(--fs-item); }
+
+  /* Under the tile, left-aligned: name, price, note, status. */
+  .card-name {
+    margin-top: var(--space-4);
     font-family: var(--font-body);
     font-weight: 500;
     font-size: var(--fs-item);
     line-height: 1.3;
-    color: var(--ink);
+    letter-spacing: 0;
+    color: var(--burgundy);
+    text-decoration-line: none;
+    text-decoration-style: solid;
+    text-decoration-thickness: 2px;
+    text-decoration-color: var(--red);
+    text-underline-offset: 0.2em;
   }
-  .product-name { margin-top: var(--space-4); text-underline-offset: 0.2em; }
-  .product-price { margin-top: var(--space-2); font-variant-numeric: tabular-nums; }
-  .product-desc { margin-top: var(--space-3); color: var(--ink); }
-  .product-size { margin-top: var(--space-3); color: var(--burgundy); }
-  /* A product that can be bought: a 2px red underline on its name on hover. */
+  .card-price {
+    margin-top: var(--space-2);
+    font-size: var(--fs-item);
+    line-height: 1.3;
+    font-variant-numeric: tabular-nums;
+  }
+  .card-note {
+    margin-top: var(--space-2);
+    font-size: var(--fs-small);
+    line-height: 1.4;
+    color: color-mix(in srgb, var(--burgundy) 80%, var(--butter));
+  }
+  .card-status { margin-top: var(--space-3); color: var(--burgundy); }
+  .card p { max-width: none; }
+
+  /* A linked card: the 2px red underline on its name on hover and focus. */
   @media (hover: hover) and (pointer: fine) {
-    .product--linked:hover .product-name {
-      text-decoration: underline;
-      text-decoration-thickness: 2px;
-      text-decoration-color: var(--red);
-    }
+    .card--linked:hover .card-name { text-decoration-line: underline; }
   }
+  .card--linked:focus-visible .card-name { text-decoration-line: underline; }
 </style>

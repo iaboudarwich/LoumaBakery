@@ -63,9 +63,8 @@ This page has no photos, by the owner's choice. Never add numbers about team mem
 | To change | Go to |
 |---|---|
 | The title and the "Coming soon" words | Page text → All pages → Shop page → **Headline** and **"Not open yet" text** |
-| The Pre-orders and Gift cards headings and text | Page text → All pages → Shop page → **Pre-orders** and **Gift cards** |
-| The Merch heading | Page text → All pages → Shop page → **Merch** |
-| The buttons' links and the products | Shop (see "Shop links and products") |
+| The line under the title (pre-orders, 48 hours notice) | Shop → **Intro line** |
+| The products, their order, prices, notes, photos and links, and the gift card | Shop → **Products** (see "Shop products") |
 
 ### Contact
 
@@ -106,26 +105,26 @@ Go to **Menu → Menu items**. The menu is a list of categories (Pastries, Bread
 
 **The menu and the Google Sheet.** The menu used to be planned to update itself from a Google Sheet (the bakery's costing sheet). Since October 2026 the menu is kept in the editor, and that sheet is out of date, so the sync is switched off on purpose: the script refuses to run and would otherwise replace the menu with the old one. Edit the menu here. (For the person who looks after the website: see `scripts/README.md`.)
 
-## Shop links and products
+## Shop products
 
-Go to **Shop**.
+Go to **Shop → Products**. The Shop page shows them as a plain grid of square pictures, in the order of this list (the hat first today), each with its name, price, note and, until it can be bought online, "Coming soon".
 
-**When Square (or another shop) is ready:**
+- **Reorder**: drag a product by the two short lines at its top.
+- **Price**: for example `$32`. Leave price empty to hide it (the tart and the cheesecake have none yet). Prices only ever show on the Shop page.
+- **Note**: one short line under the name, for example "Gluten free. Pre-order, 48 hours notice".
+- **Photo** and **Photo fit**: photos are shown square. **Fill the square** suits ordinary photos (the tart, the cheesecake): they are cropped to a square around the middle, so keep the product centred. **Whole object on the page colour** suits a cutout on a transparent background (a PNG), like the hat: the whole object shows, never cropped. At least 800 pixels wide.
+- **Photo description**: one plain sentence about what the photo shows.
+- **Type**: **Product** for everything except the gift card. **Gift card** shows a dark red square with the Louma wordmark and "Gift card" instead of a photo, so it needs no photo.
 
-1. Copy the page address of your pre-order page from Square.
-2. Paste it into **Pre-order link**.
-3. Do the same for gift cards in **Gift card link**.
-4. Click **Publish**.
+**When Square (or another shop) is ready for a product:**
 
-While a link box is empty, its button says "Coming soon" and can't be clicked. Once a link is there, the button opens your shop page in a new tab.
+1. In Square, open the product's page (or the gift card page) and copy its address.
+2. In **Shop → Products**, open that product and paste the address into **Link**.
+3. Click **Publish**.
 
-**Adding a product:**
+While **Link** is empty, the product shows "Coming soon" and can't be clicked. Once a link is there, the whole product (picture and name) becomes a link that opens your shop page in a new tab, and "Coming soon" disappears.
 
-1. Under **Merch**, click **Add product**.
-2. Fill in **Name**, **Price** (for example `$32`), **Description** and **Size**.
-3. Add a **Photo**: a cutout of the product on a transparent background (a PNG) works best, at least 800 pixels wide. The whole product is always shown, never cropped.
-4. Write a **Photo description**, one plain sentence about what the photo shows.
-5. Paste the product's **Buy link** when it can be bought online. Without one, its button says "Coming soon".
+**Adding a product:** click **Add product**, fill in **Name**, then whichever of **Price**, **Note**, **Photo**, **Photo description**, **Photo fit** and **Link** apply, drag it into place, and Publish.
 
 ## Swapping a photo
 
@@ -138,6 +137,7 @@ Go to **Photos → Site photos**, click the photo you want to replace, and uploa
 | Home: photo gallery, 3rd and 4th | Portrait (taller than wide) | 1600 pixels on the long side |
 | Our Story: photo | Portrait, with no border or margin around it (the page is the background) | 1200 pixels wide |
 | Instagram strip | Square works best | 600 pixels wide |
+| Shop products | Square (cropped around the middle), or a cutout PNG shown whole | 800 pixels wide |
 
 - **Crop focus** (home gallery and Our Story photos): when a slot crops a photo, this picks which part stays in view. **Centre** suits most photos; pick **Top**, **Upper middle**, **Just above centre**, **Just below centre**, **Lower middle**, **Bottom**, **Left** or **Right** when the subject sits off-centre. Then check the page after publishing. (The first home gallery photo, the pain au chocolat, uses **Just below centre** so the front pastry shows whole, chocolate end and all. If you swap that photo, check the front pastry is not cut off at the bottom; move the focus down if it is.)
 - Keep each photo under 3 MB. The website makes the small, fast versions itself.

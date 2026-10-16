@@ -1,15 +1,45 @@
 {
-  "preorderLink": "",
-  "giftCardLink": "",
+  "intro": "Pre-order your favorite tartes, pastries, and cakes in advance, for collection in person. Needs 48 hours notice.",
   "products": [
     {
       "name": "Louma Hat",
       "price": "$32",
-      "description": "Louma logo front and side embroidered hat.",
-      "size": "One size",
+      "note": "Louma logo front and side embroidered hat. One size.",
       "image": "shop-hat.png",
       "alt": "Red Louma Bakery cap with the logo embroidered in cream",
-      "link": ""
+      "link": "",
+      "fit": "contain",
+      "kind": "product"
+    },
+    {
+      "name": "Berry Tart",
+      "price": "",
+      "note": "Pre-order, 48 hours notice",
+      "image": "shop-berry-tart.jpg",
+      "alt": "A round tart covered in raspberries and blueberries with a little lemon zest, seen from above on parchment paper",
+      "link": "",
+      "fit": "cover",
+      "kind": "product"
+    },
+    {
+      "name": "Basque Cheesecake",
+      "price": "",
+      "note": "Gluten free. Pre-order, 48 hours notice",
+      "image": "shop-basque-cheesecake.jpg",
+      "alt": "A whole Basque cheesecake with a dark caramelized top, cooling on a wire rack on a wooden counter",
+      "link": "",
+      "fit": "cover",
+      "kind": "product"
+    },
+    {
+      "name": "Gift Card",
+      "price": "",
+      "note": "",
+      "image": "",
+      "alt": "",
+      "link": "",
+      "fit": "cover",
+      "kind": "giftcard"
     }
   ]
 }

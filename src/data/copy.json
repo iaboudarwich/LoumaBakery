@@ -46,18 +46,7 @@
   },
   "shop": {
     "title": "Shop",
-    "status": "Coming soon",
-    "preorder": {
-      "title": "Pre-orders",
-      "body": "Pre-order your favorite tartes, pastries, and cakes in advance, for collection in person. Needs 48 hours notice."
-    },
-    "giftCards": {
-      "title": "Gift cards",
-      "body": ""
-    },
-    "merch": {
-      "title": "Merch"
-    }
+    "status": "Coming soon"
   },
   "visit": {
     "title": "Come say hi"

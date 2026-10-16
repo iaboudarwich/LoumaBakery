@@ -99,7 +99,8 @@ if (errors.length) {
 // for photo descriptions or drawings, so an item keeps the `alt` it already
 // has (matched by name) and a category keeps its `icon`.
 // Category order follows ALLOWED_CATEGORIES; the CMS/current file shape is kept
-// ({ categories: [{ id, title, order, icon, items: [...] }] }).
+// ({ categories: [{ id, title, order, column, icon, items: [...] }] }).
+// NOTE: the sheet is in the old shape; see the guard above before using this.
 const current = JSON.parse(readFileSync(MENU_PATH, 'utf8'));
 const idFor = (title) => {
   const existing = current.categories.find((c) => c.title === title);
@@ -112,6 +113,8 @@ const categories = ALLOWED_CATEGORIES.map((title, i) => ({
   id: idFor(title),
   title,
   order: i + 1,
+  // The sheet has no column: keep the one chosen in the CMS (food by default).
+  column: current.categories.find((c) => c.title === title)?.column ?? 'food',
   // The sheet has no drawing column: keep the one chosen in the CMS.
   icon: current.categories.find((c) => c.title === title)?.icon ?? '',
   items: rows

@@ -3,8 +3,8 @@
 ## sync-menu.mjs — menu from a Google Sheet (GUARDED, OFF)
 
 Since October 2026 the menu is maintained in the CMS (`src/data/menu.json`,
-Menu → Menu items), in the owner's fall 2026 shape: categories with `items`
-(`name`, optional `note`) and optional `notes`. The Google Sheet this script
+Menu → Menu items), in the owner's fall 2026 shape: categories with a `column` (`food` or
+`drinks`), `items` (`name`, optional `note`) and optional `notes`. The Google Sheet this script
 reads is the old costing sheet: out of date, and in the old shape (prices,
 descriptions, tags, the old eight categories). A run would overwrite the
 owner's menu, so the script **refuses to run** and prints:

@@ -92,7 +92,7 @@ Page text → All pages → "Page not found" page: the label, headline, line and
 
 ## Editing the menu
 
-Go to **Menu → Menu items**. The menu is a list of categories (Pastries, Bread Selection, Sweets and so on, ending with Add-ons), and each category has a list of items. The Menu page shows them in one calm column: the category name, the items one per line, then the category's notes. No prices, photos or drawings.
+Go to **Menu → Menu items**. The menu is a list of categories (Pastries, Bread Selection, Sweets and so on, ending with Add-ons), and each category has a list of items. The Menu page shows them as plain text: the category name, the items one per line, then the category's notes. No prices, photos or drawings. On computers and tablets there are two columns, food on the left and drinks on the right; on phones it is one list, all the food first, then the drinks.
 
 - **Change an item**: open the category, open the item, change its **Name**.
 - **An item's note**: the optional **Note** under an item's name shows in smaller text right below it, for example "Gluten free" or "Almond and pecan". Leave it empty for none.
@@ -100,8 +100,9 @@ Go to **Menu → Menu items**. The menu is a list of categories (Pastries, Bread
 - **Add an item**: open the category and click **Add item** at the top of its Items list.
 - **Remove an item**: click the **X** on that item.
 - **Reorder items**: drag an item by the two short lines at its top.
-- **Category order**: change **Show order** (1 shows first, then 2, 3 and so on).
-- **A new category**: click **Add category**, give it a **Category name**, a **Show order** and an **Internal ID** (one plain word, for example `soups`; it is used for the link to that category at the top of the page). Leave the Internal ID of existing categories as it is.
+- **Category order**: change **Show order** (1 shows first, then 2, 3 and so on). The order counts within each column.
+- **Column**: every category says which column it sits in on wider screens, **Food** (left) or **Drinks** (right). Today Pastries, Bread Selection, Sweets, All Day Lunch and From the Shelf are Food; Coffee, Matcha, Tea, Specialty Drinks and Add-ons are Drinks. A new category must have one; pick the side it belongs to. On phones the column only decides the order: all Food categories, then all Drinks.
+- **A new category**: click **Add category**, give it a **Category name**, a **Show order**, a **Column** and an **Internal ID** (one plain word, for example `soups`; it is used for the link to that category at the top of the page). Leave the Internal ID of existing categories as it is.
 
 **The menu and the Google Sheet.** The menu used to be planned to update itself from a Google Sheet (the bakery's costing sheet). Since October 2026 the menu is kept in the editor, and that sheet is out of date, so the sync is switched off on purpose: the script refuses to run and would otherwise replace the menu with the old one. Edit the menu here. (For the person who looks after the website: see `scripts/README.md`.)
 

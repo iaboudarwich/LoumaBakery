@@ -62,7 +62,7 @@ Everything editable lives in `src/data/`, one CMS collection per file:
 |---|---|---|
 | `copy.json` | The words on every page, grouped by page (home, story, initiative, menu, shop, visit, catering, careers, notFound) | Page text |
 | `story.json` | The founder's letter (paragraphs and signature) and the Our Story sections | Our Story |
-| `menu.json` | The owner's menu: categories (name, order, items with a name and an optional note, optional category notes). Add-ons is a category like the others. No prices, photos or drawings. | Menu |
+| `menu.json` | The owner's menu: categories (name, order, column: food or drinks, items with a name and an optional note, optional category notes). On computers the Menu page shows food and drinks in two columns; on phones one list. Add-ons is a category like the others. No prices, photos or drawings. | Menu |
 | `shop.json` | The line under the Shop title, and the products in the order shown (name, price, note, photo, photo description, link, photo fit, product or gift card). An empty price is hidden; an empty link shows "Coming soon". | Shop |
 | `images.json` | Which photo goes in which slot (home hero, the four home gallery photos, the two Our Story photos), each with its description | Photos |
 | `instagram.json` | The six photos in the home page Instagram strip | Instagram strip |

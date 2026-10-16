@@ -6,10 +6,15 @@ import { features as f } from '../config/features';
 import { noOrphan } from '../lib/typography';
 
 // Words: copy.json ("menu"); categories, items and their notes: menu.json
-// (CMS: "Menu"). No prices, photos or drawings, by the owner's choice. One
-// calm stacked column, like a printed menu.
+// (CMS: "Menu"). No prices, photos or drawings, by the owner's choice. Plain
+// text like a printed menu: on wide screens two columns, food left and drinks
+// right (each category's `column`); on phones one list, food first.
 const c = (await getEntry('copy', 'menu'))!.data;
 const menu = (await getCollection('menu')).sort((a, b) => a.data.order - b.data.order);
+// Food first in the DOM, so phones and screen readers read food, then drinks.
+const columns = (['food', 'drinks'] as const)
+  .map((col) => menu.filter((cat) => cat.data.column === col))
+  .filter((cats) => cats.length > 0);
 const reveal = f.reveal ? 'reveal' : undefined;
 ---
 
@@ -30,27 +35,34 @@ const reveal = f.reveal ? 'reveal' : undefined;
   </header>
 
   <div class="container menu-body">
-    {menu.map((cat) => (
-      <section class="menu-cat" id={`menu-${cat.id}`} aria-labelledby={`h-${cat.id}`}>
-        <h2 class="h2" id={`h-${cat.id}`} data-anim={reveal}>{cat.data.title}</h2>
-        <ul class="items" role="list">
-          {cat.data.items.map((item) => (
-            <li class="item">
-              <span class="item-name">{item.name}</span>
-              {item.note && <span class="item-note">{item.note}</span>}
-            </li>
+    <div class="menu-cols">
+      {columns.map((cats) => (
+        <div class="menu-col">
+          {cats.map((cat) => (
+            <section class="menu-cat" id={`menu-${cat.id}`} aria-labelledby={`h-${cat.id}`}>
+              <h2 class="h2 cat-title" id={`h-${cat.id}`} data-anim={reveal}>{cat.data.title}</h2>
+              <ul class="items" role="list">
+                {cat.data.items.map((item) => (
+                  <li class="item">
+                    <span class="item-name">{item.name}</span>
+                    {item.note && <span class="item-note">{item.note}</span>}
+                  </li>
+                ))}
+              </ul>
+              {cat.data.notes.map((n) => <p class="cat-note">{n}</p>)}
+            </section>
           ))}
-        </ul>
-        {cat.data.notes.map((n) => <p class="cat-note">{n}</p>)}
-      </section>
-    ))}
+        </div>
+      ))}
+    </div>
 
     {c.allergenNote && <p class="allergen">{c.allergenNote}</p>}
   </div>
 </BaseLayout>
 
 <style>
-  .menu-intro { margin-top: var(--block-gap); max-width: 34em; }
+  /* 48em, like the home intro: three to four lines a paragraph on desktop. */
+  .menu-intro { margin-top: var(--block-gap); max-width: 48em; }
   .menu-intro .lead { max-width: none; }
 
   /* Category links under the intro: not sticky, wraps on phones. */
@@ -74,23 +86,37 @@ const reveal = f.reveal ? 'reveal' : undefined;
     text-underline-offset: 0.2em;
   }
 
-  /* One column, about 40em, left-aligned with the intro. Categories sit a
-     little closer than page sections: 3/4 of --section-y. */
+  /* Food and drinks: one list on narrow screens (food first, at most 40em),
+     two columns side by side from 48rem, the site breakpoint (at 768 each
+     column is about 330px and no item wraps), both starting at the top.
+     Categories inside a column sit --menu-gap apart. */
   .menu-body {
-    --menu-gap: calc(var(--section-y) * 0.75);
+    --menu-gap: max(var(--space-7), calc(var(--section-y) * 0.45));
     padding-block: calc(var(--section-y) / 2) var(--section-y);
   }
+  .menu-cols { display: grid; row-gap: var(--menu-gap); }
+  .menu-col { max-width: 40em; }
+  @media (min-width: 48rem) {
+    .menu-cols {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: calc(var(--block-gap) * 2);
+      align-items: start;
+    }
+  }
   .menu-cat {
-    max-width: 40em;
     /* An anchor jump lands the heading one block-gap under the header. */
     scroll-margin-top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + var(--block-gap));
   }
   .menu-cat + .menu-cat { margin-top: var(--menu-gap); }
-  .menu-cat .h2 { margin-bottom: var(--space-5); }
+  /* Category headings: red, smaller than a page's section headings on wide
+     screens so they don't compete with the title (28px at 1440 and up). Never
+     under 24px: red text on butter is 3.86:1, AA only as large text. */
+  .cat-title { font-size: clamp(24px, 1.95vw, 28px); margin-bottom: var(--space-4); }
 
-  /* Items: one per line, Owners 400 at --fs-item (19-20px), burgundy. A note
-     sits right under its name, small, burgundy at 80% (5.6:1 on butter). */
-  .items { margin: 0; padding: 0; display: grid; gap: var(--space-3); }
+  /* Items: one per line, Owners 400 at --fs-item (19-20px), burgundy, close
+     together so a category reads as one list. A note sits right under its
+     name, small, burgundy at 80% (5.6:1 on butter). */
+  .items { margin: 0; padding: 0; display: grid; gap: var(--space-2); }
   .item-name,
   .item-note { display: block; }
   .item-name {

@@ -2,6 +2,7 @@
   "categories": [
     {
       "id": "pastries",
+      "column": "food",
       "title": "Pastries",
       "order": 1,
       "items": [
@@ -18,6 +19,7 @@
     },
     {
       "id": "bread",
+      "column": "food",
       "title": "Bread Selection",
       "order": 2,
       "items": [
@@ -32,6 +34,7 @@
     },
     {
       "id": "sweets",
+      "column": "food",
       "title": "Sweets",
       "order": 3,
       "items": [
@@ -47,6 +50,7 @@
     },
     {
       "id": "lunch",
+      "column": "food",
       "title": "All Day Lunch",
       "order": 4,
       "items": [
@@ -62,6 +66,7 @@
     },
     {
       "id": "shelf",
+      "column": "food",
       "title": "From the Shelf",
       "order": 5,
       "items": [
@@ -72,6 +77,7 @@
     },
     {
       "id": "coffee",
+      "column": "drinks",
       "title": "Coffee",
       "order": 6,
       "items": [
@@ -91,6 +97,7 @@
     },
     {
       "id": "matcha",
+      "column": "drinks",
       "title": "Matcha",
       "order": 7,
       "items": [
@@ -103,6 +110,7 @@
     },
     {
       "id": "tea",
+      "column": "drinks",
       "title": "Tea",
       "order": 8,
       "items": [
@@ -117,6 +125,7 @@
     },
     {
       "id": "specialty",
+      "column": "drinks",
       "title": "Specialty Drinks",
       "order": 9,
       "items": [
@@ -128,6 +137,7 @@
     },
     {
       "id": "add-ons",
+      "column": "drinks",
       "title": "Add-ons",
       "order": 10,
       "items": [

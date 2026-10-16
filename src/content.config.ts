@@ -17,6 +17,7 @@ const menu = defineCollection({
   schema: z.object({
     title: z.string(),
     order: z.number().default(0),
+    column: z.enum(['food', 'drinks']), // which /menu column it sits in on wide screens
     items: z.array(
       z.object({
         name: z.string(),

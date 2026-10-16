@@ -58,6 +58,14 @@ collections:
               - { name: id, label: "Internal ID", widget: string, hint: "A short code the site uses for the link to this category. Leave it as it is; for a new category, one plain word, e.g. soups." }
               - { name: title, label: "Category name", widget: string, hint: "e.g. Pastries, Coffee, Add-ons" }
               - { name: order, label: "Show order", widget: number, value_type: int, default: 1, hint: "1 shows first, then 2, 3 and so on." }
+              - name: column
+                label: "Column"
+                widget: select
+                default: "food"
+                options:
+                  - { label: "Food", value: "food" }
+                  - { label: "Drinks", value: "drinks" }
+                hint: "On computers the menu has two columns: food on the left, drinks on the right. Pick where this category goes. On phones everything is one list, food first."
               - name: items
                 label: "Items"
                 label_singular: "Item"

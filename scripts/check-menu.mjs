@@ -49,7 +49,10 @@ expected.forEach((e, ci) => {
   const a = actual[ci];
   if (!a) return say(`missing category ${e.title}`);
   if (a.title.toUpperCase() !== e.title) say(`category ${ci + 1}: "${a.title}", brief "${e.title}"`);
-  const extra = Object.keys(a).filter((k) => !['id', 'title', 'order', 'items', 'notes'].includes(k));
+  const extra = Object.keys(a).filter((k) => !['id', 'title', 'order', 'column', 'items', 'notes'].includes(k));
+  // The first five categories (Pastries to From the Shelf) are food, the rest drinks.
+  const column = ci < 5 ? 'food' : 'drinks';
+  if (a.column !== column) say(`${a.title}: column "${a.column ?? ''}", expected "${column}"`);
   if (extra.length) say(`${a.title}: unexpected fields ${extra.join(', ')}`);
   const n = Math.max(a.items.length, e.items.length);
   for (let i = 0; i < n; i++) {

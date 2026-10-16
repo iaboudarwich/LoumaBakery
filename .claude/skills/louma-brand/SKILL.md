@@ -20,7 +20,7 @@ Butter is the page. Burgundy, fairy and white are full-width colour blocks (.blo
 
 ## Type: Owners, three faces in use
 Owners superfamily by Ohno Type Co (src/styles/fonts.css, public/fonts):
-- Owners 500 (regular width): page titles and section headings (--fs-display clamp(36px,4.6vw,64px), --fs-h2 clamp(24px,2.6vw,36px); letter-spacing -0.015em, line-height 1.05), plus emphasis, labels (.label, 14px), buttons, menu item and product names, and the data voice (hours, address, form fields), tabular numerals.
+- Owners 500 (regular width): page titles and section headings (--fs-display clamp(36px,4.6vw,64px), --fs-h2 clamp(24px,2.6vw,36px); letter-spacing -0.015em, line-height 1.05), plus emphasis, labels (.label, 14px), buttons, product names, and the data voice (hours, address, form fields), tabular numerals.
 - Owners 400: body copy.
 - Owners Narrow 700: the header nav (and its mobile sheet), nowhere else.
 No italic face and no other weight ships; font-synthesis is off. Labels: Owners 500, 14px, burgundy on butter (butter on burgundy); the footer's "Visit" heading is Owners 500 14px uppercase in butter. No dash or rule prefix. A label earns its place or is deleted. No prices anywhere except shop products.
@@ -41,6 +41,6 @@ Use only these drawings. Hearts are the recurring motif across the set. Keep dra
 Keep the typography clean and the palette committed; let the hand-drawn marks supply the warmth and personality. Don't go full cartoon. Spend boldness on the face, the wordmark and the drawing animation; keep everything around them quiet.
 
 ## Voice
-Warm, concrete, unfussy; like talking to a regular at the counter. Active voice. Buttons say what happens. Errors explain and offer a fix, in the brand's voice. Bans: em dashes, tricolons, "not just X, it's Y", empty superlatives (artisanal/finest/exceptional), jargon (crafted/curated/elevate/journey/savor), "we are passionate/committed". Menu lines: one concrete sentence, 8-15 words, ingredient or technique first. The inclusive mission is stated as plain fact, once per page, never with statistics about team members' disabilities.
+Warm, concrete, unfussy; like talking to a regular at the counter. Active voice. Buttons say what happens. Errors explain and offer a fix, in the brand's voice. Bans: em dashes, tricolons, "not just X, it's Y", empty superlatives (artisanal/finest/exceptional), jargon (crafted/curated/elevate/journey/savor), "we are passionate/committed". Menu items are the owner's own names, each with at most one short note in her words. The inclusive mission is stated as plain fact, once per page, never with statistics about team members' disabilities.
 
 Owner's words: text in story.json, copy.json and shop.json was written by the owner. Never rewrite, shorten or reword it, even when it uses words this guide otherwise avoids. Typos may be fixed only when asked.

@@ -8,7 +8,9 @@ description: Frontend design discipline for the Louma site. Flatness, square sha
 ## Principles
 - FLAT: no box-shadows, no CSS gradients, no backdrop blur, anywhere. Depth = surface color change + 1px hairline borders (--hairline / --hairline-strong tokens).
 - Shape language: square. Every radius is 0 (the --radius-* tokens are 0): buttons, tags, chips, inputs, cards, photos, the nav. Never add a border-radius.
-- Ghost buttons default: 1.5px --burgundy outline rectangle, transparent fill, ~14x28px padding, Owners 500. Max ONE filled CTA per page (on a burgundy card it inverts to butter with burgundy text). Disabled = dashed ghost that reads intentional.
+- Buttons: only .btn.btn-primary (catering/careers submit, 404 CTA: solid burgundy, butter text, square) and the hidden newsletter's .btn-coral. The Shop has no buttons: a product with a link is one link card; without, a plain "Coming soon" label. A submit disabled while sending is a dashed ghost.
+- Menu: one calm column (40em), red --fs-h2 category headings, items one per line in Owners 400 --fs-item burgundy, item notes --fs-small burgundy 80%, category notes after the items; a plain wrapping row of category links (not sticky); no drawings, prices, photos or item reveal.
+- Shop: a plain grid of square tiles (3/2/1 columns), cover photos, contain cutouts on butter, a burgundy gift card tile with the butter wordmark; name, price, note under each; no boxes or borders.
 - Colour: only the eight brand tokens (tokens.css). Red is primary, but red text must be 24px+ (or bold 18.66px+) because red on butter is 3.86:1; small text is ink or burgundy, links burgundy.
 - Type: Owners only, three faces in use (Owners 500 for titles, headings, emphasis, buttons and data; 400 body; Narrow 700 only in the header nav). The footer is burgundy with butter text in normal type (400 body, 500 small uppercase heading). Never request italics or other weights; font-synthesis is off.
 - Body text (owner round 3): no ink body copy. Every page body paragraph is burgundy at --fs-lead (line-height 1.45, paragraphs --block-gap apart), like the home intro. One shared rule in global.css: `.lead`, `.page-intro .lede` and `.text-row-body p` (the Our Story and Initiative sections). Applies to /, /story, /initiative, /visit and the 404. Not to the header, footer, menu items and notes, shop products, labels or form fields.
@@ -35,7 +37,7 @@ Responsive to ~360px. Visible :focus-visible outlines. Keyboard operable. Meanin
 - Viewport units: min-height 100vh fallback + 100svh pair. svh, never dvh. Hero-minus-header = calc(100svh - var(--nav-h)).
 - Never width:100vw; html,body { overflow-x: clip } stays.
 - Safe areas: viewport-fit=cover; pad CONTENT with env(safe-area-inset-*) via max(gutter, inset); band backgrounds reach true edges; nav + body offset grow by the top inset.
-- Hover behaviors ONLY behind @media (hover:hover) and (pointer:fine); touch gets tap alternatives wherever hover carries meaning (menu photos are permanent row thumbnails: no hover or tap state).
+- Hover behaviors ONLY behind @media (hover:hover) and (pointer:fine); touch gets tap alternatives wherever hover carries meaning.
 - Inputs >=16px computed (iOS zoom); inputmode/autocomplete set; never suppress user zoom; html.kb-open hides fixed bars while a field is focused.
 - Tap targets >=44px; -webkit-tap-highlight-color transparent + touch-action manipulation on controls.
 - NO live SVG filters anywhere: sketches render the *-baked.svg files (equal to the masters; scripts/bake-sketches.mjs copies them through); max 2 simultaneous draws, will-change on animating strokes.

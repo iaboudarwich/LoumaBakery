@@ -29,7 +29,10 @@ The owner's brief for this version of the site: [docs/brief/2026-10-website-brie
 
 - [ ] **Uber Eats**: if online ordering goes ahead, send the link. It goes in Site settings → Uber Eats order link, and the developer adds a button for it.
 - [ ] **A phone number**: no phone number is shown anywhere today, on purpose. Decide whether to show one.
-- [ ] **Square links** for pre-orders and gift cards: paste them into Shop in the editor when ready (see EDITING.md). The hat's buy link goes in the same place.
+- [ ] **Shop prices and Square links.** The Shop shows the Louma Hat ($32), Berry Tart, Basque Cheesecake and a Gift Card, all "Coming soon". Waiting on the owner:
+  - [ ] Prices for the Berry Tart and the Basque Cheesecake (none in her menus; hidden until set).
+  - [ ] A Square link for each product (hat, tart, cheesecake) and for the gift card. Paste each into Shop → Products → that product → **Link** (see EDITING.md, "Shop products"). With a link, the product becomes a link and "Coming soon" goes.
+  - [ ] Confirm the cheesecake belongs in the Shop (included by default) and that the "48 hours notice" line stays.
 - [ ] **The hand-drawn map**: the only copy is a small image from the brief. A higher-resolution scan or photo of the original drawing would let the map on the Contact page be traced again more cleanly.
 - [ ] **Photo names in the library**: confirm what is in three photos in `src/assets/img/unplaced/`: `swirl-buns-rack.jpg` and `swirl-buns-yellow-paper.jpg` (cardamom buns?), `sugar-bun-plate.jpg`, and `almond-croissants-tray.jpg` (almond croissants?).
 

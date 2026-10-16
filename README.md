@@ -62,15 +62,15 @@ Everything editable lives in `src/data/`, one CMS collection per file:
 |---|---|---|
 | `copy.json` | The words on every page, grouped by page (home, story, initiative, menu, shop, visit, catering, careers, notFound) | Page text |
 | `story.json` | The founder's letter (paragraphs and signature) and the Our Story sections | Our Story |
-| `menu.json` | Menu categories (name, order, drawing), items (name, description, dietary tags) and the add-ons list. No prices. | Menu |
-| `shop.json` | The pre-order and gift card links, and the products (name, price, description, size, photo, buy link). An empty link shows "Coming soon". | Shop |
+| `menu.json` | The owner's menu: categories (name, order, items with a name and an optional note, optional category notes). Add-ons is a category like the others. No prices, photos or drawings. | Menu |
+| `shop.json` | The line under the Shop title, and the products in the order shown (name, price, note, photo, photo description, link, photo fit, product or gift card). An empty price is hidden; an empty link shows "Coming soon". | Shop |
 | `images.json` | Which photo goes in which slot (home hero, the four home gallery photos, the two Our Story photos), each with its description | Photos |
 | `instagram.json` | The six photos in the home page Instagram strip | Instagram strip |
 | `settings.json` | The two email addresses, address, opening hours, Instagram and TikTok links and handles, and an Uber Eats link that is saved but not shown | Site settings |
 
 The editor's setup, field by field, is `public/admin/config.yml`. If you add a field to a JSON file, add it to `config.yml` and to the schema in `src/content.config.ts` too, or editors won't see it (and the page-text schema is strict, so an unknown field fails the build).
 
-The menu can also be filled from a Google Sheet once one is published: `scripts/sync-menu.mjs` and the GitHub Action in `.github/workflows/sync-menu.yml`. It is off until the repository variable `SHEET_CSV_URL` is set; see `scripts/README.md`. When it is on, the sheet owns the menu items; the category drawings and photo descriptions are kept, and prices are never written.
+The menu is edited in the CMS. The old Google Sheet sync (`scripts/sync-menu.mjs`, `.github/workflows/sync-menu.yml`) is switched off and guarded: the script refuses to run without `--force`, because the sheet is out of date and would overwrite the owner's menu; see `scripts/README.md`. `node scripts/check-menu.mjs` compares `menu.json` with the owner's fall 2026 list.
 
 ## Photos
 

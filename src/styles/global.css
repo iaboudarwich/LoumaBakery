@@ -240,10 +240,9 @@ html.sys-slab .btn-coral {
   html.sys-slab .btn-primary:hover,
   html.sys-slab .btn-coral:hover { background: var(--ink); border-color: var(--ink); color: var(--butter); }
 }
-/* Inert "Ordering soon" (until a real Order link exists): an intentional
-   dashed ghost, never a greyed-out dead control. */
-html.sys-slab .btn:disabled,
-html.sys-slab .btn[aria-disabled="true"] {
+/* A form's submit while it sends (forms.ts disables it): a dashed ghost,
+   never a greyed-out dead control. */
+html.sys-slab .btn:disabled {
   cursor: not-allowed;
   pointer-events: none;
   background: transparent;
@@ -263,7 +262,6 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
 .ph { width: 100%; }
 .ph--portrait { aspect-ratio: 4 / 5; }
 .ph--landscape { aspect-ratio: 3 / 2; }
-.ph--square { aspect-ratio: 1 / 1; }
 
 /* --- Section + page headers --- */
 .sec-head { margin-bottom: var(--space-6); }

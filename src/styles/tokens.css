@@ -18,7 +18,6 @@
   /* --- Derived text (mixed from ink + butter only) --- */
   --body: color-mix(in srgb, var(--ink) 85%, var(--butter));   /* body copy: 9.9:1 on butter */
   --muted: color-mix(in srgb, var(--ink) 70%, var(--butter));
-  --ink-80: color-mix(in srgb, var(--ink) 80%, var(--butter));  /* menu descriptions */  /* captions, meta: 5.9:1 on butter, 6.5:1 on white */
 
   /* --- Semantic aliases --- */
   --bg: var(--butter);

@@ -45,7 +45,7 @@ The top menu shows Home, Our Story, The Louma Initiative, Menu and Shop; the log
 | `/story` | `src/pages/story.astro` | `copy.json` → story (title), `story.json` (the letter and five sections), `images.json` → story |
 | `/initiative` | `src/pages/initiative.astro` | `copy.json` → initiative (title, intro and sections) |
 | `/menu` | `src/pages/menu.astro` | `copy.json` → menu, `menu.json` |
-| `/shop` | `src/pages/shop.astro` | `copy.json` → shop, `shop.json` (Louma Hat, Berry Tart, Pecan Tart, Basque Cheesecake, Gift Card) |
+| `/shop` | `src/pages/shop.astro` | `copy.json` → shop, `shop.json` (Louma Hat, Maple Pecan Tarte, Burnt Basque Cheesecake, Berry Tart, Gift Card) |
 | `/visit` (shown as "Contact") | `src/pages/visit.astro` | `copy.json` → visit (title), `settings.json` (address, hours, emails, Instagram, TikTok), the hand-drawn map |
 | `/catering` (hidden for now) | `src/pages/catering.astro` | `copy.json` → catering, plus the catering form. Redirects to `/` while `cateringPage` is off. |
 | `/careers` (hidden for now) | `src/pages/careers.astro` | `copy.json` → careers, plus the job application form. Redirects to `/` while `careersPage` is off. |

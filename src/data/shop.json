@@ -12,17 +12,7 @@
       "kind": "product"
     },
     {
-      "name": "Berry Tart",
-      "price": "",
-      "note": "Pre-order, 48 hours notice",
-      "image": "shop-berry-tart.jpg",
-      "alt": "A round tart covered in raspberries and blueberries with a little lemon zest, seen from above on parchment paper",
-      "link": "",
-      "fit": "cover",
-      "kind": "product"
-    },
-    {
-      "name": "Pecan Tart",
+      "name": "Maple Pecan Tarte",
       "price": "",
       "note": "Pre-order, 48 hours notice",
       "image": "shop-pecan-tart.jpg",
@@ -32,11 +22,21 @@
       "kind": "product"
     },
     {
-      "name": "Basque Cheesecake",
+      "name": "Burnt Basque Cheesecake",
       "price": "",
       "note": "Gluten free. Pre-order, 48 hours notice",
       "image": "shop-basque-cheesecake.jpg",
       "alt": "A slice of Basque cheesecake with a dark caramelized top on a white plate",
+      "link": "",
+      "fit": "cover",
+      "kind": "product"
+    },
+    {
+      "name": "Berry Tart",
+      "price": "",
+      "note": "Pre-order, 48 hours notice",
+      "image": "shop-berry-tart.jpg",
+      "alt": "A round tart covered in raspberries and blueberries with a little lemon zest, seen from above on parchment paper",
       "link": "",
       "fit": "cover",
       "kind": "product"

@@ -29,10 +29,12 @@ The owner's brief for this version of the site: [docs/brief/2026-10-website-brie
 
 - [ ] **Uber Eats**: if online ordering goes ahead, send the link. It goes in Site settings → Uber Eats order link, and the developer adds a button for it.
 - [ ] **A phone number**: no phone number is shown anywhere today, on purpose. Decide whether to show one.
-- [ ] **Shop prices and Square links.** The Shop shows the Louma Hat ($32), Berry Tart, Basque Cheesecake and a Gift Card, all "Coming soon". Waiting on the owner:
-  - [ ] Prices for the Berry Tart and the Basque Cheesecake (none in her menus; hidden until set).
-  - [ ] A Square link for each product (hat, tart, cheesecake) and for the gift card. Paste each into Shop → Products → that product → **Link** (see EDITING.md, "Shop products"). With a link, the product becomes a link and "Coming soon" goes.
+- [ ] **Shop prices and Square links.** The Shop shows the Louma Hat ($32), Berry Tart, Pecan Tart, Basque Cheesecake and a Gift Card, all "Coming soon". Waiting on the owner:
+  - [ ] Prices for the Berry Tart, the Pecan Tart and the Basque Cheesecake (none in her menus; hidden until set).
+  - [ ] A Square link for each product (hat, berry tart, pecan tart, cheesecake) and for the gift card. Paste each into Shop → Products → that product → **Link** (see EDITING.md, "Shop products"). With a link, the product becomes a link and "Coming soon" goes.
   - [ ] Confirm the cheesecake belongs in the Shop (included by default) and that the "48 hours notice" line stays.
+- [ ] **Two shop photos (owner round 4, due the week of 19 Oct 2026).** The Pecan Tart and the Basque Cheesecake show placeholders (a stack of small pecan tarts, a cheesecake slice). Milla is sending the whole pecan tart and the whole cheesecake. Replace `src/assets/img/shop-pecan-tart.jpg` and `src/assets/img/shop-basque-cheesecake.jpg` with square crops of the new photos (same names, about 900 to 1200 pixels, metadata stripped), update both **Photo description**s in Shop → Products, and note the new sources in `src/assets/img/CREDITS.md`. The owner can also do it in the editor (EDITING.md, "Shop products").
+- [ ] **Design pass on Our Story and the colours.** Milla's designer will review the Our Story page and the site's overall colours. That comes as its own round; nothing is changed until then. Every colour is a token in `src/styles/tokens.css` (the eight brand colours, everything else mixed from them), so a palette change happens there.
 - [ ] **The hand-drawn map**: the only copy is a small image from the brief. A higher-resolution scan or photo of the original drawing would let the map on the Contact page be traced again more cleanly.
 - [ ] **Photo names in the library**: confirm what is in three photos in `src/assets/img/unplaced/`: `swirl-buns-rack.jpg` and `swirl-buns-yellow-paper.jpg` (cardamom buns?), `sugar-bun-plate.jpg`, and `almond-croissants-tray.jpg` (almond croissants?).
 

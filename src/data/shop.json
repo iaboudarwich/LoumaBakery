@@ -22,11 +22,21 @@
       "kind": "product"
     },
     {
+      "name": "Pecan Tart",
+      "price": "",
+      "note": "Pre-order, 48 hours notice",
+      "image": "shop-pecan-tart.jpg",
+      "alt": "Three small pecan tarts stacked on a white plate, with broken pieces around them, on a wooden table in sunlight",
+      "link": "",
+      "fit": "cover",
+      "kind": "product"
+    },
+    {
       "name": "Basque Cheesecake",
       "price": "",
       "note": "Gluten free. Pre-order, 48 hours notice",
       "image": "shop-basque-cheesecake.jpg",
-      "alt": "A whole Basque cheesecake with a dark caramelized top, cooling on a wire rack on a wooden counter",
+      "alt": "A slice of Basque cheesecake with a dark caramelized top on a white plate",
       "link": "",
       "fit": "cover",
       "kind": "product"

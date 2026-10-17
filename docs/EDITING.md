@@ -125,6 +125,8 @@ Go to **Shop → Products**. The Shop page shows them as a plain grid of square 
 
 While **Link** is empty, the product shows "Coming soon" and can't be clicked. Once a link is there, the whole product (picture and name) becomes a link that opens your shop page in a new tab, and "Coming soon" disappears.
 
+**Two placeholder photos.** The Pecan Tart (three small tarts stacked on a plate) and the Basque Cheesecake (a slice on a plate) show stand-in photos until the whole pecan tart and whole cheesecake photos arrive. To swap one: open that product in **Shop → Products**, click its **Photo**, upload the new photo, update the **Photo description**, and Publish. Square photos work best; anything else is cropped to a square around the middle. (For the person who looks after the website: the files are `src/assets/img/shop-pecan-tart.jpg` and `src/assets/img/shop-basque-cheesecake.jpg`; replacing either file with a new photo of the same name, cropped square, at least 900 pixels, also works.)
+
 **Adding a product:** click **Add product**, fill in **Name**, then whichever of **Price**, **Note**, **Photo**, **Photo description**, **Photo fit** and **Link** apply, drag it into place, and Publish.
 
 ## Swapping a photo
@@ -147,7 +149,7 @@ Go to **Photos → Site photos**, click the photo you want to replace, and uploa
 
 ## The Instagram strip
 
-Go to **Instagram strip**. There are up to six photos, shown as big squares (three across on computers, two across on phones). Click a photo to replace it, and update its **Photo description**. Every tile links to the bakery's Instagram page. A tile without a photo is skipped.
+Go to **Instagram strip**. There are up to six photos, shown as squares: one row of six on computers, three across on tablets, two across on phones. Click a photo to replace it, and update its **Photo description**. Every tile links to the bakery's Instagram page. A tile without a photo is skipped.
 
 ## Hours, address and emails
 

@@ -28,14 +28,15 @@ move it up a level and reference it.
 | interior-table.jpg | Home gallery 4 | IMG_1703 | phone |
 | story-collage.jpg | Our Story photo. Owner round 3: the cream margin baked into the export was trimmed off (crop x209 y283, 1473x1869 from 1878x2400) | eefec98f-5b8b-45f4-98dd-e80de5f5b7b0 (also on brief PDF page 8) | undated Dropbox export |
 | ig-1.jpg | Instagram strip tile 1 | IMG_0008 | phone |
-| ig-2.jpg | Instagram strip tile 2 | IMG_1827 4 | phone |
+| ig-2.jpg | Instagram strip tile 2: the apple tart with two apples. 1200x1600 as sent, not re-encoded, no metadata in the file; the tile crops it square around the middle | apple-tart-with-apples.jpg | owner, WhatsApp, 2026-10-16 |
 | ig-3.jpg | Instagram strip tile 3 | IMG_9795 3 | phone |
 | ig-4.jpg | Instagram strip tile 4 | IMG_9855 2 | phone |
 | ig-5.jpg | Instagram strip tile 5 | 20260830_LoumaBakery_0258 | 2026-08-30 |
 | ig-6.jpg | Instagram strip tile 6 | IMG_0255 2 | phone |
 | shop-hat.png | Shop: Louma Hat. Cutout (rembg u2net, cast shadow dropped, edge eroded 3px and feathered 1px at source size), trimmed to the hat plus 4% padding, 1200x983 | 20260830_LoumaBakery_0340 | 2026-08-30 |
 | shop-berry-tart.jpg | Shop: Berry Tart. Square crop centred on the tart (x0 y196, 1200x1200 of 1200x1600), straight, colour untouched, q82, metadata stripped | berry-tart-overhead.jpg | owner, WhatsApp, 2026-10-15 |
-| shop-basque-cheesecake.jpg | Shop: Basque Cheesecake. Square crop centred on the cake, below the cling-film box and bottle (x150 y470, 900x900 of 1200x1600; kept at 900px, not upscaled), straight, colour untouched, q82, metadata stripped | cheesecake.jpg | owner, WhatsApp, 2026-10-15 |
+| shop-pecan-tart.jpg | Shop: Pecan Tart (placeholder until the whole-tart photo). Square crop of the plate, stack and broken pieces with wood around them (x87 y537, 900x900 of 1200x1600, not resized), straight, colour untouched, q82, metadata stripped | pecan-tartlets-stack.jpg | owner, WhatsApp, 2026-10-16 |
+| shop-basque-cheesecake.jpg | Shop: Basque Cheesecake (placeholder until the whole-cake photo). Square crop of the slice and the whole plate (x24 y507, 1040x1040 of 1200x1600, scaled to 900x900), straight, colour untouched, q82, metadata stripped | basque-cheesecake-slice.jpg | owner, WhatsApp, 2026-10-16 |
 
 ## Library (src/assets/img/unplaced/, not bundled)
 

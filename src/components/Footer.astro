@@ -85,7 +85,6 @@ const pages = [
 
     <div class="foot-base">
       <p>© {year} {siteConfig.name}.</p>
-      <p>Wilshire · Santa Monica</p>
     </div>
   </div>
 </footer>
@@ -175,12 +174,8 @@ const pages = [
   }
   .site-foot :global(:focus-visible) { outline: 2px solid var(--butter); outline-offset: 3px; }
 
-  /* © and the place line: butter at 80% (5.1:1 on burgundy; 70% would be 4.1:1). */
+  /* The copyright: butter at 80% (5.1:1 on burgundy; 70% would be 4.1:1). */
   .foot-base {
-    display: flex;
-    justify-content: space-between;
-    gap: 0 var(--space-4);
-    flex-wrap: wrap;
     margin-top: var(--space-5);
     padding-top: var(--space-3);
     border-top: 1px solid var(--foot-line);

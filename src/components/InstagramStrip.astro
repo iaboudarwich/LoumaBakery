@@ -21,7 +21,7 @@ const { instagram, instagramHandle } = siteConfig.links;
       {tiles.map((t) => (
         <li>
           <a class="ig-tile" href={instagram} target="_blank" rel="noopener">
-            <Img src={t.photo!} alt={t.alt} class="ig-img" sizes="(max-width: 47.99rem) 50vw, min(33vw, 420px)" widths={[320, 480, 640, 840, 1040]} />
+            <Img src={t.photo!} alt={t.alt} class="ig-img" sizes="(max-width: 39.99rem) 50vw, (max-width: 63.99rem) 33vw, 216px" widths={[240, 480, 720]} />
           </a>
         </li>
       ))}
@@ -31,18 +31,20 @@ const { instagram, instagramHandle } = siteConfig.links;
 </div>
 
 <style>
-  /* Big squares: 3 columns x 2 rows from 48rem up, 2 x 3 on phones, the
-     page's --block-gap between them. Photos render as shot (square crop via
-     the slot's aspect ratio). The srcset tops out at 1040w, enough for the
-     ~416px tile at 1440 on a DPR-2 screen. */
+  /* Six squares in one row from 64rem (about 210px each at 1440), three
+     across from 40rem, two on phones. Photos render as shot (square crop via
+     the slot's aspect ratio). The srcset tops out at 720w: enough for the
+     widest tile (about 310px, three across at 1023) on a DPR-2 screen and a
+     phone tile at DPR 3. */
   .ig-tiles {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--block-gap);
+    gap: clamp(8px, 1vw, 16px);
     margin: 0;
     padding: 0;
   }
-  @media (min-width: 48rem) { .ig-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 40rem) { .ig-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 64rem) { .ig-tiles { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
   .ig-tile { display: block; }
   .ig-tile :global(.ig-img) { aspect-ratio: 1; }
   .ig-handle { margin-top: var(--block-gap); }

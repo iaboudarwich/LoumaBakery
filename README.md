@@ -45,7 +45,7 @@ The top menu shows Home, Our Story, The Louma Initiative, Menu and Shop; the log
 | `/story` | `src/pages/story.astro` | `copy.json` → story (title), `story.json` (the letter and five sections), `images.json` → story |
 | `/initiative` | `src/pages/initiative.astro` | `copy.json` → initiative (title, intro and sections) |
 | `/menu` | `src/pages/menu.astro` | `copy.json` → menu, `menu.json` |
-| `/shop` | `src/pages/shop.astro` | `copy.json` → shop, `shop.json` |
+| `/shop` | `src/pages/shop.astro` | `copy.json` → shop, `shop.json` (Louma Hat, Berry Tart, Pecan Tart, Basque Cheesecake, Gift Card) |
 | `/visit` (shown as "Contact") | `src/pages/visit.astro` | `copy.json` → visit (title), `settings.json` (address, hours, emails, Instagram, TikTok), the hand-drawn map |
 | `/catering` (hidden for now) | `src/pages/catering.astro` | `copy.json` → catering, plus the catering form. Redirects to `/` while `cateringPage` is off. |
 | `/careers` (hidden for now) | `src/pages/careers.astro` | `copy.json` → careers, plus the job application form. Redirects to `/` while `careersPage` is off. |
@@ -65,7 +65,7 @@ Everything editable lives in `src/data/`, one CMS collection per file:
 | `menu.json` | The owner's menu: categories (name, order, column: food or drinks, items with a name and an optional note, optional category notes). On computers the Menu page shows food and drinks in two columns; on phones one list. Add-ons is a category like the others. No prices, photos or drawings. | Menu |
 | `shop.json` | The line under the Shop title, and the products in the order shown (name, price, note, photo, photo description, link, photo fit, product or gift card). An empty price is hidden; an empty link shows "Coming soon". | Shop |
 | `images.json` | Which photo goes in which slot (home hero, the four home gallery photos, the two Our Story photos), each with its description | Photos |
-| `instagram.json` | The six photos in the home page Instagram strip | Instagram strip |
+| `instagram.json` | The six photos in the home page Instagram strip (one row of six on computers, three across on tablets, two on phones) | Instagram strip |
 | `settings.json` | The two email addresses, address, opening hours, Instagram and TikTok links and handles, and an Uber Eats link that is saved but not shown | Site settings |
 
 The editor's setup, field by field, is `public/admin/config.yml`. If you add a field to a JSON file, add it to `config.yml` and to the schema in `src/content.config.ts` too, or editors won't see it (and the page-text schema is strict, so an unknown field fails the build).
@@ -99,7 +99,7 @@ Full reference: [`docs/BRAND.md`](docs/BRAND.md). The detailed rules for code ar
 
 - **Eight colours only**: Louma Red `#ED2739` (the main colour), Burgundy `#A10017`, Peach `#FF676C`, Tangerine `#FF8926`, Fairy `#DDEAC3`, Butter `#FBF5D4` (the page background), White and Ink `#1D1D1B`. Red text only at 24px and up, or bold at 19px and up (the header links); smaller text is ink or burgundy.
 - **One typeface**, Owners: Owners 500 for titles and headings, Owners 400 for body, and Owners Narrow Bold only in the header nav.
-- **The footer is burgundy** with every word in butter, in the site's normal type (butter on burgundy is 7.56:1), kept compact.
+- **The footer is burgundy** with every word in butter, in the site's normal type (butter on burgundy is 7.56:1), kept compact. The bottom row is the copyright line alone.
 - **Square corners** everywhere. No shadows, gradients or blur.
 - **Photos straight** and shown as taken: no filters, no text over them, no animation.
 - **Only the designer's drawings** (plus the owner's traced signature and map). One derived file: `src/assets/brand/baguette-stroke.svg`, the baguette as a single pen line, which draws, erases and repeats in the home hero (`PenDraw.astro`, switch `penDraw` in `features.ts`). It is the only stroke drawing; how it was made is in `src/assets/brand/README.md`.

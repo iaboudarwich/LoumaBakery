@@ -40,7 +40,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  /* Only four real faces ship; never fake a bold or an italic. */
+  /* Only the faces in fonts.css ship; never fake a bold or an italic. */
   font-synthesis: none;
 }
 
@@ -90,6 +90,12 @@ button {
 }
 
 /* ---------------------------------------------------------- Typography */
+/* Body letter-spacing on every text element, resolved at each element's own
+   size (an em value set once on body would inherit as body-size pixels).
+   Zero specificity: headings, labels, buttons and form labels set their own. */
+:where(body, p, li, a, span, address, dt, dd, td, th, figcaption, blockquote, small, strong, em) {
+  letter-spacing: var(--track-body);
+}
 h1,
 h2,
 h3 {
@@ -501,6 +507,24 @@ html.sys-slab .foot-news-row input {
 
 /* Page title band: the same top/bottom rhythm on every page in this system. */
 .page-intro { padding-block: var(--section-y) calc(var(--section-y) / 2); }
+/* Split page header (Menu, Shop): the title, then its intro (.page-intro-body)
+   one --block-gap below; from 64rem side by side on the 12-column grid,
+   title in columns 1-4, intro in 6-12, both starting at the top. */
+.page-intro-split {
+  display: grid;
+  row-gap: var(--block-gap);
+}
+.page-intro-body { max-width: 48em; }
+.page-intro-body p { max-width: none; }
+@media (min-width: 64rem) {
+  .page-intro-split {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--block-gap);
+    align-items: start;
+  }
+  .page-intro-split > :first-child { grid-column: 1 / span 4; }
+  .page-intro-body { grid-column: 6 / -1; }
+}
 .page-intro .lede {
   margin-top: var(--block-gap);
   max-width: 34em;
@@ -538,7 +562,8 @@ html.sys-slab .btn.btn-primary:focus-visible { outline: 2px solid var(--red); ou
 .hours-grid {
   display: grid;
   grid-template-columns: max-content max-content;
-  column-gap: var(--block-gap);
+  /* A little tighter under 480px so the two columns fit at 360. */
+  column-gap: min(var(--block-gap), 5vw);
   row-gap: var(--space-2);
   margin: 0;
   padding: 0;

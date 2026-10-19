@@ -107,10 +107,11 @@ const isActive = (href: string) => path === href;
     display: inline-flex;
     align-items: center;
     min-height: 44px;
-    /* Owners Narrow Bold 19px: large text, so red on butter (3.86:1) passes AA. */
+    /* Owners Narrow 500 at 24px: large text, so red on butter (3.86:1)
+       passes AA. */
     font-family: var(--font-narrow);
-    font-weight: 700;
-    font-size: 19px;
+    font-weight: 500;
+    font-size: var(--fs-nav);
     color: var(--red);
     text-decoration: none;
     position: relative;

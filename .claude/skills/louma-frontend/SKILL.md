@@ -10,9 +10,10 @@ description: Frontend design discipline for the Louma site. Flatness, square sha
 - Shape language: square. Every radius is 0 (the --radius-* tokens are 0): buttons, tags, chips, inputs, cards, photos, the nav. Never add a border-radius.
 - Buttons: only .btn.btn-primary (catering/careers submit, 404 CTA: solid burgundy, butter text, square) and the hidden newsletter's .btn-coral. The Shop has no buttons: a product with a link is one link card; without, a plain "Coming soon" label. A submit disabled while sending is a dashed ghost.
 - Menu: plain text in two columns from 48rem, food left and drinks right (each category's `column` in menu.json), one list food-first below; red category headings clamp(24px,1.95vw,28px), items one per line in Owners 400 --fs-item burgundy, --space-2 apart, item notes --fs-small burgundy 80%, category notes after the items; a plain wrapping row of category links (not sticky); no Food/Drinks headings, drawings, prices, photos or item reveal.
-- Shop: a plain grid of square tiles (3/2/1 columns) in the shop.json order (Louma Hat, Maple Pecan Tarte, Burnt Basque Cheesecake, Berry Tart, Gift Card), cover photos, contain cutouts on butter, a burgundy gift card tile with the butter wordmark; name, price, note under each; no boxes or borders.
+- Menu and Shop open with the shared split page header (.page-intro-split: title over intro, side by side from 64rem, title columns 1-4, intro 6-12).
+- Shop: name and price on one line (price right, wraps under the name when tight), the note at --fs-body; a plain grid of square tiles (3/2/1 columns) in the shop.json order (Louma Hat, Maple Pecan Tarte, Burnt Basque Cheesecake, Berry Tart, Gift Card), cover photos, contain cutouts on butter, a burgundy gift card tile with the butter wordmark; name, price, note under each; no boxes or borders.
 - Colour: only the eight brand tokens (tokens.css). Red is primary, but red text must be 24px+ (or bold 18.66px+) because red on butter is 3.86:1; small text is ink or burgundy, links burgundy.
-- Type: Owners only, three faces in use (Owners 500 for titles, headings, emphasis, buttons and data; 400 body; Narrow 700 only in the header nav). The footer is burgundy with butter text in normal type (400 body, 500 small uppercase heading). Never request italics or other weights; font-synthesis is off.
+- Type: Owners only, four faces (Owners 500 for titles, headings, emphasis, buttons and data; 400 body; Narrow 500 for the header links and the footer's links, label and copyright; Narrow 700 for the 5B hero tagline). Body tracking --track-body 0.01em on every text element via a :where() rule; headings keep --display-track. The footer is burgundy with butter text (400 body lines, Narrow 500 links, label and copyright), a 160px face over the wordmark, grouped visit details and Instagram/TikTok icons. Never request italics or other weights; font-synthesis is off.
 - Body text (owner round 3): no ink body copy. Every page body paragraph is burgundy at --fs-lead (line-height 1.45, paragraphs --block-gap apart), like the home intro. One shared rule in global.css: `.lead`, `.page-intro .lede` and `.text-row-body p` (the Our Story and Initiative sections). Applies to /, /story, /initiative, /visit and the 404. Not to the header, footer, menu items and notes, shop products, labels or form fields.
 - Our Story: the whole page is butter. The letter sits on the page (no card, no white band), max 680px centred, one --block-gap under the title; sun top right, signature right, moon bottom left. One photo (the collage), 6 columns centred.
 - Layout system (tokens.css): --container 1440px, --gutter, --section-y, --block-gap, the --fs-* type scale, and a 12-column grid (.grid-12 with --start/--span). Full-width colour blocks: burgundy, white, fairy. Photos straight, object-fit cover in a fixed aspect per slot, never filtered, overlaid or animated. See CLAUDE.md.
@@ -26,7 +27,7 @@ description: Frontend design discipline for the Louma site. Flatness, square sha
 - Sketch draw-on-scroll (the 404 page's face; the footer face is static): one-shot ~1.1s, 80ms subpath stagger; the outline traces in, then the fill settles back.
 - Entrances: fade + settle 16px DOWNWARD or fade in place; 500ms; children staggered 80ms; once, at ~30% in view. NEVER rise bottom-to-top.
 - Photos never animate (no wipe, zoom, ken-burns, parallax, tilt). No marquee.
-- Micro: button press scale ~0.98, brand-color focus ring. Underlines are plain solid lines everywhere (no wavy or dotted). In the footer all links share one line, 1px, offset 0.2em: the two emails are always underlined; Instagram, TikTok and the page links underline on hover and keyboard focus only.
+- Micro: button press scale ~0.98, brand-color focus ring. Underlines are plain solid lines everywhere (no wavy or dotted). In the footer all links share one line, 1px, offset 0.2em: the two emails are always underlined; the page links underline on hover and keyboard focus only; the social icons show the same line under the icon.
 - Nothing else. New effects require removing one and updating this list.
 - All effects: flag-gated in features.ts + listed on /review; reduced-motion shows composed final states immediately; heavy motion off on mobile.
 
@@ -41,9 +42,9 @@ Responsive to ~360px. Visible :focus-visible outlines. Keyboard operable. Meanin
 - Inputs >=16px computed (iOS zoom); inputmode/autocomplete set; never suppress user zoom; html.kb-open hides fixed bars while a field is focused.
 - Tap targets >=44px; -webkit-tap-highlight-color transparent + touch-action manipulation on controls.
 - NO live SVG filters anywhere: sketches render the *-baked.svg files (equal to the masters; scripts/bake-sketches.mjs copies them through); max 2 simultaneous draws, will-change on animating strokes.
-- Nav: always-visible sticky bar (60px + safe-area below 48rem, 72px above); no hide-on-scroll.
+- Nav: always-visible sticky bar (64px + safe-area below 48rem, 88px above), no hairline under it, links Owners Narrow 500 24px red; no hide-on-scroll.
 - Reveals: one shared IO, fail-safe (hidden states only under JS-set classes; JS off = everything visible).
-- Hero image <=150KB on mobile (AVIF, eager, fetchpriority=high). Fonts: the three Owners woff2 subsets only (owners-400, owners-500, owners-narrow-700), all three preloaded.
+- Hero image <=150KB on mobile (AVIF, eager, fetchpriority=high). Fonts: the four Owners woff2 subsets only (owners-400, owners-500, owners-narrow-500, owners-narrow-700); owners-400, owners-500 and owners-narrow-500 preloaded.
 - theme-color AND body background both butter #FBF5D4 (Safari tints from either).
 - Map: no iframe; the hand-drawn map SVG plus a plain "Get directions" link.
 - No sticky bottom bar on phones.

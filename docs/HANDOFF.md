@@ -20,7 +20,7 @@ The owner's brief for this version of the site: [docs/brief/2026-10-website-brie
 
 ## 2. Licensing
 
-- [ ] **The Owners typeface.** Owners is a commercial font by Ohno Type Co (ohnotype.co). The site currently uses the bakery's desktop font files, converted for the web. Desktop licences don't cover websites, so **buy a webfont licence before the public launch**. The site uses three styles: Owners Regular (400), Owners Medium (500) and Owners Narrow Bold (700). If Ohno supplies new webfont files, replace the three files in `public/fonts/` with the same names.
+- [ ] **The Owners typeface.** Owners is a commercial font by Ohno Type Co (ohnotype.co). The site currently uses the bakery's desktop font files, converted for the web. Desktop licences don't cover websites, so **buy a webfont licence before the public launch**. The site uses four styles: Owners Regular (400), Owners Medium (500), Owners Narrow Medium (500) and Owners Narrow Bold (700). The licence must cover all four. If Ohno supplies new webfont files, replace the four files in `public/fonts/` with the same names (owners-400, owners-500, owners-narrow-500, owners-narrow-700).
 - [ ] **Photos.** All photos come from the bakery's own shoots and the owner's files (see `src/assets/img/CREDITS.md`). Confirm the photographer's agreement covers web use.
 
 ## 3. Waiting on the owner

@@ -21,9 +21,11 @@ const reveal = f.reveal ? 'reveal' : undefined;
 <BaseLayout title={c.title} description={describe(c.intro)}>
   <header class="page-intro">
     <div class="container">
-      <h1 class="display">{noOrphan(c.title ?? '')}</h1>
-      <div class="menu-intro" data-anim={reveal}>
-        {c.intro.map((p) => <p class="lead">{p}</p>)}
+      <div class="page-intro-split">
+        <h1 class="display">{noOrphan(c.title ?? '')}</h1>
+        <div class="page-intro-body" data-anim={reveal}>
+          {c.intro.map((p) => <p class="lead">{p}</p>)}
+        </div>
       </div>
       {/* Category links: one plain row that wraps; each jumps to its section. */}
       <nav class="menu-jump" aria-label="Menu categories">
@@ -61,12 +63,9 @@ const reveal = f.reveal ? 'reveal' : undefined;
 </BaseLayout>
 
 <style>
-  /* 48em, like the home intro: three to four lines a paragraph on desktop. */
-  .menu-intro { margin-top: var(--block-gap); max-width: 48em; }
-  .menu-intro .lead { max-width: none; }
-
-  /* Category links under the intro: not sticky, wraps on phones. */
-  .menu-jump { margin-top: var(--block-gap); }
+  /* Category links under the title and intro, full width: not sticky, wraps
+     on phones. */
+  .menu-jump { margin-top: calc(var(--block-gap) * 2); }
   .menu-jump ul {
     display: flex;
     flex-wrap: wrap;

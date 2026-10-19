@@ -26,15 +26,19 @@
 
   /* --- Type stacks --- */
   /* Owners superfamily (src/styles/fonts.css). Display: Owners 500 (regular
-     width) for every title and heading. Narrow: Owners Narrow 700, for the
-     header nav only (bar and mobile sheet). Body: Owners 400, with 500 for emphasis,
-     buttons and data (hours, form fields). */
+     width) for every title and heading. Narrow: Owners Narrow 500 for the
+     header nav (bar and mobile sheet) and the footer's links, label and
+     copyright. Body: Owners 400, with 500 for emphasis, buttons and data
+     (hours, form fields). */
   --font-display: "Owners", sans-serif;
   --font-narrow: "Owners Narrow", sans-serif;
   --font-body: "Owners", sans-serif;
   --display-weight: 500;
   --display-track: -0.015em;
   --display-lh: 1.05;
+  /* Body copy is tracked out a little for legibility; headings keep
+     --display-track, labels and buttons their own. */
+  --track-body: 0.01em;
 
   /* --- Global type scale (all Owners). Page titles and the home tagline use
      --fs-display; section headings --fs-h2; intros --fs-lead; body --fs-body;
@@ -45,6 +49,7 @@
   --fs-body: clamp(16px, 1.15vw, 18px);    /* Owners 400, line-height 1.6 */
   --fs-item: clamp(19px, 1.4vw, 20px);     /* Owners 500: menu item and product names, prices */
   --fs-small: 14px;                        /* Owners 500, labels */
+  --fs-nav: 24px;                          /* Owners Narrow 500: header links (red needs 24px+), footer page links */
 
   /* --- Line heights --- */
   --lh-snug: 1.2;

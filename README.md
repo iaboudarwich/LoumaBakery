@@ -19,7 +19,7 @@ The website of Louma Bakery, a sister-run neighborhood bakery at 3223 Wilshire B
 | **Decap CMS** in `public/admin/` | The web editor. Saving in it commits the changed JSON file to GitHub, which triggers a deploy. Login goes through **DecapBridge** (email and password, no GitHub account needed). |
 | **Netlify** | Hosting, automatic deploys, and Netlify Forms for the three forms (newsletter, catering, careers). |
 | **`motion`** | The small animation library behind the drawing reveals and section fade-ins (`src/scripts/motion.ts`). The home hero's pen baguette loop is plain CSS (`src/components/PenDraw.astro`). |
-| **Owners** (Ohno Type Co) | The only typeface, three files in `public/fonts/` (Owners Regular, Owners Medium, Owners Narrow Bold). A webfont licence is still needed; see the handoff checklist. |
+| **Owners** (Ohno Type Co) | The only typeface, four files in `public/fonts/` (Owners Regular, Owners Medium, Owners Narrow Medium, Owners Narrow Bold). A webfont licence is still needed; see the handoff checklist. |
 
 ## Run it locally
 
@@ -98,8 +98,8 @@ The newsletter (in the footer of every page), the catering inquiry and the job a
 Full reference: [`docs/BRAND.md`](docs/BRAND.md). The detailed rules for code are in `CLAUDE.md`.
 
 - **Eight colours only**: Louma Red `#ED2739` (the main colour), Burgundy `#A10017`, Peach `#FF676C`, Tangerine `#FF8926`, Fairy `#DDEAC3`, Butter `#FBF5D4` (the page background), White and Ink `#1D1D1B`. Red text only at 24px and up, or bold at 19px and up (the header links); smaller text is ink or burgundy.
-- **One typeface**, Owners: Owners 500 for titles and headings, Owners 400 for body, and Owners Narrow Bold only in the header nav.
-- **The footer is burgundy** with every word in butter, in the site's normal type (butter on burgundy is 7.56:1), kept compact. The bottom row is the copyright line alone.
+- **One typeface**, Owners: Owners 500 for titles and headings, Owners 400 for body (tracked out slightly, 0.01em), and Owners Narrow Medium for the header links and the footer's links, label and copyright. Owners Narrow Bold is kept for the home hero tagline (round 5B).
+- **The footer is burgundy** with every word in butter, (butter on burgundy is 7.56:1): a big face drawing over the wordmark, the visit details in clear groups, Instagram and TikTok as icons, the page links in Owners Narrow. The bottom row is the copyright line alone.
 - **Square corners** everywhere. No shadows, gradients or blur.
 - **Photos straight** and shown as taken: no filters, no text over them, no animation.
 - **Only the designer's drawings** (plus the owner's traced signature and map). One derived file: `src/assets/brand/baguette-stroke.svg`, the baguette as a single pen line, which draws, erases and repeats in the home hero (`PenDraw.astro`, switch `penDraw` in `features.ts`). It is the only stroke drawing; how it was made is in `src/assets/brand/README.md`.

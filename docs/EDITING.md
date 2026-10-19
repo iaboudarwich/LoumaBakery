@@ -92,7 +92,7 @@ Page text → All pages → "Page not found" page: the label, headline, line and
 
 ## Editing the menu
 
-Go to **Menu → Menu items**. The menu is a list of categories (Pastries, Bread Selection, Sweets and so on, ending with Add-ons), and each category has a list of items. The Menu page shows them as plain text: the category name, the items one per line, then the category's notes. No prices, photos or drawings. On computers and tablets there are two columns, food on the left and drinks on the right; on phones it is one list, all the food first, then the drinks.
+Go to **Menu → Menu items**. The menu is a list of categories (Pastries, Bread Selection, Sweets and so on, ending with Add-ons), and each category has a list of items. The Menu page opens with its title and the intro paragraphs (side by side on computers), then a row of category names to jump to, then the menu as plain text: the category name, the items one per line, then the category's notes. No prices, photos or drawings. On computers and tablets there are two columns, food on the left and drinks on the right; on phones it is one list, all the food first, then the drinks.
 
 - **Change an item**: open the category, open the item, change its **Name**.
 - **An item's note**: the optional **Note** under an item's name shows in smaller text right below it, for example "Gluten free" or "Almond and pecan". Leave it empty for none.
@@ -108,7 +108,7 @@ Go to **Menu → Menu items**. The menu is a list of categories (Pastries, Bread
 
 ## Shop products
 
-Go to **Shop → Products**. The Shop page shows them as a plain grid of square pictures, in the order of this list (the hat first today), each with its name, price, note and, until it can be bought online, "Coming soon".
+Go to **Shop → Products**. The Shop page shows them as a plain grid of square pictures, in the order of this list (the hat first today), each with its name and price on one line, then its note and, until it can be bought online, "Coming soon".
 
 - **Reorder**: drag a product by the two short lines at its top.
 - **Price**: for example `$32`. Leave price empty to hide it (the tart and the cheesecake have none yet). Prices only ever show on the Shop page.
@@ -163,7 +163,7 @@ Go to **Site settings → Settings**.
 - **Instagram link** and **Instagram handle** (for example `@loumabakery`). The Contact page shows the handle as "@loumabakery on Instagram".
 - **TikTok link** and **TikTok handle**: the Contact page shows the handle as "@loumabakery on TikTok". Empty the link to hide TikTok everywhere.
 
-The footer at the bottom of every page shows the address, hours and both emails from here, then "Instagram" and "TikTok" as plain links (the handles are on the Contact page).
+The footer at the bottom of every page shows the address, hours and both emails from here, then the Instagram and TikTok icons, which link to the addresses here (the handles are on the Contact page).
 - **Uber Eats order link**: saved for later; it isn't shown anywhere yet.
 
 ## Hidden for now
@@ -184,7 +184,7 @@ The newsletter's heading and line stay editable under Page text → All pages �
 
 These can't be changed in the editor:
 
-- The page names in the top menu and the footer, and the footer's own text and layout (a dark red band: the face and wordmark, then Visit with the address, hours, emails, Instagram and TikTok, then the page links).
+- The page names in the top menu and the footer, and the footer's own text and layout (a dark red band: the face drawing and the wordmark, then Visit with the address, hours, emails and the Instagram and TikTok icons, then the page links).
 - The words on the forms (field names, buttons, the thank-you messages).
 - A few small headings, for example "Pick a starting point", "Catering inquiry", "Where you'd fit", "Tell us about you", and Address, Hours and Contact on the Contact page.
 - The drawings, the hand-drawn map, colours, fonts and layout.

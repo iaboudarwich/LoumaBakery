@@ -11,9 +11,9 @@ All art is filled outline (each pen line is a closed shape), coloured with `curr
 
 | File | From | viewBox (role) | Used by |
 |---|---|---|---|
-| `wordmark.svg` | `01-wordmark.svg` | `0 0 374 240` | Nav brand link and footer (both cropped to the art), 404 |
-| `baguette.svg` | `02-baguette-mark.svg` | `0 0 280 100` | `Doodle name="baguette"` (the home hero when `penDraw` is off) |
-| `face.svg` | `06-illustrations.svg`, the face | `0 0 286 265` | Footer (static, the master itself); `FaceDraw` on the 404 page |
+| `wordmark.svg` | `01-wordmark.svg` | `0 0 374 240` | The header brand link, the menu and the footer (all cropped to the art), the shop gift card, 404 |
+| `baguette.svg` | `02-baguette-mark.svg` | `0 0 280 100` | `Doodle name="baguette"` (not placed on a page at the moment) |
+| `face.svg` | `06-illustrations.svg`, the face | `0 0 286 265` | Footer (static, under the wordmark); `FaceDraw` on the 404 page |
 
 Each viewBox is the mark's long-standing role box, so every `width`/`height` in the markup
 stays valid. The art is fitted inside it (2% padding, centred, aspect kept) by a uniform
@@ -62,9 +62,9 @@ so the home hero baguette can draw itself like a pen. The master stays the fille
    and the medial axis is not a true centreline. Every sample lies inside the master's
    ink.
 
-`PenDraw.astro` inlines it with `pathLength="1"` and loops a dash-offset animation
-(see CLAUDE.md, MOTION WHITELIST). Do not use it anywhere else. If the master baguette
-ever changes, this file has to be made again the same way.
+It was made for the home hero's pen loop, which the round 5B home page replaced. The
+file is kept, not used. If it is used again and the master baguette has changed, it has
+to be made again the same way.
 
 ## Doodles
 

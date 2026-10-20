@@ -20,7 +20,7 @@ The owner's brief for this version of the site: [docs/brief/2026-10-website-brie
 
 ## 2. Licensing
 
-- [ ] **The Owners typeface.** Owners is a commercial font by Ohno Type Co (ohnotype.co). The site currently uses the bakery's desktop font files, converted for the web. Desktop licences don't cover websites, so **buy a webfont licence before the public launch**. The site uses four styles: Owners Regular (400), Owners Medium (500), Owners Narrow Medium (500) and Owners Narrow Bold (700). The licence must cover all four. If Ohno supplies new webfont files, replace the four files in `public/fonts/` with the same names (owners-400, owners-500, owners-narrow-500, owners-narrow-700).
+- [ ] **The Owners typeface.** Owners is a commercial font by Ohno Type Co (ohnotype.co). The site currently uses the bakery's desktop font files, converted for the web. Desktop licences don't cover websites, so **buy a webfont licence before the public launch**. The site uses three styles: Owners Regular (400), Owners Medium (500) and Owners Narrow Bold (700). The licence must cover all three. If Ohno supplies new webfont files, replace the three files in `public/fonts/` with the same names (owners-400, owners-500, owners-narrow-700).
 - [ ] **Photos.** All photos come from the bakery's own shoots and the owner's files (see `src/assets/img/CREDITS.md`). Confirm the photographer's agreement covers web use.
 
 ## 3. Waiting on the owner
@@ -29,12 +29,15 @@ The owner's brief for this version of the site: [docs/brief/2026-10-website-brie
 
 - [ ] **Uber Eats**: if online ordering goes ahead, send the link. It goes in Site settings → Uber Eats order link, and the developer adds a button for it.
 - [ ] **A phone number**: no phone number is shown anywhere today, on purpose. Decide whether to show one.
-- [ ] **Shop prices and Square links.** The Shop shows the Louma Hat ($32), Maple Pecan Tarte, Burnt Basque Cheesecake, Berry Tart and a Gift Card, all "Coming soon". Waiting on the owner:
+- [ ] **Shop prices and Square links.** The Shop shows the Louma Hat ($32), Maple Pecan Tarte, Burnt Basque Cheesecake, Berry Tart and a Gift Card, all with a "Coming soon" box. The designer's file shows $32 on every card as a placeholder; the real prices are hers to send. Waiting on the owner:
   - [ ] Prices for the pre-order items: the Maple Pecan Tarte, the Burnt Basque Cheesecake and the Berry Tart (she confirmed prices go on pre-order items only, never on the menu; hidden until set).
-  - [ ] A Square link for each product (hat, Maple Pecan Tarte, Burnt Basque Cheesecake, Berry Tart) and for the gift card (she confirmed the gift card will be a Square link). Paste each into Shop → Products → that product → **Link** (see EDITING.md, "Shop products"). With a link, the product becomes a link and "Coming soon" goes.
+  - [ ] A Square link for each product (hat, Maple Pecan Tarte, Burnt Basque Cheesecake, Berry Tart) and for the gift card (she confirmed the gift card will be a Square link). Paste each into Shop → Products → that product → **Link** (see EDITING.md, "Shop products"). With a link, the "Coming soon" box becomes an "Add to Cart" button that opens the link.
   - [ ] Confirm the "48 hours notice" line stays. (The product list is hers, 16 Oct 2026: Maple Pecan Tarte, Burnt Basque Cheesecake, Berry Tart, plus the hat and the gift card.)
 - [ ] **Two shop photos (owner round 4, due the week of 19 Oct 2026).** The Maple Pecan Tarte and the Burnt Basque Cheesecake show placeholders (a stack of small pecan tarts, a cheesecake slice). Milla is sending the whole pecan tart and the whole cheesecake. Replace `src/assets/img/shop-pecan-tart.jpg` and `src/assets/img/shop-basque-cheesecake.jpg` with square crops of the new photos (same names, about 900 to 1200 pixels, metadata stripped), update both **Photo description**s in Shop → Products, and note the new sources in `src/assets/img/CREDITS.md`. The owner can also do it in the editor (EDITING.md, "Shop products").
-- [ ] **Design pass on Our Story and the colours.** Milla's designer will review the Our Story page and the site's overall colours. That comes as its own round; nothing is changed until then. Every colour is a token in `src/styles/tokens.css` (the eight brand colours, everything else mixed from them), so a palette change happens there.
+- [ ] **The Our Story design.** Samaaya's round 5B designs (`docs/brief/design/2026-10-19-samaaya/`) cover the home page, the menu, the Menu page and the Shop. Our Story has the new header, footer and type but keeps its layout until she sends a design for it. (Her round 5A notes on it, the letter combined with "Named after our sister" and the collage beside the sections, are in `docs/brief/2026-10-19-round5.md`.)
+- [ ] **Footer links waiting for pages.** Her footer lists Before you order, Careers, Donate and Accessibility under SAY HI. None has a page yet (Careers exists but is hidden). Each is one `{ label, href }` line in `siteConfig.footer.sayHi` (`src/config/site.ts`) once its page exists.
+- [ ] **"Mission" as the menu label.** Her menu calls The Louma Initiative "MISSION". Milla hasn't confirmed the rename, so the menu shows "The Louma Initiative". To rename it, change `siteConfig.nav.initiative.label` in `src/config/site.ts` (one line; the page title and address stay; /mission already redirects to /initiative).
+- [ ] **Team or family photos for the Initiative.** Samaaya asked "Any team or family photos?". The page has no photos by Milla's choice; it can take one if she sends some.
 - [ ] **The hand-drawn map**: the only copy is a small image from the brief. A higher-resolution scan or photo of the original drawing would let the map on the Contact page be traced again more cleanly.
 - [ ] **Photo names in the library**: confirm what is in three photos in `src/assets/img/unplaced/`: `swirl-buns-rack.jpg` and `swirl-buns-yellow-paper.jpg` (cardamom buns?), `sugar-bun-plate.jpg`, and `almond-croissants-tray.jpg` (almond croissants?).
 
@@ -44,13 +47,13 @@ The owner switched these off in owner feedback round 1 (October 2026). Nothing i
 
 | Part | Switch | While `false` |
 |---|---|---|
-| Catering page (`/catering`) and its inquiry form | `cateringPage` | Not built; 301 to `/` (`netlify.toml` and `astro.config.mjs`); not in the sitemap; no footer link |
+| Catering page (`/catering`) and its inquiry form | `cateringPage` | Not built; 301 to `/` (`netlify.toml` and `astro.config.mjs`); not in the sitemap; not linked |
 | Careers page (`/careers`) and its application form | `careersPage` | Same as Catering |
 | Footer newsletter signup ("Hear from the bakery") | `newsletter` | The row and its form render on no page |
 
 **To turn one back on:**
 
-1. In `src/config/features.ts`, set the switch to `true`. `astro.config.mjs` (redirects, sitemap) and the footer read the same flags, so they follow by themselves.
+1. In `src/config/features.ts`, set the switch to `true`. `astro.config.mjs` (redirects, sitemap) reads the same flags, so it follows by itself. The page is then built but not linked: add it to the footer's SAY HI list (`siteConfig.footer.sayHi` in `src/config/site.ts`, e.g. `{ label: 'Careers', href: '/careers' }`).
 2. For Catering or Careers, also delete that page's `[[redirects]]` block under "Hidden for now" at the bottom of `netlify.toml`. Netlify reads that file, not the flags, and would keep sending visitors home.
 3. Run `npx astro check` and `npm run build`, then push to `main`.
 4. In Netlify, check the form shows under Forms after the deploy (form detection only sees forms that are on a built page), and add its email notification (section 1).
@@ -83,5 +86,5 @@ An editor change can also be undone in the editor by setting the field back and 
 | Editor login and collaborators | DecapBridge (once set up) |
 | Photo credits | `src/assets/img/CREDITS.md` |
 | Brand reference and the designer's master files | `docs/BRAND.md`, `docs/brand/` |
-| The home hero's pen-drawn baguette: its stroke file, how it was made, and its on/off switch | `src/assets/brand/README.md`, `src/components/PenDraw.astro`, `penDraw` in `src/config/features.ts` |
+| The pen-drawn baguette's stroke file (kept, not used since round 5B) and how it was made | `src/assets/brand/README.md` |
 | Menu from a Google Sheet (switched off and guarded: the script refuses to run without `--force`) | `scripts/README.md` |

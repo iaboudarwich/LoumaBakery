@@ -115,30 +115,40 @@ The website follows the brand book.
 - **Colours**: exactly eight, as tokens in `src/styles/tokens.css`: Louma Red
   `#ED2739`, Burgundy `#A10017`, Peach `#FF676C`, Tangerine `#FF8926`, Fairy `#DDEAC3`,
   Butter `#FBF5D4`, White `#FFFFFF`, and Ink `#1D1D1B` (the board's registration
-  black) for text. Red is the primary colour, as on the board: the logo, the drawings,
-  the page titles, section headings and the header links. Red text is only used at
-  24px and up (the header links are 24px for this reason), or bold at 19px, because red on Butter is 3.86:1;
-  smaller text is Ink or Burgundy. Butter is the page; Burgundy, Fairy and White are
-  full-width colour blocks; the footer is burgundy with butter text in Owners Regular and Owners Narrow Medium
-  (7.56:1, fine at any size).
-- **Type**: Owners only, four styles as web fonts: Owners Medium for titles and
-  headings (regular width, slightly tightened) and for emphasis, buttons, names and
-  hours; Owners Regular for body, tracked out a little (0.01em) for legibility;
-  Owners Narrow Medium for the header links and the footer's links, label and
-  copyright (the designer's "semibold + condensed"); Owners Narrow Bold for the home
-  hero tagline (round 5B). A webfont licence is still needed; see `docs/HANDOFF.md`.
-- **Shapes**: square corners everywhere, no shadows, gradients or blur. (The board's
+  black). Since the designer's round 5B pages, burgundy and butter carry the site:
+  the home page is burgundy with butter text and a butter footer; every other page is
+  butter with burgundy text and a burgundy footer; the Menu and Shop open with a
+  burgundy band (7.56:1 either way, fine at any size). Red stays for the page titles
+  and section headings on the butter pages (Our Story, the Initiative, Contact), at
+  24px and up, because red on Butter is 3.86:1.
+- **Hover colour**: Peach, as the designer suggested ("the pink-red shade, maybe for
+  hover states"). It is never resting text, because peach text is 2.58:1 on butter and
+  2.93:1 on burgundy. On hover and keyboard focus a link keeps its colour and its
+  underline turns peach and 2px; an icon (the menu button, the close button, Instagram,
+  TikTok) keeps its colour and shows a 2px peach line under it; the button fills peach
+  with Ink text (5.96:1). Keyboard focus also shows a 2px ring in burgundy on butter or
+  butter on burgundy.
+- **Type** (the designer's round 5B system): Owners only, three styles as web fonts.
+  Owners Narrow Bold, uppercase, for every title and heading, the labels (VISIT, SAY
+  HI, MORE), the home tagline, product names, the menu's category links and the links
+  in the menu, as on the board's `LOUMA BAKERY` line. Owners Regular for body, intros,
+  menu items and notes, links, the footer and buttons, tracked out a little (0.01em)
+  for legibility; "Follow along" on the home page is Owners Regular too. Owners Medium
+  only for data and form fields. Sizes at 1440 from her files: 50px titles and tagline,
+  35px menu headings, 30px home intro, 25px body, 20px notes and buttons, 15px
+  copyright, each scaling down to phones. A webfont licence is still needed; see
+  `docs/HANDOFF.md`.
+- **Shapes**: square corners everywhere, no shadows or blur. No gradients, except the
+  soft ink scrim behind the home tagline, which keeps it readable on the croissants. (The board's
   colour tiles are rounded squares; the site keeps every corner square by the owner's
   choice.)
 - **Drawings**: only the designer's master art, in `src/assets/brand/`: the wordmark,
   the baguette mark, the face, the bread slice, and the 26 doodles cut from the board.
-  They are used as small red accents and reveal once as you scroll.
-- **The pen baguette.** At the owner's request the home hero's baguette draws itself
-  like a pen, rubs itself out along the same line and starts again. The master is a
-  filled outline, so `src/assets/brand/baguette-stroke.svg` was made from it: its
-  centreline as one continuous stroke at the master's line weight, checked against the
-  master (method in `src/assets/brand/README.md`). It is the only stroke drawing and is
-  used only there; every other baguette on the site is the filled master.
+  They are used as small accents (the small baguette in the menu, the bread slice on
+  the home page, the palm in the Shop band) and reveal once as you scroll.
+- **The pen baguette.** Until round 5B the home hero's baguette drew itself like a pen.
+  Its stroke file, `src/assets/brand/baguette-stroke.svg` (the master's centreline as
+  one continuous stroke, method in `src/assets/brand/README.md`), is kept but not used.
 - **Two drawings come from the owner, not the board.** Both were traced from the
   owner's own material and are kept beside the masters in `src/assets/brand/`:
   - `signature-milla.svg`: Milla's handwritten signature, from the printed founder's

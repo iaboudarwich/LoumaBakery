@@ -24,14 +24,17 @@ Every change is saved with its full history, so nothing is ever lost for good. I
 
 | To change | Go to |
 |---|---|
-| The big line beside the top photo ("A sister-run neighborhood bakery in Santa Monica") | Page text → All pages → Home page → **Tagline** |
-| The baguette drawing above it, which draws itself, rubs itself out and starts again | Not in the editor (see "Things that need the person who looks after the website") |
+The home page is dark red (burgundy) with cream text, and its footer is cream.
+
+| To change | Go to |
+|---|---|
+| The big line over the top photo ("A sister-run neighborhood bakery in Santa Monica") | Page text → All pages → Home page → **Tagline** |
 | The two introduction paragraphs | Page text → All pages → Home page → **Paragraphs** |
-| The heading above the Instagram photos | Page text → All pages → Home page → **Instagram heading** |
-| The photo at the top, beside the tagline | Photos → Site photos → **Home: top photo** (see "Swapping a photo") |
-| The four photos further down the page | Photos → Site photos → **Home: photo gallery**. The first two sit side by side as wide photos; the other two as tall photos. |
+| "Follow along", under the Instagram photos | Page text → All pages → Home page → **Instagram heading** |
+| The photo at the top, behind the tagline | Photos → Site photos → **Home: top photo** (see "Swapping a photo") |
+| The wide kitchen photo after the introduction | Photos → Site photos → **Home: kitchen photo** |
 | The Instagram photos | Instagram strip (see "The Instagram strip") |
-| The address and hours in the dark red band | Site settings (see "Hours, address and emails") |
+| The address and hours under the kitchen photo | Site settings (see "Hours, address and emails") |
 
 ### Our Story
 
@@ -56,13 +59,14 @@ This page has no photos, by the owner's choice. Never add numbers about team mem
 | To change | Go to |
 |---|---|
 | The title, the four introduction paragraphs and the allergen note | Page text → All pages → Menu page |
+| The photo in the dark red band at the top | Photos → Site photos → **Menu: photo** |
 | Menu items, their notes, categories and category notes (Add-ons is a category like the others) | Menu → Menu items (see "Editing the menu") |
 
 ### Shop
 
 | To change | Go to |
 |---|---|
-| The title and the "Coming soon" words | Page text → All pages → Shop page → **Headline** and **"Not open yet" text** |
+| The title, the "Coming soon" words and the "Add to Cart" button words | Page text → All pages → Shop page → **Headline**, **"Not open yet" text** and **Button text** |
 | The line under the title (pre-orders, 48 hours notice) | Shop → **Intro line** |
 | The products, their order, prices, notes, photos and links, and the gift card | Shop → **Products** (see "Shop products") |
 
@@ -92,7 +96,7 @@ Page text → All pages → "Page not found" page: the label, headline, line and
 
 ## Editing the menu
 
-Go to **Menu → Menu items**. The menu is a list of categories (Pastries, Bread Selection, Sweets and so on, ending with Add-ons), and each category has a list of items. The Menu page opens with its title and the intro paragraphs (side by side on computers), then a row of category names to jump to, then the menu as plain text: the category name, the items one per line, then the category's notes. No prices, photos or drawings. On computers and tablets there are two columns, food on the left and drinks on the right; on phones it is one list, all the food first, then the drinks.
+Go to **Menu → Menu items**. The menu is a list of categories (Pastries, Bread Selection, Sweets and so on, ending with Add-ons), and each category has a list of items. The Menu page opens with a dark red band (the counter photo on the left, the title and the intro paragraphs on the right; on phones the photo first), then the category names to jump to in two rows (food, then drinks), then the menu as plain text: the category name, the items one per line, then the category's notes. No prices or drawings. On computers and tablets there are two columns, food on the left and drinks on the right; on phones it is one list, all the food first, then the drinks.
 
 - **Change an item**: open the category, open the item, change its **Name**.
 - **An item's note**: the optional **Note** under an item's name shows in smaller text right below it, for example "Gluten free" or "Almond and pecan". Leave it empty for none.
@@ -108,7 +112,7 @@ Go to **Menu → Menu items**. The menu is a list of categories (Pastries, Bread
 
 ## Shop products
 
-Go to **Shop → Products**. The Shop page shows them as a plain grid of square pictures, in the order of this list (the hat first today), each with its name and price on one line, then its note and, until it can be bought online, "Coming soon".
+Go to **Shop → Products**. The Shop page shows them as a plain grid of square pictures, in the order of this list (the hat first today), each with its name and price on one line, then its note, then an "Add to Cart" button once it can be bought online, or a "Coming soon" box until then.
 
 - **Reorder**: drag a product by the two short lines at its top.
 - **Price**: for example `$32`. Leave price empty to hide it (the tart and the cheesecake have none yet). Prices only ever show on the Shop page.
@@ -123,7 +127,7 @@ Go to **Shop → Products**. The Shop page shows them as a plain grid of square 
 2. In **Shop → Products**, open that product and paste the address into **Link**.
 3. Click **Publish**.
 
-While **Link** is empty, the product shows "Coming soon" and can't be clicked. Once a link is there, the whole product (picture and name) becomes a link that opens your shop page in a new tab, and "Coming soon" disappears.
+While **Link** is empty, the product shows a "Coming soon" box that can't be clicked. Once a link is there, the box becomes an "Add to Cart" button that opens your shop page in a new tab. The gift card works the same way: paste the Square gift card page into its **Link**.
 
 **Two placeholder photos.** The Maple Pecan Tarte (three small tarts stacked on a plate) and the Burnt Basque Cheesecake (a slice on a plate) show stand-in photos until the whole pecan tart and whole cheesecake photos arrive. To swap one: open that product in **Shop → Products**, click its **Photo**, upload the new photo, update the **Photo description**, and Publish. Square photos work best; anything else is cropped to a square around the middle. (For the person who looks after the website: the files are `src/assets/img/shop-pecan-tart.jpg` and `src/assets/img/shop-basque-cheesecake.jpg`; replacing either file with a new photo of the same name, cropped square, at least 900 pixels, also works.)
 
@@ -135,35 +139,35 @@ Go to **Photos → Site photos**, click the photo you want to replace, and uploa
 
 | Slot | Shape | Minimum size |
 |---|---|---|
-| Home: top photo | Any shape: it is cropped to a tall frame (4:5 on phones), so keep the subject near the middle | 2400 pixels on the long side |
-| Home: photo gallery, 1st and 2nd | Cropped to a wide frame (3:2), side by side; 4:5 on phones | 1600 pixels on the long side |
-| Home: photo gallery, 3rd and 4th | Portrait (taller than wide) | 1600 pixels on the long side |
+| Home: top photo | Edge to edge: cropped wide (9:5) on computers and tall (2:3) on phones, both around the middle, with the tagline in cream over the middle. Pick a photo with no single subject at the edges and a mid-to-dark middle | 3000 pixels wide |
+| Home: kitchen photo | Edge to edge, cropped wide (about 2:1) on computers, 4:3 on phones | 3200 pixels wide |
+| Menu: photo | Fills the left half of the band, nearly square on computers, a wide strip on phones; portrait works best | 1600 pixels wide |
 | Our Story: photo | Portrait, with no border or margin around it (the page is the background) | 1200 pixels wide |
 | Instagram strip | Square works best | 600 pixels wide |
 | Shop products | Square (cropped around the middle), or a cutout PNG shown whole | 800 pixels wide |
 
-- **Crop focus** (home gallery and Our Story photos): when a slot crops a photo, this picks which part stays in view. **Centre** suits most photos; pick **Top**, **Upper middle**, **Just above centre**, **Just below centre**, **Lower middle**, **Bottom**, **Left** or **Right** when the subject sits off-centre. Then check the page after publishing. (The first home gallery photo, the pain au chocolat, uses **Just below centre** so the front pastry shows whole, chocolate end and all. If you swap that photo, check the front pastry is not cut off at the bottom; move the focus down if it is.)
+- **Crop focus** (the kitchen, Menu and Our Story photos): when a slot crops a photo, this picks which part stays in view. **Centre** suits most photos; pick **Top**, **Upper middle**, **Just above centre**, **Just below centre**, **Lower middle**, **Bottom**, **Left** or **Right** when the subject sits off-centre. Then check the page after publishing.
 - Keep each photo under 3 MB. The website makes the small, fast versions itself.
 - Use photos that are straight and not tilted. The website shows them exactly as taken, cropped to fit the slot's shape.
 - **Every photo needs a description**: one plain sentence about what is actually in the photo, like "Pain au chocolat cooling on a wire rack on a wooden counter". People who can't see the photo hear this sentence.
 
 ## The Instagram strip
 
-Go to **Instagram strip**. There are up to six photos, shown as squares: one row of six on computers, three across on tablets, two across on phones. Click a photo to replace it, and update its **Photo description**. Every tile links to the bakery's Instagram page. A tile without a photo is skipped.
+Go to **Instagram strip**. There are up to six photos, shown as squares edge to edge: one row of six on computers and tablets, three across on phones. Click a photo to replace it, and update its **Photo description**. Every tile links to the bakery's Instagram page. A tile without a photo is skipped.
 
 ## Hours, address and emails
 
 Go to **Site settings → Settings**.
 
-- **Opening hours**: one row for each group of days, for example "Tuesday – Sunday", "7:30 AM", "2:30 PM". For a closed day, type `Closed` in **Opens** and leave **Closes** empty. Hours show on the home page (in the dark red band), the Contact page, the footer and in search results.
+- **Opening hours**: one row for each group of days, for example "Tuesday – Sunday", "7:30 AM", "2:30 PM". For a closed day, type `Closed` in **Opens** and leave **Closes** empty. Hours show on the home page (under the kitchen photo), the Contact page, the footer and in search results. A closed day shows as "Closed Mondays".
 - **Address**: street, city, state and ZIP. The map link updates by itself.
 - **Parking note**: one line shown on the Contact page under the hours (today: "Parking available in the underground lot on Centinela."). Leave it empty to hide it.
 - **Email address**: the main contact email.
-- **Email for larger orders**: shown with "for larger orders".
+- **Email for larger orders**: shown with "for larger orders" on the Contact page; the footer's "Large Order Inquiries" link writes to it.
 - **Instagram link** and **Instagram handle** (for example `@loumabakery`). The Contact page shows the handle as "@loumabakery on Instagram".
 - **TikTok link** and **TikTok handle**: the Contact page shows the handle as "@loumabakery on TikTok". Empty the link to hide TikTok everywhere.
 
-The footer at the bottom of every page shows the address, hours and both emails from here, then the Instagram and TikTok icons, which link to the addresses here (the handles are on the Contact page).
+The footer at the bottom of every page shows the address and hours from here (Visit), the Instagram and TikTok icons, which link to the addresses here (Say hi), and Contact Us and Large Order Inquiries (More).
 - **Uber Eats order link**: saved for later; it isn't shown anywhere yet.
 
 ## Hidden for now
@@ -172,8 +176,8 @@ Three parts of the site are switched off by the owner's choice. Nothing was dele
 
 | Part | While hidden | Switch |
 |---|---|---|
-| The Catering page and its inquiry form | `/catering` goes to the home page; no footer link; not in search engines | `cateringPage` |
-| The Careers page and its job application form | `/careers` goes to the home page; no footer link; not in search engines | `careersPage` |
+| The Catering page and its inquiry form | `/catering` goes to the home page; not linked; not in search engines | `cateringPage` |
+| The Careers page and its job application form | `/careers` goes to the home page; not linked; not in search engines | `careersPage` |
 | The newsletter signup in the footer ("Hear from the bakery") | Not shown on any page | `newsletter` |
 
 The newsletter's heading and line stay editable under Page text → All pages → Home page → **Newsletter title** and **Newsletter line** (both marked "hidden on site for now").
@@ -184,7 +188,7 @@ The newsletter's heading and line stay editable under Page text → All pages �
 
 These can't be changed in the editor:
 
-- The page names in the top menu and the footer, and the footer's own text and layout (a dark red band: the face drawing and the wordmark, then Visit with the address, hours, emails and the Instagram and TikTok icons, then the page links).
+- The page names in the menu (the button at the top left of every page; today Home, Menu, Our Story, Shop and The Louma Initiative), and the footer's own words and layout (the wordmark and the face drawing; Visit, Say hi and More; the copyright). Before you order, Careers, Donate and Accessibility can join Say hi once their pages exist: one line each in `src/config/site.ts`.
 - The words on the forms (field names, buttons, the thank-you messages).
 - A few small headings, for example "Pick a starting point", "Catering inquiry", "Where you'd fit", "Tell us about you", and Address, Hours and Contact on the Contact page.
 - The drawings, the hand-drawn map, colours, fonts and layout.

@@ -1,7 +1,8 @@
 ---
 import { getEntry } from 'astro:content';
 import { siteConfig } from '../config/site';
-import { features, hiddenRoutes } from '../config/features';
+import { features } from '../config/features';
+import { hoursGroups } from '../lib/hours';
 import { Wordmark, WORDMARK_ART } from '../lib/brand';
 import Face from '../assets/brand/face.svg';
 import NewsletterForm from './NewsletterForm.astro';
@@ -9,30 +10,22 @@ import NewsletterForm from './NewsletterForm.astro';
 interface Props {
   /** Show the footer newsletter. Pages with their own signup (home) pass false. */
   newsletter?: boolean;
+  /** The footer's colour, the inverse of the page's: butter on the home
+      page, burgundy everywhere else. */
+  tone?: 'burgundy' | 'butter';
 }
 // The signup also needs features.newsletter on (off for now).
 const newsletter = (Astro.props.newsletter ?? true) && features.newsletter;
+const { tone = 'burgundy' } = Astro.props;
 
-const { address, hours, links } = siteConfig;
+const { address, links, footer } = siteConfig;
 const year = new Date().getFullYear();
-const home = (await getEntry('copy', 'home'))?.data;
-
-// The page links, in the header's order plus Contact. Pages switched off in
-// features.ts (hiddenRoutes) are not linked.
-const pages = [
-  { label: 'Home', href: '/' },
-  { label: 'Our Story', href: '/story' },
-  { label: 'The Louma Initiative', href: '/initiative' },
-  { label: 'Menu', href: '/menu' },
-  { label: 'Shop', href: '/shop' },
-  { label: 'Catering', href: '/catering' },
-  { label: 'Careers', href: '/careers' },
-  { label: 'Contact', href: '/visit' },
-].filter((l) => !hiddenRoutes.includes(l.href));
+const home = newsletter ? (await getEntry('copy', 'home'))?.data : undefined;
+const hours = hoursGroups();
 ---
 
-<footer class="site-foot">
-  <div class="container foot-inner">
+<footer class:list={['site-foot', `surface-${tone}`]}>
+  <div class="container">
     <!-- Newsletter: on every page's footer except those with their own signup. -->
     {newsletter && (
       <div class="foot-newsletter" id="newsletter">
@@ -45,33 +38,33 @@ const pages = [
     )}
 
     <div class="foot-cols">
-      <!-- Brand: the face above the wordmark, static. -->
+      <!-- Brand: the wordmark over the face, static. -->
       <div class="foot-brand">
-        <Face class="foot-face" width={160} height={149} aria-hidden="true" />
-        <Wordmark class="foot-wordmark" viewBox={WORDMARK_ART} width={160} height={59} aria-label={siteConfig.name} />
+        <Wordmark class="foot-wordmark" viewBox={WORDMARK_ART} width={192} height={71} aria-label={siteConfig.name} />
+        <Face class="foot-face" width={192} height={178} aria-hidden="true" />
       </div>
 
-      <!-- Visit: four groups (address, hours, emails, social icons), tight
-           inside, clearly apart from each other. -->
-      <div class="foot-visit">
+      <!-- Visit: the address, then each hours group, from settings.json. -->
+      <div class="foot-col">
         <h2 class="foot-h">Visit</h2>
-        <address class="foot-address">
-          <p>{address.street}, {address.city}, {address.state} {address.zip}</p>
-          <ul class="foot-hours" role="list">
-            {hours.map((h) => (
-              <li>
-                <span>{h.days}</span>
-                <span>{h.close ? `${h.open}–${h.close}` : h.open}</span>
-              </li>
-            ))}
-          </ul>
-          <ul class="foot-list" role="list">
-            <li><a class="foot-email" href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a></li>
-            <li><a class="foot-email" href={`mailto:${siteConfig.ordersEmail}`}>{siteConfig.ordersEmail}</a> for larger orders</li>
-          </ul>
+        <address class="foot-groups">
+          <p>{address.street},<br />{address.city}, {address.state} {address.zip}</p>
+          {hours.map((g) => <p>{g.lines.map((l, i) => (i ? <><br />{l}</> : l))}</p>)}
+        </address>
+      </div>
+
+      <!-- Say hi: its links (siteConfig.footer.sayHi), then Instagram and TikTok. -->
+      <div class="foot-col">
+        <h2 class="foot-h">Say hi</h2>
+        <div class="foot-groups">
+          {footer.sayHi.length > 0 && (
+            <ul class="foot-list" role="list">
+              {footer.sayHi.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+            </ul>
+          )}
           <ul class="foot-social" role="list">
             <li>
-              <a class="foot-icon" href={links.instagram} target="_blank" rel="noopener" aria-label="Instagram">
+              <a class="foot-icon icon-btn" href={links.instagram} target="_blank" rel="noopener" aria-label="Instagram">
                 <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
                   <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8" />
                   <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8" />
@@ -81,7 +74,7 @@ const pages = [
             </li>
             {links.tiktok && (
               <li>
-                <a class="foot-icon" href={links.tiktok} target="_blank" rel="noopener" aria-label="TikTok">
+                <a class="foot-icon icon-btn" href={links.tiktok} target="_blank" rel="noopener" aria-label="TikTok">
                   <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
                     <path fill="currentColor" d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
                   </svg>
@@ -89,43 +82,42 @@ const pages = [
               </li>
             )}
           </ul>
-        </address>
+        </div>
       </div>
 
-      <!-- Pages: no heading. -->
-      <nav class="foot-pages" aria-label="Footer">
+      <!-- More: Contact Us and Large Order Inquiries (siteConfig.footer.more). -->
+      <div class="foot-col">
+        <h2 class="foot-h">More</h2>
         <ul class="foot-list" role="list">
-          {pages.map((l) => (<li><a href={l.href}>{l.label}</a></li>))}
+          {footer.more.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
         </ul>
-      </nav>
+      </div>
     </div>
 
-    <div class="foot-base">
-      <p>© {year} {siteConfig.name}.</p>
-    </div>
+    <p class="foot-base">©{year} {siteConfig.name}.</p>
   </div>
 </footer>
 
 <style>
-  /* Burgundy band, everything in butter (7.56:1, AA at any size). Body lines
-     (address, hours, emails) in Owners 400; the page links, the label and the
-     copyright in Owners Narrow 500, the header's face. */
+  /* The footer is the page's inverse colour (.surface-butter on the home
+     page, .surface-burgundy elsewhere): text, icons, drawings and the
+     hairline all take currentColor. Four columns: the brand, Visit, Say hi,
+     More; then a hairline and the copyright, centred. */
   .site-foot {
-    --foot-line: color-mix(in srgb, var(--butter) 30%, transparent);
-    background: var(--burgundy);
-    color: var(--butter);
     font-size: var(--fs-body);
-    line-height: 1.4;
-    padding-block: var(--space-7) var(--space-4);
-    margin-top: var(--space-8);
+    line-height: 1.2;
+    padding-block: calc(var(--section-y) * 0.85) var(--space-6);
   }
+  /* A butter gap above a burgundy footer, so it never runs into a
+     burgundy block at the end of a page (the Contact page). */
+  .site-foot.surface-burgundy { margin-top: var(--space-8); }
   .site-foot p { max-width: none; }
   .site-foot p + p { margin-top: 0; }
 
   .foot-newsletter {
     padding-bottom: var(--space-5);
-    margin-bottom: var(--space-5);
-    border-bottom: 1px solid var(--foot-line);
+    margin-bottom: var(--space-7);
+    border-bottom: 1px solid currentColor;
   }
   .foot-news { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4); }
   .foot-news-h { font-weight: 500; font-size: var(--fs-lead); }
@@ -133,116 +125,66 @@ const pages = [
 
   .foot-cols {
     display: grid;
-    grid-template-columns: 1fr 1.6fr 1fr;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: var(--space-7) var(--block-gap);
+    align-items: start;
   }
 
   /* The marks are Astro SVG components rendered here: :global reaches their
-     root <svg>. The face is static (no draw, no reveal); the wordmark is as
-     wide as the face, under it. */
-  .foot-brand {
-    --mark-w: 160px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-4);
-  }
-  .foot-brand :global(.foot-face),
-  .foot-brand :global(.foot-wordmark) { display: block; width: var(--mark-w); height: auto; color: var(--butter); }
+     root <svg>. Static (no draw, no reveal). */
+  .foot-brand { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-6); }
+  .foot-brand :global(.foot-wordmark),
+  .foot-brand :global(.foot-face) { display: block; width: clamp(112px, 13.3vw, 192px); height: auto; color: currentColor; }
 
-  .foot-h,
-  .foot-pages a,
-  .foot-base { font-family: var(--font-narrow); font-weight: 500; }
   .foot-h {
-    font-size: var(--fs-small);
-    line-height: 1.4;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--butter);
-    margin-bottom: var(--space-2);
+    font-size: var(--fs-body);
+    line-height: 1.2;
+    color: inherit;
+    margin-bottom: var(--space-6);
   }
-  .foot-pages a { font-size: var(--fs-nav); line-height: 1.2; }
-
-  /* Groups: lines inside a group sit tight (one line-height apart); the
-     groups are --space-5 apart, three times the label's --space-2. */
-  .foot-address { font-style: normal; display: grid; gap: var(--space-5); justify-items: start; }
-  .foot-hours,
+  /* Lines inside a group sit tight; the groups are --space-5 apart. */
+  .foot-groups { display: grid; gap: var(--space-5); justify-items: start; font-style: normal; }
   .foot-list,
   .foot-social { margin: 0; padding: 0; }
-  .foot-hours {
-    display: grid;
-    grid-template-columns: max-content max-content;
-    column-gap: var(--space-4);
-    font-variant-numeric: tabular-nums;
-  }
-  .foot-hours li { display: contents; }
-  .foot-hours span { white-space: nowrap; }
-  .foot-pages .foot-list { display: grid; gap: var(--space-2); }
+  .foot-list { display: grid; }
 
-  /* Underlines: one plain solid line everywhere in the footer, same
-     thickness and offset. The two emails are always underlined; every other
-     link underlines on hover and keyboard focus only. Never a colour change. */
-  .site-foot a {
-    color: var(--butter);
-    text-decoration-line: none;
-    text-decoration-style: solid;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.2em;
-  }
-  .site-foot a.foot-email,
-  .site-foot a:focus-visible { text-decoration-line: underline; }
-  /* Every footer link at least 24px tall (WCAG 2.5.8). */
-  .foot-list a { display: inline-block; padding-block: 2px; }
-  /* Touch: 44px tap targets; the text after a link stays on its line. */
+  /* Links: no underline at rest; hover and focus draw the 2px peach line
+     (global.css), the text keeps its colour. Every footer link at least
+     24px tall (WCAG 2.5.8), 44px on touch. */
+  .foot-list a { display: inline-block; padding-block: 2px; text-decoration-line: none; }
   @media (pointer: coarse) {
-    .foot-list li { display: flex; flex-wrap: wrap; align-items: center; column-gap: 0.3em; }
     .foot-list a { display: inline-flex; align-items: center; min-height: 44px; }
   }
   @media (hover: hover) and (pointer: fine) {
-    .site-foot a:hover { text-decoration-line: underline; }
+    .foot-list a:hover { text-decoration-line: underline; }
   }
-  .site-foot :global(:focus-visible) { outline: 2px solid var(--butter); outline-offset: 3px; }
+  .foot-list a:focus-visible { text-decoration-line: underline; }
 
-  /* Instagram and TikTok: 24px icons in butter, each a 44px target. The
-     hover/focus underline is the same 1px line, drawn under the icon. */
+  /* Instagram and TikTok: 24px icons in 44px links (.icon-btn draws the
+     peach hover and focus line). */
   .foot-social { display: flex; gap: var(--space-2); margin-inline-start: -10px; }
   .foot-icon {
-    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 44px;
     height: 44px;
+    color: inherit;
   }
   .foot-icon svg { display: block; width: 24px; height: 24px; }
-  .foot-icon::after {
-    content: '';
-    position: absolute;
-    inset-inline: 10px;
-    bottom: 5px;
-    height: 1px;
-    background: currentColor;
-    visibility: hidden;
-  }
-  .foot-icon:focus-visible::after { visibility: visible; }
-  @media (hover: hover) and (pointer: fine) {
-    .foot-icon:hover::after { visibility: visible; }
-  }
 
-  /* The copyright: butter at 80% (5.1:1 on burgundy; 70% would be 4.1:1). */
   .foot-base {
-    margin-top: var(--space-7);
-    padding-top: var(--space-3);
-    border-top: 1px solid var(--foot-line);
-    color: color-mix(in srgb, var(--butter) 80%, var(--burgundy));
+    margin-top: var(--section-y);
+    padding-top: var(--space-5);
+    border-top: 1px solid currentColor;
+    font-size: var(--fs-fine);
+    text-transform: uppercase;
+    text-align: center;
   }
 
-  /* Phones: one column in the same order, a smaller face, the page links in
-     two columns. */
+  /* Phones: one column; the wordmark and the face side by side on top. */
   @media (max-width: 47.99rem) {
     .foot-cols { grid-template-columns: 1fr; }
-    .foot-brand { --mark-w: 112px; }
-    .foot-pages a { font-size: var(--fs-lead); }
-    .foot-pages .foot-list { grid-template-columns: 1fr 1fr; column-gap: var(--space-4); }
+    .foot-brand { flex-direction: row; align-items: center; }
   }
 </style>

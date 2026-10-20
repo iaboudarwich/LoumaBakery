@@ -46,7 +46,8 @@
   },
   "shop": {
     "title": "Shop",
-    "status": "Coming soon"
+    "status": "Coming soon",
+    "cart": "Add to Cart"
   },
   "visit": {
     "title": "Come say hi"

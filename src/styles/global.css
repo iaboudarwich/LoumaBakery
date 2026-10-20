@@ -104,11 +104,10 @@ h3 {
   line-height: var(--lh-snug);
   text-wrap: balance;
 }
-/* Headings are Owners 500 (the display face). The footer's column labels
-   set their own small uppercase label style in Footer.astro. */
+/* Headings are Owners Narrow 700, uppercase (the display face). */
 h1,
 h2,
-h3 { font-weight: var(--display-weight); letter-spacing: var(--display-track); }
+h3 { font-weight: var(--display-weight); letter-spacing: var(--display-track); text-transform: uppercase; }
 
 /* Base sizes from the layout system's scale (every page heading also carries
    a role class: .display, .h2, ...). */
@@ -140,13 +139,23 @@ a {
   color: var(--link);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.18em;
-  transition: color var(--dur-fast) var(--ease-out);
+  transition: color var(--dur-fast) var(--ease-out), text-decoration-color var(--dur-fast) var(--ease-out);
 }
 
+/* Hover and keyboard focus: the text keeps its colour (peach text fails AA
+   on butter and on burgundy) and the underline turns peach, 2px. */
 @media (hover: hover) and (pointer: fine) {
   a:hover {
     color: var(--link-hover);
+    text-decoration-line: underline;
+    text-decoration-color: var(--peach);
+    text-decoration-thickness: 2px;
   }
+}
+a:focus-visible {
+  text-decoration-line: underline;
+  text-decoration-color: var(--peach);
+  text-decoration-thickness: 2px;
 }
 
 /* --------------------------------------------------------------- Focus */
@@ -155,7 +164,7 @@ a {
 }
 
 :focus-visible {
-  outline: 2px solid var(--ink);
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
   border-radius: 0;
 }
@@ -180,6 +189,29 @@ a {
     scroll-behavior: auto !important;
   }
 }
+
+/* Icon controls (the menu and close buttons, the Instagram and TikTok
+   links): hover and keyboard focus draw a 2px peach line under the icon.
+   The icon keeps its colour: peach itself would be 2.6:1 on butter and
+   2.9:1 on burgundy. */
+.icon-btn { position: relative; }
+.icon-btn::after {
+  content: '';
+  position: absolute;
+  inset-inline: 10px;
+  bottom: 4px;
+  height: 2px;
+  background: var(--peach);
+  visibility: hidden;
+}
+@media (hover: hover) and (pointer: fine) {
+  .icon-btn:hover::after { visibility: visible; }
+}
+.icon-btn:focus-visible::after { visibility: visible; }
+
+/* The page behind the open menu does not scroll. */
+html.menu-open,
+html.menu-open body { overflow: hidden; }
 
 /* ----------------------------------------------------------- Helpers */
 .visually-hidden {
@@ -267,7 +299,6 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
    component) renders. */
 .ph { width: 100%; }
 .ph--portrait { aspect-ratio: 4 / 5; }
-.ph--landscape { aspect-ratio: 3 / 2; }
 
 /* --- Section + page headers --- */
 .sec-head { margin-bottom: var(--space-6); }
@@ -326,8 +357,8 @@ img.img-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
   color: var(--burgundy);
 }
 .form-msg--error { color: var(--red); font-size: clamp(15px, calc(15px + (100vw - 1920px) * 0.003125), 17px); }
-/* The footer is burgundy: both messages butter. */
-.site-foot :is(.form-msg--success, .form-msg--error) { color: var(--butter); }
+/* In the footer both messages take the footer's text colour. */
+.site-foot :is(.form-msg--success, .form-msg--error) { color: inherit; }
 
 /* ===================================================== Motion scaffolding
    Hidden initial states apply ONLY when the matching html class is present
@@ -417,7 +448,7 @@ html.sys-slab .foot-news-row input {
 
 /* While the iOS keyboard is up (any field focused), the sticky bar steps aside. */
 @media (max-width: 768px) {
-  html.kb-open .site-nav { visibility: hidden; }
+  html.kb-open .head-bar { visibility: hidden; }
 }
 
 /* Contact links: comfortable 44px touch targets on touch devices (the
@@ -465,97 +496,105 @@ html.sys-slab .foot-news-row input {
   .grid-12 > * { grid-column: 1 / -1; }
 }
 
-/* Type roles. Red only at display size (24px+); small text is ink/burgundy. */
-.display {
-  font-family: var(--font-display);
-  font-weight: var(--display-weight);
-  font-size: var(--fs-display);
-  line-height: var(--display-lh);
-  letter-spacing: var(--display-track);
-  color: var(--red);
-  text-wrap: balance;
-}
+/* Type roles: Owners Narrow 700, uppercase. Red on butter only here, at
+   24px and up (3.86:1 passes AA as large text). */
+.display,
 .h2 {
   font-family: var(--font-display);
   font-weight: var(--display-weight);
-  font-size: var(--fs-h2);
   line-height: var(--display-lh);
   letter-spacing: var(--display-track);
+  text-transform: uppercase;
   color: var(--red);
   text-wrap: balance;
 }
-/* Body text (owner round 3): no ink body copy. Every page body paragraph is
-   burgundy at the lead size, like the home intro: .lead, the Catering and
-   Careers .lede, and the paragraphs of a two-column text row (the Our Story
-   and Initiative sections). Defined once, here. The header, footer, menu
-   items, shop products, labels and form fields keep their own type. */
+.display { font-size: var(--fs-display); }
+.h2 { font-size: var(--fs-h2); }
+/* Body text: no ink body copy. Every page body paragraph is burgundy at the
+   body size: .lead, the Catering and Careers .lede, and the paragraphs of a
+   two-column text row (the Our Story and Initiative sections). Defined once,
+   here. The home intro sets --fs-lead on top of it. */
 .lead,
 .page-intro .lede,
 .text-row-body p {
-  font-size: var(--fs-lead);
-  line-height: 1.45;
+  font-size: var(--fs-body);
+  line-height: 1.4;
   color: var(--burgundy);
 }
 .lead + .lead,
-.text-row-body p + p { margin-top: var(--block-gap); }
+.text-row-body p + p { margin-top: 1em; }
 .label {
-  font-family: var(--font-body);
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
   font-size: var(--fs-small);
-  letter-spacing: 0.04em;
+  letter-spacing: var(--display-track);
+  text-transform: uppercase;
 }
 
 /* Page title band: the same top/bottom rhythm on every page in this system. */
 .page-intro { padding-block: var(--section-y) calc(var(--section-y) / 2); }
-/* Split page header (Menu, Shop): the title, then its intro (.page-intro-body)
-   one --block-gap below; from 64rem side by side on the 12-column grid,
-   title in columns 1-4, intro in 6-12, both starting at the top. */
-.page-intro-split {
-  display: grid;
-  row-gap: var(--block-gap);
+
+/* Surfaces: a burgundy or butter block sets its own text, link and focus
+   colours, so anything inside reads right on it (the home page body, the
+   header, the menu, the footer, the page bands). */
+.surface-burgundy {
+  --link: var(--butter);
+  --link-hover: var(--butter);
+  --focus: var(--butter);
+  background: var(--burgundy);
+  color: var(--butter);
 }
-.page-intro-body { max-width: 48em; }
-.page-intro-body p { max-width: none; }
-@media (min-width: 64rem) {
-  .page-intro-split {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: var(--block-gap);
-    align-items: start;
-  }
-  .page-intro-split > :first-child { grid-column: 1 / span 4; }
-  .page-intro-body { grid-column: 6 / -1; }
+.surface-butter {
+  --link: var(--burgundy);
+  --link-hover: var(--burgundy);
+  --focus: var(--burgundy);
+  background: var(--butter);
+  color: var(--burgundy);
 }
+
+/* Page band (Menu, Shop): a full-bleed burgundy block under the header with
+   the page title and its intro in butter. Each page lays out its own
+   content inside it. */
+.page-band .display,
+.page-band p { color: var(--butter); }
+.page-band p { max-width: none; }
 .page-intro .lede {
   margin-top: var(--block-gap);
   max-width: 34em;
 }
 
-/* The primary button (.btn.btn-primary: the catering/careers submit and the
-   404 CTA, whose markup stays as it is): solid burgundy, butter text, 48px
-   tall, Owners 500 16px; hover red. Square, flat. Prefixed with html.sys-slab
-   so it wins over the legacy .btn rules above. The footer's .btn-coral keeps
-   its own look. (The Shop's .button set went with the round 3 product grid.) */
-html.sys-slab .btn.btn-primary {
+/* The primary button (.btn.btn-primary: the shop's "Add to Cart", the
+   catering/careers submit and the 404 CTA): solid burgundy, butter text,
+   Owners 400 at --fs-small, 44px tall. Hover and focus: a peach fill with
+   ink text (5.96:1; burgundy on peach would be 2.93:1). Square, flat.
+   .btn-box is the same box as a plain outlined label (the shop's "Coming
+   soon"): not a control. Prefixed with html.sys-slab so it wins over the
+   legacy .btn rules above. The footer's .btn-coral keeps its own look. */
+html.sys-slab .btn.btn-primary,
+.btn-box {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 48px;
-  padding: 0 var(--space-6);
+  min-height: 44px;
+  padding: 0 var(--space-4);
   border: 1px solid var(--burgundy);
-  background: var(--burgundy);
-  color: var(--butter);
   font-family: var(--font-body);
-  font-weight: 500;
-  font-size: 16px;
+  font-weight: 400;
+  font-size: var(--fs-small);
   line-height: 1.2;
   text-decoration: none;
+}
+html.sys-slab .btn.btn-primary {
+  background: var(--burgundy);
+  color: var(--butter);
   cursor: pointer;
-  transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
 }
+.btn-box { color: var(--burgundy); }
 @media (hover: hover) and (pointer: fine) {
-  html.sys-slab .btn.btn-primary:hover { background: var(--red); border-color: var(--red); color: var(--butter); }
+  html.sys-slab .btn.btn-primary:hover { background: var(--peach); border-color: var(--peach); color: var(--ink); }
 }
-html.sys-slab .btn.btn-primary:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+html.sys-slab .btn.btn-primary:focus-visible { background: var(--peach); border-color: var(--peach); color: var(--ink); outline: 2px solid var(--burgundy); outline-offset: 3px; }
 
 /* Opening hours: a two-column grid; a day range or a time range never wraps.
    Each <li> holds two <span>s (days, times). */

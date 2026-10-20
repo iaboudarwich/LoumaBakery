@@ -21,6 +21,10 @@ interface Props {
   schema?: 'bakery' | 'localbusiness';
   /** Show the footer newsletter. Pages with their own signup (home) pass false. */
   footerNewsletter?: boolean;
+  /** The page colour. "burgundy" (home): a burgundy page and header with
+      butter text, and a butter footer. "butter" (every other page): the
+      reverse. */
+  tone?: 'burgundy' | 'butter';
 }
 
 // The owner's tagline (copy.json "home") is the site-wide default title and
@@ -35,7 +39,9 @@ const {
   noindex = false,
   schema,
   footerNewsletter = true,
+  tone = 'butter',
 } = Astro.props;
+const inverse = tone === 'burgundy' ? 'butter' : 'burgundy';
 
 const pageTitle = title ? `${title} · ${siteConfig.name}` : `${siteConfig.name} · ${ownerTagline}`;
 const canonical = new URL(Astro.url.pathname, SITE_URL).href;
@@ -103,14 +109,13 @@ const jsonLd =
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <link rel="preload" as="font" type="font/woff2" href="/fonts/owners-400.woff2" crossorigin />
-    <link rel="preload" as="font" type="font/woff2" href="/fonts/owners-500.woff2" crossorigin />
-    <link rel="preload" as="font" type="font/woff2" href="/fonts/owners-narrow-500.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/owners-narrow-700.woff2" crossorigin />
     <meta name="generator" content={Astro.generator} />
 
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <meta name="theme-color" content="#FBF5D4" />
+    <meta name="theme-color" content={tone === 'burgundy' ? '#A10017' : '#FBF5D4'} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <!-- Favicons + app icons (generated from face.svg) -->
@@ -137,7 +142,7 @@ const jsonLd =
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- Fonts: three self-hosted Owners woff2 files (src/styles/fonts.css, public/fonts). -->
+    <!-- Fonts: three self-hosted Owners woff2 files (src/styles/fonts.css, public/fonts); the two above the fold on every page (Owners 400, Owners Narrow 700) are preloaded. -->
 
     <!-- schema.org structured data (home and visit: Bakery).
          Escape `<` so a value containing </script> can't break out. -->
@@ -160,50 +165,34 @@ const jsonLd =
       })();
     </script>
 
-    <!-- Critical header CSS, inlined to protect first paint. One flat sticky
-         bar on butter on every page, no rule under it: 88px desktop, 64px on
-         narrow screens. -->
+    <!-- The skip link, inlined so it works before the stylesheet loads. -->
     <style is:inline>
-      :root {
-        --nav-h: 88px;
-      }
-      @media (max-width: 47.99rem) {
-        :root { --nav-h: 64px; }
-      }
       .skip-link {
         position: absolute;
         left: 1rem;
-        top: -3rem;
+        top: 0;
         z-index: 10000;
+        translate: 0 -110%;
         background: var(--burgundy, #A10017);
         color: var(--butter, #FBF5D4);
+        outline-color: var(--butter, #FBF5D4);
         padding: 0.6rem 1rem;
         border-radius: 0;
-        transition: top 160ms ease;
+        transition: translate 160ms ease;
       }
       .skip-link:focus {
-        top: 1rem;
-      }
-      .site-nav {
-        position: sticky;
-        inset-block-start: 0;
-        z-index: 1000;
-        height: calc(var(--nav-h) + env(safe-area-inset-top, 0px));
-        padding-top: env(safe-area-inset-top, 0px);
-        display: flex;
-        align-items: center;
-        background: var(--butter, #FBF5D4);
+        translate: 0 1rem;
       }
     </style>
   </head>
 
-  <body>
+  <body class={`surface-${tone}`}>
     <a class="skip-link" href="#main">Skip to content</a>
-    <Nav />
+    <Nav tone={tone} />
     <main id="main">
       <slot />
     </main>
-    <Footer newsletter={footerNewsletter} />
+    <Footer newsletter={footerNewsletter} tone={inverse} />
 
     <script>
       import '../scripts/motion.ts';

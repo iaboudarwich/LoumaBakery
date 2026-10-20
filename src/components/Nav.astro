@@ -1,177 +1,122 @@
 ---
 import { siteConfig } from '../config/site';
-import MobilePanel from './MobilePanel.astro';
-// The nav crops the wordmark to its art (WORDMARK_ART) so the drawing fills the
-// bar's height; the file itself keeps its 374x240 role box.
+import SiteMenu from './SiteMenu.astro';
+// The wordmark is cropped to its art (WORDMARK_ART) so the drawing fills its
+// box; the file itself keeps its 374x240 role box.
 import { Wordmark, WORDMARK_ART } from '../lib/brand';
 
-// Main nav: single source for the bar and the mobile panel. Home is the first
-// link (the wordmark also goes home). Contact lives in the footer, not here.
-const links = [
-  { label: 'Home', href: '/' },
-  { label: 'Our Story', href: '/story' },
-  { label: 'The Louma Initiative', href: '/initiative' },
-  { label: 'Menu', href: '/menu' },
-  { label: 'Shop', href: '/shop' },
-];
-
+interface Props {
+  /** The bar's colour: burgundy with a butter wordmark (home), or butter
+      with a burgundy wordmark (every other page). */
+  tone?: 'burgundy' | 'butter';
+}
+const { tone = 'butter' } = Astro.props;
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
-const isActive = (href: string) => path === href;
 ---
 
-{/* One flat row on butter, sticky on every page (base styles are inlined in
-    BaseLayout for first paint): red wordmark left, five links right. */}
-<nav class="site-nav" aria-label="Primary">
-  <div class="container nav-inner">
-    <a href="/" class="brand" aria-label={`${siteConfig.name} home`}><Wordmark class="brand-mark" viewBox={WORDMARK_ART} aria-hidden="true" /></a>
-
-    <ul class="nav-links" role="list">
-      {
-        links.map((l) => (
-          <li>
-            <a href={l.href} aria-current={isActive(l.href) ? 'page' : undefined}>
-              {l.label}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-
-    <button
-      type="button"
-      class="nav-toggle"
-      aria-label="Open menu"
-      aria-expanded="false"
-      aria-controls="mobile-panel"
-    >
-      <span class="nav-toggle-bar"></span>
-      <span class="nav-toggle-bar"></span>
-    </button>
+{/* The header: the menu button left, the wordmark centred, no links. Tall at
+    the top of the page; once the page scrolls, a compact bar fixed to the
+    top (html.head-compact, set by the script below). The block keeps its
+    tall height in the page, so nothing below it moves. */}
+<header class:list={['site-head', `surface-${tone}`]}>
+  <div class="head-bar">
+    <div class="container head-inner">
+      <button type="button" class="nav-toggle icon-btn" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+      <a href="/" class="brand" aria-label={`${siteConfig.name} home`}>
+        <Wordmark class="brand-mark" viewBox={WORDMARK_ART} aria-hidden="true" />
+      </a>
+    </div>
   </div>
+</header>
 
-  <MobilePanel links={links} currentPath={path} />
-</nav>
-
-{/* No-JS fallback: the mobile toggle needs JS, so without it surface the links
-    inline and hide the dead toggle; mobile visitors keep their navigation. */}
-<noscript>
-  <style>
-    @media (max-width: 53.75rem) {
-      .nav-toggle { display: none !important; }
-      .nav-links {
-        display: flex !important;
-        flex-wrap: wrap;
-        gap: 0.25rem 1rem;
-        justify-content: flex-end;
-      }
-    }
-  </style>
-</noscript>
+<SiteMenu currentPath={path} />
 
 <style>
-  .nav-inner {
-    /* Above the full-screen mobile panel (a sibling inside this nav), so the
-       wordmark and the close control stay visible and tappable while open. */
+  .site-head {
     position: relative;
-    z-index: 1250;
+    z-index: 1000;
+    height: calc(var(--head-h) + env(safe-area-inset-top, 0px));
+  }
+  .head-bar {
+    height: 100%;
+    padding-top: env(safe-area-inset-top, 0px);
+    background: inherit;
+    color: inherit;
+  }
+  /* With JS the bar is fixed to the top and shrinks once the page scrolls;
+     without JS it is the tall block, in the page. */
+  :global(html.js) .head-bar {
+    position: fixed;
+    inset: 0 0 auto;
+    height: calc(var(--head-h) + env(safe-area-inset-top, 0px));
+    transition: height var(--dur) var(--ease-out);
+  }
+  :global(html.head-compact) .head-bar { height: calc(var(--nav-h) + env(safe-area-inset-top, 0px)); }
+
+  .head-inner {
+    position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: var(--space-4);
-    width: 100%;
+    justify-content: center;
     height: 100%;
   }
 
+  /* The wordmark, centred; 160px wide at 1440, smaller in the compact bar. */
   .brand {
     display: inline-flex;
     align-items: center;
     min-height: 44px; /* tap target */
-    color: var(--red);
-    text-decoration: none;
-  }
-  /* :global because the svg is the Wordmark child's. */
-  .brand :global(.brand-mark) {
-    display: block;
-    height: clamp(34px, 2.8vw, 40px);
-    width: auto;
     color: inherit;
   }
+  .brand :global(.brand-mark) {
+    display: block;
+    width: var(--brand-w);
+    height: auto;
+    color: inherit;
+    transition: width var(--dur) var(--ease-out);
+  }
+  :global(html.head-compact) .brand :global(.brand-mark) { width: var(--brand-w-compact); }
 
-  .nav-links {
-    display: flex;
-    gap: clamp(1rem, 2.4vw, 2.25rem);
-    margin: 0;
-    padding: 0;
-  }
-  .nav-links a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    /* Owners Narrow 500 at 24px: large text, so red on butter (3.86:1)
-       passes AA. */
-    font-family: var(--font-narrow);
-    font-weight: 500;
-    font-size: var(--fs-nav);
-    color: var(--red);
-    text-decoration: none;
-    position: relative;
-    transition: color var(--dur-fast) var(--ease-out);
-  }
-  @media (pointer: coarse) {
-    .nav-links a { min-width: 44px; justify-content: center; }
-  }
-  /* Active page: a 2px red rule under the link. Hover: the link turns
-     burgundy (the rule keeps its colour). */
-  .nav-links a::after {
-    content: '';
-    position: absolute;
-    inset-inline: 0;
-    bottom: 6px;
-    height: 2px;
-    background: var(--red);
-    transform: scaleX(0);
-    transform-origin: 0 50%;
-    transition: transform var(--dur) var(--ease-out);
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .nav-links a:hover { color: var(--burgundy); }
-  }
-  .nav-links a[aria-current='page']::after { transform: scaleX(1); }
-  @media (prefers-reduced-motion: reduce) {
-    .nav-links a::after { transition: none; }
-  }
-
-  /* --- Mobile toggle (narrow screens only) --- */
+  /* The menu button: three lines, left, level with the wordmark's middle. */
   .nav-toggle {
-    display: none;
-    width: 44px;
-    height: 44px;
-    margin-inline-end: -10px;
-    background: transparent;
-    border: 0;
-    padding: 10px;
+    position: absolute;
+    inset-inline-start: max(var(--gutter), env(safe-area-inset-left));
+    top: 50%;
+    translate: -10px -50%;
+    display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 6px;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+    border: 0;
+    background: transparent;
+    color: inherit;
   }
   .nav-toggle-bar {
     display: block;
     height: 2px;
     width: 100%;
-    background: var(--ink);
-    transition: transform var(--dur-fast) var(--ease-out);
-  }
-  .site-nav[data-menu-open='true'] { z-index: 1300; }
-  .nav-toggle[aria-expanded='true'] .nav-toggle-bar:first-child {
-    transform: translateY(4px) rotate(45deg);
-  }
-  .nav-toggle[aria-expanded='true'] .nav-toggle-bar:last-child {
-    transform: translateY(-4px) rotate(-45deg);
-  }
-
-  /* The five links fit on one row down to ~860px; below that, the menu. */
-  @media (max-width: 53.75rem) {
-    .nav-links { display: none; }
-    .nav-toggle { display: flex; }
+    background: currentColor;
   }
 </style>
+
+<script>
+  // The compact bar: html.head-compact once the page has scrolled past the
+  // top. One passive scroll listener, read in a frame.
+  const root = document.documentElement;
+  let queued = false;
+  const update = () => {
+    queued = false;
+    root.classList.toggle('head-compact', window.scrollY > 8);
+  };
+  update();
+  window.addEventListener('scroll', () => {
+    if (!queued) { queued = true; requestAnimationFrame(update); }
+  }, { passive: true });
+</script>

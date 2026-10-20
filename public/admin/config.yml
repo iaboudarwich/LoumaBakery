@@ -93,19 +93,18 @@ collections:
         label: "Site photos"
         file: "src/data/images.json"
         fields:
-          - { name: hero, label: "Home: top photo", widget: image, choose_url: false, hint: "The photo beside the tagline at the top of the home page. It fills a tall column on computers and shows 4:5 on phones, so keep the subject near the middle. At least 2400px on the long side, under 3MB." }
+          - { name: hero, label: "Home: top photo", widget: image, choose_url: false, hint: "The photo at the top of the home page, edge to edge, with the tagline in butter over its middle. It shows wide (9:5) on computers and tall (2:3) on phones, cropped around the centre, so pick a photo with no single subject at the edges and a mid-to-dark middle the tagline can sit on. At least 3000px wide, under 3MB." }
           - { name: heroAlt, label: "Top photo description", widget: string, hint: "What the photo shows, for screen readers. e.g. Rows of croissants on a cooling rack" }
-          - name: homeGallery
-            label: "Home: photo gallery"
-            label_singular: "Photo"
-            widget: list
-            max: 4
+          - name: homeKitchen
+            label: "Home: kitchen photo"
+            widget: object
             summary: "{{fields.alt}}"
-            hint: "Four photos further down the home page, in the order shown: the 1st and 2nd side by side as wide (3:2) photos, the 3rd and 4th as tall (4:5) photos. On phones every photo shows 4:5. At least 1600px on the long side, under 3MB each."
+            hint: "The wide photo after the intro on the home page, edge to edge: about 2:1 on computers, 4:3 on phones. Landscape, at least 3200px wide, under 3MB."
             fields:
               - { name: image, label: "Photo", widget: image, choose_url: false }
               - { name: alt, label: "Photo description", widget: string, hint: "What the photo shows, for screen readers." }
-              - name: focus
+              - &focus
+                name: focus
                 label: "Crop focus"
                 widget: select
                 required: false
@@ -121,6 +120,15 @@ collections:
                   - { label: "Bottom", value: "bottom" }
                   - { label: "Left", value: "left" }
                   - { label: "Right", value: "right" }
+          - name: menu
+            label: "Menu: photo"
+            widget: object
+            summary: "{{fields.alt}}"
+            hint: "The photo in the left half of the band at the top of the Menu page: nearly square on computers, a wide strip on phones. Portrait works best, at least 1600px wide, under 3MB."
+            fields:
+              - { name: image, label: "Photo", widget: image, choose_url: false }
+              - { name: alt, label: "Photo description", widget: string, hint: "What the photo shows, for screen readers." }
+              - *focus
           - name: story
             label: "Our Story: photos"
             label_singular: "Photo"
@@ -131,22 +139,7 @@ collections:
             fields:
               - { name: image, label: "Photo", widget: image, choose_url: false }
               - { name: alt, label: "Photo description", widget: string, hint: "What the photo shows, for screen readers." }
-              - name: focus
-                label: "Crop focus"
-                widget: select
-                required: false
-                default: "center"
-                hint: "Which part of the photo to keep when it is cropped. Centre suits most photos."
-                options:
-                  - { label: "Centre", value: "center" }
-                  - { label: "Top", value: "top" }
-                  - { label: "Upper middle", value: "50% 30%" }
-                  - { label: "Just above centre", value: "50% 45%" }
-                  - { label: "Just below centre", value: "50% 60%" }
-                  - { label: "Lower middle", value: "50% 70%" }
-                  - { label: "Bottom", value: "bottom" }
-                  - { label: "Left", value: "left" }
-                  - { label: "Right", value: "right" }
+              - *focus
 
   # ================================================== SITE SETTINGS =========
   - name: settings
@@ -252,6 +245,7 @@ collections:
             fields:
               - { name: title, label: "Headline", widget: string }
               - { name: status, label: "“Not open yet” text", widget: string, hint: "Shown under any product that has no link yet, e.g. Coming soon. The products are under “Shop” in the left menu." }
+              - { name: cart, label: "Button text", widget: string, hint: "The button under a product that has a link, e.g. Add to Cart. It opens the product's link in a new tab." }
           # ---- Visit page ----
           - name: visit
             label: "Contact page"

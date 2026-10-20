@@ -1,0 +1,219 @@
+---
+import { siteConfig } from '../config/site';
+import { Wordmark, WORDMARK_ART } from '../lib/brand';
+import Doodle from './Doodle.astro';
+
+interface Props {
+  currentPath: string;
+}
+const { currentPath } = Astro.props;
+
+// The full-screen menu, opened by the header's menu button on every page.
+// The five page links sit in a ring around the small baguette: Home above,
+// Menu left, Our Story right, Shop bottom-left, the Initiative bottom-right
+// (the DOM follows that reading order). Phones: a centred list under the
+// baguette. Labels come from siteConfig.nav.
+const { home, menu, story, shop, initiative } = siteConfig.nav;
+const ring = [
+  { ...home, at: 'top' },
+  { ...menu, at: 'left' },
+  { ...story, at: 'right' },
+  { ...shop, at: 'bottom-left' },
+  { ...initiative, at: 'bottom-right' },
+];
+---
+
+<div id="site-menu" class="site-menu surface-burgundy" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <div class="menu-top container">
+    <button type="button" class="menu-close icon-btn" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+        <path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-width="2" />
+      </svg>
+    </button>
+    <a href="/" class="menu-brand" aria-label={`${siteConfig.name} home`}>
+      <Wordmark class="menu-brand-mark" viewBox={WORDMARK_ART} aria-hidden="true" />
+    </a>
+  </div>
+
+  <nav class="menu-nav" aria-label="Primary">
+    <Doodle name="baguette-small" size={200} color="butter" class="menu-baguette" />
+    <ul class="ring" role="list">
+      {ring.map((l) => (
+        <li class={`ring-${l.at}`}>
+          <a href={l.href} aria-current={currentPath === l.href ? 'page' : undefined}>{l.label}</a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</div>
+
+{/* No JS: the menu button can't open it, so the menu shows as a plain block
+    under the header. */}
+<noscript>
+  <style>
+    .site-menu[hidden] { display: block !important; position: static !important; opacity: 1 !important; padding-bottom: var(--block-gap); }
+    .site-menu .menu-top, .nav-toggle { display: none !important; }
+  </style>
+</noscript>
+
+<style>
+  /* Full screen, burgundy, above the header. Opens and closes with a short
+     fade (instant with reduced motion). */
+  .site-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 1300;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* short landscape screens: every link stays reachable */
+    overscroll-behavior: contain;
+    padding-bottom: calc(var(--block-gap) + env(safe-area-inset-bottom, 0px));
+    opacity: 0;
+    transition: opacity var(--dur) var(--ease-out);
+  }
+  .site-menu[hidden] { display: none; }
+  .site-menu[data-open='true'] { opacity: 1; }
+
+  /* The top row repeats the header's: the close button where the menu
+     button was, the wordmark centred, at the header's current height. */
+  .menu-top {
+    position: relative;
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(var(--head-h) + env(safe-area-inset-top, 0px));
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  :global(html.head-compact) .menu-top { height: calc(var(--nav-h) + env(safe-area-inset-top, 0px)); }
+  .menu-close {
+    position: absolute;
+    inset-inline-start: max(var(--gutter), env(safe-area-inset-left));
+    top: 50%;
+    translate: -10px -50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    background: transparent;
+    color: inherit;
+  }
+  .menu-brand { display: inline-flex; align-items: center; min-height: 44px; color: inherit; }
+  .menu-brand :global(.menu-brand-mark) { display: block; width: var(--brand-w); height: auto; color: inherit; }
+  :global(html.head-compact) .menu-brand :global(.menu-brand-mark) { width: var(--brand-w-compact); }
+
+  /* The ring: a 3 x 3 grid around the baguette, which sits in the centre
+     cell. Side columns are equal, so the baguette stays on the page's
+     centre line whatever the labels' lengths. */
+  .menu-nav {
+    --ring-gap: clamp(32px, 4vw, 56px);
+    position: relative;
+    flex: 1;
+    display: grid;
+    place-items: center;
+    padding-inline: var(--gutter);
+  }
+  .menu-nav :global(.menu-baguette) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    width: 200px;
+  }
+  .ring {
+    display: grid;
+    grid-template-columns: 1fr 200px 1fr;
+    grid-template-rows: auto 72px auto;
+    gap: var(--ring-gap);
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+  .ring-top { grid-area: 1 / 2; justify-self: center; }
+  .ring-left { grid-area: 2 / 1; justify-self: end; align-self: start; }
+  .ring-right { grid-area: 2 / 3; justify-self: start; align-self: start; }
+  /* The bottom pair centre on the baguette's two ends. */
+  .ring-bottom-left { grid-area: 3 / 2; justify-self: start; translate: -50% 0; }
+  .ring-bottom-right { grid-area: 3 / 2; justify-self: end; translate: 50% 0; }
+
+  .ring a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-family: var(--font-display);
+    font-weight: var(--display-weight);
+    font-size: var(--fs-item);
+    letter-spacing: var(--display-track);
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--butter);
+    text-decoration-line: none;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+  }
+  .ring a[aria-current='page'] { text-decoration-line: underline; text-decoration-color: var(--butter); }
+  @media (hover: hover) and (pointer: fine) {
+    .ring a:hover { text-decoration-line: underline; text-decoration-color: var(--peach); text-decoration-thickness: 2px; }
+  }
+  .ring a:focus-visible { text-decoration-line: underline; text-decoration-color: var(--peach); text-decoration-thickness: 2px; }
+
+  /* Phones: the baguette above a centred list. */
+  @media (max-width: 47.99rem) {
+    .menu-nav { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--block-gap); }
+    .menu-nav :global(.menu-baguette) { position: static; translate: none; width: 160px; }
+    .ring { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); width: auto; }
+    .ring li { margin: 0; translate: none; align-self: center; }
+  }
+</style>
+
+<script>
+  // Open and close: the header's button toggles the menu; the close button
+  // and Esc close it. Focus moves to the close button and stays inside the
+  // menu while it is open, then returns to the menu button. The page behind
+  // does not scroll.
+  const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
+  const menu = document.querySelector<HTMLElement>('#site-menu');
+  const closeBtn = menu?.querySelector<HTMLButtonElement>('.menu-close');
+  if (toggle && menu && closeBtn) {
+    const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const focusables = () => Array.from(menu.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'));
+    let hideTimer = 0;
+
+    const onKeydown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+      if (e.key !== 'Tab') return;
+      const items = focusables();
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    };
+
+    const open = () => {
+      window.clearTimeout(hideTimer);
+      menu.hidden = false;
+      requestAnimationFrame(() => { menu.dataset.open = 'true'; });
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Close menu');
+      document.documentElement.classList.add('menu-open');
+      closeBtn.focus();
+      document.addEventListener('keydown', onKeydown);
+    };
+
+    const close = () => {
+      menu.dataset.open = 'false';
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open menu');
+      document.documentElement.classList.remove('menu-open');
+      document.removeEventListener('keydown', onKeydown);
+      toggle.focus();
+      if (reduced()) menu.hidden = true;
+      else hideTimer = window.setTimeout(() => { menu.hidden = true; }, 300);
+    };
+
+    toggle.addEventListener('click', () => (toggle.getAttribute('aria-expanded') === 'true' ? close() : open()));
+    closeBtn.addEventListener('click', close);
+  }
+</script>

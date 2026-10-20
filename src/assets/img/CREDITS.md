@@ -22,10 +22,8 @@ move it up a level and reference it.
 | File | Used for | Source | Shoot |
 |------|----------|--------|-------|
 | croissant-grid.jpg | Home hero (`images.json` hero); source frame of public/og-default.jpg. Renamed from hero.jpg | 20260830_LoumaBakery_0578 | 2026-08-30 |
-| pain-au-chocolat.jpg | Home gallery 1 | 20260830_LoumaBakery_0093 | 2026-08-30 |
-| counter-shelves.jpg | Home gallery 2 | brief PDF, page 5 (counter, tile wall, bread shelves; 2048x1366, the only copy) | brief PDF |
-| baker-raspberries.jpg | Home gallery 3 | 20260904_LoumaBakery_0034 | 2026-09-04 |
-| interior-table.jpg | Home gallery 4 | IMG_1703 | phone |
+| home-kitchen.jpg | Home kitchen photo (`images.json` homeKitchen), full-bleed. Round 5B export from the 8071x6054 original: Display P3 converted to sRGB, rotated 1.0° clockwise (window mullions, as kitchen-team.jpg), centre crop 7888x5917 (the largest 4:3 frame inside the rotated image), resized to 3200x2400, q82, metadata stripped | 20260830_LoumaBakery_0139 (same frame as unplaced/kitchen-team.jpg, which is a lower-quality copy) | 2026-08-30 |
+| menu-counter.jpg | Menu band photo (`images.json` menu). Round 5B export from the 6192x7740 original: Adobe RGB converted to sRGB, resized to 1600x2000, q82, metadata stripped, not cropped | 20260830_LoumaBakery_0375 (same frame as unplaced/staff-at-case.jpg) | 2026-08-30 |
 | story-collage.jpg | Our Story photo. Owner round 3: the cream margin baked into the export was trimmed off (crop x209 y283, 1473x1869 from 1878x2400) | eefec98f-5b8b-45f4-98dd-e80de5f5b7b0 (also on brief PDF page 8) | undated Dropbox export |
 | ig-1.jpg | Instagram strip tile 1 | IMG_0008 | phone |
 | ig-2.jpg | Instagram strip tile 2: the apple tart with two apples. 1200x1600 as sent, not re-encoded, no metadata in the file; the tile crops it square around the middle | apple-tart-with-apples.jpg | owner, WhatsApp, 2026-10-16 |
@@ -42,6 +40,10 @@ move it up a level and reference it.
 
 | File | Source | Shoot |
 |------|--------|-------|
+| unplaced/pain-au-chocolat.jpg | 20260830_LoumaBakery_0093 (the home gallery's first photo until round 5B) | 2026-08-30 |
+| unplaced/counter-shelves.jpg | brief PDF, page 5 (counter, tile wall, bread shelves; 2048x1366, the only copy; home gallery 2 until round 5B) | brief PDF |
+| unplaced/baker-raspberries.jpg | 20260904_LoumaBakery_0034 (home gallery 3 until round 5B) | 2026-09-04 |
+| unplaced/interior-table.jpg | IMG_1703 (home gallery 4 until round 5B) | phone |
 | unplaced/staff-at-case.jpg | 20260830_LoumaBakery_0375 | 2026-08-30 |
 | unplaced/bread-wall.jpg | 20260904_LoumaBakery_0041 (full frame, 2166x2400) | 2026-09-04 |
 | unplaced/croissants-cooling-racks.jpg | 6c8d1115-83e0-403e-b612-73627819e133 2 | undated Dropbox export |

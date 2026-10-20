@@ -11,20 +11,19 @@ Source of truth: the designer's brand board, docs/BRAND.md and docs/brand/. Toke
 --red #ED2739 (Louma Red, PRIMARY) · --burgundy #A10017 · --peach #FF676C · --tangerine #FF8926 · --fairy #DDEAC3 · --butter #FBF5D4 (page background) · --white #FFFFFF · --ink #1D1D1B (text)
 Derived, built only from those eight with color-mix(): --body (ink 85% / butter, 9.9:1 on butter), --muted (ink 70% / butter, 5.9:1), --hairline / --hairline-strong (ink at 8% / 16%), shadows. Never introduce another hex.
 
-## Red is the primary colour
-On the board red is everywhere: the logo, every drawing, the type specimen. Use it boldly, with one constraint: red text on butter is 3.86:1, so red TEXT must be 24px or larger, or bold at 18.66px or larger. Small text sits in ink (--body, --muted) or burgundy (7.56:1 on butter). Body paragraphs on the pages are burgundy at the lead size, never ink (owner round 3): one shared rule (.lead, .page-intro .lede, .text-row-body p). Links are burgundy, and hover burgundy. Butter text on red is also 3.86:1 and white on red 4.24:1, so anything on a red fill is large too. The footer is burgundy with butter text (7.56:1), set in normal type. Underlines are plain solid lines everywhere; in the footer the two emails are always underlined and the other links underline on hover and focus only. The header nav links are red Owners Narrow 500 at 24px, large text.
+## Colour roles (designer round 5B)
+Burgundy and butter carry the site: the home page is burgundy with butter text and a butter footer; every other page is butter with burgundy text and a burgundy footer; the Menu and Shop open with a full-bleed burgundy band (7.56:1 either way). Red is for page titles and section headings on the butter pages (Our Story, the Initiative, Contact, 404), at 24px or larger (red on butter is 3.86:1). Peach is the hover and focus accent, as the designer asked, and never resting text (2.58:1 on butter, 2.93:1 on burgundy): link underlines turn peach and 2px, icons show a 2px peach line under them, the button fills peach with ink text (5.96:1). Small text sits in burgundy (or ink in forms). Body paragraphs are burgundy at the body size, never ink: one shared rule (.lead, .page-intro .lede, .text-row-body p).
 Approved lockups from the board: butter on red, butter on burgundy, red on butter, burgundy on butter, butter on peach, burgundy on peach, tangerine on butter, peach on butter, red on burgundy, butter on tangerine, burgundy on fairy, peach on fairy. Check text-size contrast before using any of them for small type.
 
 ## Surfaces
-Butter is the page. Burgundy, fairy and white are full-width colour blocks (.block--burgundy/--fairy/--white); The footer is burgundy too; Louma Red is never a band. The colour change IS the divider (hard cut, no seams, no gradients). Photos are straight, full-bleed or in fixed-ratio slots, shown exactly as shot: no text, overlay or filter on them. No card behind the Our Story letter: it sits straight on the butter page.
+Butter or burgundy is the page (BaseLayout tone). Burgundy, fairy and white are full-width colour blocks (.block--*, .surface-*); Louma Red is never a band. The colour change IS the divider (hard cut, no seams). No gradients, except the soft ink scrim behind the home tagline on the hero photo. Photos are straight, full-bleed or in fixed slots, shown exactly as shot: no overlay or filter; the home tagline is the only text on a photo. No card behind the Our Story letter: it sits straight on the butter page.
 
-## Type: Owners, four faces
+## Type: Owners, three faces
 Owners superfamily by Ohno Type Co (src/styles/fonts.css, public/fonts):
-- Owners 500 (regular width): page titles and section headings (--fs-display clamp(36px,4.6vw,64px), --fs-h2 clamp(24px,2.6vw,36px); letter-spacing -0.015em, line-height 1.05), plus emphasis, labels (.label, 14px), buttons, product names, and the data voice (hours, address, form fields), tabular numerals.
-- Owners 400: body copy, tracked 0.01em (--track-body).
-- Owners Narrow 500: the header nav (and its mobile sheet) at 24px, and the footer's page links, "Visit" label and copyright.
-- Owners Narrow 700: the home hero tagline (round 5B).
-No italic face and no other weight ships; font-synthesis is off. Labels: Owners 500, 14px, burgundy on butter (butter on burgundy); the footer's "Visit" heading is Owners Narrow 500 14px uppercase in butter. No dash or rule prefix. A label earns its place or is deleted. No prices anywhere except shop products.
+- Owners Narrow 700, uppercase (the display face): every title and heading (--fs-display 50px at 1440, --fs-h2 35px), the labels (VISIT, SAY HI, MORE, .label), the home tagline, product names, the menu's category links and the links in the menu. Letter-spacing 0.01em, line-height 1.05.
+- Owners 400: body copy, intros, menu items and notes, links, the footer, buttons; "Follow along" on the home page too (not uppercase). Tracked 0.01em (--track-body).
+- Owners 500: data and form fields only.
+Sizes are the designer's at 1440 (50 / 35 / 30 / 25 / 25 / 20 / 15px), each scaling down to phones. No italic face and no other weight ships; font-synthesis is off. No dash or rule prefix on labels. A label earns its place or is deleted. No prices anywhere except shop products.
 Licence: the files are desktop TTFs; a webfont licence from Ohno Type Co is required before launch.
 
 ## Shapes
@@ -32,9 +31,9 @@ Square everywhere. Every radius is 0: buttons, chips, inputs, cards, photos, the
 
 ## The drawings
 All art in src/assets/brand/ is the designer's master, filled outline in currentColor (see the README there). Never redraw, trace, restyle or regenerate it; change it only from docs/brand/master.
-- wordmark.svg: hand-lettered LOUMA with BAKERY beneath. The nav brand link and the footer lockup.
-- face.svg: the scribble-hair face with closed eyes, the emotional centre. Footer ornament (static, butter, 160px wide; 112px on phones) and the 404 page, where it draws its outline on scroll, then settles filled.
-- baguette.svg: one loaf with three heart scores, the icon (filled). baguette-stroke.svg: its centreline as one stroke, made for the home hero's pen loop (PenDraw) and used nowhere else. The bread slice with a heart is the `bread-slice` doodle (the separate toast mark was removed, unused).
+- wordmark.svg: hand-lettered LOUMA with BAKERY beneath. The header brand link (centred), the menu, and the footer (over the face).
+- face.svg: the scribble-hair face with closed eyes, the emotional centre. Footer ornament (static, in the footer's text colour, up to 192px wide, under the wordmark) and the 404 page, where it draws its outline on scroll, then settles filled.
+- baguette.svg: one loaf with three heart scores, the icon (filled). baguette-stroke.svg: its centreline as one stroke, made for the old home hero pen loop; kept, not used since round 5B. baguette-small (doodles) sits at the centre of the menu. The bread slice with a heart is the `bread-slice` doodle (the separate toast mark was removed, unused).
 - doodles/: 26 single drawings from the board: ingredients, face, bread-slice, herb, palm, flower, kite, baguette-small, baguette-small-2, bubble-oui-oui, cup-ooo-la-la, waves-birds, bird, hearts, louma-smiley, cherries, flower-cluster, sun, sun-small, bear, bouquet, watermelon, live-laugh-louma, moon-stars, star-kite, star-kite-2.
 Use only these drawings. Hearts are the recurring motif across the set. Keep drawings small accents (<=160px desktop, <=120px mobile), never oversized set pieces. Red or burgundy line art on butter; butter on dark.
 

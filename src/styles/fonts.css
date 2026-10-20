@@ -1,24 +1,15 @@
 /*
- * Owners (MCKL / Ohno Type Co), the brand typeface. Four faces:
- *   Owners 500         titles and headings (the display face), emphasis,
- *                      labels, buttons, data (hours, form fields)
+ * Owners (MCKL / Ohno Type Co), the brand typeface. Three faces:
+ *   Owners Narrow 700  every title, heading and label, product names and the
+ *                      menu's links, uppercase (the display face)
  *   Owners 400         body
- *   Owners Narrow 500  the header nav (bar and mobile sheet) and the
- *                      footer's page links, label and copyright
- *   Owners Narrow 700  the home hero tagline (from round 5B; not preloaded)
+ *   Owners 500         emphasis and data (form fields)
  * woff2 subsets in public/fonts/: Basic Latin, Latin-1 Supplement, General
  * Punctuation and the four simple arrows, made with pyftsubset from the
  * desktop TTFs. Web use needs a webfont licence from Ohno Type Co before launch.
  * No italic face ships; font-synthesis is off in global.css so the browser
  * never fakes one.
  */
-@font-face {
-  font-family: 'Owners Narrow';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url('/fonts/owners-narrow-500.woff2') format('woff2');
-}
 @font-face {
   font-family: 'Owners Narrow';
   font-style: normal;

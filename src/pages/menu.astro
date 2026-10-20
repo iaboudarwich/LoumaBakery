@@ -4,12 +4,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { describe } from '../lib/seo';
 import { features as f } from '../config/features';
 import { noOrphan } from '../lib/typography';
+import Img from '../components/Img.astro';
+import { resolveImage } from '../lib/images';
 
 // Words: copy.json ("menu"); categories, items and their notes: menu.json
-// (CMS: "Menu"). No prices, photos or drawings, by the owner's choice. Plain
-// text like a printed menu: on wide screens two columns, food left and drinks
-// right (each category's `column`); on phones one list, food first.
+// (CMS: "Menu"); the band's photo: images.json ("menu"). No prices or
+// drawings, by the owner's choice. A burgundy band (the photo, then the title
+// and intro), the category links, then the menu as plain text: on wide
+// screens two columns, food left and drinks right (each category's
+// `column`); on phones one list, food first.
 const c = (await getEntry('copy', 'menu'))!.data;
+const images = (await getEntry('images', 'images'))!.data;
+const photo = images.menu && resolveImage(images.menu.image);
 const menu = (await getCollection('menu')).sort((a, b) => a.data.order - b.data.order);
 // Food first in the DOM, so phones and screen readers read food, then drinks.
 const columns = (['food', 'drinks'] as const)
@@ -19,57 +25,101 @@ const reveal = f.reveal ? 'reveal' : undefined;
 ---
 
 <BaseLayout title={c.title} description={describe(c.intro)}>
-  <header class="page-intro">
-    <div class="container">
-      <div class="page-intro-split">
-        <h1 class="display">{noOrphan(c.title ?? '')}</h1>
-        <div class="page-intro-body" data-anim={reveal}>
-          {c.intro.map((p) => <p class="lead">{p}</p>)}
-        </div>
+  <header class="page-band surface-burgundy menu-band">
+    <div class="menu-band-media">
+      {photo && <Img src={photo} alt={images.menu.alt} focus={images.menu.focus} class="menu-band-photo" sizes="(max-width: 47.99rem) 100vw, 50vw" widths={[600, 900, 1200, 1600]} priority />}
+    </div>
+    <div class="menu-band-text">
+      <h1 class="display">{noOrphan(c.title ?? '')}</h1>
+      <div class="menu-band-intro" data-anim={reveal}>
+        {c.intro.map((p) => <p>{p}</p>)}
       </div>
-      {/* Category links: one plain row that wraps; each jumps to its section. */}
-      <nav class="menu-jump" aria-label="Menu categories">
-        <ul role="list">
-          {menu.map((cat) => <li><a href={`#menu-${cat.id}`}>{cat.data.title}</a></li>)}
-        </ul>
-      </nav>
     </div>
   </header>
 
-  <div class="container menu-body">
-    <div class="menu-cols">
+  <div class="container">
+    {/* Category links: centred, one row per column (food, then drinks); each
+        jumps to its section. */}
+    <nav class="menu-jump" aria-label="Menu categories">
       {columns.map((cats) => (
-        <div class="menu-col">
-          {cats.map((cat) => (
-            <section class="menu-cat" id={`menu-${cat.id}`} aria-labelledby={`h-${cat.id}`}>
-              <h2 class="h2 cat-title" id={`h-${cat.id}`} data-anim={reveal}>{cat.data.title}</h2>
-              <ul class="items" role="list">
-                {cat.data.items.map((item) => (
-                  <li class="item">
-                    <span class="item-name">{item.name}</span>
-                    {item.note && <span class="item-note">{item.note}</span>}
-                  </li>
-                ))}
-              </ul>
-              {cat.data.notes.map((n) => <p class="cat-note">{n}</p>)}
-            </section>
-          ))}
-        </div>
+        <ul role="list">
+          {cats.map((cat) => <li><a href={`#menu-${cat.id}`}>{cat.data.title}</a></li>)}
+        </ul>
       ))}
-    </div>
+    </nav>
+  </div>
 
-    {c.allergenNote && <p class="allergen">{c.allergenNote}</p>}
+  <div class="container menu-body">
+    <div class="menu-wrap">
+      <div class="menu-cols">
+        {columns.map((cats) => (
+          <div class="menu-col">
+            {cats.map((cat) => (
+              <section class="menu-cat" id={`menu-${cat.id}`} aria-labelledby={`h-${cat.id}`}>
+                <h2 class="cat-title" id={`h-${cat.id}`} data-anim={reveal}>{cat.data.title}</h2>
+                <ul class="items" role="list">
+                  {cat.data.items.map((item) => (
+                    <li class:list={['item', item.note && 'item--noted']}>
+                      <span class="item-name">{item.name}</span>
+                      {item.note && <span class="item-note">{item.note}</span>}
+                    </li>
+                  ))}
+                </ul>
+                {cat.data.notes.map((n) => <p class="cat-note">{n}</p>)}
+              </section>
+            ))}
+          </div>
+        ))}
+      </div>
+
+      {c.allergenNote && <p class="allergen">{c.allergenNote}</p>}
+    </div>
   </div>
 </BaseLayout>
 
 <style>
-  /* Category links under the title and intro, full width: not sticky, wraps
-     on phones. */
-  .menu-jump { margin-top: calc(var(--block-gap) * 2); }
+  /* The band: full-bleed burgundy, the photo filling the left half and the
+     title over the intro, centred in the right half; at least min(52vw,
+     750px) tall (750 at 1440). Phones: the photo on top, 60vw tall. */
+  .menu-band {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    min-height: min(52vw, 750px);
+  }
+  /* The photo fills its half without setting the band's height. */
+  .menu-band-media { position: relative; }
+  .menu-band :global(.menu-band-photo) { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+  .menu-band-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--block-gap);
+    padding: calc(var(--block-gap) * 2) var(--gutter);
+  }
+  .menu-band-text .display { margin: 0; text-align: center; }
+  /* About 440px at 1440. */
+  .menu-band-intro { max-width: 17.6em; line-height: 1.15; }
+  .menu-band-intro p + p { margin-top: 1.15em; }
+  @media (max-width: 47.99rem) {
+    .menu-band { grid-template-columns: 1fr; min-height: 0; }
+    .menu-band-media { height: 60vw; }
+    .menu-band-intro { max-width: none; }
+  }
+
+  /* Category links: centred rows, Owners Narrow 700 uppercase, underlined.
+     Hover and focus: the underline turns peach. */
+  .menu-jump {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-2);
+    padding-block: var(--section-y);
+  }
   .menu-jump ul {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-2) var(--space-5);
+    justify-content: center;
+    gap: 0 var(--space-7);
     margin: 0;
     padding: 0;
   }
@@ -77,24 +127,30 @@ const reveal = f.reveal ? 'reveal' : undefined;
     display: inline-flex;
     align-items: center;
     min-height: 44px;
-    font-weight: 500;
+    font-family: var(--font-display);
+    font-weight: var(--display-weight);
+    font-size: var(--fs-body);
+    letter-spacing: var(--display-track);
+    text-transform: uppercase;
     color: var(--burgundy);
     text-decoration-line: underline;
-    text-decoration-style: solid;
     text-decoration-thickness: 1px;
     text-underline-offset: 0.2em;
   }
+  @media (hover: hover) and (pointer: fine) {
+    .menu-jump a:hover { text-decoration-color: var(--peach); text-decoration-thickness: 2px; }
+  }
+  .menu-jump a:focus-visible { text-decoration-color: var(--peach); text-decoration-thickness: 2px; }
 
-  /* Food and drinks: one list on narrow screens (food first, at most 40em),
-     two columns side by side from 48rem, the site breakpoint (at 768 each
-     column is about 330px and no item wraps), both starting at the top.
-     Categories inside a column sit --menu-gap apart. */
+  /* Food and drinks: one list on narrow screens (food first), two columns
+     side by side from 48rem, both starting at the top, inside a centred
+     --wrap-menu column. Categories sit --menu-gap apart. */
   .menu-body {
     --menu-gap: max(var(--space-7), calc(var(--section-y) * 0.45));
-    padding-block: calc(var(--section-y) / 2) var(--section-y);
+    padding-bottom: var(--section-y);
   }
+  .menu-wrap { max-width: var(--wrap-menu); margin-inline: auto; }
   .menu-cols { display: grid; row-gap: var(--menu-gap); }
-  .menu-col { max-width: 40em; }
   @media (min-width: 48rem) {
     .menu-cols {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -103,44 +159,42 @@ const reveal = f.reveal ? 'reveal' : undefined;
     }
   }
   .menu-cat {
-    /* An anchor jump lands the heading one block-gap under the header. */
+    /* An anchor jump lands the heading one block-gap under the compact bar. */
     scroll-margin-top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + var(--block-gap));
   }
   .menu-cat + .menu-cat { margin-top: var(--menu-gap); }
-  /* Category headings: red, smaller than a page's section headings on wide
-     screens so they don't compete with the title (28px at 1440 and up). Never
-     under 24px: red text on butter is 3.86:1, AA only as large text. */
-  .cat-title { font-size: clamp(24px, 1.95vw, 28px); margin-bottom: var(--space-4); }
+  /* Category headings: Owners Narrow 700 uppercase, burgundy. */
+  .cat-title { font-size: var(--fs-h2); color: var(--burgundy); margin-bottom: var(--space-4); }
 
-  /* Items: one per line, Owners 400 at --fs-item (19-20px), burgundy, close
-     together so a category reads as one list. A note sits right under its
-     name, small, burgundy at 80% (5.6:1 on butter). */
-  .items { margin: 0; padding: 0; display: grid; gap: var(--space-2); }
+  /* Items: one per line at --fs-item, burgundy, tight (line-height 1.15).
+     A note sits right under its name, small, uppercase, burgundy at 80%
+     (5.6:1 on butter); an item with a note gets a little room around it. */
+  .items { margin: 0; padding: 0; }
   .item-name,
   .item-note { display: block; }
   .item-name {
     font-size: var(--fs-item);
-    line-height: 1.4;
+    line-height: 1.15;
     color: var(--burgundy);
   }
-  .item-note {
-    margin-top: 2px;
-    font-size: var(--fs-small);
-    line-height: 1.4;
-    color: color-mix(in srgb, var(--burgundy) 80%, var(--butter));
-  }
+  .item--noted { margin-block: var(--space-2); }
+  .item--noted:first-child { margin-top: 0; }
+  .item-note,
   .cat-note {
     font-size: var(--fs-small);
-    line-height: 1.4;
-    color: var(--burgundy);
+    line-height: 1.15;
+    text-transform: uppercase;
   }
-  .items + .cat-note { margin-top: var(--space-5); }
-  .cat-note + .cat-note { margin-top: var(--space-2); }
+  .item-note { color: color-mix(in srgb, var(--burgundy) 80%, var(--butter)); }
+  .cat-note { color: var(--burgundy); }
+  .items + .cat-note { margin-top: var(--space-4); }
+  .cat-note + .cat-note { margin-top: 0; }
 
   .allergen {
-    margin-top: var(--menu-gap);
+    margin-top: calc(var(--menu-gap) * 1.5);
     max-width: 40em;
-    font-size: var(--fs-small);
+    font-size: var(--fs-body);
+    line-height: 1.15;
     color: var(--burgundy);
   }
 </style>

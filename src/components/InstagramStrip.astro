@@ -4,10 +4,16 @@ import { siteConfig } from '../config/site';
 import Img from './Img.astro';
 import { resolveImage } from '../lib/images';
 
+interface Props {
+  /** The heading under the tiles (copy.json home.instagramTitle). */
+  title?: string;
+}
+const { title } = Astro.props;
+
 // Up to six square tiles from src/data/instagram.json (CMS: "Instagram strip"),
-// each linking to the Instagram profile in a new tab, then the handle as a link.
-// Tiles with no image (or a photo that can't be found) are skipped; with none
-// left, only the handle renders.
+// each linking to the Instagram profile in a new tab, then the heading and
+// the handle as a link. Tiles with no image (or a photo that can't be found)
+// are skipped; with none left, only the heading and handle render.
 const tiles = (await getCollection('instagram'))
   .slice(0, 6)
   .map((t) => ({ photo: resolveImage(t.data.image), alt: t.data.alt }))
@@ -21,32 +27,51 @@ const { instagram, instagramHandle } = siteConfig.links;
       {tiles.map((t) => (
         <li>
           <a class="ig-tile" href={instagram} target="_blank" rel="noopener">
-            <Img src={t.photo!} alt={t.alt} class="ig-img" sizes="(max-width: 39.99rem) 50vw, (max-width: 63.99rem) 33vw, 216px" widths={[240, 480, 720]} />
+            <Img src={t.photo!} alt={t.alt} class="ig-img" sizes="(max-width: 47.99rem) 34vw, 17vw" widths={[240, 480, 720]} />
           </a>
         </li>
       ))}
     </ul>
   )}
-  <p class="ig-handle"><a href={instagram} target="_blank" rel="noopener">{instagramHandle}</a></p>
+  <div class="ig-follow">
+    {title && <h2 id="ig-h" class="ig-title">{title}</h2>}
+    <p class="ig-handle"><a href={instagram} target="_blank" rel="noopener">{instagramHandle}</a></p>
+  </div>
 </div>
 
 <style>
-  /* Six squares in one row from 64rem (about 210px each at 1440), three
-     across from 40rem, two on phones. Photos render as shot (square crop via
-     the slot's aspect ratio). The srcset tops out at 720w: enough for the
-     widest tile (about 310px, three across at 1023) on a DPR-2 screen and a
-     phone tile at DPR 3. */
+  /* Edge to edge: six squares in one row from 48rem, three across on phones,
+     --space-1 apart. Photos render as shot (square crop via the slot's
+     aspect ratio). The srcset tops out at 720w: a tile is 240px at 1440 and
+     about 320px at 1920 (DPR 2), 130px on a phone (DPR 3). */
   .ig-tiles {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(8px, 1vw, 16px);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-1);
     margin: 0;
     padding: 0;
   }
-  @media (min-width: 40rem) { .ig-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-  @media (min-width: 64rem) { .ig-tiles { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+  @media (min-width: 48rem) { .ig-tiles { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
   .ig-tile { display: block; }
   .ig-tile :global(.ig-img) { aspect-ratio: 1; }
-  .ig-handle { margin-top: var(--block-gap); }
-  .ig-handle a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; }
+
+  /* "Follow along" and the handle, centred, display size in Owners 400. */
+  .ig-follow {
+    padding-block: var(--section-y);
+    padding-inline: var(--gutter);
+    text-align: center;
+    font-size: var(--fs-display);
+    line-height: 1.15;
+  }
+  .ig-title {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: inherit;
+    line-height: inherit;
+    letter-spacing: var(--track-body);
+    text-transform: none;
+    color: inherit;
+  }
+  .ig-handle { max-width: none; }
+  .ig-handle a { text-decoration-line: underline; }
 </style>

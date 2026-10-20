@@ -5,27 +5,33 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { describe } from '../lib/seo';
 import { features as f } from '../config/features';
 import Img from '../components/Img.astro';
+import Doodle from '../components/Doodle.astro';
 import { Wordmark, WORDMARK_ART } from '../lib/brand';
 import { resolveImage } from '../lib/images';
 
-// Words: copy.json ("shop": the title and the "Coming soon" words). The intro
-// line and the products, in the order shown: shop.json (CMS: "Shop"). A plain
-// grid of product cards, no boxes. A product with a link is one link (new
-// tab); without one it shows "Coming soon" and is not a link.
+// Words: copy.json ("shop": the title, the "Coming soon" words and the
+// button words). The intro line and the products, in the order shown:
+// shop.json (CMS: "Shop"). A burgundy band (the palm, the title, the intro),
+// then a grid of product cards. A product with a link gets a button that
+// opens it in a new tab; without one, a "Coming soon" box that is not a
+// control. The first photo loads eagerly: on phones it is in the first
+// screen, under the band.
 const c = (await getEntry('copy', 'shop'))!.data;
 const shop = (await getEntry('shop', 'shop'))!.data;
 const soon = c.status ?? '';
+const cart = c.cart ?? '';
 const products = shop.products.map((p) => ({ ...p, photo: p.image ? resolveImage(p.image) : undefined }));
 const reveal = f.reveal ? 'reveal' : undefined;
-const SIZES = '(max-width: 39.99rem) 100vw, (max-width: 63.99rem) 50vw, min(33vw, 440px)';
+const SIZES = '(max-width: 39.99rem) 100vw, (max-width: 63.99rem) 50vw, 343px';
 ---
 
 <BaseLayout title={c.title} description={describe([shop.intro])}>
-  <header class="page-intro">
-    <div class="container">
-      <div class="page-intro-split">
+  <header class="page-band surface-burgundy shop-band">
+    <div class="container shop-band-inner">
+      <Doodle name="palm" size={130} color="butter" animate={f.doodleDraw} class="shop-palm" />
+      <div class="shop-band-text">
         <h1 class="display">{noOrphan(c.title ?? '')}</h1>
-        {shop.intro && <div class="page-intro-body"><p class="lead">{shop.intro}</p></div>}
+        {shop.intro && <p>{shop.intro}</p>}
       </div>
     </div>
   </header>
@@ -33,54 +39,70 @@ const SIZES = '(max-width: 39.99rem) 100vw, (max-width: 63.99rem) 50vw, min(33vw
   <section class="section shop-grid" aria-label="Products">
     <div class="container">
       <ul class="products" role="list" data-anim={reveal} data-reveal-children>
-        {products.map((p) => {
-          const Tag = p.link ? 'a' : 'div';
-          const linkAttrs = p.link ? { href: p.link, target: '_blank', rel: 'noopener' } : {};
-          return (
-            <li>
-              <Tag class:list={['card', p.link && 'card--linked']} {...linkAttrs}>
-                <div class:list={['tile', `tile--${p.kind === 'giftcard' ? 'giftcard' : p.fit}`]}>
-                  {p.kind === 'giftcard' ? (
-                    <div class="giftcard" aria-hidden="true">
-                      <Wordmark class="giftcard-mark" viewBox={WORDMARK_ART} width={180} height={66} />
-                      <span class="giftcard-label">Gift card</span>
-                    </div>
-                  ) : p.photo ? (
-                    <Img src={p.photo} alt={p.alt || p.name} class="tile-img" sizes={SIZES} widths={[480, 720, 960]} />
-                  ) : null}
+        {products.map((p, i) => (
+          <li class="card">
+            <div class:list={['tile', `tile--${p.kind === 'giftcard' ? 'giftcard' : p.fit}`]}>
+              {p.kind === 'giftcard' ? (
+                <div class="giftcard" aria-hidden="true">
+                  <Wordmark class="giftcard-mark" viewBox={WORDMARK_ART} width={180} height={66} />
+                  <span class="giftcard-label">Gift card</span>
                 </div>
-                <div class="card-head">
-                  <h2 class="card-name">{p.name}</h2>
-                  {p.price && <p class="card-price">{p.price}</p>}
-                </div>
-                {p.note && <p class="card-note">{p.note}</p>}
-                {p.link
-                  ? <span class="visually-hidden"> (opens in a new tab)</span>
-                  : soon && <p class="label card-status">{soon}</p>}
-              </Tag>
-            </li>
-          );
-        })}
+              ) : p.photo ? (
+                <Img src={p.photo} alt={p.alt || p.name} class="tile-img" sizes={SIZES} widths={[480, 720, 960]} priority={i === 0} />
+              ) : null}
+            </div>
+            <div class="card-head">
+              <h2 class="card-name">{p.name}</h2>
+              {p.price && <p class="card-price">{p.price}</p>}
+            </div>
+            {p.note && <p class="card-note">{p.note}</p>}
+            {p.link
+              ? cart && <a class="btn btn-primary card-action" href={p.link} target="_blank" rel="noopener">{cart}<span class="visually-hidden">: {p.name} (opens in a new tab)</span></a>
+              : soon && <p class="btn-box card-action">{soon}</p>}
+          </li>
+        ))}
       </ul>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .shop-grid { padding-top: 0; }
+  /* The band: full-bleed burgundy, at least min(29.5vw, 425px) tall (425
+     at 1440); the palm and the title with the intro beside it, centred as
+     a group. Phones: the palm above the text, centred. */
+  .shop-band-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--block-gap) * 2);
+    min-height: min(29.5vw, 425px);
+    padding-block: var(--block-gap);
+  }
+  .shop-band-inner :global(.shop-palm) { flex: none; width: clamp(96px, 9vw, 130px); }
+  .shop-band-text { display: grid; gap: var(--space-5); }
+  .shop-band-text .display { margin: 0; }
+  /* About 420px at 1440. */
+  .shop-band-text p { max-width: 16.8em; line-height: 1.15; }
+  @media (max-width: 47.99rem) {
+    .shop-band-inner { flex-direction: column; gap: var(--block-gap); text-align: center; }
+    .shop-band-text { justify-items: center; }
+  }
 
-  /* 3 columns from 64rem, 2 from 40rem, 1 below. */
+  /* The grid: three squares (343px at 1440, 28px apart) in a centred
+     --wrap-shop column from 64rem, two from 40rem, one below. */
+  .shop-grid { padding-block: var(--section-y); }
   .products {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--block-gap);
-    margin: 0;
+    gap: var(--section-y) calc(var(--space-5) + var(--space-1));
+    max-width: var(--wrap-shop);
+    margin: 0 auto;
     padding: 0;
   }
   @media (min-width: 40rem) { .products { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (min-width: 64rem) { .products { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 
-  .card { display: block; color: var(--burgundy); text-decoration: none; }
+  .card { color: var(--burgundy); }
 
   /* The square tile: a photo fills it (cover); a cutout sits whole on the
      page colour with padding (contain); the gift card is a burgundy square
@@ -100,11 +122,11 @@ const SIZES = '(max-width: 39.99rem) 100vw, (max-width: 63.99rem) 50vw, min(33vw
     color: var(--butter);
   }
   .giftcard :global(.giftcard-mark) { width: 45%; height: auto; color: var(--butter); }
-  .giftcard-label { font-weight: 500; font-size: var(--fs-item); }
+  .giftcard-label { font-size: var(--fs-item); }
 
-  /* Under the tile: the name left and the price right on one baseline (the
-     price wraps under the name when there's no room), then the note and the
-     status. */
+  /* Under the tile: the name (Owners Narrow 700, uppercase) left and the
+     price right on one baseline (the price wraps under the name when there's
+     no room), then the description and the action. */
   .card-head {
     display: flex;
     flex-wrap: wrap;
@@ -114,35 +136,21 @@ const SIZES = '(max-width: 39.99rem) 100vw, (max-width: 63.99rem) 50vw, min(33vw
     margin-top: var(--space-4);
   }
   .card-name {
-    font-family: var(--font-body);
-    font-weight: 500;
     font-size: var(--fs-item);
-    line-height: 1.3;
-    letter-spacing: var(--track-body);
+    line-height: 1.15;
     color: var(--burgundy);
-    text-decoration-line: none;
-    text-decoration-style: solid;
-    text-decoration-thickness: 2px;
-    text-decoration-color: var(--red);
-    text-underline-offset: 0.2em;
   }
   .card-price {
     font-size: var(--fs-item);
-    line-height: 1.3;
+    line-height: 1.15;
     font-variant-numeric: tabular-nums;
   }
   .card-note {
-    margin-top: var(--space-2);
-    font-size: var(--fs-body);
-    line-height: 1.45;
+    margin-top: var(--space-1);
+    font-size: var(--fs-small);
+    line-height: 1.15;
     color: color-mix(in srgb, var(--burgundy) 80%, var(--butter));
   }
-  .card-status { margin-top: var(--space-3); color: var(--burgundy); }
   .card p { max-width: none; }
-
-  /* A linked card: the 2px red underline on its name on hover and focus. */
-  @media (hover: hover) and (pointer: fine) {
-    .card--linked:hover .card-name { text-decoration-line: underline; }
-  }
-  .card--linked:focus-visible .card-name { text-decoration-line: underline; }
+  .card-action { margin-top: var(--space-4); }
 </style>

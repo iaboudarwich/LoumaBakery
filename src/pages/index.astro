@@ -5,198 +5,164 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { describe } from '../lib/seo';
 import { siteConfig } from '../config/site';
 import { features as f } from '../config/features';
+import { hoursGroups } from '../lib/hours';
 import Img from '../components/Img.astro';
 import Doodle from '../components/Doodle.astro';
-import PenDraw from '../components/PenDraw.astro';
 import InstagramStrip from '../components/InstagramStrip.astro';
 import { resolveImage as pick } from '../lib/images';
 
-// Every word comes from copy.json ("home"), every photo and its alt text from
-// images.json, the address and hours from settings.json.
+// The home page is burgundy (BaseLayout tone). Every word comes from
+// copy.json ("home"), every photo and its alt text from images.json, the
+// address and hours from settings.json.
 const home = (await getEntry('copy', 'home'))!.data;
 const images = (await getEntry('images', 'images'))!.data;
 const heroPhoto = pick(images.hero);
-const g = images.homeGallery.map((p) => ({ photo: pick(p.image), alt: p.alt, focus: p.focus }));
-const { address, hours, directionsUrl } = siteConfig;
+const kitchen = images.homeKitchen && { photo: pick(images.homeKitchen.image), alt: images.homeKitchen.alt, focus: images.homeKitchen.focus };
+const { address, directionsUrl } = siteConfig;
+const hours = hoursGroups();
 
-// Split hero: the photo fills the right 7 columns (a tall box on wide
-// screens, 4:5 on phones), so every size is a centred 4:5 crop of the frame,
-// the crop object-fit: cover would make anyway. Keeps the phone LCP AVIF
-// <=150KB (CLAUDE.md); quality is tuned against the file a 390px DPR-3 phone
-// picks (1200w).
+// The full-bleed hero, art-directed: a wide 9:5 crop from 48rem up (the
+// box is min(55.6vw, 800px) tall), a 2:3 crop on phones (70svh tall). Both
+// are centred crops, the crop object-fit: cover would make anyway. AVIF
+// quality 45 keeps the phone LCP file under 150KB (CLAUDE.md).
 const HERO_QUALITY = 45;
-const HERO_W = [600, 900, 1200, 1500, 1800];
-const HERO_RATIO = 4 / 5;
-const variants = async (format: 'avif' | 'webp') =>
+const crops = [
+  { media: '(min-width: 48rem)', ratio: 9 / 5, widths: [1024, 1440, 1920, 2560] },
+  { media: '', ratio: 2 / 3, widths: [600, 900, 1200] },
+];
+const srcset = async (ratio: number, widths: number[], format: 'avif' | 'webp') =>
   heroPhoto
-    ? (await Promise.all(HERO_W.map((w) => getImage({ src: heroPhoto, width: w, height: Math.round(w / HERO_RATIO), fit: 'cover', position: 'center', format, quality: HERO_QUALITY }))))
-        .map((img, i) => `${img.src} ${HERO_W[i]}w`).join(', ')
+    ? (await Promise.all(widths.map((w) => getImage({ src: heroPhoto, width: w, height: Math.round(w / ratio), fit: 'cover', position: 'center', format, quality: HERO_QUALITY }))))
+        .map((img, i) => `${img.src} ${widths[i]}w`).join(', ')
     : '';
 const hero = heroPhoto && {
-  avif: await variants('avif'),
-  webp: await variants('webp'),
-  fallback: await getImage({ src: heroPhoto, width: 1200, height: 1500, fit: 'cover', position: 'center', format: 'jpeg', quality: 70 }),
+  sources: await Promise.all(
+    crops.flatMap((c) => (['avif', 'webp'] as const).map(async (format) => ({ media: c.media, type: `image/${format}`, srcset: await srcset(c.ratio, c.widths, format) }))),
+  ),
+  fallback: await getImage({ src: heroPhoto, width: 1440, height: 800, fit: 'cover', position: 'center', format: 'jpeg', quality: 70 }),
 };
-// The photo's rendered width: the full column on phones; about 57vw in the
-// tablet 3/4 box; on wide screens the larger of the 7-column box and the 4:5
-// crop scaled to the box height.
-const HERO_SIZES = '(max-width: 47.99rem) 100vw, (max-width: 64rem) 57vw, max(min(55vw, 790px), min(69vh, 688px))';
 
 const reveal = f.reveal ? 'reveal' : undefined;
 ---
 
-<BaseLayout schema="bakery" description={describe([home.tagline, ...home.body])}>
-  {/* 1. Split hero: the baguette and the tagline left (5 columns), the photo
-      right (7). Phones: the photo first, then the text. The address and hours
-      are in the visit band further down. */}
+<BaseLayout schema="bakery" tone="burgundy" description={describe([home.tagline, ...home.body])}>
+  {/* 1. Hero: the croissant photo edge to edge, the tagline centred on it. */}
   <section class="home-hero">
-    <div class="container grid-12 hero-grid">
-      <div class="hero-text">
-        {/* The baguette: drawn on a pen loop (features.penDraw), else the filled mark. */}
-        <div class="hero-mark-slot">
-          {f.penDraw
-            ? <PenDraw size={140} color="red" class="hero-mark" />
-            : <Doodle name="baguette" size={140} color="red" animate={f.doodleDraw} class="hero-mark" />}
-        </div>
-        <h1 class="display hero-tagline">{home.tagline}</h1>
-      </div>
-      {hero && (
-        <picture class="hero-photo">
-          <source type="image/avif" srcset={hero.avif} sizes={HERO_SIZES} />
-          <source type="image/webp" srcset={hero.webp} sizes={HERO_SIZES} />
-          <img src={hero.fallback.src} width={hero.fallback.attributes.width} height={hero.fallback.attributes.height} alt={images.heroAlt} class="img-cover" loading="eager" decoding="auto" fetchpriority="high" />
-        </picture>
-      )}
-    </div>
+    {hero && (
+      <picture class="hero-photo">
+        {hero.sources.map((s) => <source media={s.media || undefined} type={s.type} srcset={s.srcset} sizes="100vw" />)}
+        <img src={hero.fallback.src} width={hero.fallback.attributes.width} height={hero.fallback.attributes.height} alt={images.heroAlt} class="img-cover" loading="eager" decoding="auto" fetchpriority="high" />
+      </picture>
+    )}
+    <h1 class="display hero-tagline">{home.tagline}</h1>
   </section>
 
-  {/* 2. Photo pair: two equal 3:2 landscapes, 6 columns each (4:5 stacked
-      on phones). Each photo's `focus` picks the part kept by the crop. */}
-  <section class="section">
-    <div class="container grid-12 photo-pair">
-      {g[0]?.photo && <Img src={g[0].photo} alt={g[0].alt} focus={g[0].focus} class="ph ph--landscape" style="--span: 6" sizes="(max-width: 47.99rem) 100vw, min(48vw, 680px)" />}
-      {g[1]?.photo && <Img src={g[1].photo} alt={g[1].alt} focus={g[1].focus} class="ph ph--landscape" style="--span: 6" sizes="(max-width: 47.99rem) 100vw, min(48vw, 680px)" />}
-    </div>
-  </section>
-
-  {/* 3. Body: the two paragraphs in a centred column. */}
-  <section class="section">
+  {/* 2. Intro: the two paragraphs in a centred column. */}
+  <section class="section home-intro">
     <div class="container" data-anim={reveal}>
       <div class="home-body">{home.body.map((p) => <p class="lead">{p}</p>)}</div>
     </div>
   </section>
 
-  {/* 4. Photo row: two equal portraits. */}
-  <section class="section">
-    <div class="container grid-12">
-      {g[2]?.photo && <Img src={g[2].photo} alt={g[2].alt} focus={g[2].focus} class="ph ph--portrait" style="--span: 6" sizes="(max-width: 47.99rem) 100vw, min(48vw, 680px)" />}
-      {g[3]?.photo && <Img src={g[3].photo} alt={g[3].alt} focus={g[3].focus} class="ph ph--portrait" style="--span: 6" sizes="(max-width: 47.99rem) 100vw, min(48vw, 680px)" />}
-    </div>
-  </section>
+  {/* 3. The kitchen, edge to edge. */}
+  {kitchen?.photo && <Img src={kitchen.photo} alt={kitchen.alt} focus={kitchen.focus} class="home-kitchen" sizes="100vw" widths={[800, 1200, 1600, 2000, 2400, 3200]} />}
 
-  {/* 5. Visit band: burgundy, butter text. Address left, hours right. */}
-  <section class="section block--burgundy visit-band" aria-labelledby="visit-band-h">
-    <div class="container grid-12" data-anim={reveal}>
+  {/* 4. Visit: the bread slice, the address with directions, the hours. */}
+  <section class="section visit-row" aria-labelledby="visit-h">
+    <div class="container visit-inner" data-anim={reveal}>
+      <h2 id="visit-h" class="visually-hidden">Visit</h2>
+      <Doodle name="bread-slice" size={120} color="butter" animate={f.doodleDraw} class="visit-slice" />
       <div class="visit-where">
-        <Doodle name="sun" size={72} color="butter" animate={f.doodleDraw} class="visit-sun" />
-        <h2 id="visit-band-h" class="visually-hidden">Visit</h2>
-        <address class="visit-address">{address.street}<br />{address.city}, {address.state} {address.zip}</address>
+        <address>{address.street},<br />{address.city}, {address.state} {address.zip}</address>
+        <p class="visit-directions"><a href={directionsUrl} target="_blank" rel="noopener">Get Directions</a></p>
       </div>
-      <ul class="hours-grid visit-hours" role="list">
-        {hours.map((h) => (
-          <li>
-            <span>{h.days}</span>
-            <span>{h.close ? `${h.open}–${h.close}` : h.open}</span>
-          </li>
-        ))}
-      </ul>
-      <p class="visit-directions"><a href={directionsUrl} target="_blank" rel="noopener">Get directions</a></p>
+      <div class="visit-hours">
+        {hours.map((g) => <p>{g.lines.map((l, i) => (i ? <><br />{l}</> : l))}</p>)}
+      </div>
     </div>
   </section>
 
-  {/* 6. Instagram strip. */}
-  <section class="section" aria-labelledby="ig-h">
-    <div class="container">
-      {home.instagramTitle && <h2 id="ig-h" class="h2 ig-title">{home.instagramTitle}</h2>}
-      <InstagramStrip />
-    </div>
+  {/* 5. Instagram: six tiles edge to edge, then "Follow along" and the handle. */}
+  <section class="home-ig" aria-labelledby="ig-h">
+    <InstagramStrip title={home.instagramTitle} />
   </section>
-  {/* The footer comes from BaseLayout. */}
+  {/* The footer comes from BaseLayout (butter on this page). */}
 </BaseLayout>
 
 <style>
-  /* 1. Split hero: min(86svh, 860px) tall on wide screens; the photo fills
-     its column's height, exactly as shot (object-fit: cover). */
-  .home-hero { padding-top: var(--block-gap); }
-  .hero-grid { align-items: stretch; }
-  .hero-text {
-    --span: 5;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: var(--block-gap);
-    padding-block: var(--block-gap);
+  /* 1. Hero: min(55.6vw, 800px) tall from 48rem (800 at 1440), 70svh on
+     phones. The tagline sits in the middle, butter, on two lines at 1440. */
+  .home-hero {
+    position: relative;
+    display: grid;
+    place-items: center;
+    height: min(55.6vw, 800px);
+    overflow: hidden;
   }
-  .hero-text :global(.hero-mark) { width: clamp(96px, 10vw, 140px); }
   .hero-photo {
-    --start: 6;
-    --span: 7;
+    position: absolute;
+    inset: 0;
     display: block;
-    height: min(86vh, 860px);
-    height: min(86svh, 860px);
   }
-  /* Tablets (48rem to 64rem): the column is too narrow for the full height,
-     so the photo takes a 3/4 box and sets the row's height. */
-  @media (min-width: 48rem) and (max-width: 64rem) {
-    .hero-photo { height: auto; aspect-ratio: 3 / 4; }
-  }
-  /* Phones: the photo first at 4:5, then the text. */
-  @media (max-width: 47.99rem) {
-    .hero-photo { order: -1; height: auto; aspect-ratio: 4 / 5; }
-    .hero-text { padding-block: 0; gap: var(--space-5); }
-  }
-
-  /* 2. Photo pair: phones stack them at 4:5. */
-  @media (max-width: 47.99rem) {
-    .photo-pair :global(.ph) { aspect-ratio: 4 / 5; }
-  }
-
-  /* 3. Body copy: a centred column, text set left for reading. 48em (of the
-     body size) runs the first paragraph to four lines at the lead size from
-     1024 to 1920 (owner round 3). */
-  .home-body { max-width: 48em; margin-inline: auto; }
-  .home-body .lead { max-width: none; }
-
-  /* 5. Visit band. */
-  .visit-band :global(.visit-sun) { margin-bottom: var(--block-gap); }
-  .visit-address {
-    font-style: normal;
-    font-family: var(--font-display);
-    font-weight: var(--display-weight);
-    letter-spacing: var(--display-track);
-    font-size: var(--fs-h2);
-    line-height: 1.1;
+  .hero-tagline {
+    position: relative;
+    z-index: 1;
+    max-width: 14em;
+    margin: 0;
+    padding-inline: var(--gutter);
     color: var(--butter);
+    text-align: center;
   }
-  .visit-hours { align-self: end; font-size: var(--fs-lead); }
-  /* Address and hours side by side only where the hours have room on one
-     line each; stacked below that. */
-  @media (min-width: 64rem) {
-    .visit-where { --span: 6; }
-    .visit-hours { --start: 7; --span: 6; justify-self: end; }
+  /* The one scrim on the site: the croissants' highlights fall to 1.2:1
+     against butter, so ink at 52% sits behind the words (solid to 80% of an
+     ellipse twice the text's size, then fading out). It brings every pixel
+     behind the letters to at least 3:1. */
+  .hero-tagline::before {
+    content: '';
+    position: absolute;
+    inset: -100% -50%;
+    z-index: -1;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--ink) 52%, transparent) 80%, transparent);
   }
-  .visit-directions { grid-column: 1 / -1; }
+  @media (max-width: 47.99rem) {
+    .home-hero { height: 70vh; height: 70svh; }
+  }
+
+  /* 2. Intro: the lead size, a centred column (about 740px at 1440), set
+     left for reading. */
+  .home-intro { padding-block: var(--section-y); }
+  .home-body { max-width: 24.5em; margin-inline: auto; font-size: var(--fs-lead); }
+  .home-body .lead { max-width: none; font-size: var(--fs-lead); line-height: 1.15; color: var(--butter); }
+
+  /* 3. Kitchen: min(50.7vw, 730px) tall from 48rem (730 at 1440), 4:3 on
+     phones. */
+  :global(.home-kitchen) { display: block; width: 100%; height: min(50.7vw, 730px); }
+  @media (max-width: 47.99rem) {
+    :global(.home-kitchen) { height: auto; aspect-ratio: 4 / 3; }
+  }
+
+  /* 4. Visit row: the drawing, the address, the hours, centred as a group
+     at the lead size. Phones: stacked, left-aligned. */
+  .visit-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: var(--block-gap) calc(var(--block-gap) * 2.5);
+    font-size: var(--fs-lead);
+    line-height: 1.15;
+  }
+  .visit-inner :global(.visit-slice) { width: clamp(80px, 8.3vw, 120px); }
+  .visit-where address { font-style: normal; }
+  .visit-directions { margin-top: 1em; }
   .visit-directions a {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
-    font-weight: 500;
-    color: var(--butter);
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.2em;
+    text-decoration-line: underline;
   }
-
-  /* 6. Instagram. */
-  .ig-title { margin-bottom: var(--block-gap); }
+  .visit-hours p + p { margin-top: 1em; }
+  @media (max-width: 47.99rem) {
+    .visit-inner { flex-direction: column; align-items: flex-start; }
+  }
 </style>

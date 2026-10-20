@@ -11,7 +11,7 @@
  *
  * The art is the designer's master (see src/assets/brand/README.md); the
  * viewBox roles are stable, so markup sizes against them:
- *  - Wordmark 374×240  filled outline · nav (cropped), footer lockup, 404
+ *  - Wordmark 374×240  filled outline · header, menu and footer (cropped), gift card, 404
  *  - Baguette 280×100  filled outline · the scroll-draw demo on /review
  * The face is rendered by FaceDraw.astro; every other drawing by Doodle.astro.
  * More drawings, one per file: src/assets/brand/doodles/.
@@ -21,5 +21,6 @@ export { default as Baguette } from "../assets/brand/baguette-baked.svg";
 
 
 /** viewBox cropping the wordmark to its art (the file keeps its 374×240 role
- *  box). Use where the drawing should fill its height: the nav, the home hero. */
+ *  box). Use where the drawing should fill its box: the header, the menu, the
+ *  footer, the gift card. */
 export const WORDMARK_ART = '7.5 53.8 359 132.4';

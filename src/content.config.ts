@@ -47,8 +47,10 @@ const copy = defineCollection({
       intro: paragraphs,
       sections: z.array(titledSection).optional(),
       allergenNote: z.string().optional(),
-      // Shop: the "Coming soon" words for a product with no link
+      // Shop: the "Coming soon" words for a product with no link, and the
+      // button words for a product with one
       status: z.string().optional(),
+      cart: z.string().optional(),
       // Catering, Careers, 404 (unchanged pages)
       eyebrow: z.string().optional(),
       lede: z.string().optional(),
@@ -95,8 +97,9 @@ const shop = defineCollection({
 });
 
 // Site photos (CMS: "Photos"). Filenames in src/assets/img; every photo has
-// its alt text beside it. hero: the home split hero; homeGallery: the four
-// home photos; story: the Our Story photo (one). `focus` is the part of the
+// its alt text beside it. hero: the full-bleed home hero; homeKitchen: the
+// full-bleed kitchen photo on the home page; menu: the photo in the Menu
+// page band; story: the Our Story photo (one). `focus` is the part of the
 // photo kept when its slot crops it (CSS object-position): a keyword, or
 // "x% y%". Empty or missing = center.
 const focus = z
@@ -109,7 +112,8 @@ const images = defineCollection({
   schema: z.object({
     hero: z.string(),
     heroAlt: z.string(),
-    homeGallery: z.array(photo),
+    homeKitchen: photo,
+    menu: photo,
     story: z.array(photo),
   }),
 });

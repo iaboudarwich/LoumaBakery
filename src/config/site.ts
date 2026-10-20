@@ -39,6 +39,28 @@ export const siteConfig = {
     tiktokHandle: settings.links.tiktokHandle,
   },
 
+  /** The menu's page links (the menu button opens them on every page).
+      Contact is in the footer, not here. Each label is the one place to
+      rename a page in the menu. */
+  nav: {
+    home: { label: 'Home', href: '/' },
+    menu: { label: 'Menu', href: '/menu' },
+    story: { label: 'Our Story', href: '/story' },
+    shop: { label: 'Shop', href: '/shop' },
+    initiative: { label: 'The Louma Initiative', href: '/initiative' },
+  },
+
+  /** Footer columns. "Say hi" lists its links above the Instagram and TikTok
+      icons; Before you order, Careers, Donate and Accessibility go here as
+      { label, href } once their pages exist. */
+  footer: {
+    sayHi: [] as { label: string; href: string }[],
+    more: [
+      { label: 'Contact Us', href: '/visit' },
+      { label: 'Large Order Inquiries', href: `mailto:${settings.ordersEmail}` },
+    ],
+  },
+
   /** Form confirmation / error copy, in the brand voice. Single source. */
   forms: {
     newsletterSuccess: "You're on the list. We'll write when there's something new from the oven.",

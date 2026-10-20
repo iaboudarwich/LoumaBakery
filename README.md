@@ -18,8 +18,8 @@ The website of Louma Bakery, a sister-run neighborhood bakery at 3223 Wilshire B
 | **JSON files in `src/data/`** | Every word, photo choice, menu item and setting. Checked against schemas in `src/content.config.ts` on every build, so bad data fails the build instead of reaching the site. |
 | **Decap CMS** in `public/admin/` | The web editor. Saving in it commits the changed JSON file to GitHub, which triggers a deploy. Login goes through **DecapBridge** (email and password, no GitHub account needed). |
 | **Netlify** | Hosting, automatic deploys, and Netlify Forms for the three forms (newsletter, catering, careers). |
-| **`motion`** | The small animation library behind the drawing reveals and section fade-ins (`src/scripts/motion.ts`). The home hero's pen baguette loop is plain CSS (`src/components/PenDraw.astro`). |
-| **Owners** (Ohno Type Co) | The only typeface, four files in `public/fonts/` (Owners Regular, Owners Medium, Owners Narrow Medium, Owners Narrow Bold). A webfont licence is still needed; see the handoff checklist. |
+| **`motion`** | The small animation library behind the drawing reveals and section fade-ins (`src/scripts/motion.ts`). The header's compact transition and the menu's fade are plain CSS. |
+| **Owners** (Ohno Type Co) | The only typeface, three files in `public/fonts/` (Owners Regular, Owners Medium, Owners Narrow Bold). A webfont licence is still needed; see the handoff checklist. |
 
 ## Run it locally
 
@@ -35,16 +35,16 @@ npx astro check    # type check: should report 0 errors
 
 ## Pages
 
-The top menu shows Home, Our Story, The Louma Initiative, Menu and Shop; the logo also goes home. The footer lists the same pages plus Contact (and Catering and Careers when they are switched on).
+Every page has a menu button (top left) that opens a full-screen menu with Home, Menu, Our Story, Shop and The Louma Initiative; the logo also goes home. The menu labels are in `siteConfig.nav` (`src/config/site.ts`). Contact is in the footer (More → Contact Us).
 
 **Hidden for now.** `src/config/features.ts` has three one-line switches, all `false` today: `cateringPage`, `careersPage` and `newsletter`. A hidden page is not built, 301-redirects to `/` (`netlify.toml` and `astro.config.mjs`), is left out of the sitemap and loses its footer link; with `newsletter` off the footer signup renders nowhere. The files, forms, data and editor fields all stay. How to switch one back on: `docs/HANDOFF.md`, section 4.
 
 | Address | File | What feeds it |
 |---|---|---|
-| `/` | `src/pages/index.astro` | `copy.json` → home, `images.json` (hero and the four gallery photos), `instagram.json`, `settings.json` (address, hours). Opens with a split hero: tagline left, photo right (photo first on phones). |
+| `/` | `src/pages/index.astro` | `copy.json` → home, `images.json` (hero, kitchen photo), `instagram.json`, `settings.json` (address, hours). A burgundy page: the croissant photo edge to edge with the tagline over it, the intro, the kitchen photo edge to edge, the visit row, the Instagram photos edge to edge, a butter footer. |
 | `/story` | `src/pages/story.astro` | `copy.json` → story (title), `story.json` (the letter and five sections), `images.json` → story |
 | `/initiative` | `src/pages/initiative.astro` | `copy.json` → initiative (title, intro and sections) |
-| `/menu` | `src/pages/menu.astro` | `copy.json` → menu, `menu.json` |
+| `/menu` | `src/pages/menu.astro` | `copy.json` → menu, `menu.json`, `images.json` → menu (the photo in the band at the top) |
 | `/shop` | `src/pages/shop.astro` | `copy.json` → shop, `shop.json` (Louma Hat, Maple Pecan Tarte, Burnt Basque Cheesecake, Berry Tart, Gift Card) |
 | `/visit` (shown as "Contact") | `src/pages/visit.astro` | `copy.json` → visit (title), `settings.json` (address, hours, emails, Instagram, TikTok), the hand-drawn map |
 | `/catering` (hidden for now) | `src/pages/catering.astro` | `copy.json` → catering, plus the catering form. Redirects to `/` while `cateringPage` is off. |
@@ -64,8 +64,8 @@ Everything editable lives in `src/data/`, one CMS collection per file:
 | `story.json` | The founder's letter (paragraphs and signature) and the Our Story sections | Our Story |
 | `menu.json` | The owner's menu: categories (name, order, column: food or drinks, items with a name and an optional note, optional category notes). On computers the Menu page shows food and drinks in two columns; on phones one list. Add-ons is a category like the others. No prices, photos or drawings. | Menu |
 | `shop.json` | The line under the Shop title, and the products in the order shown (name, price, note, photo, photo description, link, photo fit, product or gift card). An empty price is hidden; an empty link shows "Coming soon". | Shop |
-| `images.json` | Which photo goes in which slot (home hero, the four home gallery photos, the two Our Story photos), each with its description | Photos |
-| `instagram.json` | The six photos in the home page Instagram strip (one row of six on computers, three across on tablets, two on phones) | Instagram strip |
+| `images.json` | Which photo goes in which slot (home hero, home kitchen photo, the Menu band photo, the Our Story photo), each with its description | Photos |
+| `instagram.json` | The six photos in the home page Instagram strip (one row of six edge to edge on computers and tablets, three across on phones) | Instagram strip |
 | `settings.json` | The two email addresses, address, opening hours, Instagram and TikTok links and handles, and an Uber Eats link that is saved but not shown | Site settings |
 
 The editor's setup, field by field, is `public/admin/config.yml`. If you add a field to a JSON file, add it to `config.yml` and to the schema in `src/content.config.ts` too, or editors won't see it (and the page-text schema is strict, so an unknown field fails the build).
@@ -97,11 +97,11 @@ The newsletter (in the footer of every page), the catering inquiry and the job a
 
 Full reference: [`docs/BRAND.md`](docs/BRAND.md). The detailed rules for code are in `CLAUDE.md`.
 
-- **Eight colours only**: Louma Red `#ED2739` (the main colour), Burgundy `#A10017`, Peach `#FF676C`, Tangerine `#FF8926`, Fairy `#DDEAC3`, Butter `#FBF5D4` (the page background), White and Ink `#1D1D1B`. Red text only at 24px and up, or bold at 19px and up (the header links); smaller text is ink or burgundy.
-- **One typeface**, Owners: Owners 500 for titles and headings, Owners 400 for body (tracked out slightly, 0.01em), and Owners Narrow Medium for the header links and the footer's links, label and copyright. Owners Narrow Bold is kept for the home hero tagline (round 5B).
-- **The footer is burgundy** with every word in butter, (butter on burgundy is 7.56:1): a big face drawing over the wordmark, the visit details in clear groups, Instagram and TikTok as icons, the page links in Owners Narrow. The bottom row is the copyright line alone.
-- **Square corners** everywhere. No shadows, gradients or blur.
-- **Photos straight** and shown as taken: no filters, no text over them, no animation.
-- **Only the designer's drawings** (plus the owner's traced signature and map). One derived file: `src/assets/brand/baguette-stroke.svg`, the baguette as a single pen line, which draws, erases and repeats in the home hero (`PenDraw.astro`, switch `penDraw` in `features.ts`). It is the only stroke drawing; how it was made is in `src/assets/brand/README.md`.
+- **Eight colours only**: Louma Red `#ED2739` (the main colour), Burgundy `#A10017`, Peach `#FF676C`, Tangerine `#FF8926`, Fairy `#DDEAC3`, Butter `#FBF5D4` (the page background), White and Ink `#1D1D1B`. Burgundy and butter carry the site (the home page burgundy, every other page butter). Red text only at 24px and up (the page titles on butter pages). Peach is the hover and focus colour: peach underlines, a peach line under icons, a peach button fill with ink text; never resting text.
+- **One typeface**, Owners: Owners Narrow Bold, uppercase, for every title, heading and label, product names and the menu links; Owners Regular for body (tracked out slightly, 0.01em); Owners Medium only for data and form fields.
+- **The footer is the page's opposite colour** (butter on the home page, burgundy elsewhere; 7.56:1 either way): the wordmark over the face, then Visit, Say hi (Instagram and TikTok icons) and More (Contact Us, Large Order Inquiries), then the copyright centred under a hairline.
+- **Square corners** everywhere. No shadows or blur, and no gradients except the soft scrim behind the home tagline.
+- **Photos straight** and shown as taken: no filters, no animation; the one text on a photo is the home tagline.
+- **Only the designer's drawings** (plus the owner's traced signature and map). One derived file: `src/assets/brand/baguette-stroke.svg`, the baguette as a single pen line (kept; not used since the round 5B home page). How it was made is in `src/assets/brand/README.md`.
 - **The owner's words appear exactly as written.** Don't rewrite them.
 - No prices on the site except the products in the shop.

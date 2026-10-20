@@ -23,39 +23,38 @@
   --bg: var(--butter);
   --link: var(--burgundy);
   --link-hover: var(--burgundy);   /* red text on butter is only 3.86:1; burgundy is 7.56:1 */
+  --focus: var(--ink);             /* the focus ring; .surface-* set their own */
 
   /* --- Type stacks --- */
-  /* Owners superfamily (src/styles/fonts.css). Display: Owners 500 (regular
-     width) for every title and heading. Narrow: Owners Narrow 500 for the
-     header nav (bar and mobile sheet) and the footer's links, label and
-     copyright. Body: Owners 400, with 500 for emphasis, buttons and data
-     (hours, form fields). */
-  --font-display: "Owners", sans-serif;
-  --font-narrow: "Owners Narrow", sans-serif;
+  /* Owners superfamily (src/styles/fonts.css). Display: Owners Narrow 700,
+     uppercase, for every title, heading and label, product names and the
+     menu's links. Body: Owners 400, with Owners 500 for emphasis and data
+     (form fields). */
+  --font-display: "Owners Narrow", sans-serif;
   --font-body: "Owners", sans-serif;
-  --display-weight: 500;
-  --display-track: -0.015em;
+  --display-weight: 700;
+  --display-track: 0.01em;
   --display-lh: 1.05;
   /* Body copy is tracked out a little for legibility; headings keep
      --display-track, labels and buttons their own. */
   --track-body: 0.01em;
 
-  /* --- Global type scale (all Owners). Page titles and the home tagline use
-     --fs-display; section headings --fs-h2; intros --fs-lead; body --fs-body;
-     labels --fs-small. --- */
-  --fs-display: clamp(36px, 4.6vw, 64px);  /* Owners 500 */
-  --fs-h2: clamp(24px, 2.6vw, 36px);       /* Owners 500 */
-  --fs-lead: clamp(20px, 1.8vw, 26px);     /* Owners 400 */
-  --fs-body: clamp(16px, 1.15vw, 18px);    /* Owners 400, line-height 1.6 */
-  --fs-item: clamp(19px, 1.4vw, 20px);     /* Owners 500: menu item and product names, prices */
-  --fs-small: 14px;                        /* Owners 500, labels */
-  --fs-nav: 24px;                          /* Owners Narrow 500: header links (red needs 24px+), footer page links */
+  /* --- Global type scale (all Owners), from the designer's files at 1440,
+     each scaling linearly down to its phone size at 390. --- */
+  --fs-display: clamp(32px, calc(25.3143px + 1.71429vw), 50px); /* page titles, the hero tagline, "Follow along" */
+  --fs-h2: clamp(24px, calc(19.9143px + 1.04762vw), 35px);      /* section and menu category headings */
+  --fs-lead: clamp(20px, calc(16.2857px + 0.952381vw), 30px);    /* the home intro, the home visit row */
+  --fs-body: clamp(17px, calc(14.0286px + 0.761905vw), 25px);      /* body, intros, links, footer text, labels */
+  --fs-item: clamp(18px, calc(15.4px + 0.666667vw), 25px);    /* menu items, product names and prices */
+  --fs-small: clamp(15px, calc(13.1429px + 0.47619vw), 20px);   /* menu notes, shop descriptions, buttons */
+  --fs-fine: clamp(13px, calc(12.2571px + 0.190476vw), 15px);     /* the copyright line */
 
   /* --- Line heights --- */
   --lh-snug: 1.2;
   --lh-body: 1.6;
 
   /* --- Spacing scale (rem) --- */
+  --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
   --space-4: 1rem;
@@ -71,6 +70,15 @@
   --gutter: clamp(16px, 4vw, 48px);
   --section-y: clamp(64px, 9vw, 144px);   /* vertical padding of a section/band */
   --block-gap: clamp(24px, 3vw, 48px);    /* gap between blocks inside a section */
+  --wrap-menu: 1035px;      /* the menu's food and drinks columns */
+  --wrap-shop: 1085px;      /* the shop grid: three 343px squares at 1440 */
+
+  /* --- Header: tall at the top of the page, a compact sticky bar once it
+     scrolls. --nav-h is the compact bar (anchor jumps land under it). --- */
+  --head-h: clamp(112px, calc(68px + 11.25vw), 230px);
+  --nav-h: 72px;
+  --brand-w: clamp(96px, calc(72.2px + 6.1vw), 160px);   /* the wordmark, tall header */
+  --brand-w-compact: 88px;
 
   /* --- Hairlines (one border color everywhere) --- */
   --hairline-strong: color-mix(in srgb, var(--ink) 16%, transparent);
@@ -80,3 +88,8 @@
   --dur-fast: 160ms;
   --dur: 280ms;
 }
+
+@media (max-width: 47.99rem) {
+  :root { --nav-h: 60px; --brand-w-compact: 80px; }
+}
+

@@ -405,3 +405,4 @@ collections:
             fields:
               - { name: image, label: "Photo", widget: image, required: false, choose_url: false, hint: "Square works best. At least 600px wide, under 3MB." }
               - { name: alt, label: "Photo description", widget: string, required: false, hint: "What the photo shows, for screen readers." }
+              - *focus

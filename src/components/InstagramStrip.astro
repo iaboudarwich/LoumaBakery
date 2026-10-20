@@ -16,7 +16,7 @@ const { title } = Astro.props;
 // are skipped; with none left, only the heading and handle render.
 const tiles = (await getCollection('instagram'))
   .slice(0, 6)
-  .map((t) => ({ photo: resolveImage(t.data.image), alt: t.data.alt }))
+  .map((t) => ({ photo: resolveImage(t.data.image), alt: t.data.alt, focus: t.data.focus }))
   .filter((t) => t.photo);
 const { instagram, instagramHandle } = siteConfig.links;
 ---
@@ -27,7 +27,7 @@ const { instagram, instagramHandle } = siteConfig.links;
       {tiles.map((t) => (
         <li>
           <a class="ig-tile" href={instagram} target="_blank" rel="noopener">
-            <Img src={t.photo!} alt={t.alt} class="ig-img" sizes="(max-width: 47.99rem) 34vw, 17vw" widths={[240, 480, 720]} />
+            <Img src={t.photo!} alt={t.alt} focus={t.focus} class="ig-img" sizes="(max-width: 47.99rem) 34vw, 17vw" widths={[240, 480, 720]} />
           </a>
         </li>
       ))}

@@ -42,7 +42,7 @@ The home page is dark red (burgundy) with cream text, and its footer is cream.
 |---|---|
 | The page title | Page text → All pages → Our Story page → **Headline** |
 | The letter | Our Story → **The letter** → **Paragraphs**. Each box is one paragraph. **Signed** is the name read out to screen readers for the handwritten signature. |
-| The five sections (title and paragraphs) | Our Story → **Sections**. Open a section to change its title or paragraphs; drag the two short lines at the top of a section to reorder it. |
+| The four sections (title and paragraphs) | Our Story → **Sections**. Open a section to change its title or paragraphs; drag the two short lines at the top of a section to reorder it. |
 | The photo (the family collage) | Photos → Site photos → **Our Story: photos**. One photo, shown after the first section. |
 
 ### The Louma Initiative
@@ -153,7 +153,7 @@ Go to **Photos → Site photos**, click the photo you want to replace, and uploa
 
 ## The Instagram strip
 
-Go to **Instagram strip**. There are up to six photos, shown as squares edge to edge: one row of six on computers and tablets, three across on phones. Click a photo to replace it, and update its **Photo description**. Every tile links to the bakery's Instagram page. A tile without a photo is skipped.
+Go to **Instagram strip**. There are up to six photos, shown as squares edge to edge: one row of six on computers and tablets, three across on phones. Click a photo to replace it, and update its **Photo description**. Each photo also has a **Crop focus** (as on the site photos): the square keeps the middle of the photo unless you pick another part, for example **Bottom** when the subject sits low in the frame (the apple tart and the madeleine box use Bottom). Every tile links to the bakery's Instagram page. A tile without a photo is skipped.
 
 ## Hours, address and emails
 

@@ -42,7 +42,7 @@ Every page has a menu button (top left) that opens a full-screen menu with Home,
 | Address | File | What feeds it |
 |---|---|---|
 | `/` | `src/pages/index.astro` | `copy.json` → home, `images.json` (hero, kitchen photo), `instagram.json`, `settings.json` (address, hours). A burgundy page: the croissant photo edge to edge with the tagline over it, the intro, the kitchen photo edge to edge, the visit row, the Instagram photos edge to edge, a butter footer. |
-| `/story` | `src/pages/story.astro` | `copy.json` → story (title), `story.json` (the letter and five sections), `images.json` → story |
+| `/story` | `src/pages/story.astro` | `copy.json` → story (title), `story.json` (the letter and four sections), `images.json` → story |
 | `/initiative` | `src/pages/initiative.astro` | `copy.json` → initiative (title, intro and sections) |
 | `/menu` | `src/pages/menu.astro` | `copy.json` → menu, `menu.json`, `images.json` → menu (the photo in the band at the top) |
 | `/shop` | `src/pages/shop.astro` | `copy.json` → shop, `shop.json` (Louma Hat, Maple Pecan Tarte, Burnt Basque Cheesecake, Berry Tart, Gift Card) |

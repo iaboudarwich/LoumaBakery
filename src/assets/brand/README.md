@@ -37,6 +37,16 @@ filled. No live SVG filter runs anywhere.
 
 ## The single-stroke baguette (`baguette-stroke.svg`)
 
+One difference from the master, at the owner's request (round 5D, 20 Oct 2026): the
+third heart. In the master, the arc into the third heart rises well above the roll's
+outline and its right lobe comes down outside it. In the stroke file that heart is a
+copy of the second heart's segment (segments 7 to 15 of the path), moved right by that
+segment's own span (98.40 units, up 3.97) so it joins the line without a break; the
+first handle of the next segment is moved by the same amount to keep the line smooth.
+The path is still one continuous stroke drawn left to right, and the viewBox is
+unchanged (so the drawing keeps its size and place). `baguette.svg` and `doodles/` are
+untouched.
+
 The one stroke asset, made at the owner's request (owner feedback round 1, October 2026)
 so the home hero baguette can draw itself like a pen. The master stays the filled
 `baguette.svg`; this file is its centreline, derived from `docs/brand/master/02-baguette-mark.svg`:

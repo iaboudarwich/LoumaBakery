@@ -125,6 +125,7 @@ const instagram = defineCollection({
   schema: z.object({
     image: z.string().default(''), // filename in src/assets/img; empty tiles are skipped
     alt: z.string().default(''),
+    focus, // the part of the photo the square tile keeps (see `focus` above)
   }),
 });
 

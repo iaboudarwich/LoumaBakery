@@ -17,10 +17,10 @@ const images = (await getEntry('images', 'images'))!.data;
 const photos = images.story.map((p) => ({ photo: resolveImage(p.image), alt: p.alt, focus: p.focus }));
 
 // A small drawing beside each section title, by position (the sections keep
-// their drawing if the owner edits a title). The first section has none.
-const sectionDoodles = [undefined, 'palm', 'bread-slice', 'herb', 'hearts'];
+// their drawing if the owner edits a title).
+const sectionDoodles = ['palm', 'bread-slice', 'herb', 'hearts'];
 // The photo sits after a section, by position: the collage after the first
-// ("Named after our sister").
+// ("Sister-run").
 const photoAfter: Record<number, number> = { 0: 0 };
 // The page as a run of sections: text rows, then a photo section wherever a
 // photo follows, like the home page's photo sections (same grid gap, same

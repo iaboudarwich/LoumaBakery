@@ -148,7 +148,10 @@ The website follows the brand book.
   the home page, the palm in the Shop band) and reveal once as you scroll.
 - **The pen baguette.** The roll in the full-screen menu draws itself like a pen each
   time the menu opens. It uses `src/assets/brand/baguette-stroke.svg`, the master's
-  centreline as one continuous stroke (method in `src/assets/brand/README.md`).
+  centreline as one continuous stroke (method in `src/assets/brand/README.md`). At the
+  owner's request (round 5D) its third heart differs from the master: it is drawn like
+  the second, with both lobes inside the roll, instead of rising over the outline. The
+  master `baguette.svg` is unchanged.
 - **Two drawings come from the owner, not the board.** Both were traced from the
   owner's own material and are kept beside the masters in `src/assets/brand/`:
   - `signature-milla.svg`: Milla's handwritten signature, from the printed founder's

@@ -1,7 +1,8 @@
 ---
 import { siteConfig } from '../config/site';
 import { Wordmark, WORDMARK_ART } from '../lib/brand';
-import Doodle from './Doodle.astro';
+import { features } from '../config/features';
+import strokeRaw from '../assets/brand/baguette-stroke.svg?raw';
 
 interface Props {
   currentPath: string;
@@ -9,8 +10,9 @@ interface Props {
 const { currentPath } = Astro.props;
 
 // The full-screen menu, opened by the header's menu button on every page.
-// The five page links sit in a ring around the baguette mark (the roll
-// with three heart scores): Home above,
+// The five page links sit in a ring around the roll with three heart scores,
+// drawn in like a pen each time the menu opens (baguette-stroke.svg, the
+// master baguette's single-stroke centreline; flag doodleDraw): Home above,
 // Menu left, Our Story right, Shop bottom-left, the Initiative bottom-right
 // (the DOM follows that reading order). Phones: a centred list under the
 // baguette. Labels come from siteConfig.nav.
@@ -22,6 +24,9 @@ const ring = [
   { ...shop, at: 'bottom-left' },
   { ...initiative, at: 'bottom-right' },
 ];
+const rollViewBox = (strokeRaw.match(/viewBox="([^"]*)"/) || [])[1] ?? '0 0 466 165';
+const rollPath = (strokeRaw.match(/\sd="([^"]*)"/) || [])[1] ?? '';
+const rollStroke = (strokeRaw.match(/stroke-width="([^"]*)"/) || [])[1] ?? '12';
 ---
 
 <div id="site-menu" class="site-menu surface-burgundy" role="dialog" aria-modal="true" aria-label="Menu" hidden>
@@ -37,7 +42,9 @@ const ring = [
   </div>
 
   <nav class="menu-nav" aria-label="Primary">
-    <Doodle name="baguette" size={250} color="butter" class="menu-baguette" />
+    <svg class="menu-baguette" viewBox={rollViewBox} width="240" height="85" aria-hidden="true" focusable="false" data-draw={features.doodleDraw ? 'pen' : undefined}>
+      <path d={rollPath} pathLength="1" fill="none" stroke="currentColor" stroke-width={rollStroke} stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
     <ul class="ring" role="list">
       {ring.map((l) => (
         <li class={`ring-${l.at}`}>
@@ -105,8 +112,8 @@ const ring = [
   .menu-brand :global(.menu-brand-mark) { display: block; width: var(--brand-w); height: auto; color: inherit; }
   :global(html.head-compact) .menu-brand :global(.menu-brand-mark) { width: var(--brand-w-compact); }
 
-  /* The ring: a 3 x 3 grid around the baguette (250px, its art 240px wide
-     as in the design), which sits in the centre cell. Side columns are equal, so the baguette stays on the page's
+  /* The ring: a 3 x 3 grid around the roll (240px wide, as in the design),
+     which sits in the centre cell. Side columns are equal, so the baguette stays on the page's
      centre line whatever the labels' lengths. */
   .menu-nav {
     --ring-gap: clamp(32px, 4vw, 56px);
@@ -116,12 +123,26 @@ const ring = [
     place-items: center;
     padding-inline: var(--gutter);
   }
-  .menu-nav :global(.menu-baguette) {
+  .menu-baguette {
     position: absolute;
     top: 50%;
     left: 50%;
     translate: -50% -50%;
-    width: 250px;
+    width: 240px;
+    height: auto;
+    overflow: visible;
+    color: var(--butter);
+  }
+  /* The roll draws itself once, 1.6s, every time the menu opens, then stays
+     drawn. Only with motion on (html.motion is never set under reduced
+     motion): otherwise it is simply there, whole. */
+  @keyframes roll-draw {
+    from { stroke-dashoffset: 1.05; }
+    to { stroke-dashoffset: 0; }
+  }
+  :global(html.motion) .menu-baguette[data-draw='pen'] path { stroke-dasharray: 1 1.1; stroke-dashoffset: 1.05; }
+  :global(html.motion) .site-menu[data-open='true'] .menu-baguette[data-draw='pen'] path {
+    animation: roll-draw 1.6s cubic-bezier(0.45, 0, 0.55, 1) forwards;
   }
   .ring {
     display: grid;
@@ -163,7 +184,7 @@ const ring = [
   /* Phones: the baguette above a centred list. */
   @media (max-width: 47.99rem) {
     .menu-nav { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--block-gap); }
-    .menu-nav :global(.menu-baguette) { position: static; translate: none; width: 180px; }
+    .menu-baguette { position: static; translate: none; width: 173px; }
     .ring { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); width: auto; }
     .ring li { margin: 0; translate: none; align-self: center; }
   }

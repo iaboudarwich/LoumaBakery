@@ -40,8 +40,8 @@ const hours = hoursGroups();
     <div class="foot-cols">
       <!-- Brand: the wordmark over the face, static. -->
       <div class="foot-brand">
-        <Wordmark class="foot-wordmark" viewBox={WORDMARK_ART} width={192} height={71} aria-label={siteConfig.name} />
-        <Face class="foot-face" width={192} height={178} aria-hidden="true" />
+        <Wordmark class="foot-wordmark" viewBox={WORDMARK_ART} width={130} height={48} aria-label={siteConfig.name} />
+        <Face class="foot-face" width={130} height={120} aria-hidden="true" />
       </div>
 
       <!-- Visit: the address, then each hours group, from settings.json. -->
@@ -104,9 +104,9 @@ const hours = hoursGroups();
      hairline all take currentColor. Four columns: the brand, Visit, Say hi,
      More; then a hairline and the copyright, centred. */
   .site-foot {
-    font-size: var(--fs-body);
+    font-size: var(--fs-small);
     line-height: 1.2;
-    padding-block: calc(var(--section-y) * 0.85) var(--space-6);
+    padding-block: calc(var(--section-y) * 0.5) calc(var(--space-6) * 0.6);
   }
   /* A butter gap above a burgundy footer, so it never runs into a
      burgundy block at the end of a page (the Contact page). */
@@ -126,24 +126,24 @@ const hours = hoursGroups();
   .foot-cols {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: var(--space-7) var(--block-gap);
+    gap: calc(var(--space-7) * 0.6) var(--block-gap);
     align-items: start;
   }
 
   /* The marks are Astro SVG components rendered here: :global reaches their
      root <svg>. Static (no draw, no reveal). */
-  .foot-brand { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-6); }
+  .foot-brand { display: flex; flex-direction: column; align-items: flex-start; gap: calc(var(--space-6) * 0.6); }
   .foot-brand :global(.foot-wordmark),
-  .foot-brand :global(.foot-face) { display: block; width: clamp(112px, 13.3vw, 192px); height: auto; color: currentColor; }
+  .foot-brand :global(.foot-face) { display: block; width: clamp(76px, 9.03vw, 130px); height: auto; color: currentColor; }
 
   .foot-h {
-    font-size: var(--fs-body);
+    font-size: var(--fs-small);
     line-height: 1.2;
     color: inherit;
-    margin-bottom: var(--space-6);
+    margin-bottom: calc(var(--space-6) * 0.6);
   }
-  /* Lines inside a group sit tight; the groups are --space-5 apart. */
-  .foot-groups { display: grid; gap: var(--space-5); justify-items: start; font-style: normal; }
+  /* Lines inside a group sit tight; the groups are 0.6 x --space-5 apart. */
+  .foot-groups { display: grid; gap: calc(var(--space-5) * 0.6); justify-items: start; font-style: normal; }
   .foot-list,
   .foot-social { margin: 0; padding: 0; }
   .foot-list { display: grid; }
@@ -151,7 +151,7 @@ const hours = hoursGroups();
   /* Links: no underline at rest; hover and focus draw the 2px peach line
      (global.css), the text keeps its colour. Every footer link at least
      24px tall (WCAG 2.5.8), 44px on touch. */
-  .foot-list a { display: inline-block; padding-block: 2px; text-decoration-line: none; }
+  .foot-list a { display: inline-flex; align-items: center; min-height: 24px; text-decoration-line: none; }
   @media (pointer: coarse) {
     .foot-list a { display: inline-flex; align-items: center; min-height: 44px; }
   }
@@ -174,7 +174,7 @@ const hours = hoursGroups();
   .foot-icon svg { display: block; width: 24px; height: 24px; }
 
   .foot-base {
-    margin-top: var(--section-y);
+    margin-top: calc(var(--section-y) * 0.6);
     padding-top: var(--space-5);
     border-top: 1px solid currentColor;
     font-size: var(--fs-fine);

@@ -28,7 +28,7 @@ const SIZES = '(max-width: 39.99rem) 100vw, (max-width: 63.99rem) 50vw, 343px';
 <BaseLayout title={c.title} description={describe([shop.intro])}>
   <header class="page-band surface-burgundy shop-band">
     <div class="container shop-band-inner">
-      <Doodle name="palm" size={130} color="butter" animate={f.doodleDraw} class="shop-palm" />
+      <Doodle name="palm" size={122} color="butter" animate={f.doodleDraw} class="shop-palm" />
       <div class="shop-band-text">
         <h1 class="display">{noOrphan(c.title ?? '')}</h1>
         {shop.intro && <p>{shop.intro}</p>}
@@ -67,18 +67,18 @@ const SIZES = '(max-width: 39.99rem) 100vw, (max-width: 63.99rem) 50vw, 343px';
 </BaseLayout>
 
 <style>
-  /* The band: full-bleed burgundy, at least min(29.5vw, 425px) tall (425
-     at 1440); the palm and the title with the intro beside it, centred as
+  /* The band: full-bleed burgundy, at least min(19.4vw, 280px) tall (280
+     at 1440); the palm 170px tall at 1440; the palm and the title with the intro beside it, centred as
      a group. Phones: the palm above the text, centred. */
   .shop-band-inner {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: calc(var(--block-gap) * 2);
-    min-height: min(29.5vw, 425px);
+    min-height: min(19.4vw, 280px);
     padding-block: var(--block-gap);
   }
-  .shop-band-inner :global(.shop-palm) { flex: none; width: clamp(96px, 9vw, 130px); }
+  .shop-band-inner :global(.shop-palm) { flex: none; width: clamp(90px, 8.47vw, 122px); }
   .shop-band-text { display: grid; gap: var(--space-5); }
   .shop-band-text .display { margin: 0; }
   /* About 420px at 1440. */
@@ -102,7 +102,9 @@ const SIZES = '(max-width: 39.99rem) 100vw, (max-width: 63.99rem) 50vw, 343px';
   @media (min-width: 40rem) { .products { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (min-width: 64rem) { .products { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 
-  .card { color: var(--burgundy); }
+  /* Each card fills its grid row as a column, so the action (button or
+     "Coming soon" box) sits at the bottom and lines up across the row. */
+  .card { display: flex; flex-direction: column; color: var(--burgundy); }
 
   /* The square tile: a photo fills it (cover); a cutout sits whole on the
      page colour with padding (contain); the gift card is a burgundy square
@@ -152,5 +154,6 @@ const SIZES = '(max-width: 39.99rem) 100vw, (max-width: 63.99rem) 50vw, 343px';
     color: color-mix(in srgb, var(--burgundy) 80%, var(--butter));
   }
   .card p { max-width: none; }
-  .card-action { margin-top: var(--space-4); }
+  .card > :nth-last-child(2) { margin-bottom: var(--space-4); }
+  .card-action { margin-top: auto; align-self: flex-start; }
 </style>

@@ -75,7 +75,7 @@
 
   /* --- Header: tall at the top of the page, a compact sticky bar once it
      scrolls. --nav-h is the compact bar (anchor jumps land under it). --- */
-  --head-h: clamp(112px, calc(68px + 11.25vw), 230px);
+  --head-h: clamp(68px, calc(41.26px + 6.857vw), 140px);
   --nav-h: 72px;
   --brand-w: clamp(96px, calc(72.2px + 6.1vw), 160px);   /* the wordmark, tall header */
   --brand-w-compact: 88px;

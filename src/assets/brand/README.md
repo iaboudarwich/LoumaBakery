@@ -62,9 +62,9 @@ so the home hero baguette can draw itself like a pen. The master stays the fille
    and the medial axis is not a true centreline. Every sample lies inside the master's
    ink.
 
-It was made for the home hero's pen loop, which the round 5B home page replaced. The
-file is kept, not used. If it is used again and the master baguette has changed, it has
-to be made again the same way.
+`SiteMenu.astro` inlines it with `pathLength="1"` and draws it in once (stroke-dashoffset,
+1.6s) each time the full-screen menu opens. Do not use it anywhere else. If the master
+baguette ever changes, this file has to be made again the same way.
 
 ## Doodles
 

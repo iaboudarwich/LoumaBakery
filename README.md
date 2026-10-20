@@ -102,6 +102,6 @@ Full reference: [`docs/BRAND.md`](docs/BRAND.md). The detailed rules for code ar
 - **The footer is the page's opposite colour** (butter on the home page, burgundy elsewhere; 7.56:1 either way): the wordmark over the face, then Visit, Say hi (Instagram and TikTok icons) and More (Contact Us, Large Order Inquiries), then the copyright centred under a hairline.
 - **Square corners** everywhere. No shadows or blur, and no gradients except the soft scrim behind the home tagline.
 - **Photos straight** and shown as taken: no filters, no animation; the one text on a photo is the home tagline.
-- **Only the designer's drawings** (plus the owner's traced signature and map). One derived file: `src/assets/brand/baguette-stroke.svg`, the baguette as a single pen line (kept; not used since the round 5B home page). How it was made is in `src/assets/brand/README.md`.
+- **Only the designer's drawings** (plus the owner's traced signature and map). One derived file: `src/assets/brand/baguette-stroke.svg`, the baguette as a single pen line, which draws itself in the full-screen menu each time it opens. How it was made is in `src/assets/brand/README.md`.
 - **The owner's words appear exactly as written.** Don't rewrite them.
 - No prices on the site except the products in the shop.

@@ -12,7 +12,7 @@ All art is filled outline (each pen line is a closed shape), coloured with `curr
 | File | From | viewBox (role) | Used by |
 |---|---|---|---|
 | `wordmark.svg` | `01-wordmark.svg` | `0 0 374 240` | The header brand link, the menu and the footer (all cropped to the art), the shop gift card, 404 |
-| `baguette.svg` | `02-baguette-mark.svg` | `0 0 280 100` | `Doodle name="baguette"` (not placed on a page at the moment) |
+| `baguette.svg` | `02-baguette-mark.svg` | `0 0 280 100` | `Doodle name="baguette"`: the centre of the full-screen menu (SiteMenu.astro), butter, 250px |
 | `face.svg` | `06-illustrations.svg`, the face | `0 0 286 265` | Footer (static, under the wordmark); `FaceDraw` on the 404 page |
 
 Each viewBox is the mark's long-standing role box, so every `width`/`height` in the markup

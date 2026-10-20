@@ -9,7 +9,8 @@ interface Props {
 const { currentPath } = Astro.props;
 
 // The full-screen menu, opened by the header's menu button on every page.
-// The five page links sit in a ring around the small baguette: Home above,
+// The five page links sit in a ring around the baguette mark (the roll
+// with three heart scores): Home above,
 // Menu left, Our Story right, Shop bottom-left, the Initiative bottom-right
 // (the DOM follows that reading order). Phones: a centred list under the
 // baguette. Labels come from siteConfig.nav.
@@ -36,7 +37,7 @@ const ring = [
   </div>
 
   <nav class="menu-nav" aria-label="Primary">
-    <Doodle name="baguette-small" size={200} color="butter" class="menu-baguette" />
+    <Doodle name="baguette" size={250} color="butter" class="menu-baguette" />
     <ul class="ring" role="list">
       {ring.map((l) => (
         <li class={`ring-${l.at}`}>
@@ -104,8 +105,8 @@ const ring = [
   .menu-brand :global(.menu-brand-mark) { display: block; width: var(--brand-w); height: auto; color: inherit; }
   :global(html.head-compact) .menu-brand :global(.menu-brand-mark) { width: var(--brand-w-compact); }
 
-  /* The ring: a 3 x 3 grid around the baguette, which sits in the centre
-     cell. Side columns are equal, so the baguette stays on the page's
+  /* The ring: a 3 x 3 grid around the baguette (250px, its art 240px wide
+     as in the design), which sits in the centre cell. Side columns are equal, so the baguette stays on the page's
      centre line whatever the labels' lengths. */
   .menu-nav {
     --ring-gap: clamp(32px, 4vw, 56px);
@@ -120,12 +121,12 @@ const ring = [
     top: 50%;
     left: 50%;
     translate: -50% -50%;
-    width: 200px;
+    width: 250px;
   }
   .ring {
     display: grid;
-    grid-template-columns: 1fr 200px 1fr;
-    grid-template-rows: auto 72px auto;
+    grid-template-columns: 1fr 250px 1fr;
+    grid-template-rows: auto 90px auto;
     gap: var(--ring-gap);
     margin: 0;
     padding: 0;
@@ -162,7 +163,7 @@ const ring = [
   /* Phones: the baguette above a centred list. */
   @media (max-width: 47.99rem) {
     .menu-nav { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--block-gap); }
-    .menu-nav :global(.menu-baguette) { position: static; translate: none; width: 160px; }
+    .menu-nav :global(.menu-baguette) { position: static; translate: none; width: 180px; }
     .ring { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); width: auto; }
     .ring li { margin: 0; translate: none; align-self: center; }
   }

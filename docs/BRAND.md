@@ -144,7 +144,7 @@ The website follows the brand book.
   choice.)
 - **Drawings**: only the designer's master art, in `src/assets/brand/`: the wordmark,
   the baguette mark, the face, the bread slice, and the 26 doodles cut from the board.
-  They are used as small accents (the small baguette in the menu, the bread slice on
+  They are used as small accents (the baguette mark in the menu, the bread slice on
   the home page, the palm in the Shop band) and reveal once as you scroll.
 - **The pen baguette.** Until round 5B the home hero's baguette drew itself like a pen.
   Its stroke file, `src/assets/brand/baguette-stroke.svg` (the master's centreline as
